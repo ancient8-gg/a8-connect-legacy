@@ -14,8 +14,8 @@ export { RegistryProvider };
  */
 export const getStorageProvider = () =>
   new StorageProvider(
-    localStorage,
-    RegistryProvider.getInstance().getNetworkType()
+    RegistryProvider.getInstance().storage,
+    RegistryProvider.getInstance().networkType
   );
 
 /**
@@ -23,14 +23,17 @@ export const getStorageProvider = () =>
  */
 export const getNetworkProvider = () =>
   new NetworkProvider(fetch, {
-    networkType: RegistryProvider.getInstance().getNetworkType(),
+    networkType: RegistryProvider.getInstance().networkType,
   });
 
 /**
  * Cookie Provider
  */
 export const getCookieProvider = () =>
-  new CookieProvider(document, RegistryProvider.getInstance().getNetworkType());
+  new CookieProvider(
+    RegistryProvider.getInstance().document,
+    RegistryProvider.getInstance().networkType
+  );
 
 /**
  * Auth Provider

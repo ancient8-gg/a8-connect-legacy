@@ -25,21 +25,63 @@ export class RegistryProvider {
    * Network type is stored at private.
    * @private
    */
-  private network: NetworkType = NetworkType.mainnet;
+  private _networkType: NetworkType = NetworkType.mainnet;
+
+  /***
+   * Storage instance. Should be set inside the React hooks.
+   * @private
+   */
+  private _storage: Storage;
 
   /**
-   * Getter to get the value of network type.
+   * Document instance. Should be set inside the React hooks.
+   * @private
    */
-  getNetworkType(): NetworkType {
-    return this.network;
+  private _document: Document;
+
+  /**
+   * Storage getter.
+   */
+  get storage(): Storage {
+    return this._storage;
   }
 
   /**
-   * Setter to set the value of network type.
-   * @param type
+   * Storage setter.
+   * @param value
    */
-  setNetworkType(type: NetworkType): void {
-    this.network = type;
+  set storage(value: Storage) {
+    this._storage = value;
+  }
+
+  /**
+   * Document getter
+   */
+  get document(): Document {
+    return this._document;
+  }
+
+  /**
+   * Document setter
+   * @param value
+   */
+  set document(value: Document) {
+    this._document = value;
+  }
+
+  /**
+   * NetworkType getter
+   */
+  get networkType(): NetworkType {
+    return this._networkType;
+  }
+
+  /**
+   * NetworkType setter
+   * @param value
+   */
+  set networkType(value: NetworkType) {
+    this._networkType = value;
   }
 
   /**
