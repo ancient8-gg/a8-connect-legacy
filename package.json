@@ -1,0 +1,83 @@
+{
+  "name": "@ancient8/connect",
+  "version": "1.0.4",
+  "author": "Ancient8 Developer <dev@ancient8.gg>",
+  "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-id-frontend",
+  "license": "GPL-3.0",
+  "sideEffects": false,
+  "main:umd": "index.js",
+  "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-collapse": "^5.0.1",
+    "@types/react-dom": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "autoprefixer": "^10.4.2",
+    "eslint": "8.10.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "^26.5.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "postcss": "^8.4.8",
+    "prettier": "^2.6.2",
+    "react-app": "^1.1.2",
+    "rollup": "^2.75.4",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-import-css": "^3.0.3",
+    "rollup-plugin-polyfill-node": "^0.9.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-visualizer": "^5.6.0",
+    "sass": "^1.49.9",
+    "tailwindcss": "^3.0.23",
+    "typedoc": "^0.22.17",
+    "typescript": "4.6.2",
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "husky": "^7.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "format": "prettier --write ./**/*.ts{,x}",
+    "lint": "tsc --noEmit && eslint ./**/*.ts{,x} --fix",
+    "prepare": "husky install",
+    "gen-doc": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/docs/ src/"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
