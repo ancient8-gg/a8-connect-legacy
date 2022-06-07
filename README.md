@@ -11,6 +11,7 @@ $ yarn add @ancient8/connect
 ```
 
 ## Documentation
+
 For details API please refer the [docs](https://id.ancient8.gg/profile/docs).
 
 ## Examples
@@ -18,66 +19,58 @@ For details API please refer the [docs](https://id.ancient8.gg/profile/docs).
 ### 1. Open and close A8Connect Popup
 
 #### Using ES6 Modules
-```ts
-import A8Connect from '@ancient8/connect'
 
-const a8ConnectContainer = new A8Connect('#uid');
+```ts
+import A8Connect from "@ancient8/connect";
+
+const a8ConnectContainer = new A8Connect("#uid");
 
 const closeModal = a8ConnectContainer.init(
-    (response) => {
-        console.log(a8ConnectContainer.currentSession)
-    },
-    {
-        autoLogin: true,
-        enabledWallets: [
-            'use_metamask_uid',
-            'use_coin98_evm_uid'
-        ]
-    }
+  (response) => {
+    console.log(a8ConnectContainer.currentSession);
+  },
+  {
+    autoLogin: true,
+    enabledWallets: ["use_metamask_uid", "use_coin98_evm_uid"],
+  }
 );
 ```
 
-
 #### Using UMD library
+
 ```html
 <html>
-<head>
+  <head>
     <title>Test UID</title>
     <script src="bundle/index.js?v=3"></script>
-    <link rel="stylesheet" href="bundle/lib.css?v=3">
-</head>
-<body>
+    <link rel="stylesheet" href="bundle/lib.css?v=3" />
+  </head>
+  <body>
+    <div id="uid"></div>
 
-<div id="uid"></div>
+    <button onclick="closeModal = openModal()" style="z-index: 999;">
+      Open modal
+    </button>
 
-<button onclick="closeModal = openModal()" style="z-index: 999;">
-    Open modal
-</button>
+    <button onclick="closeModal()" style="z-index: 999;">Close modal</button>
 
-<button onclick="closeModal()" style="z-index: 999;">
-    Close modal
-</button>
-
-<script>
-    var a8ConnectContainer = new A8Connect('uid');
-    var closeModal;
-    var openModal = () => a8ConnectContainer.init(
-            (res) => {
-                console.log(a8ConnectContainer.currentSession);
-            },
-            {
-                autoLogin: true,
-                enabledWallets: [
-                    'use_metamask_uid',
-                    'use_coin98_evm_uid'
-                ]
-            }
-    );
-</script>
-</body>
+    <script>
+      var a8ConnectContainer = new A8Connect("uid");
+      var closeModal;
+      var openModal = () =>
+        a8ConnectContainer.init(
+          (res) => {
+            console.log(a8ConnectContainer.currentSession);
+          },
+          {
+            autoLogin: true,
+            enabledWallets: ["use_metamask_uid", "use_coin98_evm_uid"],
+          }
+        );
+    </script>
+  </body>
 </html>
 ```
-
 
 ### 2. Login
 
@@ -85,9 +78,9 @@ If you enable auto login, there will be no need to handle this manually. Otherwi
 
 ```ts
 const authToken = await a8ConnectContainer.currentSession.login(
-    a8ConnectContainer.currentSession.address,
-    a8ConnectContainer.currentSession.authType,
-    a8ConnectContainer.currentSession.walletName
+  a8ConnectContainer.currentSession.address,
+  a8ConnectContainer.currentSession.authType,
+  a8ConnectContainer.currentSession.walletName
 );
 ```
 
@@ -96,7 +89,6 @@ const authToken = await a8ConnectContainer.currentSession.login(
 ```ts
 await a8ConnectContainer.currentSession.getUserProfile();
 ```
-
 
 ### 4. Logout
 

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .icon {
-  background: url('/assets/icons.png')
+  background: url('./assets/icons.png')
 }
 
 body {
@@ -18,4 +18,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.uid-collapse-container {
+  transition: height 500ms;
 }

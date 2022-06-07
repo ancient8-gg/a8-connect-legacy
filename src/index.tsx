@@ -1,9 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
+import ReactDOM from "react-dom/client";
+import App from "./container";
 
-function App() {
-  return <div> Hello World</div>;
-}
-
-ReactDOM.render(<App />, document.getElementById("a8-connect"));
+const rootNode = document.getElementById("a8-connect") as HTMLElement;
+ReactDOM.createRoot(rootNode).render(<App />);

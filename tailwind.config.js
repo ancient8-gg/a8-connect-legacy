@@ -10,9 +10,9 @@ module.exports = {
         metamask: "#ff8900",
         gray1: "#afafaf",
         gray2: "#787878",
-        "gray-primary": "#101214",
         success: "#c5fde4",
         yellow: "#fbfdc5",
+        "gray-primary": "#101214",
       },
     },
     letterSpacing: {
