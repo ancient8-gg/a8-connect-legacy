@@ -22,7 +22,7 @@ export const getStorageProvider = () =>
  * Network Provider
  */
 export const getNetworkProvider = () =>
-  new NetworkProvider(fetch, {
+  new NetworkProvider(RegistryProvider.getInstance().fetch, {
     networkType: RegistryProvider.getInstance().networkType,
   });
 
