@@ -53,7 +53,7 @@ export default {
       plugins: [
         url({
           url: "inline",
-          basePath: "../public/",
+          basePath: "./",
         }),
       ],
     }),

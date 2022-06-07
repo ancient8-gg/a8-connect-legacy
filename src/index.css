@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .icon {
-  background: url('/assets/icons.png')
+  background: url('./assets/icons.png')
 }
 
 body {
