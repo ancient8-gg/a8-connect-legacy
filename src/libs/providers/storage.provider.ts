@@ -2,7 +2,6 @@
  * Storage Provider to store the desired values
  */
 import { BaseUrl, NetworkType } from "./registry.provider";
-import { NetworkProvider } from "./network.provider";
 
 export class StorageProvider {
   /**
