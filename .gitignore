@@ -25,3 +25,4 @@ docs/
 bundle-analysis.html
 dist/
 bundle/
+public/*

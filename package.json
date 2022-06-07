@@ -5,7 +5,7 @@
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
   "sideEffects": false,
-  "main:umd": "index.js",
+  "main:umd": "dist/index.js",
   "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
@@ -68,6 +68,7 @@
     "webpack": "^5.73.0"
   },
   "dependencies": {
+    "class-validator": "^0.13.2",
     "dotenv": "^16.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -81,7 +82,7 @@
     "format": "prettier --write ./**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint \"**/*.ts\" \"**/*.tsx\" --fix",
     "prepare": "husky install",
-    "gen-doc": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/docs/ src/",
+    "gen-doc": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/ src/",
     "build-lib": "rollup -c && yarn gen-doc",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"

@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require("dotenv").config({ path: `.env.${process.env.APP_ENV}` });
 
+import dotenv from "dotenv";
 import typescript from "@rollup/plugin-typescript";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
@@ -9,13 +9,14 @@ import postcss from "rollup-plugin-postcss";
 import visualizer from "rollup-plugin-visualizer";
 import { terser } from "rollup-plugin-terser";
 import replace from "@rollup/plugin-replace";
-import copy from "rollup-plugin-copy";
 import del from "rollup-plugin-delete";
 import nodePolyfills from "rollup-plugin-polyfill-node";
 import url from "postcss-url";
 
+dotenv.config({ path: `.env.${process.env.APP_ENV}` });
+
 export default {
-  input: ["./src/lib.entrypoint.tsx"],
+  input: ["./src/index.tsx"],
   output: [
     {
       dir: "dist",
@@ -61,22 +62,6 @@ export default {
       format: {
         ascii_only: true,
       },
-    }),
-    copy({
-      targets: [
-        { src: "exports/LICENSE", dest: "bundle/" },
-        { src: "exports/README.md", dest: "bundle/" },
-        {
-          src: "exports/package.export.json",
-          dest: "bundle/",
-          rename: "package.json",
-        },
-        { src: "dist/index.js", dest: "bundle/" },
-        { src: "dist/lib.css", dest: "bundle/" },
-        { src: "dist/dts/exports/*", dest: "bundle/" },
-      ],
-      hook: "writeBundle",
-      verbose: true,
     }),
     del({
       targets: ["dist", "bundle"],
