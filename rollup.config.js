@@ -12,10 +12,10 @@ import replace from "@rollup/plugin-replace";
 import copy from "rollup-plugin-copy";
 import del from "rollup-plugin-delete";
 import nodePolyfills from "rollup-plugin-polyfill-node";
-
+import url from "postcss-url";
 
 export default {
-  input: ["./exports/index.ts"],
+  input: ["./src/index.tsx"],
   output: [
     {
       dir: "dist",
@@ -50,6 +50,12 @@ export default {
       extensions: [".css"],
       minimize: true,
       extract: "lib.css",
+      plugins: [
+        url({
+          url: "inline",
+          basePath: "../public/",
+        }),
+      ],
     }),
     terser({
       format: {

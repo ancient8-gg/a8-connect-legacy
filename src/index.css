@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.icon {
+  background: url('/assets/icons.png')
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
