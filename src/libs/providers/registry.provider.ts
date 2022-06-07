@@ -40,14 +40,20 @@ export class RegistryProvider {
   private _document: Document;
 
   /**
-   * Storage getter.
+   * `fetch` instance. Should be set inside the React hooks.
+   * @private
+   */
+  private _fetch: typeof fetch;
+
+  /**
+   * `Storage` getter.
    */
   get storage(): Storage {
     return this._storage;
   }
 
   /**
-   * Storage setter.
+   * `Storage` setter.
    * @param value
    */
   set storage(value: Storage) {
@@ -55,14 +61,14 @@ export class RegistryProvider {
   }
 
   /**
-   * Document getter
+   * `Document` getter
    */
   get document(): Document {
     return this._document;
   }
 
   /**
-   * Document setter
+   * `Document` setter
    * @param value
    */
   set document(value: Document) {
@@ -70,18 +76,33 @@ export class RegistryProvider {
   }
 
   /**
-   * NetworkType getter
+   * `NetworkType` getter
    */
   get networkType(): NetworkType {
     return this._networkType;
   }
 
   /**
-   * NetworkType setter
+   * `NetworkType` setter
    * @param value
    */
   set networkType(value: NetworkType) {
     this._networkType = value;
+  }
+
+  /**
+   * `fetch` getter
+   */
+  get fetch(): typeof fetch {
+    return this._fetch;
+  }
+
+  /**
+   * `fetch` setter
+   * @param value
+   */
+  set fetch(value: typeof fetch) {
+    this._fetch = value;
   }
 
   /**
