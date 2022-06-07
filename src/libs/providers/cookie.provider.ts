@@ -32,7 +32,7 @@ export class CookieProvider {
    */
   public getCookie(key: string) {
     const cookieKey = `${this.networkType}_${key}`;
-    const cookieArray = document.cookie.split(";");
+    const cookieArray = this.document.cookie.split(";");
 
     const foundCookie = cookieArray.find((cookieStr: string) =>
       cookieStr.includes(cookieKey)
