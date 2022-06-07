@@ -15,7 +15,7 @@ import nodePolyfills from "rollup-plugin-polyfill-node";
 import url from "postcss-url";
 
 export default {
-  input: ["./src/index.tsx"],
+  input: ["./src/lib.entrypoint.tsx"],
   output: [
     {
       dir: "dist",
