@@ -1,56 +1,55 @@
-import { Adapter } from "@/libs/dto/entities";
-import { useCallback } from "react";
-import { ethers } from "ethers";
+import { BaseWalletAdapter, WalletProvider } from "../";
 
-export const useCoin98Wallet = (): Adapter => {
-  const coin98Provider = (window as any).coin98?.provider as any;
+export class Coin98EVMAdapter implements BaseWalletAdapter {
+  injectedProvider: WalletProvider;
 
-  const isInstalled = useCallback(() => {
-    return !!coin98Provider;
-  }, []);
+  constructor(injectedProvider: WalletProvider) {
+    this.injectedProvider = injectedProvider;
+  }
 
-  const connect = useCallback(async () => {
-    if (!isInstalled()) {
-      return false;
-    }
+  async connectWallet(): Promise<string> {
+    if (this.isInstalled()) return null;
 
+    const [wallet] = await this.injectedProvider.request<undefined, string[]>({
+      method: "eth_requestAccounts",
+    });
+
+    return wallet;
+  }
+
+  disconnectWallet(): Promise<void> {
+    return this.injectedProvider.disconnect();
+  }
+
+  getWalletAddress(): Promise<string> {
+    return this.connectWallet();
+  }
+
+  async isConnected(): Promise<boolean> {
     try {
-      await coin98Provider.request({ method: "eth_requestAccounts" });
-      return true;
+      const [walletAddress] = await this.injectedProvider.request<
+        undefined,
+        string[]
+      >({
+        method: "eth_accounts",
+      });
+
+      return !!walletAddress;
     } catch {
       return false;
     }
-  }, [isInstalled]);
+  }
 
-  const getWalletAddress = useCallback(async () => {
-    const [address] = await coin98Provider.request({ method: "eth_accounts" });
-    return address || null;
-  }, []);
+  isInstalled(): boolean {
+    return !!this.injectedProvider && !!this.injectedProvider.isCoin98;
+  }
 
-  const disconnect = useCallback(async () => {
-    if (!coin98Provider) return;
-    await coin98Provider.disconnect();
-  }, []);
+  async sign(message: string): Promise<string> {
+    const walletAddress = await this.getWalletAddress();
 
-  const sign = useCallback(async (message: string) => {
-    const currentWalletAddress = await getWalletAddress();
-    const provider = new ethers.providers.Web3Provider(coin98Provider);
-    const signer = provider.getSigner();
-    const signature = await signer.signMessage(message);
-
-    return {
-      signature: signature,
-      walletAddress: currentWalletAddress,
-    };
-  },
-    [connect, getWalletAddress]
-  );
-
-  return {
-    sign,
-    connect,
-    disconnect,
-    getWalletAddress,
-    isInstalled,
-  };
-};
+    return this.injectedProvider.request<string[], string>({
+      method: "eth_sign",
+      params: [walletAddress.toLowerCase(), "hexlify(toUtf8Bytes(message))"],
+    });
+  }
+}

@@ -1,54 +1,56 @@
-import { useCallback } from "react";
-import { Adapter, SignData } from "@/libs/dto/entities";
+import { BaseWalletAdapter, BinanceProvider } from "../";
 
-export const useBinanceWallet = (): Adapter => {
-  const binanceChainProvider = (window as any).BinanceChain as any;
+export class BinanceEVMAdapter implements BaseWalletAdapter {
+  injectedProvider: BinanceProvider;
 
-  const isInstalled = useCallback(() => {
-    return !!binanceChainProvider;
-  }, []);
+  constructor(injectedProvider: BinanceProvider) {
+    this.injectedProvider = injectedProvider;
+  }
 
-  const connect = useCallback(async () => {
-    if (!isInstalled) return false;
+  async connectWallet(): Promise<string> {
+    if (this.isInstalled()) return null;
 
+    const [wallet] = await this.injectedProvider.request<undefined, string[]>({
+      method: "eth_requestAccounts",
+    });
+
+    return wallet;
+  }
+
+  disconnectWallet(): Promise<void> {
+    return this.injectedProvider.disconnect();
+  }
+
+  getWalletAddress(): Promise<string> {
+    return this.connectWallet();
+  }
+
+  async isConnected(): Promise<boolean> {
     try {
-      await binanceChainProvider.request({ method: "eth_requestAccounts" });
-      return true;
+      const [walletAddress] = await this.injectedProvider.request<
+        undefined,
+        string[]
+      >({
+        method: "eth_accounts",
+      });
+
+      return !!walletAddress;
     } catch {
       return false;
     }
-  }, [isInstalled]);
+  }
 
-  const disconnect = useCallback(() => {
-    if (!binanceChainProvider) return;
-  }, []);
+  isInstalled(): boolean {
+    return !!this.injectedProvider && !this.injectedProvider.isCoin98;
+  }
 
-  const getWalletAddress = useCallback(async () => {
-    const [walletAddress] = await binanceChainProvider.request({
-      method: "eth_accounts",
-    });
-    return walletAddress;
-  }, [connect, disconnect]);
+  async sign(message: string): Promise<string> {
+    const walletAddress = await this.getWalletAddress();
 
-  const sign = useCallback(async (message: string) => {
-    const currentWalletAddress = await getWalletAddress();
-    const { signature } = await binanceChainProvider.bnbSign(
-      currentWalletAddress, message
-    );
+    const { signature } = await this.injectedProvider.bnbSign<{
+      signature: string;
+    }>(walletAddress, message);
 
-    return {
-      signature,
-      walletAddress: currentWalletAddress,
-    };
-  },
-    [connect, getWalletAddress]
-  );
-
-  return {
-    connect,
-    disconnect,
-    sign,
-    getWalletAddress,
-    isInstalled,
-  };
-};
+    return signature;
+  }
+}

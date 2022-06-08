@@ -56,8 +56,9 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({
 
   const isDisabled = useMemo(() => {
     if (
-      adapterName === SolanaAdapterName.torus ||
-      adapterName === EvmAdapterName.torus
+      adapterName === SolanaAdapterName.torus
+      // ||
+      // adapterName === EvmAdapterName.torus
     ) {
       return false;
     }
