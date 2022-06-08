@@ -8,7 +8,7 @@ export class BinanceEVMAdapter implements BaseWalletAdapter {
   }
 
   async connectWallet(): Promise<string | null> {
-    if (this.isInstalled()) return null;
+    if (!this.isInstalled()) return null;
 
     const [wallet] = await this.injectedProvider.request<undefined, string[]>({
       method: "eth_requestAccounts",

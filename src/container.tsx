@@ -2,7 +2,7 @@ import React from "react";
 import "./index.css";
 
 function App() {
-  return <div>Hello World</div>;
+  return <h1>Hello World</h1>;
 }
 
 export default App;
