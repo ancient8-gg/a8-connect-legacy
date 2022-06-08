@@ -1,14 +1,16 @@
-import { BaseWalletAdapter, BinanceProvider } from "../";
+import { BaseWalletAdapter, WalletProvider } from "../interface";
+import { hexlify } from "@ethersproject/bytes";
+import { toUtf8Bytes } from "@ethersproject/strings";
 
 export class BinanceEVMAdapter implements BaseWalletAdapter {
-  injectedProvider: BinanceProvider;
+  injectedProvider: WalletProvider;
 
-  constructor(injectedProvider: BinanceProvider) {
+  constructor(injectedProvider: WalletProvider) {
     this.injectedProvider = injectedProvider;
   }
 
-  async connectWallet(): Promise<string> {
-    if (this.isInstalled()) return null;
+  async connectWallet(): Promise<string | null> {
+    if (!this.isInstalled()) return null;
 
     const [wallet] = await this.injectedProvider.request<undefined, string[]>({
       method: "eth_requestAccounts",
@@ -21,23 +23,12 @@ export class BinanceEVMAdapter implements BaseWalletAdapter {
     return this.injectedProvider.disconnect();
   }
 
-  getWalletAddress(): Promise<string> {
+  getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 
   async isConnected(): Promise<boolean> {
-    try {
-      const [walletAddress] = await this.injectedProvider.request<
-        undefined,
-        string[]
-      >({
-        method: "eth_accounts",
-      });
-
-      return !!walletAddress;
-    } catch {
-      return false;
-    }
+    return this.injectedProvider.isConnected();
   }
 
   isInstalled(): boolean {
@@ -47,10 +38,9 @@ export class BinanceEVMAdapter implements BaseWalletAdapter {
   async sign(message: string): Promise<string> {
     const walletAddress = await this.getWalletAddress();
 
-    const { signature } = await this.injectedProvider.bnbSign<{
-      signature: string;
-    }>(walletAddress, message);
-
-    return signature;
+    return this.injectedProvider.request<string[], string>({
+      method: "personal_sign",
+      params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
+    });
   }
 }

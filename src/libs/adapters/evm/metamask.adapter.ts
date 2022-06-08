@@ -1,62 +1,53 @@
-import { Adapter } from '@/libs/dto/entities';
-import { useCallback } from "react";
-import { ethers } from "ethers";
+import { hexlify } from "@ethersproject/bytes";
+import { toUtf8Bytes } from "@ethersproject/strings";
+import { BaseWalletAdapter, WalletProvider } from "../interface";
 
-export const useMetamaskWallet = (): Adapter => {
-  const metamaskProvider =
-    ((window as any).ethereum as any).providers?.find(
-      (provider: any) => provider.isMetaMask === true
-    ) ||
-    (window as any).ethereum
-    ;
+export class MetamaskEVMAdapter implements BaseWalletAdapter {
+  injectedProvider: WalletProvider;
 
-  const isInstalled = useCallback(() => {
-    return !!metamaskProvider && metamaskProvider.isMetaMask === true;
-  }, []);
+  constructor(injectedProvider: WalletProvider) {
+    this.injectedProvider = injectedProvider;
+  }
 
-  const connect = useCallback(async () => {
-    if (!isInstalled()) {
-      return false;
-    }
+  async connectWallet(): Promise<string | null> {
+    if (!this.isInstalled()) return null;
 
-    try {
-      await metamaskProvider.request({ method: "eth_requestAccounts" });
-      return true;
-    } catch {
-      return false;
-    }
-  }, [isInstalled]);
+    const [wallet] = await this.injectedProvider.request<undefined, string[]>({
+      method: "eth_requestAccounts",
+    });
 
-  const getWalletAddress = useCallback(async () => {
-    const [address] = await metamaskProvider.request({ method: 'eth_accounts' });
-    return address || null;
-  }, []);
+    return wallet;
+  }
 
-  const disconnect = useCallback(async () => {
+  disconnectWallet(): Promise<void> {
     // There is no function to trigger disconnect metamask yet.
     // Need to wait for further changes as of now.
     // https://github.com/MetaMask/metamask-extension/issues/8990
-  }, []);
+    return;
+  }
 
+  getWalletAddress(): Promise<string | null> {
+    return this.connectWallet();
+  }
 
-  const sign = useCallback(async (message: string) => {
-    const currentWalletAddress = await getWalletAddress();
-    const provider = new ethers.providers.Web3Provider(metamaskProvider);
-    const signer = provider.getSigner();
-    const signature = await signer.signMessage(message);
+  async isConnected(): Promise<boolean> {
+    return this.injectedProvider.isConnected();
+  }
 
-    return {
-      signature,
-      walletAddress: currentWalletAddress
-    }
+  isInstalled(): boolean {
+    return (
+      !!this.injectedProvider &&
+      !!this.injectedProvider.isMetaMask &&
+      !this.injectedProvider.isCoin98
+    );
+  }
 
-  }, [connect, getWalletAddress]);
+  async sign(message: string): Promise<string> {
+    const walletAddress = await this.getWalletAddress();
 
-  return {
-    sign,
-    connect,
-    disconnect,
-    getWalletAddress,
-    isInstalled,
-  };
+    return this.injectedProvider.request<string[], string>({
+      method: "personal_sign",
+      params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
+    });
+  }
 }

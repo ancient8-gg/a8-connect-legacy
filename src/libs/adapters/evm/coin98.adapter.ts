@@ -1,4 +1,6 @@
-import { BaseWalletAdapter, WalletProvider } from "../";
+import { hexlify } from "@ethersproject/bytes";
+import { toUtf8Bytes } from "@ethersproject/strings";
+import { BaseWalletAdapter, WalletProvider } from "../interface";
 
 export class Coin98EVMAdapter implements BaseWalletAdapter {
   injectedProvider: WalletProvider;
@@ -7,8 +9,8 @@ export class Coin98EVMAdapter implements BaseWalletAdapter {
     this.injectedProvider = injectedProvider;
   }
 
-  async connectWallet(): Promise<string> {
-    if (this.isInstalled()) return null;
+  async connectWallet(): Promise<string | null> {
+    if (!this.isInstalled()) return null;
 
     const [wallet] = await this.injectedProvider.request<undefined, string[]>({
       method: "eth_requestAccounts",
@@ -21,23 +23,12 @@ export class Coin98EVMAdapter implements BaseWalletAdapter {
     return this.injectedProvider.disconnect();
   }
 
-  getWalletAddress(): Promise<string> {
+  getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 
   async isConnected(): Promise<boolean> {
-    try {
-      const [walletAddress] = await this.injectedProvider.request<
-        undefined,
-        string[]
-      >({
-        method: "eth_accounts",
-      });
-
-      return !!walletAddress;
-    } catch {
-      return false;
-    }
+    return this.injectedProvider.isConnected();
   }
 
   isInstalled(): boolean {
@@ -48,8 +39,8 @@ export class Coin98EVMAdapter implements BaseWalletAdapter {
     const walletAddress = await this.getWalletAddress();
 
     return this.injectedProvider.request<string[], string>({
-      method: "eth_sign",
-      params: [walletAddress.toLowerCase(), "hexlify(toUtf8Bytes(message))"],
+      method: "personal_sign",
+      params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
     });
   }
 }

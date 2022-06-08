@@ -1,62 +1,46 @@
-import { Adapter } from "@/libs/dto/entities";
-import { useCallback } from "react";
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
+import { BaseWalletAdapter, WalletProvider } from "../interface";
 
-export const useCoinbaseWallet = (): Adapter => {
-  const coinbaseProvider = (window as any).coinbaseWalletExtension as any;
+export class CoinbaseEVMAdapter implements BaseWalletAdapter {
+  injectedProvider: WalletProvider;
 
-  const isInstalled = useCallback(() => {
-    return !!coinbaseProvider;
-  }, []);
+  constructor(injectedProvider: WalletProvider) {
+    this.injectedProvider = injectedProvider;
+  }
 
-  const connect = useCallback(async () => {
-    if (!isInstalled()) {
-      return false;
-    }
+  async connectWallet(): Promise<string | null> {
+    if (!this.isInstalled()) return null;
 
-    try {
-      await coinbaseProvider.request({ method: "eth_requestAccounts" });
-      return true;
-    } catch {
-      return false;
-    }
-
-  }, [isInstalled]);
-
-  const getWalletAddress = useCallback(async () => {
-    const [address] = await coinbaseProvider.request({ method: "eth_accounts" });
-    return address || null;
-  }, []);
-
-  const disconnect = useCallback(async () => {
-    if (!coinbaseProvider) return;
-    await coinbaseProvider.disconnect();
-  }, []);
-
-  const sign = useCallback(async (message: string) => {
-    const currentWalletAddress = await getWalletAddress();
-    const signature = await coinbaseProvider.request({
-      method: 'personal_sign',
-      params: [
-        hexlify(toUtf8Bytes(message)),
-        currentWalletAddress.toLowerCase(),
-      ]
+    const [wallet] = await this.injectedProvider.request<undefined, string[]>({
+      method: "eth_requestAccounts",
     });
 
-    return {
-      signature,
-      walletAddress: currentWalletAddress,
-    };
-  },
-    [connect, getWalletAddress]
-  );
+    return wallet;
+  }
 
-  return {
-    sign,
-    connect,
-    disconnect,
-    getWalletAddress,
-    isInstalled,
-  };
-};
+  disconnectWallet(): Promise<void> {
+    return this.injectedProvider.disconnect();
+  }
+
+  getWalletAddress(): Promise<string | null> {
+    return this.connectWallet();
+  }
+
+  async isConnected(): Promise<boolean> {
+    return this.injectedProvider.isConnected();
+  }
+
+  isInstalled(): boolean {
+    return !!this.injectedProvider && !this.injectedProvider.isCoin98;
+  }
+
+  async sign(message: string): Promise<string> {
+    const walletAddress = await this.getWalletAddress();
+
+    return this.injectedProvider.request<string[], string>({
+      method: "personal_sign",
+      params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
+    });
+  }
+}
