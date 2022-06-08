@@ -185,10 +185,7 @@ export interface WalletType {
   adapterName: AdapterName;
 }
 export interface AdapterContext<T> {
-  sign: (
-    adapter: T,
-    message: string
-  ) => Promise<SignData>;
+  sign: (adapter: T, message: string) => Promise<SignData>;
   connect: (adapter: T) => Promise<string | undefined | any> | void;
   disconnect: (adapter: T) => Promise<void | any> | void;
   isInstalled: (adapter: T) => boolean;
