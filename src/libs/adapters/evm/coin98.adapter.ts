@@ -28,18 +28,7 @@ export class Coin98EVMAdapter implements BaseWalletAdapter {
   }
 
   async isConnected(): Promise<boolean> {
-    try {
-      const [walletAddress] = await this.injectedProvider.request<
-        undefined,
-        string[]
-      >({
-        method: "eth_accounts",
-      });
-
-      return !!walletAddress;
-    } catch {
-      return false;
-    }
+    return this.injectedProvider.isConnected();
   }
 
   isInstalled(): boolean {

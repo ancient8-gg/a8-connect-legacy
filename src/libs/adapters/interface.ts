@@ -29,6 +29,11 @@ export interface WalletProvider {
   disconnect(): Promise<void>;
 
   /**
+   * The function to check whether the wallet software is connected or not.
+   */
+  isConnected?: () => Promise<boolean> | boolean;
+
+  /**
    * A flag to detect whether current provider is coin98 or not.
    */
   isCoin98?: boolean;
@@ -94,5 +99,5 @@ export interface BaseWalletAdapter {
   /**
    * The function to get current wallet address.
    */
-  getWalletAddress(): Promise<string>;
+  getWalletAddress(): Promise<string | null>;
 }

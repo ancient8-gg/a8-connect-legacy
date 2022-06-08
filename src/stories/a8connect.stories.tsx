@@ -1,13 +1,16 @@
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
-import {BinanceEVMAdapter} from "../libs/adapters";
+import {Coin98SolanaAdapter} from "../libs/adapters/sol/coin98.adapter";
 
 export const A8Connect: React.FC = () => {
   const connectWallet = async () => {
-    const provider = new BinanceEVMAdapter((window as any).BinanceChain);
+    const provider = new Coin98SolanaAdapter((window as any).coin98.sol);
     (window as any).provider = provider;
     await provider.connectWallet();
     console.log(await provider.sign("Hello World"));
+    console.log(await provider.isConnected());
+    console.log(provider.isInstalled());
+    console.log(await provider.getWalletAddress());
   };
   return <button onClick={connectWallet}>Connect Wallet</button>;
 }
