@@ -1,4 +1,6 @@
-import { BaseWalletAdapter, WalletProvider } from "../";
+import { BaseWalletAdapter, WalletProvider } from "../index";
+import { hexlify } from "@ethersproject/bytes";
+import { toUtf8Bytes } from "@ethersproject/strings";
 
 export class Coin98EVMAdapter implements BaseWalletAdapter {
   injectedProvider: WalletProvider;
@@ -7,7 +9,7 @@ export class Coin98EVMAdapter implements BaseWalletAdapter {
     this.injectedProvider = injectedProvider;
   }
 
-  async connectWallet(): Promise<string> {
+  async connectWallet(): Promise<string | null> {
     if (this.isInstalled()) return null;
 
     const [wallet] = await this.injectedProvider.request<undefined, string[]>({
@@ -49,7 +51,7 @@ export class Coin98EVMAdapter implements BaseWalletAdapter {
 
     return this.injectedProvider.request<string[], string>({
       method: "eth_sign",
-      params: [walletAddress.toLowerCase(), "hexlify(toUtf8Bytes(message))"],
+      params: [walletAddress.toLowerCase(), hexlify(toUtf8Bytes(message))],
     });
   }
 }

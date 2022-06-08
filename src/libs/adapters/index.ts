@@ -18,7 +18,7 @@ export interface BinanceProvider extends WalletProvider {
 export interface BaseWalletAdapter {
   injectedProvider: WalletProvider | BinanceProvider;
   sign(message: string): Promise<string>;
-  connectWallet(): Promise<string>;
+  connectWallet(): Promise<string | null>;
   isInstalled(): boolean;
   isConnected(): Promise<boolean>;
   disconnectWallet(): Promise<void>;

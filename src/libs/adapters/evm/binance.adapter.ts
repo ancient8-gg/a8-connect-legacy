@@ -1,4 +1,4 @@
-import { BaseWalletAdapter, BinanceProvider } from "../";
+import { BaseWalletAdapter, BinanceProvider } from "../index";
 
 export class BinanceEVMAdapter implements BaseWalletAdapter {
   injectedProvider: BinanceProvider;
@@ -7,7 +7,7 @@ export class BinanceEVMAdapter implements BaseWalletAdapter {
     this.injectedProvider = injectedProvider;
   }
 
-  async connectWallet(): Promise<string> {
+  async connectWallet(): Promise<string | null> {
     if (this.isInstalled()) return null;
 
     const [wallet] = await this.injectedProvider.request<undefined, string[]>({
