@@ -1,11 +1,11 @@
 import React from "react";
-import { SignData } from "@/libs/entities/sign-data.entity";
-import { AuthType } from "@/libs/entities/auth.entity";
 import {
   AdapterName,
   EvmAdapterName,
   SolanaAdapterName,
-} from "@/libs/entities/adapter-name.entity";
+  AuthType,
+  SignData,
+} from "@/libs/dto/entities";
 
 interface WalletType {
   authType: AuthType;

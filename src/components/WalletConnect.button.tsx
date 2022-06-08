@@ -1,12 +1,12 @@
 import React, { useMemo, useState, useEffect } from "react";
 import classnames from "classnames";
 import Button from "./button";
-import { AuthType } from "@/libs/entities/auth.entity";
 import {
   AdapterName,
   EvmAdapterName,
   SolanaAdapterName,
-} from "@/libs/entities/adapter-name.entity";
+  AuthType,
+} from "@/libs/dto/entities";
 import { useAdapter } from "@/hooks/useAdapter";
 
 export interface ConnectButtonProps {
@@ -15,9 +15,9 @@ export interface ConnectButtonProps {
   className?: string;
   textClassName?: string;
   text: string;
-  containerStyle?: any;
-  textStyle?: any;
-  onClick: (e: any) => void;
+  containerStyle?: React.CSSProperties;
+  textStyle?: React.CSSProperties;
+  onClick: () => void;
   trackingId?: string;
   backgroundColor: string;
   icon: {
@@ -72,6 +72,8 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({
   return (
     <Button
       disabled={isDisabled}
+      onClick={onClick}
+      id={trackingId}
       containerStyle={{
         padding: "10px 16px",
         borderRadius: "3px",
@@ -81,12 +83,7 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({
       className={
         "px-[20px] bg-metamask text-black w-full text-white hover:text-white relative" +
         className
-      }
-      onClick={(e: any) => {
-        onClick(e);
-      }}
-      id={trackingId}
-    >
+      }>
       <div className="inline-flex w-full items-center">
         <img src={imageData.left} className="h-[40px] rounded-[10px]" />
         <div className="ml-[20px] text-left relative w-full">
@@ -106,25 +103,25 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({
           </p>
           {authType === AuthType.EVMChain
             ? chainIcons.EVMChain.map((item: string, index: number) => (
-                <img
-                  className={classnames(
-                    item,
-                    "mt-[5px] mr-[10px] text-gray float-left h-[12px]"
-                  )}
-                  key={`evm-icon-item-${index}`}
-                  src={item}
-                />
-              ))
+              <img
+                className={classnames(
+                  item,
+                  "mt-[5px] mr-[10px] text-gray float-left h-[12px]"
+                )}
+                key={`evm-icon-item-${index}`}
+                src={item}
+              />
+            ))
             : chainIcons.SOLChain.map((item: string, index: number) => (
-                <img
-                  className={classnames(
-                    item,
-                    "mt-[5px] mr-[10px] text-gray float-left h-[12px]"
-                  )}
-                  key={`sol-icon-item-${index}`}
-                  src={item}
-                />
-              ))}
+              <img
+                className={classnames(
+                  item,
+                  "mt-[5px] mr-[10px] text-gray float-left h-[12px]"
+                )}
+                key={`sol-icon-item-${index}`}
+                src={item}
+              />
+            ))}
         </div>
         <img
           className="absolute top-0 right-[10px] h-full opacity-[0.2]"

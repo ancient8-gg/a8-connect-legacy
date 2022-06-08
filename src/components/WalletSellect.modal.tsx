@@ -1,30 +1,13 @@
 import React, { useCallback, useState } from "react";
-import { AuthType } from "@/libs/entities/auth.entity";
 import {
   AdapterName,
   EvmAdapterName,
   SolanaAdapterName,
-} from "@/libs/entities/adapter-name.entity";
+  AuthType,
+} from "@/libs/dto/entities";
 import { useAdapter } from "@/hooks/useAdapter";
 import ConnectButton, { ConnectButtonProps } from "./WalletConnect.button";
 import Collapse from "@/components/collapase";
-// import { useEvm } from "@/src/hooks/adapters/evm";
-// import { useSolanaAuth, adapterNames } from "@/src/hooks/solana";
-// import { AuthType, AuthTypeOrChain } from "@/entities/interfaces/auth.entity";
-// import { adapterName as SoladapterName } from "@solana/wallet-adapter-base/lib/types/adapter";
-// import { AdapterName as EvmAdapterName } from "@/src/hooks/adapters/evm/types";
-// import { Collapse } from 'react-collapse';
-// import ConnectButton, {
-//   ConnectButtonProps,
-//   adapterName,
-// } from "@/src/components/connect-button/index";
-// import {
-//   Coin98WalletAdapter,
-//   PhantomWalletAdapter,
-//   SlopeWalletAdapter,
-//   TorusWalletAdapter,
-// } from "@solana/wallet-adapter-wallets";
-// import { WalletReadyState } from "@solana/wallet-adapter-base";
 
 export type ConnectedCallback = ({
   authType,

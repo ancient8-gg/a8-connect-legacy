@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "target": "es5",
     "lib": [
       "dom",
@@ -23,7 +24,8 @@
     "rootDir": ".", 
     "paths": {
       "@/*": ["./src/*"], 
-    }
+    },
+    "strictNullChecks": false
   },
   "include": [
     "src"
