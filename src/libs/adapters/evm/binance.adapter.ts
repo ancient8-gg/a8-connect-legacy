@@ -23,7 +23,7 @@ export class BinanceEVMAdapter implements BaseWalletAdapter {
     return this.injectedProvider.disconnect();
   }
 
-  getWalletAddress(): Promise<string> {
+  getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 

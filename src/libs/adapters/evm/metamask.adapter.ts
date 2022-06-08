@@ -26,7 +26,7 @@ export class MetamaskEVMAdapter implements BaseWalletAdapter {
     return;
   }
 
-  getWalletAddress(): Promise<string> {
+  getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 
