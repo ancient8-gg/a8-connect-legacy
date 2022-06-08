@@ -4,13 +4,10 @@ import {
   EvmAdapterName,
   SolanaAdapterName,
   AuthType,
+  WalletType,
   SignData,
 } from "@/libs/dto/entities";
 
-interface WalletType {
-  authType: AuthType;
-  adapterName: AdapterName;
-}
 interface AdapterContext {
   getWalletAddress: (walletType: WalletType) => Promise<string>;
   connect: (walletType: WalletType) => Promise<string>;
@@ -23,8 +20,8 @@ interface AdapterContext {
 const AdapterContext = React.createContext<AdapterContext>({
   getWalletAddress: async () => "",
   connect: async () => "",
-  disconnect: () => {},
-  disconnectAll: async () => {},
+  disconnect: () => { },
+  disconnectAll: async () => { },
   sign: async () => ({ walletAddress: "", signature: "" }),
   isInstalled: () => false,
 });
@@ -42,9 +39,9 @@ export const AdapterProvider = ({
     return "";
   };
 
-  const disconnect = async (walletType: WalletType) => {};
+  const disconnect = async (walletType: WalletType) => { };
 
-  const disconnectAll = async () => {};
+  const disconnectAll = async () => { };
 
   const sign = async (walletType: WalletType): Promise<SignData> => {
     return { walletAddress: "", signature: "" };

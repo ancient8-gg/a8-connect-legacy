@@ -159,7 +159,7 @@ export enum EvmAdapterName {
   coin98 = "Adapter::EVM::Coin98",
   binanceChain = "Adapter::EVM::BinanceChain",
   coinbase = "Adapter::EVM::Coinbase",
-  torus = "Adapter::EVM::Torus",
+  // torus = "Adapter::EVM::Torus",
 }
 
 /** @description */
@@ -173,3 +173,29 @@ export enum SolanaAdapterName {
 }
 
 export type AdapterName = EvmAdapterName | SolanaAdapterName;
+export interface WalletType {
+  authType: AuthType;
+  adapterName: AdapterName;
+}
+export interface AdapterContext<T> {
+  sign: (
+    adapter: T,
+    message: string
+  ) => Promise<SignData>;
+  connect: (adapter: T) => Promise<string | undefined | any> | void;
+  disconnect: (adapter: T) => Promise<void | any> | void;
+  isInstalled: (adapter: T) => boolean;
+  getWalletAddress: (adapter: T) => Promise<string | undefined>;
+  disconnectAll: () => Promise<void>;
+};
+export interface Adapter {
+  getWalletAddress: () => Promise<string>;
+  connect: () => Promise<string | boolean>;
+  sign: (message: string) => Promise<SignData>;
+  disconnect: () => void;
+  isInstalled: () => boolean;
+}
+
+export type EvmAdapters = { [name in EvmAdapterName]: Adapter };
+
+export type SolAdapters = { [name in SolanaAdapterName]: Adapter };
