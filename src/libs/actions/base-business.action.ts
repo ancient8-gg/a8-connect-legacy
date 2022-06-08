@@ -5,9 +5,11 @@ import {
   getAuthProvider,
   getCookieProvider,
   getStorageProvider,
+  getUserProvider,
   RegistryProvider,
 } from "../providers";
 import { NetworkType } from "../providers/registry.provider";
+import { UserProvider } from "../providers/user.provider";
 
 /**
  * `BaseBusinessAction` class is represented as an application service. Can be inherited.
@@ -15,6 +17,7 @@ import { NetworkType } from "../providers/registry.provider";
  */
 export class BaseBusinessAction {
   protected readonly authProvider: AuthProvider;
+  protected readonly userProvider: UserProvider;
   protected readonly cookieProvider: CookieProvider;
   protected readonly storageProvider: StorageProvider;
 
@@ -33,6 +36,7 @@ export class BaseBusinessAction {
 
     // Initialize provider
     this.authProvider = getAuthProvider();
+    this.userProvider = getUserProvider();
     this.storageProvider = getStorageProvider();
     this.cookieProvider = getCookieProvider();
   }

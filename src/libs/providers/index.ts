@@ -3,6 +3,7 @@ import { NetworkProvider } from "./network.provider";
 import { StorageProvider } from "./storage.provider";
 import { RegistryProvider } from "./registry.provider";
 import { AuthProvider } from "./auth.provider";
+import { UserProvider } from "./user.provider";
 
 /**
  * Export Registry Provider
@@ -40,3 +41,9 @@ export const getCookieProvider = () =>
  */
 export const getAuthProvider = () =>
   new AuthProvider(getNetworkProvider, getStorageProvider, getCookieProvider);
+
+/**
+ * User Provider
+ */
+export const getUserProvider = () =>
+  new UserProvider(getNetworkProvider, getStorageProvider, getCookieProvider);
