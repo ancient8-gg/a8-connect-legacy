@@ -36,7 +36,7 @@ export class StorageProvider {
     defaultValue: string | null = null
   ): string | null {
     const prefix = BaseUrl[this.networkType];
-    return this.storageInstance.getItem(`${prefix}${key}`) || defaultValue;
+    return this.storageInstance.getItem(`${prefix}_${key}`) || defaultValue;
   }
 
   /**
@@ -46,7 +46,16 @@ export class StorageProvider {
    */
   public setItem(key: string, value: string): void {
     const prefix = BaseUrl[this.networkType];
-    return this.storageInstance.setItem(`${prefix}${key}`, value);
+    return this.storageInstance.setItem(`${prefix}_${key}`, value);
+  }
+
+  /**
+   * The function to remove the value with an associated key, is prefixed with `networkType`.
+   * @param key
+   */
+  public removeItem(key: string): void {
+    const prefix = BaseUrl[this.networkType];
+    return this.storageInstance.removeItem(`${prefix}_${key}`);
   }
 }
 

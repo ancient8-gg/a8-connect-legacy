@@ -7,6 +7,13 @@ export type LoginResponse = {
   accessToken: string;
 };
 
+export class AuthChallenge {
+  public target: string;
+  public message: string;
+  public expiredDate: Date;
+  public isResolved: boolean;
+}
+
 export type A8ConnectInitOptions = {
   autoLogin: boolean;
   enabledWallets: string[];

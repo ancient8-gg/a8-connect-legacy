@@ -5,9 +5,14 @@ import { RegistryProvider } from "./registry.provider";
 import { AuthProvider } from "./auth.provider";
 
 /**
- * Local Storage Provider
+ * Export Registry Provider
  */
-const getStorageProvider = () =>
+export { RegistryProvider };
+
+/**
+ * Storage Provider
+ */
+export const getStorageProvider = () =>
   new StorageProvider(
     RegistryProvider.getInstance().storage,
     RegistryProvider.getInstance().networkType
@@ -16,7 +21,7 @@ const getStorageProvider = () =>
 /**
  * Network Provider
  */
-const getNetworkProvider = () =>
+export const getNetworkProvider = () =>
   new NetworkProvider(RegistryProvider.getInstance().fetch, {
     networkType: RegistryProvider.getInstance().networkType,
   });
@@ -24,16 +29,11 @@ const getNetworkProvider = () =>
 /**
  * Cookie Provider
  */
-const getCookieProvider = () =>
+export const getCookieProvider = () =>
   new CookieProvider(
     RegistryProvider.getInstance().document,
     RegistryProvider.getInstance().networkType
   );
-
-/**
- * Export Registry Provider
- */
-export { RegistryProvider };
 
 /**
  * Auth Provider
