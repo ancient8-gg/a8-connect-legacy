@@ -30,7 +30,7 @@ export class CookieProvider {
    * The function to extract cookie according to the `networkType`.
    * @param key
    */
-  public getCookie(key: string) {
+  public getCookie(key: string): string | null {
     const cookieKey = `${this.networkType}_${key}`;
     const cookieArray = this.document.cookie.split(";");
 

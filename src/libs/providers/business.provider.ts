@@ -1,4 +1,4 @@
-import { NetworkProviderGetter } from "./network.provider";
+import { NetworkOptions, NetworkProviderGetter } from "./network.provider";
 import { StorageProviderGetter } from "./storage.provider";
 import { CookieProviderGetter } from "./cookie.provider";
 
@@ -24,6 +24,12 @@ export class BusinessProvider {
    */
   protected getCookieProvider: CookieProviderGetter;
 
+  /**
+   * Constructor needs `getNetworkProvider`, `getStorageProvider` and `getCookieProvider` passed as parameters.
+   * @param getNetworkProvider
+   * @param getStorageProvider
+   * @param getCookieProvider
+   */
   constructor(
     getNetworkProvider: NetworkProviderGetter,
     getStorageProvider: StorageProviderGetter,
@@ -32,5 +38,44 @@ export class BusinessProvider {
     this.getCookieProvider = getCookieProvider;
     this.getStorageProvider = getStorageProvider;
     this.getNetworkProvider = getNetworkProvider;
+  }
+
+  /**
+   * The function to make a request with credentials included.
+   * @param url
+   * @param options
+   */
+  protected requestWithCredential<T>(
+    url: string,
+    options: NetworkOptions
+  ): Promise<T> {
+    const networkProvider = this.getNetworkProvider();
+    const storage = this.getStorageProvider();
+    const cookie = this.getCookieProvider();
+
+    const authTokenFromCookie = cookie.getCookie("jwt");
+    const authTokenFromStorage = storage.getItem("jwt", null);
+
+    if (!authTokenFromCookie && !authTokenFromStorage)
+      throw new Error("Credentials is not available");
+
+    if (!!authTokenFromCookie) options.credentials = "include";
+
+    if (!!authTokenFromStorage && !authTokenFromCookie)
+      options.headers = {
+        Authorization: `Bearer ${authTokenFromStorage}`,
+      };
+
+    return networkProvider.request<T>(url, options);
+  }
+
+  /**
+   * The function to make a request without credentials included.
+   * @param url
+   * @param options
+   */
+  protected request<T>(url: string, options: NetworkOptions): Promise<T> {
+    const networkProvider = this.getNetworkProvider();
+    return networkProvider.request<T>(url, options);
   }
 }
