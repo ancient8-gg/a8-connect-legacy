@@ -43,4 +43,30 @@ export class UserProvider extends BusinessProvider {
       body: formData,
     });
   }
+
+  /**
+   * The function to validate if a username is existed.
+   * @param username
+   */
+  validateUsername(username: string): Promise<void> {
+    return this.request<void>(
+      `/user/validate/username/${encodeURIComponent(username)}`,
+      {
+        method: "POST",
+      }
+    );
+  }
+
+  /**
+   * The function to validate if a wallet address is existed.
+   * @param walletAddress
+   */
+  validateWalletAddress(walletAddress: string): Promise<void> {
+    return this.request<void>(
+      `/user/validate/wallet-address/${encodeURIComponent(walletAddress)}`,
+      {
+        method: "POST",
+      }
+    );
+  }
 }
