@@ -1,4 +1,4 @@
-import { BaseWalletAdapter, BinanceProvider } from "../index";
+import { BaseWalletAdapter, BinanceProvider } from "../interface";
 
 export class BinanceEVMAdapter implements BaseWalletAdapter {
   injectedProvider: BinanceProvider;

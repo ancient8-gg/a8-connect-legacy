@@ -1,6 +1,6 @@
-import { BaseWalletAdapter, WalletProvider } from "../index";
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
+import { BaseWalletAdapter, WalletProvider } from "../interface";
 
 export class MetamaskEVMAdapter implements BaseWalletAdapter {
   injectedProvider: WalletProvider;
@@ -20,7 +20,10 @@ export class MetamaskEVMAdapter implements BaseWalletAdapter {
   }
 
   disconnectWallet(): Promise<void> {
-    return this.injectedProvider.disconnect();
+    // There is no function to trigger disconnect metamask yet.
+    // Need to wait for further changes as of now.
+    // https://github.com/MetaMask/metamask-extension/issues/8990
+    return;
   }
 
   getWalletAddress(): Promise<string> {
@@ -43,7 +46,11 @@ export class MetamaskEVMAdapter implements BaseWalletAdapter {
   }
 
   isInstalled(): boolean {
-    return !!this.injectedProvider && !this.injectedProvider.isCoin98;
+    return (
+      !!this.injectedProvider &&
+      !!this.injectedProvider.isMetaMask &&
+      !this.injectedProvider.isCoin98
+    );
   }
 
   async sign(message: string): Promise<string> {

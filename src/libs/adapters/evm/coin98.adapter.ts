@@ -1,6 +1,6 @@
-import { BaseWalletAdapter, WalletProvider } from "../index";
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
+import { BaseWalletAdapter, WalletProvider } from "../interface";
 
 export class Coin98EVMAdapter implements BaseWalletAdapter {
   injectedProvider: WalletProvider;
