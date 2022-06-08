@@ -1,10 +1,10 @@
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
-import {Coin98EVMAdapter} from "../libs/adapters";
+import {BinanceEVMAdapter} from "../libs/adapters";
 
 export const A8Connect: React.FC = () => {
   const connectWallet = async () => {
-    const provider = new Coin98EVMAdapter((window as any).coin98.provider);
+    const provider = new BinanceEVMAdapter((window as any).BinanceChain);
     (window as any).provider = provider;
     await provider.connectWallet();
     console.log(await provider.sign("Hello World"));

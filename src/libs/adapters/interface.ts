@@ -17,6 +17,13 @@ export interface WalletProvider {
   request<P, T>(payload: RPCRequestPayload<P>): Promise<T>;
 
   /**
+   * The function to send RPC requests to wallet software
+   * @param method
+   * @param param
+   */
+  send<P, T>(method: string, param: P): Promise<T>;
+
+  /**
    * The function to disconnect from wallet software
    */
   disconnect(): Promise<void>;

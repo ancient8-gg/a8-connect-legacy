@@ -57,8 +57,8 @@ export class MetamaskEVMAdapter implements BaseWalletAdapter {
     const walletAddress = await this.getWalletAddress();
 
     return this.injectedProvider.request<string[], string>({
-      method: "eth_sign",
-      params: [walletAddress.toLowerCase(), hexlify(toUtf8Bytes(message))],
+      method: "personal_sign",
+      params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
     });
   }
 }

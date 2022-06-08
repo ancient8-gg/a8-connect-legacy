@@ -1,4 +1,6 @@
 import { BaseWalletAdapter, BinanceProvider } from "../interface";
+import { hexlify } from "@ethersproject/bytes";
+import { toUtf8Bytes } from "@ethersproject/strings";
 
 export class BinanceEVMAdapter implements BaseWalletAdapter {
   injectedProvider: BinanceProvider;
@@ -47,10 +49,9 @@ export class BinanceEVMAdapter implements BaseWalletAdapter {
   async sign(message: string): Promise<string> {
     const walletAddress = await this.getWalletAddress();
 
-    const { signature } = await this.injectedProvider.bnbSign<{
-      signature: string;
-    }>(walletAddress, message);
-
-    return signature;
+    return this.injectedProvider.request<string[], string>({
+      method: "personal_sign",
+      params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
+    });
   }
 }
