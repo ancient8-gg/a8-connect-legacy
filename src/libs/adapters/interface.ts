@@ -29,6 +29,18 @@ export interface WalletProvider {
   disconnect(): Promise<void>;
 
   /**
+   * The function is specific to BinanceProvider
+   * @param walletAddress
+   * @param message
+   */
+  bnbSign?<T>(walletAddress: string, message: string): Promise<T>;
+
+  /**
+   * The function to connect wallet software.
+   */
+  connect?<T>(): Promise<T>;
+
+  /**
    * The function to check whether the wallet software is connected or not.
    */
   isConnected?: () => Promise<boolean> | boolean;
@@ -50,25 +62,13 @@ export interface WalletProvider {
 }
 
 /**
- * BinanceChain wallet provider interface
- */
-export interface BinanceProvider extends WalletProvider {
-  /**
-   * The function is specific to BinanceProvider
-   * @param walletAddress
-   * @param message
-   */
-  bnbSign<T>(walletAddress: string, message: string): Promise<T>;
-}
-
-/**
  * BaseWalletAdapter is an interface.
  */
 export interface BaseWalletAdapter {
   /**
    * Injected Provider is loaded when document object is ready.
    */
-  injectedProvider: WalletProvider | BinanceProvider;
+  injectedProvider: WalletProvider;
 
   /**
    * The function to sign message, return a signature in string format.

@@ -1,11 +1,11 @@
-import { BaseWalletAdapter, BinanceProvider } from "../interface";
+import { BaseWalletAdapter, WalletProvider } from "../interface";
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
 
 export class BinanceEVMAdapter implements BaseWalletAdapter {
-  injectedProvider: BinanceProvider;
+  injectedProvider: WalletProvider;
 
-  constructor(injectedProvider: BinanceProvider) {
+  constructor(injectedProvider: WalletProvider) {
     this.injectedProvider = injectedProvider;
   }
 

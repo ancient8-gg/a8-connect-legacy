@@ -1,12 +1,12 @@
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
-import {Coin98SolanaAdapter} from "../libs/adapters/sol/coin98.adapter";
+import {PhantomSolanaAdapter} from "../libs/adapters/sol/phantom.adapter";
 
 export const A8Connect: React.FC = () => {
   const connectWallet = async () => {
-    const provider = new Coin98SolanaAdapter((window as any).coin98.sol);
-    (window as any).provider = provider;
+    const provider = new PhantomSolanaAdapter((window as any).solana);
     await provider.connectWallet();
+    console.log({provider});
     console.log(await provider.sign("Hello World"));
     console.log(await provider.isConnected());
     console.log(provider.isInstalled());
