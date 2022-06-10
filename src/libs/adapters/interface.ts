@@ -14,14 +14,19 @@ export interface WalletProvider {
    * The function to send RPC requests to wallet software
    * @param payload
    */
-  request<P, T>(payload: RPCRequestPayload<P>): Promise<T>;
+  request?<P, T>(payload: RPCRequestPayload<P>): Promise<T>;
 
   /**
    * The function to send RPC requests to wallet software
    * @param method
    * @param param
    */
-  send<P, T>(method: string, param: P): Promise<T>;
+  send?<P, T>(method: string, param: P): Promise<T>;
+
+  /**
+   * The function to connect wallet software.
+   */
+  connect?<T>(): Promise<T>;
 
   /**
    * The function to disconnect from wallet software
@@ -36,9 +41,9 @@ export interface WalletProvider {
   bnbSign?<T>(walletAddress: string, message: string): Promise<T>;
 
   /**
-   * The function to connect wallet software.
+   * The function to sign a message. (only available to slope wallet)
    */
-  connect?<T>(): Promise<T>;
+  signMessage?<M, T>(message: M): Promise<T>;
 
   /**
    * The function to check whether the wallet software is connected or not.
