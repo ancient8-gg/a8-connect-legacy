@@ -99,11 +99,16 @@ export class WalletAction {
   }
 
   /**
-   * Ensure a wallet is selected, otherwise raise error.
+   * Ensure a wallet is available, otherwise raise error.
    * @private
    */
-  private ensureWalletIsSelected() {
+  private ensureWalletIsAvailable() {
     if (!this.selectedAdapter) throw new Error("No selected wallet");
+
+    if (!this.selectedAdapter.isInstalled())
+      throw new Error(
+        `The wallet ${this.selectedAdapter.name} is not installed`
+      );
   }
 
   /**
@@ -118,8 +123,6 @@ export class WalletAction {
    * To check whether the wallet is installed.
    */
   isInstalled(walletName: string) {
-    this.ensureWalletIsSelected();
-
     return this.supportedWallets[walletName].isInstalled();
   }
 
@@ -127,6 +130,8 @@ export class WalletAction {
    * Get wallet address
    */
   getWalletAddress(): Promise<string> {
+    this.ensureWalletIsAvailable();
+
     return this.selectedAdapter.getWalletAddress();
   }
 
@@ -139,7 +144,7 @@ export class WalletAction {
     walletName: string,
     message: string
   ): Promise<{ signature: string; walletAddress: string; walletName: string }> {
-    this.ensureWalletIsSelected();
+    this.ensureWalletIsAvailable();
 
     const signature = await this.selectedAdapter.sign(message);
     const walletAddress = await this.selectedAdapter.getWalletAddress();
