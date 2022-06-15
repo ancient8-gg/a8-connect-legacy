@@ -1,4 +1,4 @@
-import { NetworkType } from "./registry.provider";
+import { BaseUrl, NetworkType } from "./registry.provider";
 
 /**
  * Cookie provider that handle all the stuffs related to cookie.
@@ -31,7 +31,7 @@ export class CookieProvider {
    * @param key
    */
   public getCookie(key: string): string | null {
-    const cookieKey = `${this.networkType}_${key}`;
+    const cookieKey = `${BaseUrl[this.networkType]}_${key}`;
     const cookieArray = this.document.cookie.split(";");
 
     const foundCookie = cookieArray.find((cookieStr: string) =>

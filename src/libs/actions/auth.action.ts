@@ -33,18 +33,40 @@ export class AuthAction extends OffChainAction {
   }
 
   /**
-   * Sign user in
-   * @param authDto
+   * Determine whether the access token is available or not.
    */
-  async signIn(authDto: LoginWalletAuthDto): Promise<LoginResponse> {
-    return this.authProvider.signInWallet(authDto);
+  isAuthTokenAvailable() {
+    return (
+      !!this.cookieProvider.getCookie("jwt") ||
+      !!this.storageProvider.getItem("jwt")
+    );
   }
 
   /**
-   * Sign user up
+   * Sign user in. Persist access token to storage.
+   * @param authDto
+   */
+  async signIn(authDto: LoginWalletAuthDto): Promise<LoginResponse> {
+    const { accessToken } = await this.authProvider.signInWallet(authDto);
+    this.storageProvider.setItem("jwt", accessToken);
+    return { accessToken };
+  }
+
+  /**
+   * Sign user up. Persist access token to storage.
    * @param authDto
    */
   async signUp(authDto: RegistrationAuthDto): Promise<LoginResponse> {
-    return this.authProvider.signUpWallet(authDto);
+    const { accessToken } = await this.authProvider.signUpWallet(authDto);
+    this.storageProvider.setItem("jwt", accessToken);
+    return { accessToken };
+  }
+
+  /**
+   * Log user out of current session. Also remove access token from storage.
+   */
+  async logout(): Promise<void> {
+    await this.authProvider.logout();
+    this.storageProvider.removeItem("jwt");
   }
 }
