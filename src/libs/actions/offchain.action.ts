@@ -41,24 +41,16 @@ export class OffChainAction {
   protected readonly storageProvider: StorageProvider;
 
   /**
-   * Constructor needs `NetworkType`, `Document`, `Storage` and `fetch` passing as parameters.
+   * Constructor needs `NetworkType` passing as parameter.
    * @param networkType
-   * @param document
-   * @param storage
-   * @param fetchInstance
    */
-  constructor(
-    networkType: NetworkType,
-    document: Document,
-    storage: Storage,
-    fetchInstance: typeof fetch
-  ) {
+  constructor(networkType: NetworkType) {
     // Initialize registry
     const registryProvider = RegistryProvider.getInstance();
     registryProvider.networkType = networkType;
-    registryProvider.document = document;
-    registryProvider.fetch = fetchInstance;
-    registryProvider.storage = storage;
+    registryProvider.document = (window as any).document;
+    registryProvider.fetch = (window as any).fetch;
+    registryProvider.storage = (window as any).localStorage;
 
     // Initialize provider
     this.authProvider = getAuthProvider();
