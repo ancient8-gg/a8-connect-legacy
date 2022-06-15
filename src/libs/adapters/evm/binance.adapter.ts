@@ -2,7 +2,10 @@ import { BaseWalletAdapter, WalletProvider } from "../interface";
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
 
-export class BinanceEVMAdapter implements BaseWalletAdapter {
+export const BinanceEVMWalletName = "BinanceEVMWallet";
+
+export class BinanceEVMWallet implements BaseWalletAdapter {
+  name = BinanceEVMWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

@@ -1,10 +1,10 @@
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
-import {TorusSolanaAdapter} from "../libs/adapters/sol/torus.adapter";
+import {TorusSolanaWallet} from "../libs/adapters/sol/torus.adapter";
 
 export const A8Connect: React.FC = () => {
   const connectWallet = async () => {
-    const provider = new TorusSolanaAdapter();
+    const provider = new TorusSolanaWallet();
     await provider.connectWallet();
     console.log({provider});
     console.log(await provider.sign("Hello World"));

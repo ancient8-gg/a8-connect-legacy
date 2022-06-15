@@ -1,6 +1,9 @@
 import { BaseWalletAdapter, WalletProvider } from "../interface";
 
-export class PhantomSolanaAdapter implements BaseWalletAdapter {
+export const PhantomSolanaWalletName = "PhantomSolanaWallet";
+
+export class PhantomSolanaWallet implements BaseWalletAdapter {
+  name = PhantomSolanaWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

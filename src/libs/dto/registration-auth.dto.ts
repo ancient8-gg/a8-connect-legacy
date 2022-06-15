@@ -17,21 +17,21 @@ class RegistrationDto {
     require_protocol: true,
     require_valid_protocol: true,
   })
-  avatar: string;
+  avatar?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(32)
-  displayName: string;
+  displayName?: string;
 
   @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @IsOptional()
   @IsAlphanumeric()
   @MaxLength(32)
-  username: string;
+  username?: string;
 
   @IsEnum(AuthType)
   type: AuthType;

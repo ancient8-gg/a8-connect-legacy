@@ -2,7 +2,10 @@ import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
 import { BaseWalletAdapter, WalletProvider } from "../interface";
 
-export class Coin98EVMAdapter implements BaseWalletAdapter {
+export const Coin98EVMWalletName = "Coin98EVMWallet";
+
+export class Coin98EVMWallet implements BaseWalletAdapter {
+  name = Coin98EVMWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

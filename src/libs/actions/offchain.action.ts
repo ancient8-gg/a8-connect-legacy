@@ -12,10 +12,10 @@ import { NetworkType } from "../providers/registry.provider";
 import { UserProvider } from "../providers/user.provider";
 
 /**
- * `BaseBusinessAction` class is represented as an application service. Can be inherited.
+ * `OffChainAction` class is represented as an application service. Can be inherited.
  * The instance should be initialized and the method calls should be called inside the browser context.
  */
-export class BaseBusinessAction {
+export class OffChainAction {
   /**
    * `AuthProvider` provides all methods to handle authentication actions.
    * @protected

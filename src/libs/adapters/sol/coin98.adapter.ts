@@ -1,6 +1,9 @@
 import { BaseWalletAdapter, WalletProvider } from "../interface";
 
-export class Coin98SolanaAdapter implements BaseWalletAdapter {
+export const Coin98SolanaWalletName = "Coin98SolanaWallet";
+
+export class Coin98SolanaWallet implements BaseWalletAdapter {
+  name = Coin98SolanaWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

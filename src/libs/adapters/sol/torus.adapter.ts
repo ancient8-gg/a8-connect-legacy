@@ -1,26 +1,28 @@
 import { TorusWalletAdapter } from "@solana/wallet-adapter-torus";
 import bs from "bs58";
-import { BaseWalletAdapter, WalletProvider } from "../interface";
+import { BaseWalletAdapter } from "../interface";
 
-export class TorusSolanaAdapter implements BaseWalletAdapter {
-  injectedProvider: WalletProvider;
-  walletProvider: TorusWalletAdapter;
+export const TorusSolanaWalletName = "TorusSolanaWallet";
+
+export class TorusSolanaWallet implements BaseWalletAdapter {
+  name = TorusSolanaWalletName;
+  injectedProvider: TorusWalletAdapter;
 
   constructor() {
-    this.walletProvider = new TorusWalletAdapter();
+    this.injectedProvider = new TorusWalletAdapter();
   }
 
   async connectWallet(): Promise<string | null> {
     try {
-      await this.walletProvider.connect();
-      return this.walletProvider.publicKey.toString();
+      await this.injectedProvider.connect();
+      return this.injectedProvider.publicKey.toString();
     } catch {
       return null;
     }
   }
 
   disconnectWallet(): Promise<void> {
-    return this.walletProvider.disconnect();
+    return this.injectedProvider.disconnect();
   }
 
   getWalletAddress(): Promise<string | null> {
@@ -33,11 +35,11 @@ export class TorusSolanaAdapter implements BaseWalletAdapter {
   }
 
   isInstalled(): boolean {
-    return !!this.walletProvider;
+    return !!this.injectedProvider;
   }
 
   async sign(message: string): Promise<string> {
-    const signature = await this.walletProvider.signMessage(
+    const signature = await this.injectedProvider.signMessage(
       new TextEncoder().encode(message)
     );
     return bs.encode(signature);

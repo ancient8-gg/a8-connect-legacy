@@ -71,9 +71,14 @@ export interface WalletProvider {
  */
 export interface BaseWalletAdapter {
   /**
+   * Adapter name
+   */
+  name: string;
+
+  /**
    * Injected Provider is loaded when document object is ready.
    */
-  injectedProvider: WalletProvider;
+  injectedProvider: WalletProvider | any;
 
   /**
    * The function to sign message, return a signature in string format.

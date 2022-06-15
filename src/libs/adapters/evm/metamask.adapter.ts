@@ -2,7 +2,10 @@ import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
 import { BaseWalletAdapter, WalletProvider } from "../interface";
 
-export class MetamaskEVMAdapter implements BaseWalletAdapter {
+export const MetamaskEVMWalletName = "MetamaskEVMWallet";
+
+export class MetamaskEVMWallet implements BaseWalletAdapter {
+  name = MetamaskEVMWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

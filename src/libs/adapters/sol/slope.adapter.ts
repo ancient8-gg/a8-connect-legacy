@@ -1,6 +1,9 @@
 import { BaseWalletAdapter, WalletProvider } from "../interface";
 
-export class SlopeSolanaAdapter implements BaseWalletAdapter {
+export const SlopeSolanaWalletName = "SlopeSolanaWallet";
+
+export class SlopeSolanaWallet implements BaseWalletAdapter {
+  name = SlopeSolanaWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {
