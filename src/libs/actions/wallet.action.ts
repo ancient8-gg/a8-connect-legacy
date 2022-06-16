@@ -19,11 +19,11 @@ import {
 } from "../adapters";
 
 /**
- * Wallet action combine all the actions related to user wallets
+ * Wallet action combine all the actions related to user wallets.
  */
 export class WalletAction {
   /**
-   * Selected adapter
+   * Selected adapter.
    * @public
    */
   public selectedAdapter:
@@ -31,7 +31,7 @@ export class WalletAction {
     | undefined;
 
   /**
-   * Supported Wallets array
+   * Supported Wallets array.
    * @private
    */
   private supportedWallets: Record<
@@ -40,60 +40,62 @@ export class WalletAction {
   >;
 
   /**
-   * Public constructor without parameters
+   * Public constructor without parameters.
    */
   constructor() {
     /**
-     * Initialize BinanceChain EVM Wallet
+     * Initialize BinanceChain EVM Wallet.
      */
     this.supportedWallets[BinanceEVMWalletName] = new BinanceEVMWallet(
       (window as any).BinanceChain
     );
 
     /**
-     * Initialize Coin98 EVM Wallet
+     * Initialize Coin98 EVM Wallet.
      */
     this.supportedWallets[Coin98EVMWalletName] = new Coin98EVMWallet(
-      (window as any).coin98.provider
+      (window as any).coin98?.provider
     );
 
     /**
-     * Initialize Coinbase EVM Wallet
+     * Initialize Coinbase EVM Wallet.
      */
     this.supportedWallets[CoinbaseEVMWalletName] = new CoinbaseEVMWallet(
       (window as any).coinbaseWalletExtension
     );
 
     /**
-     * Initialize Metamask EVM Wallet
+     * Initialize Metamask EVM Wallet.
      */
     this.supportedWallets[MetamaskEVMWalletName] = new MetamaskEVMWallet(
-      (window as any).ethereum
+      (window as any).ethereum?.providers?.find(
+        (provider: any) => provider.isMetaMask === true
+      ) || (window as any).ethereum
     );
 
     /**
-     * Initialize Coin98 Solana Wallet
+     * Initialize Coin98 Solana Wallet.
      */
     this.supportedWallets[Coin98SolanaWalletName] = new Coin98SolanaWallet(
-      (window as any).coin98.sol
+      (window as any).coin98?.sol
     );
 
     /**
-     * Initialize Phantom Solana Wallet
+     * Initialize Phantom Solana Wallet.
      */
     this.supportedWallets[PhantomSolanaWalletName] = new PhantomSolanaWallet(
       (window as any).solana
     );
 
     /**
-     * Initialize Slope Solana Wallet
+     * Initialize Slope Solana Wallet.
      */
     this.supportedWallets[SlopeSolanaWalletName] = new SlopeSolanaWallet(
-      new (window as any).Slope()
+      !!(window as any).Slope && new (window as any).Slope()
     );
 
     /**
-     * Initialize Torus Wallet
+     * Initialize Torus Wallet.
      */
     this.supportedWallets[TorusSolanaWalletName] = new TorusSolanaWallet();
   }
@@ -103,11 +105,11 @@ export class WalletAction {
    * @private
    */
   private ensureWalletIsAvailable() {
-    if (!this.selectedAdapter) throw new Error("No selected wallet");
+    if (!this.selectedAdapter) throw new Error("No selected wallet.");
 
     if (!this.selectedAdapter.isInstalled())
       throw new Error(
-        `The wallet ${this.selectedAdapter.name} is not installed`
+        `The wallet ${this.selectedAdapter.name} is not installed.`
       );
   }
 
@@ -123,19 +125,25 @@ export class WalletAction {
    * @param walletName
    */
   connectWallet(walletName: string) {
-    // Disconnect selected wallet if applicable
+    /**
+     * Disconnect selected wallet if applicable.
+     */
     this.disconnectWallet();
 
-    // Select new wallet
+    /**
+     * Select new wallet.
+     */
     this.selectedAdapter = this.supportedWallets[walletName];
 
-    // Connect new wallet
+    /**
+     * Connect new wallet.
+     */
     this.ensureWalletIsAvailable();
     this.selectedAdapter.connectWallet();
   }
 
   /**
-   * Disconnect selected wallet
+   * Disconnect selected wallet.
    */
   disconnectWallet() {
     try {
@@ -145,7 +153,7 @@ export class WalletAction {
   }
 
   /**
-   * Get wallet address
+   * Get wallet address.
    */
   getWalletAddress(): Promise<string> {
     this.ensureWalletIsAvailable();
@@ -153,7 +161,7 @@ export class WalletAction {
   }
 
   /**
-   * Connect and Sign a message
+   * Connect and Sign a message.
    * @param message
    */
   async signMessage(
