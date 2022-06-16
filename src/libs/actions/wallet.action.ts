@@ -112,18 +112,36 @@ export class WalletAction {
   }
 
   /**
-   * Select wallet action
-   * @param walletName
-   */
-  selectWallet(walletName: string) {
-    this.selectedAdapter = this.supportedWallets[walletName];
-  }
-
-  /**
    * To check whether the wallet is installed.
    */
   isInstalled(walletName: string) {
     return this.supportedWallets[walletName].isInstalled();
+  }
+
+  /**
+   * Disconnect selected wallet and select a new wallet.
+   * @param walletName
+   */
+  connectWallet(walletName: string) {
+    // Disconnect selected wallet if applicable
+    this.disconnectWallet();
+
+    // Select new wallet
+    this.selectedAdapter = this.supportedWallets[walletName];
+
+    // Connect new wallet
+    this.ensureWalletIsAvailable();
+    this.selectedAdapter.connectWallet();
+  }
+
+  /**
+   * Disconnect selected wallet
+   */
+  disconnectWallet() {
+    try {
+      this.ensureWalletIsAvailable();
+      this.selectedAdapter.disconnectWallet();
+    } catch {}
   }
 
   /**
@@ -136,15 +154,14 @@ export class WalletAction {
 
   /**
    * Connect and Sign a message
-   * @param walletName
    * @param message
    */
   async signMessage(
-    walletName: string,
     message: string
   ): Promise<{ signature: string; walletAddress: string; walletName: string }> {
     this.ensureWalletIsAvailable();
 
+    const walletName = this.selectedAdapter.name;
     const signature = await this.selectedAdapter.sign(message);
     const walletAddress = await this.selectedAdapter.getWalletAddress();
 
