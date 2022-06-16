@@ -6,8 +6,10 @@ import {
   ChainType,
 } from "../interface";
 
+export const CoinbaseEVMWalletName = "CoinbaseEVMWallet";
 export class CoinbaseEVMAdapter implements BaseWalletAdapter {
   chainType: ChainType.EVM;
+  name = CoinbaseEVMWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

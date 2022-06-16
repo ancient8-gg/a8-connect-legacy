@@ -6,8 +6,10 @@ import {
   ChainType,
 } from "../interface";
 
+export const BinanceEVMWalletName = "BinanceEVMWallet";
 export class BinanceEVMAdapter implements BaseWalletAdapter {
   chainType: ChainType.EVM;
+  name = BinanceEVMWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

@@ -1,9 +1,9 @@
 import React from "react";
 import "./index.css";
-import { PhantomSolanaAdapter } from "./libs/adapters/sol/phantom.adapter";
+import { SlopeSolanaWallet } from "./libs/adapters/sol/slope.adapter";
 const A8Connect: React.FC = () => {
   const connectWallet = async () => {
-    const provider = new PhantomSolanaAdapter((window as any).solana);
+    const provider = new SlopeSolanaWallet(new (window as any).Slope());
     await provider.connectWallet();
     console.log({ provider });
     console.log(await provider.sign("Hello World"));

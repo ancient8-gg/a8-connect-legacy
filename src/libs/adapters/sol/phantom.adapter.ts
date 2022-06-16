@@ -1,6 +1,14 @@
-import { BaseWalletAdapter, WalletProvider } from "../interface";
+import {
+  BaseWalletAdapter,
+  WalletProvider,
+  ChainType
+} from "../interface";
 
-export class PhantomSolanaAdapter implements BaseWalletAdapter {
+export const PhantomSolanaWalletName = "PhantomSolanaWallet";
+
+export class PhantomSolanaWallet implements BaseWalletAdapter {
+  chainType: ChainType.SOL;
+  name = PhantomSolanaWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

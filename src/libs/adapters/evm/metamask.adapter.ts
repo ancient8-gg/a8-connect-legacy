@@ -6,8 +6,10 @@ import {
   ChainType,
 } from "../interface";
 
+export const MetamaskEVMWalletName = "MetamaskEVMWallet";
 export class MetamaskEVMAdapter implements BaseWalletAdapter {
   chainType: ChainType.EVM;
+  name = MetamaskEVMWalletName;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

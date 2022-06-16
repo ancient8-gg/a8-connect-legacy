@@ -71,6 +71,8 @@
     "@ethersproject/bytes": "^5.6.1",
     "@ethersproject/logger": "^5.6.0",
     "@ethersproject/strings": "^5.6.1",
+    "@solana/wallet-adapter-torus": "^0.11.11",
+    "bs58": "^5.0.0",
     "class-validator": "^0.13.2",
     "classnames": "^2.3.1",
     "dotenv": "^16.0.1",
