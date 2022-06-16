@@ -1,4 +1,13 @@
 /**
+ * Defind chain type 
+ * Includes two main chain: Solana chain and Ethererum chain
+ */
+export enum ChainType {
+  EVM = 'EVM',
+  SOL = 'SOL',
+}
+
+/**
  * RPC Payload
  */
 export interface RPCRequestPayload<P> {
@@ -65,6 +74,11 @@ export interface WalletProvider {
  * BaseWalletAdapter is an interface.
  */
 export interface BaseWalletAdapter {
+  /**
+   * Type of chain
+   */
+  chainType: ChainType;
+
   /**
    * Injected Provider is loaded when document object is ready.
    */

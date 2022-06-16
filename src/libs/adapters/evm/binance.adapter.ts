@@ -1,8 +1,13 @@
-import { BaseWalletAdapter, WalletProvider } from "../interface";
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
+import {
+  BaseWalletAdapter,
+  WalletProvider,
+  ChainType,
+} from "../interface";
 
 export class BinanceEVMAdapter implements BaseWalletAdapter {
+  chainType: ChainType.EVM;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

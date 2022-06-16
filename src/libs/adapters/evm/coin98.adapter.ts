@@ -1,8 +1,13 @@
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
-import { BaseWalletAdapter, WalletProvider } from "../interface";
+import {
+  BaseWalletAdapter,
+  WalletProvider,
+  ChainType,
+} from "../interface";
 
 export class Coin98EVMAdapter implements BaseWalletAdapter {
+  chainType: ChainType.EVM;
   injectedProvider: WalletProvider;
 
   constructor(injectedProvider: WalletProvider) {

@@ -1,17 +1,13 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState } from "react";
 import classnames from "classnames";
 import Button from "./button";
 import {
-  AdapterName,
-  EvmAdapterName,
-  SolanaAdapterName,
-  AuthType,
-} from "@/libs/dto/entities";
-import { useAdapter } from "@/hooks/useAdapter";
+  BaseWalletAdapter,
+  ChainType
+} from '@/libs/adapters/interface';
 
 export interface ConnectButtonProps {
-  authType: AuthType;
-  adapterName: AdapterName;
+  adapter: BaseWalletAdapter;
   className?: string;
   textClassName?: string;
   text: string;
@@ -39,8 +35,7 @@ const chainIcons = {
 };
 
 const ConnectButton: React.FC<ConnectButtonProps> = ({
-  authType,
-  adapterName,
+  adapter,
   text,
   className,
   textClassName,
@@ -50,29 +45,10 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({
   icon,
   onClick,
 }) => {
-  const { isInstalled: checkInstalled } = useAdapter();
-  const [isInstalled, setInstalled] = useState<boolean>(false);
   const imageData = icon;
-
-  const isDisabled = useMemo(() => {
-    if (
-      adapterName === SolanaAdapterName.torus
-      // ||
-      // adapterName === EvmAdapterName.torus
-    ) {
-      return false;
-    }
-    return !isInstalled;
-  }, [adapterName]);
-
-  useEffect(() => {
-    const value = checkInstalled({ authType, adapterName });
-    setInstalled(value);
-  }, []);
-
   return (
     <Button
-      disabled={isDisabled}
+      disabled={adapter.isInstalled()}
       onClick={onClick}
       id={trackingId}
       containerStyle={{
@@ -96,13 +72,13 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({
             style={textStyle}
           >
             {text}
-            {(isInstalled || adapterName === SolanaAdapterName.torus) && (
+            {adapter.isInstalled() && (
               <span className={"ml-[10px] opacity-[0.6] text-[10px]"}>
                 &#x1F7E2;
               </span>
             )}
           </p>
-          {authType === AuthType.EVMChain
+          {adapter.chainType === ChainType.EVM
             ? chainIcons.EVMChain.map((item: string, index: number) => (
               <img
                 className={classnames(
