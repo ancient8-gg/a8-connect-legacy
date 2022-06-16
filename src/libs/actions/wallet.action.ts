@@ -131,7 +131,6 @@ export class WalletAction {
    */
   getWalletAddress(): Promise<string> {
     this.ensureWalletIsAvailable();
-
     return this.selectedAdapter.getWalletAddress();
   }
 
