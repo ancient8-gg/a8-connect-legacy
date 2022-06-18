@@ -200,8 +200,6 @@ export class WalletAction {
    * Get all wallet adapters
    */
   getWalletAdapters() {
-    try {
       return Object.keys(this.supportedWallets).map((walletName: string) => this.supportedWallets[walletName]);
-    } catch { }
   }
 }
