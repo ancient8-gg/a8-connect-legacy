@@ -1,6 +1,7 @@
 import { BusinessProvider } from "./business.provider";
-import { User, UserInfo } from "../dto/entities";
+import { AuthEntity, AuthSession, User, UserInfo } from "../dto/entities";
 import { UpdateProfileAuthDto } from "../dto/profile-user.dto";
+import { SessionInfo } from "../dto/persist-kyc.dto";
 
 /**
  * `UserProvider` provides all business request calls to A8Connect backend, which related to User profile.
@@ -38,10 +39,71 @@ export class UserProvider extends BusinessProvider {
       payload.name || `${new Date().getTime()}.png`
     );
 
-    return this.requestWithCredential("/user/profile/upload-image", {
+    return this.requestWithCredential<User>("/user/profile/upload-image", {
       method: "POST",
       body: formData,
     });
+  }
+
+  /**
+   * Get auth entities
+   */
+  getAuthEntities(): Promise<AuthEntity[]> {
+    return this.requestWithCredential<AuthEntity[]>(
+      `/user/profile/auth-entities/`,
+      {
+        method: "GET",
+      }
+    );
+  }
+
+  /**
+   * Delete auth entity
+   */
+  deleteAuthEntity(authId: string): Promise<void> {
+    return this.requestWithCredential<void>(
+      `/user/profile/auth-entities/${authId}`,
+      {
+        method: "DELETE",
+      }
+    );
+  }
+
+  /**
+   * Make primary auth entity
+   * @param authId
+   */
+  makePrimaryAuthEntity(authId: string): Promise<AuthEntity> {
+    return this.requestWithCredential<AuthEntity>(
+      `/user/profile/auth-entities/${authId}/make-primary`,
+      {
+        method: "POST",
+      }
+    );
+  }
+
+  /**
+   * Get Auth session
+   */
+  getAuthSessions(): Promise<AuthSession[]> {
+    return this.requestWithCredential<AuthSession[]>(
+      `/user/profile/auth-entities`,
+      {
+        method: "GET",
+      }
+    );
+  }
+
+  /**
+   * Init kyc session
+   */
+  initKycSession(): Promise<SessionInfo> {
+    return this.requestWithCredential<SessionInfo>(
+      `/user/profile/init-kyc-session`,
+      {
+        method: "POST",
+      }
+    );
   }
 
   /**
