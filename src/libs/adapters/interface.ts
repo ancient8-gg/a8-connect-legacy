@@ -1,10 +1,20 @@
 /**
- * Defind chain type 
+ * Defind Adapter Style
+ */
+export interface AdapterStyle {
+  icon: string;
+  background: string;
+  title_name: string;
+  url: string;
+}
+
+/**
+ * Defind chain type
  * Includes two main chain: Solana chain and Ethererum chain
  */
 export enum ChainType {
-  EVM = 'EVM',
-  SOL = 'SOL',
+  EVM = "AUTH_TYPE::EVM_CHAIN",
+  SOL = "AUTH_TYPE::SOLANA",
 }
 
 /**
@@ -40,7 +50,7 @@ export interface WalletProvider {
   /**
    * The function to disconnect from wallet software
    */
-  disconnect(): Promise<void>;
+  disconnect?(): Promise<void>;
 
   /**
    * The function is specific to BinanceProvider
@@ -80,11 +90,16 @@ export interface WalletProvider {
  */
 export interface BaseWalletAdapter {
   /**
+   * Adapter style
+   */
+  adapterStyle: AdapterStyle;
+
+  /**
    * Type of chain
    */
   chainType: ChainType;
 
-  /* 
+  /*
    * Adapter name
    */
   name: string;

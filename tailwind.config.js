@@ -1,9 +1,9 @@
 module.exports = {
-  content: ["./src/*.{js,ts,jsx,tsx}", "./src/components/**/*.{js,ts,jsx,tsx}"],
+  content: ["./src/*.{js,ts,jsx,tsx}", "./src/components/**/*.{js,ts,jsx,tsx}", "./src/screens/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        primary: "#60D58F",
+        primary: "#30C021",
         white: "#ffffff",
         gray: "#a6a6a6",
         red: "#ff0000",

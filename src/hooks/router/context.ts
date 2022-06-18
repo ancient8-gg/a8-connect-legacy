@@ -1,33 +1,29 @@
-import {
-  Dispatch,
-  SetStateAction,
-  createContext
-} from 'react';
+import React, { Dispatch, SetStateAction, createContext } from "react";
 
 export interface ProviderProps {
-  children?: React.ReactNode,
-};
+  children?: React.FunctionComponent | React.ReactNode | JSX.Element;
+}
 
 export interface ScreenType {
   key: string;
-  children: React.ReactNode,
+  children: React.FunctionComponent;
 }
 
 export interface RouterContextObject {
-  /**  
+  /**
    * @description Initialize available screens
    * */
-  screens: ScreenType[],
+  screens: ScreenType[];
 
-  /**  
-   * @description Current route path of screens 
+  /**
+   * @description Current route path of screens
    * */
-  screenPipe: ScreenType[],
+  screenPipe: ScreenType[];
 
   /**
    * @description Current screen
    */
-  currentScreen: ScreenType;
+  currentScreen: React.FunctionComponent;
 
   /**
    * @description Update current route path
@@ -36,20 +32,19 @@ export interface RouterContextObject {
   setPipe: Dispatch<SetStateAction<ScreenType[]>>;
 }
 
-export const RouterContext = createContext<RouterContextObject>(null)
+export const RouterContext = createContext<RouterContextObject>(null);
 
 export interface LocationContextObject {
   /**
-   * @description Handle go back screen 
+   * @description Handle go back screen
    */
   goBack(): Promise<void>;
 
   /**
    * @description Handle transit to another screen
-   * @param key 
+   * @param key
    */
   push(key: string): Promise<void>;
 }
 
-export const LocationContext = createContext<LocationContextObject>(null)
-
+export const LocationContext = createContext<LocationContextObject>(null);

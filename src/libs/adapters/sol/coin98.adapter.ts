@@ -1,15 +1,17 @@
-import {
-  BaseWalletAdapter,
-  WalletProvider,
-  ChainType,
-} from "../interface";
+import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
 
 export const Coin98SolanaWalletName = "Coin98SolanaWallet";
 
 export class Coin98SolanaWallet implements BaseWalletAdapter {
-  chainType: ChainType.SOL;
-  name = Coin98SolanaWalletName;
   injectedProvider: WalletProvider;
+  chainType = ChainType.SOL;
+  name = Coin98SolanaWalletName;
+  adapterStyle = {
+    icon: '/assets/icons/coin98.png',
+    background: 'linear-gradient(90deg, rgb(204 173 65) 0%, rgb(13, 13, 24) 100%)',
+    title_name: 'Coin98',
+    url: 'coin98.net',
+  };
 
   constructor(injectedProvider: WalletProvider) {
     this.injectedProvider = injectedProvider;

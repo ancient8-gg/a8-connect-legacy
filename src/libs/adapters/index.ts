@@ -1,3 +1,12 @@
+import { BinanceEVMWalletName } from "./evm/binance.adapter";
+import { Coin98EVMWalletName } from "./evm/coin98.adapter";
+import { CoinbaseEVMWalletName } from "./evm/coinbase.adapter";
+import { MetamaskEVMWalletName } from "./evm/metamask.adapter";
+import { Coin98SolanaWalletName } from "./sol/coin98.adapter";
+import { PhantomSolanaWalletName } from "./sol/phantom.adapter";
+import { SlopeSolanaWalletName } from "./sol/slope.adapter";
+// import { TorusSolanaWalletName } from "./sol/torus.adapter";
+
 // Export EVM adapters
 export { BinanceEVMWallet, BinanceEVMWalletName } from "./evm/binance.adapter";
 export { Coin98EVMWallet, Coin98EVMWalletName } from "./evm/coin98.adapter";
@@ -19,8 +28,20 @@ export {
   Coin98SolanaWallet,
   Coin98SolanaWalletName,
 } from "./sol/coin98.adapter";
-export { TorusSolanaWallet, TorusSolanaWalletName } from "./sol/torus.adapter";
+// export { TorusSolanaWallet, TorusSolanaWalletName } from "./sol/torus.adapter";
 export { SlopeSolanaWallet, SlopeSolanaWalletName } from "./sol/slope.adapter";
+
+// Export Supported Wallets
+export const SupportedWallets = [
+  BinanceEVMWalletName,
+  Coin98EVMWalletName,
+  CoinbaseEVMWalletName,
+  MetamaskEVMWalletName,
+  PhantomSolanaWalletName,
+  Coin98SolanaWalletName,
+  SlopeSolanaWalletName,
+  // TorusSolanaWalletName,
+];
 
 // Export adapter interface
 export * as AdapterInterface from "./interface";

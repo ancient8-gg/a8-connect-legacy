@@ -191,7 +191,7 @@ export interface AdapterContext<T> {
   isInstalled: (adapter: T) => boolean;
   getWalletAddress: (adapter: T) => Promise<string | undefined>;
   disconnectAll: () => Promise<void>;
-};
+}
 export interface Adapter {
   getWalletAddress: () => Promise<string>;
   connect: () => Promise<string | boolean>;

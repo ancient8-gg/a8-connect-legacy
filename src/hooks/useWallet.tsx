@@ -1,74 +1,64 @@
-import React from "react";
-import {
-  AdapterName,
-  EvmAdapterName,
-  SolanaAdapterName,
-  AuthType,
-  WalletType,
-  SignData,
-} from "@/libs/dto/entities";
+import React, { useState, useCallback } from "react";
+import { WalletAction } from "../libs/actions/";
+import * as Adapters from "../libs/adapters";
 
-interface AdapterContext {
-  getWalletAddress: (walletType: WalletType) => Promise<string>;
-  connect: (walletType: WalletType) => Promise<string>;
-  sign: (walletType: WalletType) => Promise<SignData>;
-  disconnectAll: () => Promise<void>;
-  disconnect: (walletType: WalletType) => void;
-  isInstalled: (walletType: WalletType) => boolean;
+interface WalletContextProps {
+  chainType: Adapters.AdapterInterface.ChainType;
+  walletName: string;
+  adapters: Adapters.AdapterInterface.BaseWalletAdapter[],
+  connect(): void;
+  disconnect(): void;
+  sign(message: string): void;
+  setChainType(chainType: Adapters.AdapterInterface.ChainType): void;
+  setWalletName(walletName: string): void;
 }
 
-const AdapterContext = React.createContext<AdapterContext>({
-  getWalletAddress: async () => "",
-  connect: async () => "",
-  disconnect: () => { },
-  disconnectAll: async () => { },
-  sign: async () => ({ walletAddress: "", signature: "" }),
-  isInstalled: () => false,
-});
+const WalletContext = React.createContext<WalletContextProps>(null);
 
-export const AdapterProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const getWalletAddress = async (walletType: WalletType) => {
-    return "";
+export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
+  const [chainType, setChainType] = useState<Adapters.AdapterInterface.ChainType>(null);
+  const [walletAddress, setWalletAddress] = useState<string>("");
+  const [walletName, setWalletName] = useState<string>("");
+
+  const walletAction = new WalletAction();
+  const adapters = walletAction.getWalletAdapters();
+
+  const connect = useCallback(async () => {
+    await walletAction.connectWallet(walletName);
+    setWalletAddress(await walletAction.getWalletAddress());
+  }, [walletName]);
+
+  const disconnect = () => {
+    return walletAction.disconnectWallet();
   };
 
-  const connect = async (walletType: WalletType) => {
-    return "";
-  };
-
-  const disconnect = async (walletType: WalletType) => { };
-
-  const disconnectAll = async () => { };
-
-  const sign = async (walletType: WalletType): Promise<SignData> => {
-    return { walletAddress: "", signature: "" };
-  };
-
-  const isInstalled = () => {
-    return false;
-  };
+  const sign = useCallback(
+    (message: string) => {
+      return walletAction.signMessage(message);
+    },
+    [walletAddress]
+  );
 
   return (
-    <AdapterContext.Provider
+    <WalletContext.Provider
       value={{
-        getWalletAddress,
+        chainType,
+        walletName,
+        adapters: adapters,
         connect,
         disconnect,
-        disconnectAll,
         sign,
-        isInstalled,
+        setChainType,
+        setWalletName,
       }}
     >
       {children}
-    </AdapterContext.Provider>
+    </WalletContext.Provider>
   );
 };
 
-export const useAdapter = () => {
-  const context = React.useContext(AdapterContext);
+export const useWallet = () => {
+  const context = React.useContext(WalletContext);
   if (context === undefined) {
     throw new Error("Must be in hook");
   }

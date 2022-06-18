@@ -28,6 +28,7 @@
     "strictNullChecks": false
   },
   "include": [
-    "src"
+    "src", 
+    "typing.d.ts",
   ]
 }

@@ -1,15 +1,17 @@
-import {
-  BaseWalletAdapter,
-  WalletProvider,
-  ChainType
-} from "../interface";
+import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
 
 export const PhantomSolanaWalletName = "PhantomSolanaWallet";
 
 export class PhantomSolanaWallet implements BaseWalletAdapter {
-  chainType: ChainType.SOL;
-  name = PhantomSolanaWalletName;
   injectedProvider: WalletProvider;
+  chainType = ChainType.SOL;
+  name = PhantomSolanaWalletName;
+  adapterStyle = {
+    icon: '/assets/icons/phantom.png',
+    background: 'linear-gradient(90deg, rgb(144, 88, 216) 0%, rgb(83, 75, 177) 100%)',
+    title_name: 'Phantom',
+    url: 'phantom.app',
+  };
 
   constructor(injectedProvider: WalletProvider) {
     this.injectedProvider = injectedProvider;
