@@ -10,7 +10,6 @@ import {
   BASE_WALLET_SELECT_SCREEN_KEY,
 } from "../../screens/base-wallet-select.screen";
 
-
 export const screens_initial: ScreenType[] = [
   {
     key: BASE_WELCOME_SREEN_KEY,

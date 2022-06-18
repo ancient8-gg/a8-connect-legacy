@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import classnames from "classnames";
 import Button from "./button";
-import { BaseWalletAdapter, ChainType } from "../libs/adapters/interface";
+import { BaseWalletAdapter } from "../libs/adapters/interface";
 
 export interface ConnectButtonProps {
   adapter: BaseWalletAdapter;
@@ -12,18 +12,6 @@ export interface ConnectButtonProps {
   onClick?: () => void;
   trackingId?: string;
 }
-
-const chainIcons = {
-  EVMChain: [
-    `/assets/icons/eth/eth.png`,
-    `/assets/icons/eth/bnb.png`,
-    `/assets/icons/eth/poilygon.png`,
-    `/assets/icons/eth/1.png`,
-    `/assets/icons/eth/2.png`,
-    `/assets/icons/eth/3.png`,
-  ],
-  SOLChain: [`/assets/icons/sol/sol.png`],
-};
 
 export const ConnectButton: React.FC<ConnectButtonProps> = ({
   adapter,
@@ -81,4 +69,3 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({
     </Button>
   );
 };
-

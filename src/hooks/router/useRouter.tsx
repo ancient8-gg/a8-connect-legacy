@@ -23,17 +23,20 @@ export const RouterProvider: React.FC<ProviderProps> = () => {
     return screenPipe[screenPipe.length - 1].children;
   }, [screenPipe, setPipe]);
 
-  const layout = useMemo(() => (
-    <LocationProvider>
-      <Modal
-        modalIsOpen={modalIsOpen}
-        onCloseModal={() => setModalIsOpen(false)}
-        isBack={screenPipe.length > 1}
-      >
-        <CurrentScreen />
-      </Modal>
-    </LocationProvider>
-  ), [screenPipe, setPipe]);
+  const layout = useMemo(
+    () => (
+      <LocationProvider>
+        <Modal
+          modalIsOpen={modalIsOpen}
+          onCloseModal={() => setModalIsOpen(false)}
+          isBack={screenPipe.length > 1}
+        >
+          <CurrentScreen />
+        </Modal>
+      </LocationProvider>
+    ),
+    [screenPipe, setPipe]
+  );
 
   return (
     <RouterContext.Provider
@@ -50,7 +53,7 @@ export const RouterProvider: React.FC<ProviderProps> = () => {
 };
 
 export const LocationProvider: React.FC<ProviderProps> = ({ children }) => {
-  const { screens, screenPipe, setPipe, } = useRouter();
+  const { screens, screenPipe, setPipe } = useRouter();
 
   const goBack = async () => {
     const _pipe = [...screenPipe];
@@ -58,16 +61,19 @@ export const LocationProvider: React.FC<ProviderProps> = ({ children }) => {
     setPipe(_pipe);
   };
 
-  const push = useCallback(async (key: string) => {
-    const screen = screens.find((screen) => screen.key === key);
+  const push = useCallback(
+    async (key: string) => {
+      const screen = screens.find((screen) => screen.key === key);
 
-    if (!screen) {
-      throw new Error(NOT_FOUND_CONTEXT_SCREEN);
-    }
+      if (!screen) {
+        throw new Error(NOT_FOUND_CONTEXT_SCREEN);
+      }
 
-    const _pipe = [...screenPipe, screen];
-    setPipe(_pipe);
-  }, [screenPipe, setPipe]);
+      const _pipe = [...screenPipe, screen];
+      setPipe(_pipe);
+    },
+    [screenPipe, setPipe]
+  );
 
   return (
     <LocationContext.Provider

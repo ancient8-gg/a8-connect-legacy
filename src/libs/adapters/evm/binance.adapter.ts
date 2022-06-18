@@ -3,19 +3,21 @@ import { toUtf8Bytes } from "@ethersproject/strings";
 import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
 
 export const BinanceEVMWalletName = "BinanceEVMWallet";
+
 export class BinanceEVMWallet implements BaseWalletAdapter {
   injectedProvider: WalletProvider;
   chainType = ChainType.EVM;
   name = BinanceEVMWalletName;
   adapterStyle = {
-    icon: '/assets/icons/binance.png',
-    background: 'linear-gradient(90deg, rgb(218 192 66) 0%, rgb(234 126 0) 100%)',
-    title_name: 'Binance',
-    url: 'binance.com',
+    icon: "/assets/icons/binance.png",
+    background:
+      "linear-gradient(90deg, rgb(218 192 66) 0%, rgb(234 126 0) 100%)",
+    title_name: "Binance",
+    url: "https://www.binance.com/en/wallet-direct",
   };
 
-  constructor(injectedProvider: any) {
-    // this.injectedProvider = injectedProvider;
+  constructor(injectedProvider: WalletProvider) {
+    this.injectedProvider = injectedProvider;
   }
 
   async connectWallet(): Promise<string | null> {

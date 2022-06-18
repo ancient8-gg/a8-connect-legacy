@@ -8,10 +8,10 @@ export class MetamaskEVMWallet implements BaseWalletAdapter {
   chainType = ChainType.EVM;
   name = MetamaskEVMWalletName;
   adapterStyle = {
-    icon: '/assets/icons/metamask.png',
-    background: 'linear-gradient(90deg, rgb(232 128 7) 0%, rgb(148 82 5) 100%)',
-    title_name: 'Metamask',
-    url: 'metamask.io',
+    icon: "/assets/icons/metamask.png",
+    background: "linear-gradient(90deg, rgb(232 128 7) 0%, rgb(148 82 5) 100%)",
+    title_name: "Metamask",
+    url: "https://metamask.io",
   };
 
   constructor(injectedProvider: WalletProvider) {

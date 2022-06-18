@@ -48,9 +48,9 @@ export class OffChainAction {
     // Initialize registry
     const registryProvider = RegistryProvider.getInstance();
     registryProvider.networkType = networkType;
-    registryProvider.document = (window as any).document;
-    registryProvider.fetch = (window as any).fetch;
-    registryProvider.storage = (window as any).localStorage;
+    registryProvider.document = window.document;
+    registryProvider.fetch = window.fetch;
+    registryProvider.storage = window.localStorage;
 
     // Initialize provider
     this.authProvider = getAuthProvider();

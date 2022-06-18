@@ -1,5 +1,5 @@
 import React from "react";
-import { WalletProvider } from './hooks/useWallet';
+import { WalletProvider } from "./hooks/useWallet";
 import { RouterProvider } from "./hooks/router/useRouter";
 import "./index.css";
 
