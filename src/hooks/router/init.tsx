@@ -10,6 +10,11 @@ import {
   BASE_WALLET_SELECT_SCREEN_KEY,
 } from "../../screens/base-wallet-select.screen";
 
+import {
+  SignWalletScreen,
+  SIGN_WALLET_SCREEN_KEY,
+} from '../../screens/sign-wallet.screen';
+
 
 export const screens_initial: ScreenType[] = [
   {
@@ -20,6 +25,10 @@ export const screens_initial: ScreenType[] = [
     key: BASE_WALLET_SELECT_SCREEN_KEY,
     children: BaseWalletSelect,
   },
+  {
+    key: SIGN_WALLET_SCREEN_KEY,
+    children: SignWalletScreen,
+  }
 ];
 
 export {

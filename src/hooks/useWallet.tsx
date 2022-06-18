@@ -4,8 +4,8 @@ import * as Adapters from "../libs/adapters";
 
 interface WalletContextProps {
   chainType: Adapters.AdapterInterface.ChainType;
-  walletName: string;
   adapters: Adapters.AdapterInterface.BaseWalletAdapter[],
+  walletName: string;
   connect(): void;
   disconnect(): void;
   sign(message: string): void;

@@ -1,15 +1,21 @@
 import React, { useMemo } from "react";
+import { useLocation } from '../hooks/router/component';
 import { useWallet } from '../hooks/useWallet';
 import { ChainType } from '../libs/adapters/interface';
 import { ConnectButton } from '../components/WalletConnect.button';
+import { SIGN_WALLET_SCREEN_KEY } from '../screens/sign-wallet.screen';
 import * as Adapters from '../libs/adapters';
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
 export const BaseWalletSelect: React.FC = () => {
-  const { chainType, adapters } = useWallet();
+  const { chainType, adapters, setWalletName } = useWallet();
+  const location = useLocation();
 
-  console.log(adapters);
+  const handleSelectWalletName = (walletName: string) => {
+    setWalletName(walletName);
+    location.push(SIGN_WALLET_SCREEN_KEY);
+  }
 
   const chainAdapter = useMemo<Adapters.AdapterInterface.BaseWalletAdapter[]>(() => {
     return adapters.filter((adapter) => adapter.chainType === chainType);
@@ -35,8 +41,9 @@ export const BaseWalletSelect: React.FC = () => {
               return Number(elm2.isInstalled()) - Number(elm.isInstalled())
             }).map((adapter, index: number) => (
               <ConnectButton
-                key={`connect-nutton-${adapter.name}`}
+                key={`connect-nutton-${adapter.name}-${index}`}
                 adapter={adapter}
+                onClick={() => handleSelectWalletName(adapter.name)}
               />
             ))}
           </div>
