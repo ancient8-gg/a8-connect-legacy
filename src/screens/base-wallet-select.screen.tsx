@@ -9,13 +9,12 @@ export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 export const BaseWalletSelect: React.FC = () => {
   const { chainType, getAdapters } = useWallet();
 
-  const adapters = getAdapters("all");
-
   const chainAdapter = useMemo<
     Adapters.AdapterInterface.BaseWalletAdapter[]
   >(() => {
+    const adapters = getAdapters();
     return adapters.filter((adapter) => adapter.chainType === chainType);
-  }, [chainType, adapters]);
+  }, [chainType]);
 
   return (
     <div className="base-welcome-screen w-full pt-[30px]">

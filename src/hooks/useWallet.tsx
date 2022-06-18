@@ -3,11 +3,9 @@ import { WalletAction } from "../libs/actions";
 import * as Adapters from "../libs/adapters";
 
 interface WalletContextProps {
-  chainType: Adapters.AdapterInterface.ChainType;
+  chainType: Adapters.AdapterInterface.ChainType | "all";
   walletName: string;
-  getAdapters: (
-    type: "all" | Adapters.AdapterInterface.ChainType
-  ) => Adapters.AdapterInterface.BaseWalletAdapter[];
+  getAdapters: () => Adapters.AdapterInterface.BaseWalletAdapter[];
   connect(): void;
   disconnect(): void;
   sign(message: string): void;
@@ -18,19 +16,17 @@ interface WalletContextProps {
 const WalletContext = React.createContext<WalletContextProps>(null);
 
 export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
-  const [chainType, setChainType] =
-    useState<Adapters.AdapterInterface.ChainType>(null);
+  const [chainType, setChainType] = useState<
+    Adapters.AdapterInterface.ChainType | "all"
+  >("all");
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
 
   const walletAction = new WalletAction();
 
-  const getAdapters = useCallback(
-    (chainType: "all" | Adapters.AdapterInterface.ChainType) => {
-      return walletAction.getWalletAdapters(chainType);
-    },
-    []
-  );
+  const getAdapters = useCallback(() => {
+    return walletAction.getWalletAdapters(chainType);
+  }, [chainType]);
 
   const connect = useCallback(async () => {
     await walletAction.connectWallet(walletName);

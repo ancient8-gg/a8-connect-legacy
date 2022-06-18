@@ -12,9 +12,11 @@ import {
   MetamaskEVMWalletName,
   PhantomSolanaWallet,
   PhantomSolanaWalletName,
+} from "../adapters";
+import {
   SlopeSolanaWallet,
   SlopeSolanaWalletName,
-} from "../adapters";
+} from "../adapters/sol/slope.adapter";
 
 /**
  * Wallet action combine all the actions related to user wallets.
@@ -48,73 +50,59 @@ export class WalletAction {
    * Initialize injected adapters in a public function to callback
    */
   public init() {
-    try {
-      /**
-       * Initialize BinanceChain EVM Wallet.
-       */
-      this.supportedWallets[BinanceEVMWalletName] = new BinanceEVMWallet(
-        (window as any).BinanceChain
-      );
-    } catch {}
-
-    try {
-      /**
-       * Initialize Coin98 EVM Wallet.
-       */
-      this.supportedWallets[Coin98EVMWalletName] = new Coin98EVMWallet(
-        (window as any).coin98?.provider
-      );
-    } catch {}
-
-    try {
-      /**
-       * Initialize Coinbase EVM Wallet.
-       */
-      this.supportedWallets[CoinbaseEVMWalletName] = new CoinbaseEVMWallet(
-        (window as any).coinbaseWalletExtension
-      );
-    } catch {}
-
-    try {
-      /**
-       * Initialize Metamask EVM Wallet.
-       */
-      this.supportedWallets[MetamaskEVMWalletName] = new MetamaskEVMWallet(
-        (window as any).ethereum?.providers?.find(
-          (provider: any) => provider.isMetaMask === true
-        ) || (window as any).ethereum
-      );
-    } catch {}
-
-    try {
-      /**
-       * Initialize Coin98 Solana Wallet.
-       */
-      this.supportedWallets[Coin98SolanaWalletName] = new Coin98SolanaWallet(
-        (window as any).coin98?.sol
-      );
-    } catch {}
-
-    try {
-      /**
-       * Initialize Phantom Solana Wallet.
-       */
-      this.supportedWallets[PhantomSolanaWalletName] = new PhantomSolanaWallet(
-        (window as any).solana
-      );
-    } catch {}
-    try {
-      /**
-       * Initialize Slope Solana Wallet.
-       */
-      this.supportedWallets[SlopeSolanaWalletName] = new SlopeSolanaWallet(
-        !!(window as any).Slope && new (window as any).Slope()
-      );
-    } catch {}
+    /**
+     * Initialize BinanceChain EVM Wallet.
+     */
+    this.supportedWallets[BinanceEVMWalletName] = new BinanceEVMWallet(
+      (window as any).BinanceChain
+    );
 
     /**
-     * Initialize Torus Wallet.
+     * Initialize Coin98 EVM Wallet.
      */
+    this.supportedWallets[Coin98EVMWalletName] = new Coin98EVMWallet(
+      (window as any).coin98?.provider
+    );
+
+    /**
+     * Initialize Coinbase EVM Wallet.
+     */
+    this.supportedWallets[CoinbaseEVMWalletName] = new CoinbaseEVMWallet(
+      (window as any).coinbaseWalletExtension
+    );
+
+    /**
+     * Initialize Metamask EVM Wallet.
+     */
+    this.supportedWallets[MetamaskEVMWalletName] = new MetamaskEVMWallet(
+      (window as any).ethereum?.providers?.find(
+        (provider: any) => provider.isMetaMask === true
+      ) || (window as any).ethereum
+    );
+
+    /**
+     * Initialize Coin98 Solana Wallet.
+     */
+    this.supportedWallets[Coin98SolanaWalletName] = new Coin98SolanaWallet(
+      (window as any).coin98?.sol
+    );
+
+    /**
+     * Initialize Phantom Solana Wallet.
+     */
+    this.supportedWallets[PhantomSolanaWalletName] = new PhantomSolanaWallet(
+      (window as any).solana
+    );
+    /**
+     * Initialize Slope Solana Wallet.
+     */
+    this.supportedWallets[SlopeSolanaWalletName] = new SlopeSolanaWallet(
+      !!(window as any).Slope && new (window as any).Slope()
+    );
+    //
+    // /**
+    //  * Initialize Torus Wallet.
+    //  */
     // this.supportedWallets[TorusSolanaWalletName] = new TorusSolanaWallet();
   }
 
@@ -125,10 +113,11 @@ export class WalletAction {
   private ensureWalletIsAvailable() {
     if (!this.selectedAdapter) throw new Error("No selected wallet.");
 
-    if (!this.selectedAdapter.isInstalled())
+    if (!this.selectedAdapter.isInstalled()) {
       throw new Error(
         `The wallet ${this.selectedAdapter.name} is not installed.`
       );
+    }
   }
 
   /**
@@ -204,7 +193,6 @@ export class WalletAction {
   ): Adapters.AdapterInterface.BaseWalletAdapter[] {
     return Object.keys(this.supportedWallets)
       .map((walletName: string) => this.supportedWallets[walletName])
-
       .filter((walletProvider) => {
         if (type === "all") return true;
         return walletProvider.chainType === type;
