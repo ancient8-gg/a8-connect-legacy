@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@font-face {
+  font-family: 'SVN-GilroyMedium';
+  src: url('/public/assets/fonts/SVN-Gilroy Medium.otf');
+  font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+button {
+  font-family: 'SVN-GilroyMedium';
+}
+
+
 .icon {
   background: url('./assets/icons.png')
 }
@@ -13,9 +33,40 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: aliceblue;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.uid-collapse-container {
+  transition: height 500ms;
+}
+
+.polygon-modal {
+  width: 100%;
+  height: -moz-fit-content;
+  height: fit-content;
+  -webkit-clip-path: polygon(0px 0px, 0px 0px, 100% 0px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0px 100%, 0px 36px);
+  clip-path: polygon(0px 0px, 0px 0px, 100% 0px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0px 100%, 0px 36px);
+  display: inline-block;
+  position: relative;
+}
+
+.polygon-modal-child {
+  background: #12151B;
+  width: 100%;
+  height: 100%;
+  -webkit-clip-path: polygon(0px 0px, 0px 0px, 100% 0px, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0px 100%, 0px 36px);
+  clip-path: polygon(0px 0px, 0px 0px, 100% 0px, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0px 100%, 0px 36px);
+  display: inline-block;
+  position: relative;
+  min-height: 250px;
+}
+
+.polygon-modal>.top {
+  top: -20px;
+  position: absolute;
 }

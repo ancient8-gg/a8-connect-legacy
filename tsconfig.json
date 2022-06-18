@@ -19,10 +19,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "react-jsx", 
+    "baseUrl": ".", 
+    "rootDir": ".", 
+    "paths": {
+      "@/*": ["./src/*"], 
+    },
     "strictNullChecks": false
   },
   "include": [
-    "src"
+    "src", 
+    "typing.d.ts",
   ]
 }

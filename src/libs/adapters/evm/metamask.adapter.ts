@@ -1,12 +1,18 @@
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
-import { BaseWalletAdapter, WalletProvider } from "../interface";
+import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
 
 export const MetamaskEVMWalletName = "MetamaskEVMWallet";
-
 export class MetamaskEVMWallet implements BaseWalletAdapter {
-  name = MetamaskEVMWalletName;
   injectedProvider: WalletProvider;
+  chainType = ChainType.EVM;
+  name = MetamaskEVMWalletName;
+  adapterStyle = {
+    icon: '/assets/icons/metamask.png',
+    background: 'linear-gradient(90deg, rgb(232 128 7) 0%, rgb(148 82 5) 100%)',
+    title_name: 'Metamask',
+    url: 'metamask.io',
+  };
 
   constructor(injectedProvider: WalletProvider) {
     this.injectedProvider = injectedProvider;

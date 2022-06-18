@@ -1,12 +1,18 @@
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
-import { BaseWalletAdapter, WalletProvider } from "../interface";
+import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
 
 export const Coin98EVMWalletName = "Coin98EVMWallet";
-
 export class Coin98EVMWallet implements BaseWalletAdapter {
-  name = Coin98EVMWalletName;
   injectedProvider: WalletProvider;
+  chainType = ChainType.EVM;
+  name = Coin98EVMWalletName;
+  adapterStyle = {
+    icon: '/assets/icons/coin98.png',
+    background: 'linear-gradient(90deg, rgb(204 173 65) 0%, rgb(13, 13, 24) 100%)',
+    title_name: 'Coin98',
+    url: 'coin98.net',
+  };
 
   constructor(injectedProvider: WalletProvider) {
     this.injectedProvider = injectedProvider;
