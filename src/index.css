@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 
-@font-face {
-  font-family: 'SVN-GilroyMedium';
-  src: url('/public/assets/fonts/SVN-Gilroy Medium.otf');
-  font-style: normal;
-}
+/*@font-face {*/
+/*  font-family: 'SVN-GilroyMedium';*/
+/*  src: url('/public/assets/fonts/SVN-Gilroy Medium.otf');*/
+/*  font-style: normal;*/
+/*}*/
 
 h1,
 h2,

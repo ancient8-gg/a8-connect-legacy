@@ -22,13 +22,9 @@
     "jsx": "react-jsx", 
     "baseUrl": ".", 
     "rootDir": ".", 
-    "paths": {
-      "@/*": ["./src/*"], 
-    },
     "strictNullChecks": false
   },
   "include": [
-    "src", 
-    "typing.d.ts",
+    "src"
   ]
 }

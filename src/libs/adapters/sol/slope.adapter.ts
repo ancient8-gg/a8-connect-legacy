@@ -7,10 +7,11 @@ export class SlopeSolanaWallet implements BaseWalletAdapter {
   chainType = ChainType.SOL;
   name = SlopeSolanaWalletName;
   adapterStyle = {
-    icon: '/assets/icons/slope.png',
-    background: 'linear-gradient(90deg, rgb(108, 100, 249) 0%, rgb(86, 74, 237) 100%)',
-    title_name: 'Slope',
-    url: 'slope.finance',
+    icon: "/assets/icons/slope.png",
+    background:
+      "linear-gradient(90deg, rgb(108, 100, 249) 0%, rgb(86, 74, 237) 100%)",
+    title_name: "Slope",
+    url: "https://slope.finance",
   };
 
   constructor(injectedProvider: WalletProvider) {

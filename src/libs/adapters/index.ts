@@ -29,7 +29,7 @@ export {
   Coin98SolanaWalletName,
 } from "./sol/coin98.adapter";
 // export { TorusSolanaWallet, TorusSolanaWalletName } from "./sol/torus.adapter";
-export { SlopeSolanaWallet, SlopeSolanaWalletName } from "./sol/slope.adapter";
+// export { SlopeSolanaWallet, SlopeSolanaWalletName } from "./sol/slope.adapter";
 
 // Export Supported Wallets
 export const SupportedWallets = [

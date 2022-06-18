@@ -8,10 +8,11 @@ export class Coin98EVMWallet implements BaseWalletAdapter {
   chainType = ChainType.EVM;
   name = Coin98EVMWalletName;
   adapterStyle = {
-    icon: '/assets/icons/coin98.png',
-    background: 'linear-gradient(90deg, rgb(204 173 65) 0%, rgb(13, 13, 24) 100%)',
-    title_name: 'Coin98',
-    url: 'coin98.net',
+    icon: "/assets/icons/coin98.png",
+    background:
+      "linear-gradient(90deg, rgb(204 173 65) 0%, rgb(13, 13, 24) 100%)",
+    title_name: "Coin98",
+    url: "https://coin98.com/wallet",
   };
 
   constructor(injectedProvider: WalletProvider) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useWallet } from '../hooks/useWallet';
+import { useWallet } from "../hooks/useWallet";
 import { useLocation } from "../hooks/router/component";
 import { ChainType } from "../libs/adapters/interface";
 import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";

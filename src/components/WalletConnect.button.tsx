@@ -53,4 +53,3 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({
     </Button>
   );
 };
-

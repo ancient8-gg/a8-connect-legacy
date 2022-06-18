@@ -7,10 +7,11 @@ export class PhantomSolanaWallet implements BaseWalletAdapter {
   chainType = ChainType.SOL;
   name = PhantomSolanaWalletName;
   adapterStyle = {
-    icon: '/assets/icons/phantom.png',
-    background: 'linear-gradient(90deg, rgb(144, 88, 216) 0%, rgb(83, 75, 177) 100%)',
-    title_name: 'Phantom',
-    url: 'phantom.app',
+    icon: "/assets/icons/phantom.png",
+    background:
+      "linear-gradient(90deg, rgb(144, 88, 216) 0%, rgb(83, 75, 177) 100%)",
+    title_name: "Phantom",
+    url: "https://phantom.app",
   };
 
   constructor(injectedProvider: WalletProvider) {

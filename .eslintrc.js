@@ -12,7 +12,7 @@ module.exports = {
   },
   parser: "@typescript-eslint/parser",
   rules: {
-    "prettier/prettier": 0,
+    "prettier/prettier": "error",
   },
   ignorePatterns: [".storybook", "**/*.stories.*"],
 };

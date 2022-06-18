@@ -8,10 +8,11 @@ export class CoinbaseEVMWallet implements BaseWalletAdapter {
   chainType = ChainType.EVM;
   name = CoinbaseEVMWalletName;
   adapterStyle = {
-    icon: '/assets/icons/coinbase.png',
-    background: 'linear-gradient(90deg, rgb(37 137 255) 0%, rgb(29 30 71) 100%)',
-    title_name: 'Coinbase',
-    url: 'coinbase.com',
+    icon: "/assets/icons/coinbase.png",
+    background:
+      "linear-gradient(90deg, rgb(37 137 255) 0%, rgb(29 30 71) 100%)",
+    title_name: "Coinbase",
+    url: "https://www.coinbase.com/wallet",
   };
 
   constructor(injectedProvider: WalletProvider) {
