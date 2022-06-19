@@ -32,8 +32,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({
           className="h-[40px] rounded-[10px]"
         />
         <div className="ml-[20px] text-left relative w-full">
-          <p
-            className="normal-case md:text-[16px] text-[14px] text-white font-bold">
+          <p className="normal-case md:text-[16px] text-[14px] text-white font-bold">
             {adapter?.adapterStyle?.title_name}
           </p>
           <p className="text-[12px] text-bold">

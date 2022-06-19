@@ -43,8 +43,9 @@ export interface LocationContextObject {
   /**
    * @description Handle transit to another screen
    * @param key
+   * @param deleted Check if want to destroy current screen before move to next screen 
    */
-  push(key: string): Promise<void>;
+  push(key: string, deleted?: boolean | false): Promise<void>;
 }
 
 export const LocationContext = createContext<LocationContextObject>(null);

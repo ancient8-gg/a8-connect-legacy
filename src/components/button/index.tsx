@@ -86,3 +86,51 @@ const Button: React.FC<ButtonProps> = ({
 };
 
 export default Button;
+
+export interface PolygonButtonProps extends ButtonProps {
+  boxClassName?: string;
+  boxStyle?: React.CSSProperties,
+}
+
+export const PolygonButton: React.FC<PolygonButtonProps> = ({
+  type,
+  boxClassName,
+  boxStyle,
+  className,
+  textClassName,
+  containerStyle,
+  textStyle,
+  disabled,
+  onClick,
+  children,
+  id,
+  text,
+}) => {
+  return (
+    <div
+      style={boxStyle}
+      className={classnames(
+        "box-pp",
+        "min-w-[250px] md:min-w-0",
+        boxClassName,
+      )}>
+      <button
+        id={id}
+        type={type}
+        style={containerStyle}
+        disabled={disabled}
+        onClick={onClick}
+        className={classnames(
+          "box-pp-chil",
+          className,
+        )}>
+        {text && (
+          <span
+            className={textClassName}
+            style={textStyle}>{text}</span>
+        )}
+        {children && children}
+      </button>
+    </div>
+  );
+}

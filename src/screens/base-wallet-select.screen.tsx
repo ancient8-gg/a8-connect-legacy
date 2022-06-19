@@ -1,39 +1,26 @@
 import React, { useMemo } from "react";
-<<<<<<< HEAD
-import { useLocation } from '../hooks/router/component';
-import { useWallet } from '../hooks/useWallet';
-import { ChainType } from '../libs/adapters/interface';
-import { ConnectButton } from '../components/WalletConnect.button';
-import { SIGN_WALLET_SCREEN_KEY } from '../screens/sign-wallet.screen';
-import * as Adapters from '../libs/adapters';
-=======
+import { useLocation } from "../hooks/router";
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters/interface";
 import { ConnectButton } from "../components/WalletConnect.button";
+import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 import * as Adapters from "../libs/adapters";
->>>>>>> 0e13a194a3e1d33db499a3162fab5b66b3fb6deb
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
 export const BaseWalletSelect: React.FC = () => {
-<<<<<<< HEAD
-  const { chainType, adapters, setWalletName } = useWallet();
+  const { chainType, getAdapters, setWalletName } = useWallet();
   const location = useLocation();
 
-  const handleSelectWalletName = (walletName: string) => {
+  const handleClickWallet = (walletName: string) => {
     setWalletName(walletName);
-    location.push(SIGN_WALLET_SCREEN_KEY);
-  }
-
-  const chainAdapter = useMemo<Adapters.AdapterInterface.BaseWalletAdapter[]>(() => {
-=======
-  const { chainType, getAdapters } = useWallet();
+    location.push(CONNECT_WALLET_SCREEN_KEY);
+  };
 
   const chainAdapter = useMemo<
     Adapters.AdapterInterface.BaseWalletAdapter[]
   >(() => {
     const adapters = getAdapters();
->>>>>>> 0e13a194a3e1d33db499a3162fab5b66b3fb6deb
     return adapters.filter((adapter) => adapter.chainType === chainType);
   }, [chainType]);
 
@@ -61,29 +48,21 @@ export const BaseWalletSelect: React.FC = () => {
             Select wallet provider
           </p>
           <div className="pt-[20px]">
-<<<<<<< HEAD
-            {chainAdapter.sort((elm, elm2) => {
-              return Number(elm2.isInstalled()) - Number(elm.isInstalled())
-            }).map((adapter, index: number) => (
-              <ConnectButton
-                key={`connect-nutton-${adapter.name}-${index}`}
-                adapter={adapter}
-                onClick={() => handleSelectWalletName(adapter.name)}
-              />
-            ))}
-=======
             {chainAdapter
               .sort((elm, elm2) => {
                 return Number(elm2.isInstalled()) - Number(elm.isInstalled());
               })
               .map((adapter) => (
                 <ConnectButton
-                  key={`connect-nutton-${adapter.name}`}
+                  key={`connect-button-${adapter.name}`}
                   adapter={adapter}
+                  onClick={() => handleClickWallet(adapter.name)}
                 />
               ))}
->>>>>>> 0e13a194a3e1d33db499a3162fab5b66b3fb6deb
           </div>
+        </div>
+        <div className="bottom-container my-[30px]">
+          <p className="text-center text-[14px] text-primary underline"><a href="https://ancient8.gg/profile/lost-wallet">Lost your wallet?</a></p>
         </div>
       </div>
     </div>

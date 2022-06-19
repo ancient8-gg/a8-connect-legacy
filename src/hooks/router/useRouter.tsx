@@ -62,14 +62,18 @@ export const LocationProvider: React.FC<ProviderProps> = ({ children }) => {
   };
 
   const push = useCallback(
-    async (key: string) => {
+    async (key: string, deleted?: boolean | false) => {
       const screen = screens.find((screen) => screen.key === key);
 
       if (!screen) {
         throw new Error(NOT_FOUND_CONTEXT_SCREEN);
       }
 
-      const _pipe = [...screenPipe, screen];
+      const _pipe = [...screenPipe];
+      if (deleted) {
+        _pipe.pop();
+      }
+      _pipe.push(screen);
       setPipe(_pipe);
     },
     [screenPipe, setPipe]

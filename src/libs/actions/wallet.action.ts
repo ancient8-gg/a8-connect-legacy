@@ -133,14 +133,14 @@ export class WalletAction {
    */
   connectWallet(walletName: string) {
     /**
-     * Disconnect selected wallet if applicable.
-     */
-    this.disconnectWallet();
-
-    /**
      * Select new wallet.
      */
     this.selectedAdapter = this.supportedWallets[walletName];
+
+    /**
+     * Disconnect selected wallet if applicable.
+     */
+    this.disconnectWallet();
 
     /**
      * Connect new wallet.
@@ -153,8 +153,10 @@ export class WalletAction {
    * Disconnect selected wallet.
    */
   disconnectWallet() {
-    this.ensureWalletIsAvailable();
-    this.selectedAdapter.disconnectWallet();
+    try {
+      this.ensureWalletIsAvailable();
+      this.selectedAdapter.disconnectWallet();
+    } catch { }
   }
 
   /**
@@ -197,5 +199,14 @@ export class WalletAction {
         if (type === "all") return true;
         return walletProvider.chainType === type;
       });
+  }
+
+  /**
+   * Get wallet adapter with specific wallet name
+   */
+  getWalletAdapter(
+    walletName: string
+  ): Adapters.AdapterInterface.BaseWalletAdapter {
+    return this.supportedWallets[walletName];
   }
 }

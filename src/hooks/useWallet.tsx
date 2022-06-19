@@ -5,8 +5,12 @@ import * as Adapters from "../libs/adapters";
 interface WalletContextProps {
   chainType: Adapters.AdapterInterface.ChainType | "all";
   walletName: string;
-  getAdapters: () => Adapters.AdapterInterface.BaseWalletAdapter[];
-  connect(): void;
+  walletAddress: string;
+  getAdapters(): Adapters.AdapterInterface.BaseWalletAdapter[];
+  getWalletAdapter(
+    walletName: string
+  ): Adapters.AdapterInterface.BaseWalletAdapter;
+  connect(): Promise<string | null>;
   disconnect(): void;
   sign(message: string): void;
   setChainType(chainType: Adapters.AdapterInterface.ChainType): void;
@@ -28,9 +32,15 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
     return walletAction.getWalletAdapters(chainType);
   }, [chainType]);
 
+  const getWalletAdapter = useCallback((walletName: string) => {
+    return walletAction.getWalletAdapter(walletName);
+  }, []);
+
   const connect = useCallback(async () => {
     await walletAction.connectWallet(walletName);
-    setWalletAddress(await walletAction.getWalletAddress());
+    const walletAddress = await walletAction.getWalletAddress()
+    setWalletAddress(walletAddress);
+    return walletAddress;
   }, [walletName]);
 
   const disconnect = () => {
@@ -49,7 +59,9 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         chainType,
         walletName,
+        walletAddress,
         getAdapters,
+        getWalletAdapter,
         connect,
         disconnect,
         sign,
