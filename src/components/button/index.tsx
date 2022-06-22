@@ -7,10 +7,10 @@ export interface ButtonProps {
   type?: "button" | "submit" | "reset" | undefined;
   className?: string;
   textClassName?: string;
-  containerStyle?: any;
-  textStyle?: any;
+  containerStyle?: React.CSSProperties;
+  textStyle?: React.CSSProperties;
   disabled?: boolean | false;
-  onClick?: (e?: any) => void;
+  onClick?: (event?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   id?: string;
   children?: React.ReactNode;
 }

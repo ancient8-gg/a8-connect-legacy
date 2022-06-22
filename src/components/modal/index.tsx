@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({
   children,
   contentStyle,
   isBack,
-}: any) => {
+}: ModalProps) => {
   const location = useLocation();
   return (
     <ReactModal
