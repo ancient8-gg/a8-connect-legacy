@@ -1,7 +1,7 @@
 import { BusinessProvider } from "./business.provider";
-import { AuthEntity, AuthSession, User, UserInfo } from "../dto/entities";
 import { UpdateProfileAuthDto } from "../dto/profile-user.dto";
 import { SessionInfo } from "../dto/persist-kyc.dto";
+import { User, UserInfo, AuthEntity, AuthSession } from "../dto/entities";
 
 /**
  * `UserProvider` provides all business request calls to A8Connect backend, which related to User profile.
@@ -42,6 +42,9 @@ export class UserProvider extends BusinessProvider {
     return this.requestWithCredential<User>("/user/profile/upload-image", {
       method: "POST",
       body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   }
 

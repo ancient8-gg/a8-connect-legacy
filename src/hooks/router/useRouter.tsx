@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { screens_initial } from "./init";
+import { SCREENS, SCREEN_KEYS } from "./init";
 import {
   RouterContext,
   LocationContext,
@@ -9,10 +9,17 @@ import {
   NOT_FOUND_CONTEXT_SCREEN,
 } from "./";
 import Modal from "../../components/modal";
+import { useSession } from "../useSession";
+import { SdkMethod } from "../../libs/dto/entities";
 
 export const RouterProvider: React.FC<ProviderProps> = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
-  const screens: ScreenType[] = screens_initial;
+  const { sdkMethod } = useSession();
+
+  const screens: ScreenType[] =
+    sdkMethod === SdkMethod.login
+      ? SCREENS["LOGIN_FLOW"]
+      : SCREENS["CONNECT_FLOW"];
 
   /**
    * @description Always start from first screen in initial
@@ -29,7 +36,11 @@ export const RouterProvider: React.FC<ProviderProps> = () => {
         <Modal
           modalIsOpen={modalIsOpen}
           onCloseModal={() => setModalIsOpen(false)}
-          isBack={screenPipe.length > 1}
+          isBack={
+            screenPipe.length > 1 &&
+            screenPipe[screenPipe.length - 1].key !==
+              SCREEN_KEYS.WELCOME_APP_SCREEN_KEY
+          }
         >
           <CurrentScreen />
         </Modal>

@@ -1,12 +1,24 @@
 import { OffChainAction } from "./offchain.action";
 import { RegistrationAuthDto } from "../dto/registration-auth.dto";
 import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
-import { LoginResponse } from "../dto/entities";
+import { LoginResponse, AuthChallenge } from "../dto/entities";
 
 /**
  * `AuthActions` provides methods to handle all authenticating actions.
  */
 export class AuthAction extends OffChainAction {
+  /**
+   * Send challenge data to server to confirm action
+   * @param walletAddress
+   */
+  async sendChallenge(walletAddress: string): Promise<AuthChallenge> {
+    try {
+      return this.authProvider.sendAuthChallenge(walletAddress);
+    } catch {
+      return null;
+    }
+  }
+
   /**
    * Check whether a wallet address is existed
    * @param walletAddress
@@ -14,9 +26,9 @@ export class AuthAction extends OffChainAction {
   async isWalletExisted(walletAddress: string): Promise<boolean> {
     try {
       await this.userProvider.validateWalletAddress(walletAddress);
-      return false;
-    } catch {
       return true;
+    } catch {
+      return false;
     }
   }
 

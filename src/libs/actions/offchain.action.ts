@@ -49,7 +49,7 @@ export class OffChainAction {
     const registryProvider = RegistryProvider.getInstance();
     registryProvider.networkType = networkType;
     registryProvider.document = window.document;
-    registryProvider.fetch = window.fetch;
+    registryProvider.fetch = window.fetch.bind(window);
     registryProvider.storage = window.localStorage;
 
     // Initialize provider

@@ -43,7 +43,7 @@ export class RegistryProvider {
    * `fetch` instance. Should be set inside the React hooks.
    * @private
    */
-  private _fetch: typeof fetch;
+  private _fetch: typeof window.fetch;
 
   /**
    * `Storage` getter.

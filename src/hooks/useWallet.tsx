@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { WalletAction } from "../libs/actions";
 import * as Adapters from "../libs/adapters";
 
@@ -12,7 +12,7 @@ interface WalletContextProps {
   ): Adapters.AdapterInterface.BaseWalletAdapter;
   connect(): Promise<string | null>;
   disconnect(): void;
-  sign(message: string): void;
+  sign(message: string): Promise<string>;
   setChainType(chainType: Adapters.AdapterInterface.ChainType): void;
   setWalletName(walletName: string): void;
 }
@@ -26,7 +26,7 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
 
-  const walletAction = new WalletAction();
+  const walletAction = useMemo(() => new WalletAction(), []);
 
   const getAdapters = useCallback(() => {
     return walletAction.getWalletAdapters(chainType);
@@ -37,10 +37,17 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const connect = useCallback(async () => {
-    await walletAction.connectWallet(walletName);
-    const walletAddress = await walletAction.getWalletAddress()
-    setWalletAddress(walletAddress);
-    return walletAddress;
+    try {
+      if (!walletName) {
+        throw new Error();
+      }
+      await walletAction.connectWallet(walletName);
+      const walletAddress = await walletAction.getWalletAddress();
+      setWalletAddress(walletAddress);
+      return walletAddress;
+    } catch {
+      return null;
+    }
   }, [walletName]);
 
   const disconnect = () => {
@@ -48,10 +55,11 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const sign = useCallback(
-    (message: string) => {
-      return walletAction.signMessage(message);
+    async (message: string) => {
+      const signData = await walletAction.signMessage(message);
+      return signData.signature;
     },
-    [walletAddress]
+    [walletName, walletAddress]
   );
 
   return (

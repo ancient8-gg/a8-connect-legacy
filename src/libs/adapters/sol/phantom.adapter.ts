@@ -25,7 +25,7 @@ export class PhantomSolanaWallet implements BaseWalletAdapter {
       }>();
 
       return resp.publicKey.toString();
-    } catch {
+    } catch (err) {
       return null;
     }
   }

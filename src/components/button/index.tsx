@@ -89,7 +89,7 @@ export default Button;
 
 export interface PolygonButtonProps extends ButtonProps {
   boxClassName?: string;
-  boxStyle?: React.CSSProperties,
+  boxStyle?: React.CSSProperties;
 }
 
 export const PolygonButton: React.FC<PolygonButtonProps> = ({
@@ -109,28 +109,23 @@ export const PolygonButton: React.FC<PolygonButtonProps> = ({
   return (
     <div
       style={boxStyle}
-      className={classnames(
-        "box-pp",
-        "min-w-[250px] md:min-w-0",
-        boxClassName,
-      )}>
+      className={classnames("box-pp", "min-w-[250px] md:min-w-0", boxClassName)}
+    >
       <button
         id={id}
         type={type}
         style={containerStyle}
         disabled={disabled}
         onClick={onClick}
-        className={classnames(
-          "box-pp-chil",
-          className,
-        )}>
+        className={classnames("box-pp-chil", className)}
+      >
         {text && (
-          <span
-            className={textClassName}
-            style={textStyle}>{text}</span>
+          <span className={textClassName} style={textStyle}>
+            {text}
+          </span>
         )}
         {children && children}
       </button>
     </div>
   );
-}
+};

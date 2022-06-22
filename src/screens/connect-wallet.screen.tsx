@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useWallet } from "../hooks/useWallet";
-import { useLocation } from "../hooks/router/component";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
+import { useLocation } from "../hooks/router/component";
+import { PolygonButton } from "../components/button";
+import { useWallet } from "../hooks/useWallet";
 import * as Adapters from "../libs/adapters";
 
 export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
@@ -9,6 +10,7 @@ export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 export const ConnectWalletScreen: React.FC = () => {
   const { walletName, getWalletAdapter, connect } = useWallet();
   const [connected, setConnected] = useState<boolean>(false);
+  const [connectedError, setConenctedError] = useState<boolean>(false);
   const location = useLocation();
 
   const walletAdapter =
@@ -18,9 +20,13 @@ export const ConnectWalletScreen: React.FC = () => {
 
   const handleConnect = async () => {
     const walletAddress = await connect();
-    if (!walletAddress) return;
+    if (!walletAddress) {
+      setConenctedError(true);
+      return;
+    }
+
     setConnected(true);
-  }
+  };
 
   useEffect(() => {
     handleConnect();
@@ -28,8 +34,8 @@ export const ConnectWalletScreen: React.FC = () => {
 
   useEffect(() => {
     if (connected) {
-      location.push(SIGN_WALLET_SCREEN_KEY, true);
       setConnected(false);
+      location.push(SIGN_WALLET_SCREEN_KEY, true);
     }
   }, [connected]);
 
@@ -42,25 +48,41 @@ export const ConnectWalletScreen: React.FC = () => {
         <div className="pt-[50px]">
           <p className="text-center text-primary text-[20px]">CONNECTING...</p>
           <p className="text-center text-white text-[16px] mt-[30px]">
-            Please unlock your Phantom wallet and select which wallet address you want to connect.
+            Please unlock your Phantom wallet and select which wallet address
+            you want to connect.
           </p>
           <div className="flex justify-center mt-[30px] items-center">
             <img
               src={walletAdapter.adapterStyle.icon}
               className="adapter-avatar h-[60px] w-[60px] rounded-[50%]"
             />
-            {" "} <p className="text-white mx-[2px]">--------</p> {" "}
+            <p className="text-white mx-[2px]">--------</p>
             <img
               src="/assets/images/a8-connect.png"
               className="adapter-avatar h-[60px] w-[60px] rounded-[50%]"
             />
           </div>
+          {connectedError && (
+            <div className="mt-[100px]">
+              <PolygonButton
+                boxStyle={{ width: "100%" }}
+                containerStyle={{ width: "100%", background: "#12151B" }}
+                onClick={() => handleConnect()}
+              >
+                <p className="text-white">Retry</p>
+              </PolygonButton>
+            </div>
+          )}
         </div>
-        <div className="bottom-container mt-[100px] mb-[30px]">
+        <div className="bottom-container mt-[30px] mb-[30px]">
           <p className="text-center text-[14px] text-white">
             Having trouble?
-            <a className="text-primary underline" onClick={() => location.goBack()}>
-              {" "} Go back
+            <a
+              className="text-primary underline"
+              onClick={() => location.goBack()}
+            >
+              {" "}
+              Go back
             </a>
           </p>
         </div>

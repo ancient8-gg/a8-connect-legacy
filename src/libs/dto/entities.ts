@@ -14,6 +14,7 @@ export class AuthChallenge {
   public message: string;
   public expiredDate: Date;
   public isResolved: boolean;
+  public _id: string;
 }
 
 export type A8ConnectInitOptions = {
@@ -81,4 +82,9 @@ export enum GrantType {
 export enum SessionType {
   Auth = "SESSION_TYPE::AUTH",
   ResetCredential = "SESSION_TYPE::RESET_CREDENTIAL",
+}
+
+export enum SdkMethod {
+  login = "SDK-METHOD::LOGIN",
+  connect = "SDK-METHOD::CONNECT",
 }

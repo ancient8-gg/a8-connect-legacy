@@ -27,6 +27,16 @@ export class NetworkProvider {
 
     delete initialSettings.networkType;
 
+    if (
+      !init.body &&
+      (initialSettings.headers as Record<string, string>)["Content-Type"] !==
+        "multipart/form-data"
+    ) {
+      delete (initialSettings.headers as Record<string, string>)[
+        "Content-Type"
+      ];
+    }
+
     const resp = await this.instance(endpoint, initialSettings);
     return (await resp.json()) as T;
   }

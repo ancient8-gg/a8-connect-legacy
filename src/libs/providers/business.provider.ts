@@ -25,6 +25,16 @@ export class BusinessProvider {
   protected getCookieProvider: CookieProviderGetter;
 
   /**
+   * Default network options
+   * @private
+   */
+  private defaultNetWorkOptions: NetworkOptions = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  /**
    * Constructor needs `getNetworkProvider`, `getStorageProvider` and `getCookieProvider` passed as parameters.
    * @param getNetworkProvider
    * @param getStorageProvider
@@ -66,7 +76,10 @@ export class BusinessProvider {
         Authorization: `Bearer ${authTokenFromStorage}`,
       };
 
-    return networkProvider.request<T>(url, options);
+    return networkProvider.request<T>(url, {
+      ...this.defaultNetWorkOptions,
+      ...options,
+    });
   }
 
   /**
@@ -76,6 +89,9 @@ export class BusinessProvider {
    */
   protected request<T>(url: string, options: NetworkOptions): Promise<T> {
     const networkProvider = this.getNetworkProvider();
-    return networkProvider.request<T>(url, options);
+    return networkProvider.request<T>(url, {
+      ...this.defaultNetWorkOptions,
+      ...options,
+    });
   }
 }

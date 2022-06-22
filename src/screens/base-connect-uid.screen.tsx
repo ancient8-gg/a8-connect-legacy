@@ -2,13 +2,12 @@ import React, { useMemo } from "react";
 import * as Adapters from "../libs/adapters";
 import { useLocation } from "../hooks/router";
 import { useWallet } from "../hooks/useWallet";
-import { ChainType } from "../libs/adapters/interface";
 import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 
-export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
+export const BASE_CONNECT_UID_SCREEN_KEY = "BASE_CONNECT_UID_SCREEN";
 
-export const BaseWalletSelect: React.FC = () => {
+export const BaseConnectUIDScreen: React.FC = () => {
   const { chainType, getAdapters, setWalletName } = useWallet();
   const location = useLocation();
 
@@ -28,20 +27,13 @@ export const BaseWalletSelect: React.FC = () => {
     <div className="base-welcome-screen w-full pt-[30px]">
       <div className="mx-auto w-[350px]">
         <p className="text-center text-gray text-[20px] mt-[-25px] font-[100]">
-          {chainType === ChainType.EVM ? "EVM" : "SOLANA"}
+          SOLANA
         </p>
         <div className="mx-auto w-[350px] pt-[20px]">
-          {chainType === ChainType.EVM ? (
-            <img
-              src="/assets/images/evm-chain-preview.png"
-              className="mx-auto w-[260px] ml-[20%]"
-            />
-          ) : (
-            <img
-              src="/assets/images/sol-chain-preview.png"
-              className="mx-auto w-[40px]"
-            />
-          )}
+          <img
+            src="/assets/images/sol-chain-preview.png"
+            className="mx-auto w-[40px]"
+          />
         </div>
         <div className="pt-[30px]">
           <p className="mx-auto text-primary text-[20px] font-bold text-center">

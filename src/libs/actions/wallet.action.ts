@@ -156,7 +156,7 @@ export class WalletAction {
     try {
       this.ensureWalletIsAvailable();
       this.selectedAdapter.disconnectWallet();
-    } catch { }
+    } catch {}
   }
 
   /**
