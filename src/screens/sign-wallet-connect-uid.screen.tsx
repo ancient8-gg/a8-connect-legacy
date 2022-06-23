@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { NetworkType } from "../libs/providers/registry.provider";
 import { AuthAction } from "../libs/actions/";
 import { useLocation } from "../hooks/router/component";
@@ -11,11 +11,13 @@ import { CreateAuthDto } from "../libs/dto/create-auth.dto";
 import { PolygonButton } from "../components/button";
 import * as Adapters from "../libs/adapters/";
 import LoadingSpinner from "../components/loading-spiner";
+import { WELCOME_APP_SCREEN_KEY } from "../screens/welcome-app.screen";
 import {
   ConnectAgendaType,
   AuthChallenge,
   AuthType,
 } from "../libs/dto/entities";
+import WalletImage from "../assets/images/wallet.png";
 
 export const SING_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
 
@@ -40,12 +42,16 @@ export const SignWalletConnectUID: React.FC = () => {
       createAuthDto as LoginWalletAuthDto
     );
 
-    console.log(logiResponse);
+    if (logiResponse.accessToken) {
+      location.push(WELCOME_APP_SCREEN_KEY);
+    }
   };
 
   const handleConnectNewWallet = async (createAuthDto: CreateAuthDto) => {
     const authEntity = await authAction.connectWallet(createAuthDto);
-    console.log("add new wallet", authEntity);
+    if (authEntity) {
+      location.push(WELCOME_APP_SCREEN_KEY);
+    }
   };
 
   const handleSign = async () => {
@@ -56,12 +62,11 @@ export const SignWalletConnectUID: React.FC = () => {
       walletAddress: authChallenge.target,
       signedData: signature,
     };
-    const type: AuthType =
-      chainType === Adapters.AdapterInterface.ChainType.EVM
-        ? AuthType.EVMChain
-        : AuthType.Solana;
 
-    const createAuthDto: CreateAuthDto = { type: type, credential: credential };
+    const createAuthDto: CreateAuthDto = {
+      type: authType,
+      credential: credential,
+    };
 
     if (connectAgenda === ConnectAgendaType.connectExistWallet) {
       await handleLogin(createAuthDto);
@@ -76,6 +81,12 @@ export const SignWalletConnectUID: React.FC = () => {
     await disconnect();
   };
 
+  const authType = useMemo<AuthType>(() => {
+    return chainType === Adapters.AdapterInterface.ChainType.EVM
+      ? AuthType.EVMChain
+      : AuthType.Solana;
+  }, [chainType]);
+
   useEffect(() => {
     (async () => {
       const inIncluded =
@@ -85,6 +96,11 @@ export const SignWalletConnectUID: React.FC = () => {
 
       if (inIncluded) {
         handleSendAuthChallenge();
+        setConnectAgenda(ConnectAgendaType.connectExistWallet);
+        setDescription(
+          `You are logged into UID with this wallet
+          Sign to connect wallet to Ancient8's apps`
+        );
         return;
       }
 
@@ -161,7 +177,14 @@ export const SignWalletConnectUID: React.FC = () => {
               containerStyle={{ width: "100%", background: "#2EB835" }}
               onClick={handleSign}
             >
-              <p className="text-white">Sign message</p>
+              <div className="flex w-full justify-center items-center">
+                {signing && (
+                  <div className="float-left">
+                    <LoadingSpinner width={7} height={7} />
+                  </div>
+                )}
+                <p className="text-white">Sign message</p>
+              </div>
             </PolygonButton>
             <PolygonButton
               boxStyle={{ width: "50%", float: "left", marginLeft: "10px" }}
@@ -185,10 +208,7 @@ export const SignWalletConnectUID: React.FC = () => {
                     <LoadingSpinner width={20} height={20} />
                   </div>
                 ) : (
-                  <img
-                    src="/assets/images/wallet.png"
-                    className="w-[18px] h-[18px]"
-                  />
+                  <img src={WalletImage} className="w-[18px] h-[18px]" />
                 )}
                 <p className="text-white ml-[10px]">Sign to connect wallet</p>
               </div>

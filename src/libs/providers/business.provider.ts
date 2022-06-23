@@ -79,6 +79,10 @@ export class BusinessProvider {
     return networkProvider.request<T>(url, {
       ...this.defaultNetWorkOptions,
       ...options,
+      headers: {
+        ...this.defaultNetWorkOptions.headers,
+        ...options.headers,
+      },
     });
   }
 

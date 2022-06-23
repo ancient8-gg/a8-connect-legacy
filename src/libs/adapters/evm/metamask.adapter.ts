@@ -1,6 +1,7 @@
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
 import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
+import Icon from "../../../assets/icons/metamask.png";
 
 export const MetamaskEVMWalletName = "MetamaskEVMWallet";
 export class MetamaskEVMWallet implements BaseWalletAdapter {
@@ -8,7 +9,7 @@ export class MetamaskEVMWallet implements BaseWalletAdapter {
   chainType = ChainType.EVM;
   name = MetamaskEVMWalletName;
   adapterStyle = {
-    icon: "/assets/icons/metamask.png",
+    icon: Icon,
     background: "linear-gradient(90deg, rgb(232 128 7) 0%, rgb(148 82 5) 100%)",
     title_name: "Metamask",
     url: "https://metamask.io",

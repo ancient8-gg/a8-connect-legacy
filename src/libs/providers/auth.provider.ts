@@ -102,9 +102,9 @@ export class AuthProvider extends BusinessProvider {
    * The function to connect user wallet using credential from wallet signature.
    * @param payload
    */
-  connectWallet(payload: CreateAuthDto): Promise<AuthEntity> {
+  connectWallet(createAuthPayload: CreateAuthDto): Promise<AuthEntity> {
     return this.requestWithCredential<AuthEntity>("/auth/connect-wallet", {
-      body: JSON.stringify(payload),
+      body: JSON.stringify(createAuthPayload),
       method: "POST",
     });
   }

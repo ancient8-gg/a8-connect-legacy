@@ -1,4 +1,5 @@
 import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
+import Icon from "../../../assets/icons/slope.png";
 
 export const SlopeSolanaWalletName = "SlopeSolanaWallet";
 
@@ -7,7 +8,7 @@ export class SlopeSolanaWallet implements BaseWalletAdapter {
   chainType = ChainType.SOL;
   name = SlopeSolanaWalletName;
   adapterStyle = {
-    icon: "/assets/icons/slope.png",
+    icon: Icon,
     background:
       "linear-gradient(90deg, rgb(108, 100, 249) 0%, rgb(86, 74, 237) 100%)",
     title_name: "Slope",

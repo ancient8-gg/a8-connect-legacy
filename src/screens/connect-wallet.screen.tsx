@@ -7,6 +7,7 @@ import { useWallet } from "../hooks/useWallet";
 import { useSession } from "../hooks/useSession";
 import { SdkMethod } from "../libs/dto/entities";
 import * as Adapters from "../libs/adapters";
+import A8ConnectImage from "../assets/images/a8-connect.png";
 
 export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 
@@ -68,7 +69,7 @@ export const ConnectWalletScreen: React.FC = () => {
             />
             <p className="text-white mx-[2px]">--------</p>
             <img
-              src="/assets/images/a8-connect.png"
+              src={A8ConnectImage}
               className="adapter-avatar h-[60px] w-[60px] rounded-[50%]"
             />
           </div>

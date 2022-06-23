@@ -3,6 +3,9 @@ import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters/interface";
 import { useLocation } from "../hooks/router/component";
 import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
+import A8Logo from "../assets/images/a8-logo.png";
+import SolBtnImage from "../assets/images/sol-btn.png";
+import EvmBtnImage from "../assets/images/evm-btn.png";
 
 export const BASE_WELCOME_SREEN_KEY = "BASE_WELCOME_SREEN_KEY";
 
@@ -18,7 +21,7 @@ export const BaseWelcomeScreen: React.FC = () => {
   return (
     <div className="base-welcome-screen w-full pt-[30px]">
       <div className="mx-auto w-[350px]">
-        <img src="/assets/images/a8-logo.png" className="mx-[auto]" />
+        <img src={A8Logo} className="mx-[auto]" />
         <p className="text-center text-primary text-[20px] font-bold">
           WELCOME TO
           <br />
@@ -29,12 +32,12 @@ export const BaseWelcomeScreen: React.FC = () => {
         </p>
         <div className="pt-[50px]">
           <img
-            src="/assets/images/sol-btn.png"
+            src={SolBtnImage}
             className="w-full cursor-pointer mt-[20px]"
             onClick={() => handleClickChain(ChainType.SOL)}
           />
           <img
-            src="/assets/images/evm-btn.png"
+            src={EvmBtnImage}
             className="w-full cursor-pointer mt-[20px]"
             onClick={() => handleClickChain(ChainType.EVM)}
           />

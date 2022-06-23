@@ -1,6 +1,7 @@
 import { hexlify } from "@ethersproject/bytes";
 import { toUtf8Bytes } from "@ethersproject/strings";
 import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
+import Icon from "../../../assets/icons/binance.png";
 
 export const BinanceEVMWalletName = "BinanceEVMWallet";
 
@@ -9,7 +10,7 @@ export class BinanceEVMWallet implements BaseWalletAdapter {
   chainType = ChainType.EVM;
   name = BinanceEVMWalletName;
   adapterStyle = {
-    icon: "/assets/icons/binance.png",
+    icon: Icon,
     background:
       "linear-gradient(90deg, rgb(218 192 66) 0%, rgb(234 126 0) 100%)",
     title_name: "Binance",

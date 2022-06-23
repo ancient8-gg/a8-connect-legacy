@@ -5,6 +5,8 @@ import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters/interface";
 import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
+import EvmChainPreviewIcon from "../assets/images/evm-chain-preview.png";
+import SolChainPreviewIcon from "../assets/images/sol-chain-preview.png";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
@@ -33,14 +35,11 @@ export const BaseWalletSelect: React.FC = () => {
         <div className="mx-auto w-[350px] pt-[20px]">
           {chainType === ChainType.EVM ? (
             <img
-              src="/assets/images/evm-chain-preview.png"
+              src={EvmChainPreviewIcon}
               className="mx-auto w-[260px] ml-[20%]"
             />
           ) : (
-            <img
-              src="/assets/images/sol-chain-preview.png"
-              className="mx-auto w-[40px]"
-            />
+            <img src={SolChainPreviewIcon} className="mx-auto w-[40px]" />
           )}
         </div>
         <div className="pt-[30px]">

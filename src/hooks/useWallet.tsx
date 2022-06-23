@@ -56,8 +56,8 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
 
   const sign = useCallback(
     async (message: string) => {
-      const signData = await walletAction.signMessage(message);
-      return signData.signature;
+      const { signature } = await walletAction.signMessage(message);
+      return signature;
     },
     [walletName, walletAddress]
   );

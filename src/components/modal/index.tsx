@@ -2,6 +2,9 @@ import React from "react";
 import ReactModal from "react-modal";
 import classnames from "classnames";
 import { useLocation } from "../../hooks/router/component";
+import TopGradientBorder from "../../assets/images/top-gradient-border.svg";
+import BottomGradientBorder from "../../assets/images/bottom-gradient-border.svg";
+import BackBtnImage from "../../assets/images/back-btn.png";
 
 export interface ModalProps {
   containerClassName?: string;
@@ -43,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({
       <div className={"a8connect-container absolute md:w-[450px] w-[400px]"}>
         <div className="w-full">
           <img
-            src="/assets/images/top-gradient-border.svg"
+            src={TopGradientBorder}
             className="float-right md:w-[30%] w-[40%]"
           />
         </div>
@@ -55,7 +58,7 @@ const Modal: React.FC<ModalProps> = ({
             {isBack && (
               <img
                 className="absolute left-[20px] top-[20px] cursor-pointer"
-                src="/assets/images/back-btn.png"
+                src={BackBtnImage}
                 onClick={() => location.goBack()}
               />
             )}
@@ -72,7 +75,7 @@ const Modal: React.FC<ModalProps> = ({
         </div>
         <div className="w-full mt-[0px]">
           <img
-            src="/assets/images/bottom-gradient-border.svg"
+            src={BottomGradientBorder}
             className="float-left md:w-[30%] w-[40%]"
           />
         </div>

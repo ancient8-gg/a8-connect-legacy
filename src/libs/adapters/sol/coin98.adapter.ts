@@ -1,4 +1,5 @@
 import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
+import Icon from "../../../assets/icons/coin98.png";
 
 export const Coin98SolanaWalletName = "Coin98SolanaWallet";
 
@@ -7,7 +8,7 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
   chainType = ChainType.SOL;
   name = Coin98SolanaWalletName;
   adapterStyle = {
-    icon: "/assets/icons/coin98.png",
+    icon: Icon,
     background:
       "linear-gradient(90deg, rgb(204 173 65) 0%, rgb(13, 13, 24) 100%)",
     title_name: "Coin98",
@@ -46,17 +47,13 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
   }
 
   async sign(message: string): Promise<string> {
-    let { signature } = await this.injectedProvider.request<
+    const { signature } = await this.injectedProvider.request<
       Uint8Array[],
       { signature: string }
     >({
       method: "sol_signMessage",
       params: [new TextEncoder().encode(message)],
     });
-
-    if (signature.length > 64) {
-      signature = signature.slice(0, 64);
-    }
 
     return signature;
   }

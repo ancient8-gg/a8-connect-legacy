@@ -3,6 +3,7 @@ import { makeShorter } from "../utils";
 import { useWallet } from "../hooks/useWallet";
 import { PolygonButton } from "../components/button";
 import LoadingSpinner from "../components/loading-spiner";
+import DefendIcon from "../assets/images/defend.png";
 
 export interface BaseSignWalletScreenProps {
   description: string;
@@ -20,7 +21,8 @@ export const BaseSignWalletScreen: React.FC<BaseSignWalletScreenProps> = ({
 
   const handleClickSign = async () => {
     setSigning(true);
-    onSigned(await sign(signedMessage));
+    const signature = await sign(signedMessage);
+    onSigned(signature);
   };
 
   return (
@@ -45,10 +47,7 @@ export const BaseSignWalletScreen: React.FC<BaseSignWalletScreenProps> = ({
           <div className="flex justify-center mt-[30px] items-center">
             <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#25282D] flex">
               <div className="float-left">
-                <img
-                  src="/assets/images/defend.png"
-                  className="w-[16px] h-[16px] mt-[3px]"
-                />
+                <img src={DefendIcon} className="w-[16px] h-[16px] mt-[3px]" />
               </div>
               <div className="float-left pl-[20px] text-white">
                 <p className="text-[14px] font-bold">View only permission.</p>

@@ -50,7 +50,7 @@ export class AuthAction extends OffChainAction {
    */
   async connectWallet(createAuthDto: CreateAuthDto): Promise<AuthEntity> {
     try {
-      await this.authProvider.connectWallet(createAuthDto);
+      return this.authProvider.connectWallet(createAuthDto);
     } catch {
       return null;
     }
