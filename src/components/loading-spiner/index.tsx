@@ -14,10 +14,12 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ width, height }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={classnames(
-        "inline mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white",
-        `w-${width}`,
-        `h-${height}`
+        "inline mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white"
       )}
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+      }}
     >
       <path
         fill="currentColor"

@@ -1,7 +1,8 @@
 import { OffChainAction } from "./offchain.action";
 import { RegistrationAuthDto } from "../dto/registration-auth.dto";
 import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
-import { LoginResponse, AuthChallenge } from "../dto/entities";
+import { LoginResponse, AuthChallenge, AuthEntity } from "../dto/entities";
+import { CreateAuthDto } from "../dto/create-auth.dto";
 
 /**
  * `AuthActions` provides methods to handle all authenticating actions.
@@ -41,6 +42,17 @@ export class AuthAction extends OffChainAction {
       return true;
     } catch {
       return false;
+    }
+  }
+
+  /**
+   * Connect new wallet to UID
+   */
+  async connectWallet(createAuthDto: CreateAuthDto): Promise<AuthEntity> {
+    try {
+      await this.authProvider.connectWallet(createAuthDto);
+    } catch {
+      return null;
     }
   }
 

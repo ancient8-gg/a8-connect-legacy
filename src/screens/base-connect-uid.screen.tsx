@@ -4,11 +4,14 @@ import { useLocation } from "../hooks/router";
 import { useWallet } from "../hooks/useWallet";
 import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
+import { useSession } from "../hooks/useSession";
+import { makeShorter } from "../utils";
 
 export const BASE_CONNECT_UID_SCREEN_KEY = "BASE_CONNECT_UID_SCREEN";
 
 export const BaseConnectUIDScreen: React.FC = () => {
   const { chainType, getAdapters, setWalletName } = useWallet();
+  const { userInfo } = useSession();
   const location = useLocation();
 
   const handleClickWallet = (walletName: string) => {
@@ -20,26 +23,28 @@ export const BaseConnectUIDScreen: React.FC = () => {
     Adapters.AdapterInterface.BaseWalletAdapter[]
   >(() => {
     const adapters = getAdapters();
-    return adapters.filter((adapter) => adapter.chainType === chainType);
+    return adapters.filter(
+      (adapter) => adapter.chainType === Adapters.AdapterInterface.ChainType.SOL
+    );
   }, [chainType]);
 
   return (
     <div className="base-welcome-screen w-full pt-[30px]">
       <div className="mx-auto w-[350px]">
         <p className="text-center text-gray text-[20px] mt-[-25px] font-[100]">
-          SOLANA
+          CONNECT WALLET TO APP
         </p>
-        <div className="mx-auto w-[350px] pt-[20px]">
-          <img
-            src="/assets/images/sol-chain-preview.png"
-            className="mx-auto w-[40px]"
-          />
-        </div>
-        <div className="pt-[30px]">
-          <p className="mx-auto text-primary text-[20px] font-bold text-center">
-            Select wallet provider
+        <div className="pt-[50px]">
+          <p className="mx-auto text-[16px] text-center text-white">
+            Currently logged into the UID:
+            <span className="text-primary ml-[3px]">
+              {makeShorter(userInfo?._id)}
+            </span>
           </p>
-          <div className="pt-[20px]">
+          <p className="mx-auto text-[16px] text-center text-white mt-[5px]">
+            Please connect to a Solana wallet below
+          </p>
+          <div className="pt-[40px]">
             {chainAdapter
               .sort((elm, elm2) => {
                 return Number(elm2.isInstalled()) - Number(elm.isInstalled());
@@ -52,13 +57,6 @@ export const BaseConnectUIDScreen: React.FC = () => {
                 />
               ))}
           </div>
-        </div>
-        <div className="bottom-container my-[30px]">
-          <p className="text-center text-[14px] text-primary underline">
-            <a href="https://ancient8.gg/profile/lost-wallet">
-              Lost your wallet?
-            </a>
-          </p>
         </div>
       </div>
     </div>

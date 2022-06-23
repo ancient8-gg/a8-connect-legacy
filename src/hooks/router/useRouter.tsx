@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { SCREENS, SCREEN_KEYS } from "./init";
 import {
   RouterContext,
@@ -15,20 +15,32 @@ import { SdkMethod } from "../../libs/dto/entities";
 export const RouterProvider: React.FC<ProviderProps> = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
   const { sdkMethod } = useSession();
-
-  const screens: ScreenType[] =
-    sdkMethod === SdkMethod.login
-      ? SCREENS["LOGIN_FLOW"]
-      : SCREENS["CONNECT_FLOW"];
+  /**
+   * @description Initialize screens depend on what sdk type it is
+   */
+  const [screens, setScreens] = useState<ScreenType[]>();
 
   /**
    * @description Always start from first screen in initial
    */
-  const [screenPipe, setPipe] = useState<ScreenType[]>([screens[0]]);
+  const [screenPipe, setPipe] = useState<ScreenType[]>([]);
 
   const CurrentScreen = useMemo<React.FunctionComponent>(() => {
+    if (!screenPipe.length) {
+      return null;
+    }
     return screenPipe[screenPipe.length - 1].children;
   }, [screenPipe, setPipe]);
+
+  useEffect(() => {
+    const screens =
+      sdkMethod === SdkMethod.connect
+        ? SCREENS["CONNECT_FLOW"]
+        : SCREENS["LOGIN_FLOW"];
+
+    setScreens(screens);
+    setPipe([screens[0]]);
+  }, [sdkMethod]);
 
   const layout = useMemo(
     () => (
@@ -42,7 +54,7 @@ export const RouterProvider: React.FC<ProviderProps> = () => {
               SCREEN_KEYS.WELCOME_APP_SCREEN_KEY
           }
         >
-          <CurrentScreen />
+          {CurrentScreen && <CurrentScreen />}
         </Modal>
       </LocationProvider>
     ),

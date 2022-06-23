@@ -34,6 +34,7 @@ export interface AuthSession {
 }
 
 export interface User {
+  _id: string;
   username: string;
   email: string;
   displayName: string;
@@ -87,4 +88,9 @@ export enum SessionType {
 export enum SdkMethod {
   login = "SDK-METHOD::LOGIN",
   connect = "SDK-METHOD::CONNECT",
+}
+
+export enum ConnectAgendaType {
+  connectExistWallet = "CONNECT-AGENDA-TYPE::CONNECT-WIDTH-EXIST-WALLET",
+  connectNewWallet = "CONNECT-AGENDA-TYPE::CONNECT-WITH-NEW-WALLET",
 }

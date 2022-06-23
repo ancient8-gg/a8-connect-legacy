@@ -2,13 +2,12 @@ import React from "react";
 import { WalletProvider } from "./hooks/useWallet";
 import { RouterProvider } from "./hooks/router/useRouter";
 import { SessionProvider } from "./hooks/useSession";
-import { SdkMethod } from "./libs/dto/entities";
 import "./index.css";
 
-const A8Connect: React.FC<{ sdkMethod: SdkMethod }> = ({ sdkMethod }) => {
+const A8Connect: React.FC = () => {
   return (
     <div className="layout">
-      <SessionProvider sdkMethod={sdkMethod}>
+      <SessionProvider>
         <WalletProvider>
           <RouterProvider />
         </WalletProvider>
@@ -17,7 +16,7 @@ const A8Connect: React.FC<{ sdkMethod: SdkMethod }> = ({ sdkMethod }) => {
   );
 };
 function App() {
-  return <A8Connect sdkMethod={SdkMethod.login} />;
+  return <A8Connect />;
 }
 
 export default App;

@@ -30,6 +30,11 @@ import {
   BASE_CONNECT_UID_SCREEN_KEY,
 } from "../../screens/base-connect-uid.screen";
 
+import {
+  SignWalletConnectUID,
+  SING_WALLET_CONNECT_UID_KEY,
+} from "../../screens/sign-wallet-connect-uid.screen";
+
 export const SCREEN_KEYS = {
   BASE_WELCOME_SREEN_KEY,
   BASE_WALLET_SELECT_SCREEN_KEY,
@@ -69,16 +74,12 @@ export const SCREENS: Record<Flows, ScreenType[]> = {
       children: BaseConnectUIDScreen,
     },
     {
-      key: BASE_WALLET_SELECT_SCREEN_KEY,
-      children: BaseWalletSelect,
-    },
-    {
       key: CONNECT_WALLET_SCREEN_KEY,
       children: ConnectWalletScreen,
     },
     {
-      key: SIGN_WALLET_SCREEN_KEY,
-      children: SignWalletScreen,
+      key: SING_WALLET_CONNECT_UID_KEY,
+      children: SignWalletConnectUID,
     },
     {
       key: WELCOME_APP_SCREEN_KEY,

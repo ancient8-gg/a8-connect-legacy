@@ -53,7 +53,7 @@ export class UserProvider extends BusinessProvider {
    */
   getAuthEntities(): Promise<AuthEntity[]> {
     return this.requestWithCredential<AuthEntity[]>(
-      `/user/profile/auth-entities/`,
+      `/user/profile/auth-entities`,
       {
         method: "GET",
       }

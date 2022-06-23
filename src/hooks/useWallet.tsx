@@ -6,15 +6,15 @@ interface WalletContextProps {
   chainType: Adapters.AdapterInterface.ChainType | "all";
   walletName: string;
   walletAddress: string;
-  getAdapters(): Adapters.AdapterInterface.BaseWalletAdapter[];
   getWalletAdapter(
     walletName: string
   ): Adapters.AdapterInterface.BaseWalletAdapter;
-  connect(): Promise<string | null>;
-  disconnect(): void;
-  sign(message: string): Promise<string>;
+  getAdapters(): Adapters.AdapterInterface.BaseWalletAdapter[];
   setChainType(chainType: Adapters.AdapterInterface.ChainType): void;
+  connect(): Promise<string | null>;
+  sign(message: string): Promise<string>;
   setWalletName(walletName: string): void;
+  disconnect(): void;
 }
 
 const WalletContext = React.createContext<WalletContextProps>(null);

@@ -1,16 +1,21 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { SING_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
 import { useLocation } from "../hooks/router/component";
 import { PolygonButton } from "../components/button";
 import { useWallet } from "../hooks/useWallet";
+import { useSession } from "../hooks/useSession";
+import { SdkMethod } from "../libs/dto/entities";
 import * as Adapters from "../libs/adapters";
 
 export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 
 export const ConnectWalletScreen: React.FC = () => {
+  const { sdkMethod } = useSession();
   const { walletName, getWalletAdapter, connect } = useWallet();
   const [connected, setConnected] = useState<boolean>(false);
   const [connectedError, setConenctedError] = useState<boolean>(false);
+  const [] = useState<boolean>(false);
   const location = useLocation();
 
   const walletAdapter =
@@ -35,7 +40,12 @@ export const ConnectWalletScreen: React.FC = () => {
   useEffect(() => {
     if (connected) {
       setConnected(false);
-      location.push(SIGN_WALLET_SCREEN_KEY, true);
+      location.push(
+        sdkMethod === SdkMethod.login
+          ? SIGN_WALLET_SCREEN_KEY
+          : SING_WALLET_CONNECT_UID_KEY,
+        true
+      );
     }
   }, [connected]);
 
