@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-
-import dotenv from "dotenv";
 import typescript from "@rollup/plugin-typescript";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
@@ -10,13 +7,12 @@ import visualizer from "rollup-plugin-visualizer";
 import { terser } from "rollup-plugin-terser";
 import replace from "@rollup/plugin-replace";
 import del from "rollup-plugin-delete";
-import nodePolyfills from "rollup-plugin-polyfill-node";
 import url from "postcss-url";
-
-dotenv.config({ path: `.env.${process.env.APP_ENV}` });
+import image from "@rollup/plugin-image";
+import copy from "rollup-plugin-copy";
 
 export default {
-  input: ["./src/index.tsx"],
+  input: ["./src/index.ts"],
   output: [
     {
       dir: "dist",
@@ -38,10 +34,10 @@ export default {
       emitDeclarationOnly: true,
       allowSyntheticDefaultImports: true,
     }),
+    image(),
     commonjs({
       transformMixedEsModules: true,
     }),
-    nodePolyfills(),
     json(),
     resolve(),
     postcss({
@@ -63,9 +59,12 @@ export default {
         ascii_only: true,
       },
     }),
+    copy({
+      targets: [{ src: "dist/dts/src/*", dest: "dist/" }],
+      hook: "writeBundle",
+    }),
     del({
       targets: ["dist", "bundle"],
-      verbose: true,
     }),
     visualizer({
       filename: "bundle-analysis.html",
