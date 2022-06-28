@@ -44,4 +44,4 @@ export const SupportedWallets = [
 ];
 
 // Export adapter interface
-export * as AdapterInterface from "./interface";
+export * from "./interface";

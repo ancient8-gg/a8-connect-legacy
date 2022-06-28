@@ -1,27 +1,19 @@
 import React, { useState, useCallback } from "react";
 import { getWalletAction } from "../libs/actions";
-import * as Adapters from "../libs/adapters";
+import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
+import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 
 interface WalletContextProps {
-  chainType: Adapters.AdapterInterface.ChainType | "all";
+  chainType: ChainType | "all";
   walletName: string;
   walletAddress: string;
-  getWalletAdapter(
-    walletName: string
-  ): Adapters.AdapterInterface.BaseWalletAdapter;
-  getAdapters(): Adapters.AdapterInterface.BaseWalletAdapter[];
-  setChainType(chainType: Adapters.AdapterInterface.ChainType): void;
+  getWalletAdapter(walletName: string): BaseWalletAdapter;
+  getAdapters(): BaseWalletAdapter[];
+  setChainType(chainType: ChainType): void;
   connect(): Promise<string | null>;
   sign(message: string): Promise<string>;
   setWalletName(walletName: string): void;
   disconnect(): void;
-}
-
-export interface OnConnectPayload {
-  walletAddress: string;
-  provider: Adapters.AdapterInterface.BaseWalletAdapter;
-  chainType: Adapters.AdapterInterface.ChainType;
-  walletName: string;
 }
 
 const WalletContext = React.createContext<WalletContextProps>(null);
@@ -29,13 +21,15 @@ const WalletContext = React.createContext<WalletContextProps>(null);
 export const WalletProvider = ({
   children,
   onConnected,
+  selectedChainType,
 }: {
   children: React.ReactNode;
-  onConnected: (payload: OnConnectPayload | null) => void;
+  onConnected: (payload: ConnectedWalletPayload | null) => void;
+  selectedChainType: ChainType | "all";
 }) => {
-  const [chainType, setChainType] = useState<
-    Adapters.AdapterInterface.ChainType | "all"
-  >("all");
+  const [chainType, setChainType] = useState<ChainType | "all">(
+    selectedChainType
+  );
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
 

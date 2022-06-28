@@ -1,6 +1,12 @@
-export type {
-  NetworkType,
-  RegistryOptions,
-} from "./libs/providers/registry.provider";
-
-export * as Types from "./libs/dto/entities";
+export * from "./libs/providers/registry.provider";
+export * from "./libs/dto/a8-connect-session.dto";
+export * from "./libs/dto/connect-email-auth.dto";
+export * from "./libs/dto/connect-oauth.dto";
+export * from "./libs/dto/connect-wallet.dto";
+export * from "./libs/dto/create-auth.dto";
+export * from "./libs/dto/entities";
+export * from "./libs/dto/login-wallet-auth.dto";
+export * from "./libs/dto/persist-kyc.dto";
+export * from "./libs/dto/profile-user.dto";
+export * from "./libs/dto/registration-auth.dto";
+export * from "./libs/dto/wallet-credential-auth.dto";

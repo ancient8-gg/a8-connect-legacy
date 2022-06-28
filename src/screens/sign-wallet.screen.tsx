@@ -4,11 +4,10 @@ import { BaseSignWalletScreen } from "./base-sign-wallet.screen";
 import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto";
 import { WELCOME_APP_SCREEN_KEY } from "./welcome-app.screen";
 import { BaseLoadingScreen } from "./base-loading.screen";
-import { NetworkType } from "../libs/providers/registry.provider";
 import { useLocation } from "../hooks/router";
-import { AuthAction, getAuthAction } from "../libs/actions";
+import { getAuthAction } from "../libs/actions";
 import { useWallet } from "../hooks/useWallet";
-import * as Adapters from "../libs/adapters";
+import { ChainType } from "../libs/adapters";
 
 export const SIGN_WALLET_SCREEN_KEY = "SIGN_WALLET_SCREEN";
 
@@ -31,9 +30,7 @@ export const SignWalletScreen: React.FC = () => {
 
     // TODO: refactor using AuthType instead of ChainType
     const type =
-      chainType === Adapters.AdapterInterface.ChainType.EVM
-        ? AuthType.EVMChain
-        : AuthType.Solana;
+      chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
 
     const response: LoginResponse = existedWallet
       ? await authAction.signIn({ type: type, credential: credential })

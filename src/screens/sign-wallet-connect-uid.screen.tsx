@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { NetworkType } from "../libs/providers/registry.provider";
-import { AuthAction, getAuthAction } from "../libs/actions/";
+import { getAuthAction } from "../libs/actions/";
 import { useLocation } from "../hooks/router";
 import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
@@ -9,7 +8,6 @@ import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto"
 import { LoginWalletAuthDto } from "../libs/dto/login-wallet-auth.dto";
 import { CreateAuthDto } from "../libs/dto/create-auth.dto";
 import { PolygonButton } from "../components/button";
-import * as Adapters from "../libs/adapters/";
 import LoadingSpinner from "../components/loading-spiner";
 import { WELCOME_APP_SCREEN_KEY } from "./welcome-app.screen";
 import {
@@ -18,6 +16,7 @@ import {
   AuthType,
 } from "../libs/dto/entities";
 import WalletImage from "../assets/images/wallet.png";
+import { ChainType } from "../libs/adapters/";
 
 export const SING_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
 
@@ -82,9 +81,7 @@ export const SignWalletConnectUID: React.FC = () => {
   };
 
   const authType = useMemo<AuthType>(() => {
-    return chainType === Adapters.AdapterInterface.ChainType.EVM
-      ? AuthType.EVMChain
-      : AuthType.Solana;
+    return chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
   }, [chainType]);
 
   useEffect(() => {

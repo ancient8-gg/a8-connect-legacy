@@ -6,8 +6,8 @@ import { PolygonButton } from "../components/button";
 import { useWallet } from "../hooks/useWallet";
 import { useSession } from "../hooks/useSession";
 import { SdkMethod } from "../libs/dto/entities";
-import * as Adapters from "../libs/adapters";
 import A8ConnectImage from "../assets/images/a8-connect.png";
+import { BaseWalletAdapter } from "../libs/adapters";
 
 export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 
@@ -18,10 +18,9 @@ export const ConnectWalletScreen: React.FC = () => {
   const [connectedError, setConnectedError] = useState<boolean>(false);
   const location = useLocation();
 
-  const walletAdapter =
-    useMemo<Adapters.AdapterInterface.BaseWalletAdapter>(() => {
-      return getWalletAdapter(walletName);
-    }, [walletName]);
+  const walletAdapter = useMemo<BaseWalletAdapter>(() => {
+    return getWalletAdapter(walletName);
+  }, [walletName]);
 
   const handleConnect = async () => {
     const walletAddress = await connect();

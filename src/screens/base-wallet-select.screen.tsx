@@ -1,12 +1,11 @@
 import React, { useMemo } from "react";
-import * as Adapters from "../libs/adapters";
 import { useLocation } from "../hooks/router";
 import { useWallet } from "../hooks/useWallet";
-import { ChainType } from "../libs/adapters/interface";
 import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 import EvmChainPreviewIcon from "../assets/images/evm-chain-preview.png";
 import SolChainPreviewIcon from "../assets/images/sol-chain-preview.png";
+import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
@@ -19,9 +18,7 @@ export const BaseWalletSelect: React.FC = () => {
     location.push(CONNECT_WALLET_SCREEN_KEY);
   };
 
-  const chainAdapter = useMemo<
-    Adapters.AdapterInterface.BaseWalletAdapter[]
-  >(() => {
+  const chainAdapter = useMemo<BaseWalletAdapter[]>(() => {
     const adapters = getAdapters();
     return adapters.filter((adapter) => adapter.chainType === chainType);
   }, [chainType]);

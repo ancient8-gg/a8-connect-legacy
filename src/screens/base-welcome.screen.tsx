@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters/interface";
-import { useLocation } from "../hooks/router/component";
+import { useLocation } from "../hooks/router";
 import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
 import A8Logo from "../assets/images/a8-logo.png";
 import SolBtnImage from "../assets/images/sol-btn.png";
 import EvmBtnImage from "../assets/images/evm-btn.png";
 
-export const BASE_WELCOME_SREEN_KEY = "BASE_WELCOME_SREEN_KEY";
+export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: React.FC = () => {
-  const { setChainType } = useWallet();
+  const { setChainType, chainType } = useWallet();
   const location = useLocation();
+
+  useEffect(() => {
+    if (chainType !== "all") {
+      location.push(BASE_WALLET_SELECT_SCREEN_KEY);
+    }
+  }, []);
 
   const handleClickChain = (chainType: ChainType) => {
     setChainType(chainType);

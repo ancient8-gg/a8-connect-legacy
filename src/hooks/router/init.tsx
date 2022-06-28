@@ -2,7 +2,7 @@ import { ScreenType } from ".";
 
 import {
   BaseWelcomeScreen,
-  BASE_WELCOME_SREEN_KEY,
+  BASE_WELCOME_SCREEN_KEY,
 } from "../../screens/base-welcome.screen";
 
 import {
@@ -36,7 +36,7 @@ import {
 } from "../../screens/sign-wallet-connect-uid.screen";
 
 export const SCREEN_KEYS = {
-  BASE_WELCOME_SREEN_KEY,
+  BASE_WELCOME_SCREEN_KEY,
   BASE_WALLET_SELECT_SCREEN_KEY,
   CONNECT_WALLET_SCREEN_KEY,
   SIGN_WALLET_SCREEN_KEY,
@@ -48,7 +48,7 @@ export type Flows = "LOGIN_FLOW" | "CONNECT_FLOW";
 export const SCREENS: Record<Flows, ScreenType[]> = {
   LOGIN_FLOW: [
     {
-      key: BASE_WELCOME_SREEN_KEY,
+      key: BASE_WELCOME_SCREEN_KEY,
       children: BaseWelcomeScreen,
     },
     {
@@ -90,7 +90,7 @@ export const SCREENS: Record<Flows, ScreenType[]> = {
 
 export {
   BaseWelcomeScreen,
-  BASE_WELCOME_SREEN_KEY,
+  BASE_WELCOME_SCREEN_KEY,
   BaseWalletSelect,
   BASE_WALLET_SELECT_SCREEN_KEY,
 };

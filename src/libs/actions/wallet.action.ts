@@ -1,7 +1,8 @@
-import * as Adapters from "../adapters";
 import {
+  BaseWalletAdapter,
   BinanceEVMWallet,
   BinanceEVMWalletName,
+  ChainType,
   Coin98EVMWallet,
   Coin98EVMWalletName,
   Coin98SolanaWallet,
@@ -26,18 +27,13 @@ export class WalletAction {
    * Selected adapter.
    * @public
    */
-  public selectedAdapter:
-    | Adapters.AdapterInterface.BaseWalletAdapter
-    | undefined;
+  public selectedAdapter: BaseWalletAdapter | undefined;
 
   /**
    * Supported Wallets array.
    * @private
    */
-  private supportedWallets: Record<
-    string,
-    Adapters.AdapterInterface.BaseWalletAdapter
-  > = {};
+  private supportedWallets: Record<string, BaseWalletAdapter> = {};
 
   /**
    * Public constructor without parameters.
@@ -190,9 +186,7 @@ export class WalletAction {
   /**
    * Get all wallet adapters, or with specific chain type condition.
    */
-  getWalletAdapters(
-    type: "all" | Adapters.AdapterInterface.ChainType = "all"
-  ): Adapters.AdapterInterface.BaseWalletAdapter[] {
+  getWalletAdapters(type: "all" | ChainType = "all"): BaseWalletAdapter[] {
     return Object.keys(this.supportedWallets)
       .map((walletName: string) => this.supportedWallets[walletName])
       .filter((walletProvider) => {
@@ -204,9 +198,7 @@ export class WalletAction {
   /**
    * Get wallet adapter with specific wallet name
    */
-  getWalletAdapter(
-    walletName: string
-  ): Adapters.AdapterInterface.BaseWalletAdapter {
+  getWalletAdapter(walletName: string): BaseWalletAdapter {
     return this.supportedWallets[walletName];
   }
 }
