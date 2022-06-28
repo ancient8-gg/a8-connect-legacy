@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo } from "react";
-import { WalletAction } from "../libs/actions";
+import React, { useState, useCallback } from "react";
+import { getWalletAction } from "../libs/actions";
 import * as Adapters from "../libs/adapters";
 
 interface WalletContextProps {
@@ -17,16 +17,29 @@ interface WalletContextProps {
   disconnect(): void;
 }
 
+export interface OnConnectPayload {
+  walletAddress: string;
+  provider: Adapters.AdapterInterface.BaseWalletAdapter;
+  chainType: Adapters.AdapterInterface.ChainType;
+  walletName: string;
+}
+
 const WalletContext = React.createContext<WalletContextProps>(null);
 
-export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
+export const WalletProvider = ({
+  children,
+  onConnected,
+}: {
+  children: React.ReactNode;
+  onConnected: (payload: OnConnectPayload | null) => void;
+}) => {
   const [chainType, setChainType] = useState<
     Adapters.AdapterInterface.ChainType | "all"
   >("all");
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
 
-  const walletAction = useMemo(() => new WalletAction(), []);
+  const walletAction = getWalletAction();
 
   const getAdapters = useCallback(() => {
     return walletAction.getWalletAdapters(chainType);
@@ -38,14 +51,22 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
 
   const connect = useCallback(async () => {
     try {
-      if (!walletName) {
-        throw new Error();
-      }
       await walletAction.connectWallet(walletName);
       const walletAddress = await walletAction.getWalletAddress();
       setWalletAddress(walletAddress);
+
+      // trigger on connected
+      onConnected({
+        chainType: walletAction.selectedAdapter.chainType,
+        walletName: walletAction.selectedAdapter.name,
+        provider: walletAction.selectedAdapter,
+        walletAddress,
+      });
+
       return walletAddress;
     } catch {
+      onConnected(null);
+
       return null;
     }
   }, [walletName]);

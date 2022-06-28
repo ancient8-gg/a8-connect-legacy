@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { NetworkType } from "../libs/providers/registry.provider";
-import { AuthAction } from "../libs/actions/";
-import { useLocation } from "../hooks/router/component";
+import { AuthAction, getAuthAction } from "../libs/actions/";
+import { useLocation } from "../hooks/router";
 import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
 import { makeShorter } from "../utils";
@@ -11,7 +11,7 @@ import { CreateAuthDto } from "../libs/dto/create-auth.dto";
 import { PolygonButton } from "../components/button";
 import * as Adapters from "../libs/adapters/";
 import LoadingSpinner from "../components/loading-spiner";
-import { WELCOME_APP_SCREEN_KEY } from "../screens/welcome-app.screen";
+import { WELCOME_APP_SCREEN_KEY } from "./welcome-app.screen";
 import {
   ConnectAgendaType,
   AuthChallenge,
@@ -29,7 +29,7 @@ export const SignWalletConnectUID: React.FC = () => {
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>();
   const { userInfo, authEntities, logout } = useSession();
   const { chainType, walletAddress, sign, disconnect } = useWallet();
-  const authAction = new AuthAction(NetworkType.testnet);
+  const authAction = getAuthAction();
   const location = useLocation();
 
   const handleSendAuthChallenge = async () => {
@@ -43,14 +43,14 @@ export const SignWalletConnectUID: React.FC = () => {
     );
 
     if (logiResponse.accessToken) {
-      location.push(WELCOME_APP_SCREEN_KEY);
+      await location.push(WELCOME_APP_SCREEN_KEY);
     }
   };
 
   const handleConnectNewWallet = async (createAuthDto: CreateAuthDto) => {
     const authEntity = await authAction.connectWallet(createAuthDto);
     if (authEntity) {
-      location.push(WELCOME_APP_SCREEN_KEY);
+      await location.push(WELCOME_APP_SCREEN_KEY);
     }
   };
 
@@ -95,7 +95,7 @@ export const SignWalletConnectUID: React.FC = () => {
         ).length > 0;
 
       if (inIncluded) {
-        handleSendAuthChallenge();
+        await handleSendAuthChallenge();
         setConnectAgenda(ConnectAgendaType.connectExistWallet);
         setDescription(
           `You are logged into UID with this wallet
@@ -116,7 +116,7 @@ export const SignWalletConnectUID: React.FC = () => {
         setBelongedError(true);
         return;
       }
-      handleSendAuthChallenge();
+      await handleSendAuthChallenge();
       setConnectAgenda(ConnectAgendaType.connectNewWallet);
       setDescription(
         `Hey, <span class='text-primary'> this is a new wallet, </span> 

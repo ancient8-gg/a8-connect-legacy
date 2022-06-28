@@ -1,22 +1,22 @@
 import React from "react";
-import { WalletProvider } from "./hooks/useWallet";
-import { RouterProvider } from "./hooks/router/useRouter";
-import { SessionProvider } from "./hooks/useSession";
+import { OnConnectPayload, WalletProvider } from "./hooks/useWallet";
+import { RouterProvider } from "./hooks/router";
+import { OnAuthPayload, SessionProvider } from "./hooks/useSession";
 import "./index.css";
 
-const A8Connect: React.FC = () => {
+const A8Connect: React.FC<{
+  onAuth?: (payload: OnAuthPayload) => void;
+  onConnected?: (payload: OnConnectPayload) => void;
+}> = ({ onAuth, onConnected }) => {
   return (
     <div className="layout">
-      <SessionProvider>
-        <WalletProvider>
+      <SessionProvider onAuth={onAuth}>
+        <WalletProvider onConnected={onConnected}>
           <RouterProvider />
         </WalletProvider>
       </SessionProvider>
     </div>
   );
 };
-function App() {
-  return <A8Connect />;
-}
 
-export default App;
+export default A8Connect;

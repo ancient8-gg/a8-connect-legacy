@@ -9,12 +9,12 @@ export type LoginResponse = {
   accessToken: string;
 };
 
-export class AuthChallenge {
-  public target: string;
-  public message: string;
-  public expiredDate: Date;
-  public isResolved: boolean;
-  public _id: string;
+export interface AuthChallenge {
+  target: string;
+  message: string;
+  expiredDate: Date;
+  isResolved: boolean;
+  _id: string;
 }
 
 export type A8ConnectInitOptions = {

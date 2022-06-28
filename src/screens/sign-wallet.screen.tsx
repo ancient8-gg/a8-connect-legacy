@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { AuthChallenge, AuthType, LoginResponse } from "../libs/dto/entities";
 import { BaseSignWalletScreen } from "./base-sign-wallet.screen";
 import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto";
-import { WELCOME_APP_SCREEN_KEY } from "../screens/welcome-app.screen";
+import { WELCOME_APP_SCREEN_KEY } from "./welcome-app.screen";
 import { BaseLoadingScreen } from "./base-loading.screen";
 import { NetworkType } from "../libs/providers/registry.provider";
-import { useLocation } from "../hooks/router/component";
-import { AuthAction } from "../libs/actions";
+import { useLocation } from "../hooks/router";
+import { AuthAction, getAuthAction } from "../libs/actions";
 import { useWallet } from "../hooks/useWallet";
 import * as Adapters from "../libs/adapters";
 
@@ -18,7 +18,7 @@ export const SignWalletScreen: React.FC = () => {
   const [onLoad, setOnLoad] = useState<boolean>(true);
   const [existedWallet, setExistedWallet] = useState<boolean>(false);
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
-  const authAction = new AuthAction(NetworkType.testnet);
+  const authAction = getAuthAction();
 
   const handleOnSigned = async (signature: string) => {
     if (chainType === "all") return;
@@ -28,6 +28,8 @@ export const SignWalletScreen: React.FC = () => {
       walletAddress: authChallenge.target,
       signedData: signature,
     };
+
+    // TODO: refactor using AuthType instead of ChainType
     const type =
       chainType === Adapters.AdapterInterface.ChainType.EVM
         ? AuthType.EVMChain

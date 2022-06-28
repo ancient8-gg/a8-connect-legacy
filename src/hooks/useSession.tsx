@@ -1,37 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { getStorageProvider } from "../libs/providers/";
-import { UserAction } from "../libs/actions";
-import { SdkMethod, UserInfo, AuthEntity } from "../libs/dto/entities";
-import { NetworkType } from "../libs/providers/registry.provider";
+import React, { useCallback, useEffect, useState } from "react";
+import { getAuthAction, getUserAction } from "../libs/actions";
+import { AuthEntity, SdkMethod, UserInfo } from "../libs/dto/entities";
+
 interface SessionContextProps {
   sdkMethod: SdkMethod;
   userInfo: UserInfo;
   authEntities: AuthEntity[];
   logout(): void;
+  onAuth: (payload: OnAuthPayload) => void;
 }
+
+export type OnAuthPayload = UserInfo | null;
 
 export const SessionContext = React.createContext<SessionContextProps>(null);
 
 export const SessionProvider: React.FC<{
   children: React.ReactNode;
-}> = ({ children }) => {
-  const userAction = new UserAction(NetworkType.testnet);
-  const storageProvider = getStorageProvider();
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  onAuth: (payload: UserInfo | null) => void;
+}> = ({ children, onAuth }) => {
+  const userAction = getUserAction();
+  const authAction = getAuthAction();
+
+  const [userInfo, setUserInfo] = useState<UserInfo>(null);
   const [authEntities, setAuthEntities] = useState<AuthEntity[]>([]);
   const [sdkMethod, setSdkMethod] = useState<SdkMethod>();
 
-  const logout = () => {
-    storageProvider.removeItem("jwt");
-    window.location.reload();
-  };
-
-  useEffect(() => {
-    (async () => {
-      const authEntities = await userAction.getAuthEntities();
-      setAuthEntities(authEntities);
-    })();
-  }, [userInfo]);
+  const logout = useCallback(async () => {
+    await authAction.logout();
+    onAuth(null);
+  }, [onAuth]);
 
   useEffect(() => {
     (async () => {
@@ -40,13 +37,18 @@ export const SessionProvider: React.FC<{
 
         if (userInfo._id) {
           setSdkMethod(SdkMethod.connect);
-
           setUserInfo(userInfo);
+
+          // fetch auth entities
+          const authEntities = await userAction.getAuthEntities();
+          setAuthEntities(authEntities);
+
+          onAuth && onAuth(userInfo);
           return;
         }
-        throw new Error();
       } catch {
         setSdkMethod(SdkMethod.login);
+        onAuth && onAuth(null);
       }
     })();
   }, []);
@@ -58,6 +60,7 @@ export const SessionProvider: React.FC<{
         userInfo,
         authEntities,
         logout,
+        onAuth,
       }}
     >
       {children}

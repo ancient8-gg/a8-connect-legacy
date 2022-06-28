@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { SING_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
-import { useLocation } from "../hooks/router/component";
+import { useLocation } from "../hooks/router";
 import { PolygonButton } from "../components/button";
 import { useWallet } from "../hooks/useWallet";
 import { useSession } from "../hooks/useSession";
@@ -15,8 +15,7 @@ export const ConnectWalletScreen: React.FC = () => {
   const { sdkMethod } = useSession();
   const { walletName, getWalletAdapter, connect } = useWallet();
   const [connected, setConnected] = useState<boolean>(false);
-  const [connectedError, setConenctedError] = useState<boolean>(false);
-  const [] = useState<boolean>(false);
+  const [connectedError, setConnectedError] = useState<boolean>(false);
   const location = useLocation();
 
   const walletAdapter =
@@ -27,7 +26,7 @@ export const ConnectWalletScreen: React.FC = () => {
   const handleConnect = async () => {
     const walletAddress = await connect();
     if (!walletAddress) {
-      setConenctedError(true);
+      setConnectedError(true);
       return;
     }
 
