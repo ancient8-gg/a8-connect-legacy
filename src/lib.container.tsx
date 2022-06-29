@@ -10,11 +10,15 @@ import {
   UserInfo,
 } from "./types";
 import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
+import { OnAuthPayload } from "./hooks/useSession";
 
 export interface A8ConnectInitOptions {
   chainType: ChainType;
   networkType: NetworkType;
-  onClose: () => void;
+  onClose?: () => void;
+  onError?: (error: Error) => void;
+  onAuth?: (payload: OnAuthPayload) => void;
+  onConnected?: (payload: ConnectedWalletPayload) => void;
 }
 
 /**
@@ -61,9 +65,16 @@ export class A8Connect {
     if (rootDOM !== null) {
       render(
         <A8ConnectContainer
+          onError={options.onError}
           onClose={options.onClose}
-          onAuth={this.onAuth.bind(this)}
-          onConnected={this.onConnected.bind(this)}
+          onAuth={(payload) => {
+            this.onAuth(payload);
+            options.onAuth(payload);
+          }}
+          onConnected={(payload) => {
+            this.onConnected(payload);
+            options.onConnected(payload);
+          }}
           selectedChainType={options.chainType}
         />,
         rootDOM

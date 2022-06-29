@@ -6,8 +6,8 @@ import {
   useContext,
 } from "react";
 import { getWalletAction } from "../libs/actions";
-import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
+import { useAppState } from "./useAppState";
 
 interface WalletContextProps {
   chainType: ChainType;
@@ -26,16 +26,15 @@ const WalletContext = createContext<WalletContextProps>(null);
 
 export const WalletProvider = ({
   children,
-  onConnected,
   selectedChainType,
 }: {
   children: ReactNode;
-  onConnected: (payload: ConnectedWalletPayload | null) => void;
   selectedChainType: ChainType;
 }) => {
   const [chainType, setChainType] = useState<ChainType>(selectedChainType);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
+  const { onConnected } = useAppState();
 
   const walletAction = getWalletAction();
 

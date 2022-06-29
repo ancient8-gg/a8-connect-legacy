@@ -15,23 +15,23 @@ export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: FC = () => {
   const { setChainType, chainType } = useWallet();
-  const location = useLocation();
   const { sdkMethod, userInfo } = useSession();
+  const location = useLocation();
 
   const targetScreen = useMemo(() => {
     return BASE_WALLET_SELECT_SCREEN_KEY;
   }, []);
 
   useEffect(() => {
-    (async () => {
-      if (chainType !== ChainType.ALL) {
+    if (chainType !== ChainType.ALL) {
+      setTimeout(() => {
         location.push(targetScreen);
-      }
-    })();
-  }, [targetScreen]);
+      }, 300);
+    }
+  }, [chainType]);
 
   const handleClickChain = useCallback(
-    async (chainType: ChainType) => {
+    (chainType: ChainType) => {
       setChainType(chainType);
       location.push(targetScreen);
     },

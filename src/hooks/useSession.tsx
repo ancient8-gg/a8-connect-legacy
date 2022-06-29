@@ -9,13 +9,13 @@ import {
 } from "react";
 import { getAuthAction, getUserAction } from "../libs/actions";
 import { AuthEntity, SdkMethod, UserInfo } from "../libs/dto/entities";
+import { useAppState } from "./useAppState";
 
 interface SessionContextProps {
   sdkMethod: SdkMethod;
   userInfo: UserInfo;
   authEntities: AuthEntity[];
   logout(): Promise<void>;
-  onAuth: (payload: OnAuthPayload) => void;
 }
 
 export type OnAuthPayload = UserInfo | null;
@@ -24,11 +24,11 @@ export const SessionContext = createContext<SessionContextProps>(null);
 
 export const SessionProvider: FC<{
   children: ReactNode;
-  onAuth: (payload: UserInfo | null) => void;
-}> = ({ children, onAuth }) => {
+}> = ({ children }) => {
   const userAction = getUserAction();
   const authAction = getAuthAction();
 
+  const { onAuth } = useAppState();
   const [userInfo, setUserInfo] = useState<UserInfo>(null);
   const [authEntities, setAuthEntities] = useState<AuthEntity[]>([]);
   const [sdkMethod, setSdkMethod] = useState<SdkMethod>();
@@ -70,7 +70,6 @@ export const SessionProvider: FC<{
         userInfo,
         authEntities,
         logout,
-        onAuth,
       }}
     >
       {children}

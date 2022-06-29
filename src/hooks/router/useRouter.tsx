@@ -99,8 +99,8 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   }, [screenPipe, setPipe]);
 
   const goBackWithCallback = useCallback(() => {
-    goBackCallback && goBackCallback();
     goBack();
+    goBackCallback && goBackCallback();
   }, [goBack, goBackCallback]);
 
   const push = useCallback(
@@ -124,7 +124,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   return (
     <LocationContext.Provider
       value={{
-        setGoBackCallback: setGoBackCallback,
+        setGoBackCallback,
         goBack,
         push,
         goBackWithCallback,
