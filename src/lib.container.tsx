@@ -87,6 +87,30 @@ export class A8Connect {
   }
 
   /**
+   * The function to restore session if possible, can be fail-safe
+   * @private
+   */
+  public async restoreSession(): Promise<void> {
+    /**
+     * Restore wallet connection first
+     */
+    try {
+      await this.currentSession.Wallet.restoreConnection();
+      const walletSession =
+        await this.currentSession.Wallet.getConnectedSession();
+      this.onConnected(walletSession);
+    } catch {}
+
+    /**
+     * Now to restore UID session
+     */
+    try {
+      const userSession = await this.currentSession.User.getUserProfile();
+      this.onAuth(userSession);
+    } catch {}
+  }
+
+  /**
    * Initialize registry and session
    * @param options
    * @private
@@ -109,30 +133,6 @@ export class A8Connect {
       connectedWallet: null,
       sessionUser: null,
     };
-  }
-
-  /**
-   * The function to restore session if possible, can be fail-safe
-   * @private
-   */
-  async restoreSession(): Promise<void> {
-    /**
-     * Restore wallet connection first
-     */
-    try {
-      await this.currentSession.Wallet.restoreConnection();
-      const walletSession =
-        await this.currentSession.Wallet.getConnectedSession();
-      this.onConnected(walletSession);
-    } catch {}
-
-    /**
-     * Now to restore UID session
-     */
-    try {
-      const userSession = await this.currentSession.User.getUserProfile();
-      this.onAuth(userSession);
-    } catch {}
   }
 
   /**
