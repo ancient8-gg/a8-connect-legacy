@@ -69,11 +69,11 @@ export class A8Connect {
           onClose={options.onClose}
           onAuth={(payload) => {
             this.onAuth(payload);
-            options.onAuth(payload);
+            options.onAuth && options.onAuth(payload);
           }}
           onConnected={(payload) => {
             this.onConnected(payload);
-            options.onConnected(payload);
+            options.onConnected && options.onConnected(payload);
           }}
           selectedChainType={options.chainType}
         />,
