@@ -5,12 +5,12 @@ import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 import { useSession } from "../hooks/useSession";
 import { makeShorter } from "../utils";
-import { BaseWalletAdapter, ChainType } from "../libs/adapters";
+import { BaseWalletAdapter } from "../libs/adapters";
 
 export const BASE_CONNECT_UID_SCREEN_KEY = "BASE_CONNECT_UID_SCREEN";
 
 export const BaseConnectUIDScreen: FC = () => {
-  const { chainType, getAdapters, setWalletName } = useWallet();
+  const { getAdapters, setWalletName } = useWallet();
   const { userInfo } = useSession();
   const location = useLocation();
 
@@ -20,9 +20,8 @@ export const BaseConnectUIDScreen: FC = () => {
   };
 
   const chainAdapter = useMemo<BaseWalletAdapter[]>(() => {
-    const adapters = getAdapters();
-    return adapters.filter((adapter) => adapter.chainType === ChainType.SOL);
-  }, [chainType]);
+    return getAdapters();
+  }, [getAdapters]);
 
   return (
     <div className="base-welcome-screen w-full pt-[30px]">

@@ -70,6 +70,10 @@ export const SCREENS: Record<Flows, ScreenType[]> = {
   ],
   CONNECT_FLOW: [
     {
+      key: BASE_WELCOME_SCREEN_KEY,
+      children: BaseWelcomeScreen,
+    },
+    {
       key: BASE_CONNECT_UID_SCREEN_KEY,
       children: BaseConnectUIDScreen,
     },

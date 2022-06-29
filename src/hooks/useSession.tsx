@@ -14,7 +14,7 @@ interface SessionContextProps {
   sdkMethod: SdkMethod;
   userInfo: UserInfo;
   authEntities: AuthEntity[];
-  logout(): void;
+  logout(): Promise<void>;
   onAuth: (payload: OnAuthPayload) => void;
 }
 

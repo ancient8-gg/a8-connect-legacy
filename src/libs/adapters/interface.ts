@@ -1,5 +1,5 @@
 /**
- * Defind Adapter Style
+ * Define Adapter Style
  */
 export interface AdapterStyle {
   icon: string;
@@ -9,12 +9,13 @@ export interface AdapterStyle {
 }
 
 /**
- * Defind chain type
- * Includes two main chain: Solana chain and Ethererum chain
+ * Define chain type
+ * Includes two main chain: Solana chain and Ethereum chain
  */
 export enum ChainType {
   EVM = "AUTH_TYPE::EVM_CHAIN",
   SOL = "AUTH_TYPE::SOLANA",
+  ALL = "AUTH_TYPE::ALL",
 }
 
 /**

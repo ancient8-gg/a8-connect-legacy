@@ -21,7 +21,7 @@ export const SignWalletScreen: FC = () => {
 
   const handleOnSigned = useCallback(
     async (signature: string) => {
-      if (chainType === "all") return;
+      if (chainType === ChainType.ALL) return;
 
       const credential: WalletCredentialAuthDto = {
         authChallengeId: authChallenge._id,
@@ -42,7 +42,7 @@ export const SignWalletScreen: FC = () => {
         return;
       }
 
-      await location.push(WELCOME_APP_SCREEN_KEY);
+      location.push(WELCOME_APP_SCREEN_KEY);
     },
     [chainType, authChallenge, existedWallet]
   );

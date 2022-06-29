@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { useLocation } from "../../hooks/router";
 import TopGradientBorder from "../../assets/images/top-gradient-border.svg";
 import BottomGradientBorder from "../../assets/images/bottom-gradient-border.svg";
-import BackBtnImage from "../../assets/images/back-btn.png";
+import { ModalHeader } from "./modal.header";
 
 export interface ModalProps {
   containerClassName?: string;
@@ -55,21 +55,12 @@ const Modal: FC<ModalProps> = ({
           className={classnames("polygon-modal", containerClassName)}
         >
           <div className="polygon-modal-child pt-[10px] pb-[30px] ">
-            {isBack && (
-              <img
-                className="absolute left-[20px] top-[20px] cursor-pointer"
-                src={BackBtnImage}
-                onClick={() => location.goBack()}
-              />
-            )}
-            <div className="flow-root">
-              <button
-                onClick={() => onCloseModal()}
-                className="float-right text-[25px] text-primary-super mr-[20px]"
-              >
-                <i className="bx bx-x"></i>
-              </button>
-            </div>
+            <ModalHeader
+              onCloseModal={onCloseModal}
+              isBack={isBack}
+              goBack={() => location.goBack()}
+            />
+
             <div className="content px-[20px]">{children}</div>
           </div>
         </div>

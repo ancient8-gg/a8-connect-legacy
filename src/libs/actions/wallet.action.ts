@@ -186,11 +186,11 @@ export class WalletAction {
   /**
    * Get all wallet adapters, or with specific chain type condition.
    */
-  getWalletAdapters(type: "all" | ChainType = "all"): BaseWalletAdapter[] {
+  getWalletAdapters(type: ChainType = ChainType.ALL): BaseWalletAdapter[] {
     return Object.keys(this.supportedWallets)
       .map((walletName: string) => this.supportedWallets[walletName])
       .filter((walletProvider) => {
-        if (type === "all") return true;
+        if (type === ChainType.ALL) return true;
         return walletProvider.chainType === type;
       });
   }

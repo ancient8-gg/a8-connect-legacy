@@ -11,7 +11,7 @@ const A8Connect: FC<{
   onClose: () => void;
   onAuth: (payload: OnAuthPayload) => void;
   onConnected: (payload: ConnectedWalletPayload) => void;
-  selectedChainType: ChainType | "all";
+  selectedChainType: ChainType;
 }> = ({ onAuth, onConnected, selectedChainType, onClose }) => {
   return (
     <div className="layout">

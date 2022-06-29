@@ -6,11 +6,15 @@ import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 import EvmChainPreviewIcon from "../assets/images/evm-chain-preview.png";
 import SolChainPreviewIcon from "../assets/images/sol-chain-preview.png";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
+import { useSession } from "../hooks/useSession";
+import { SdkMethod } from "../libs/dto/entities";
+import { makeShorter } from "../utils";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
 export const BaseWalletSelect: FC = () => {
   const { chainType, getAdapters, setWalletName } = useWallet();
+  const { userInfo, sdkMethod } = useSession();
   const location = useLocation();
 
   const handleClickWallet = (walletName: string) => {
@@ -39,6 +43,16 @@ export const BaseWalletSelect: FC = () => {
             <img src={SolChainPreviewIcon} className="mx-auto w-[40px]" />
           )}
         </div>
+
+        {sdkMethod === SdkMethod.connect && (
+          <p className="mx-auto text-[16px] text-center text-white">
+            Currently logged into the UID:
+            <span className="text-primary ml-[3px]">
+              {makeShorter(userInfo?._id)}
+            </span>
+          </p>
+        )}
+
         <div className="pt-[30px]">
           <p className="mx-auto text-primary text-[20px] font-bold text-center">
             Select wallet provider

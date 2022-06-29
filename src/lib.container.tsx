@@ -12,7 +12,7 @@ import {
 import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
 
 export interface A8ConnectInitOptions {
-  chainType: ChainType | "all";
+  chainType: ChainType;
   networkType: NetworkType;
   onClose: () => void;
 }

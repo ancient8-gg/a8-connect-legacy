@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, FC } from "react";
+import { useEffect, useState, useMemo, FC, useCallback } from "react";
 import { getAuthAction } from "../libs/actions/";
 import { useLocation } from "../hooks/router";
 import { useSession } from "../hooks/useSession";
@@ -42,16 +42,21 @@ export const SignWalletConnectUID: FC = () => {
     );
 
     if (loginResponse.accessToken) {
-      await location.push(WELCOME_APP_SCREEN_KEY);
+      location.push(WELCOME_APP_SCREEN_KEY);
     }
   };
 
   const handleConnectNewWallet = async (createAuthDto: CreateAuthDto) => {
     const authEntity = await authAction.connectWallet(createAuthDto);
     if (authEntity) {
-      await location.push(WELCOME_APP_SCREEN_KEY);
+      location.push(WELCOME_APP_SCREEN_KEY);
     }
   };
+
+  const handleLogout = useCallback(async () => {
+    await logout();
+    location.goBack();
+  }, [logout, location]);
 
   const handleSign = async () => {
     setSigning(true);
@@ -216,7 +221,10 @@ export const SignWalletConnectUID: FC = () => {
           <p className="text-center text-[14px] text-white">
             Having trouble?
             {isBelongedError ? (
-              <a className="text-primary underline" onClick={() => logout()}>
+              <a
+                className="text-primary underline"
+                onClick={() => handleLogout()}
+              >
                 {" "}
                 Logout UID
               </a>

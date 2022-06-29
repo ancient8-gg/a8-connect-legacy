@@ -30,6 +30,11 @@ export interface RouterContextObject {
    * @details Handle goback and push screen value
    */
   setPipe: Dispatch<SetStateAction<ScreenType[]>>;
+
+  /**
+   * The property to indicate whether the previous screen is back-able
+   */
+  isBack: boolean;
 }
 
 export const RouterContext = createContext<RouterContextObject>(null);
@@ -38,14 +43,25 @@ export interface LocationContextObject {
   /**
    * @description Handle go back screen
    */
-  goBack(): Promise<void>;
+  goBack(): void;
+
+  /**
+   * @description Handle go back screen with a callback
+   */
+  goBackWithCallback(callback: () => void): void;
 
   /**
    * @description Handle transit to another screen
    * @param key
    * @param deleted Check if want to destroy current screen before move to next screen
    */
-  push(key: string, deleted?: boolean | false): Promise<void>;
+  push(key: string, deleted?: boolean | false): void;
+
+  /**
+   * The function to set a go back callback
+   * @param func
+   */
+  setGoBackCallback(func: () => void | null): void;
 }
 
 export const LocationContext = createContext<LocationContextObject>(null);

@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useCallback, useEffect, useMemo } from "react";
 
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters";
@@ -7,33 +7,56 @@ import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
 import A8Logo from "../assets/images/a8-logo.png";
 import SolBtnImage from "../assets/images/sol-btn.png";
 import EvmBtnImage from "../assets/images/evm-btn.png";
+import { useSession } from "../hooks/useSession";
+import { SdkMethod } from "../libs/dto/entities";
+import { makeShorter } from "../utils";
 
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: FC = () => {
   const { setChainType, chainType } = useWallet();
   const location = useLocation();
+  const { sdkMethod, userInfo } = useSession();
 
-  useEffect(() => {
-    if (chainType !== "all") {
-      location.push(BASE_WALLET_SELECT_SCREEN_KEY);
-    }
+  const targetScreen = useMemo(() => {
+    return BASE_WALLET_SELECT_SCREEN_KEY;
   }, []);
 
-  const handleClickChain = (chainType: ChainType) => {
-    setChainType(chainType);
-    location.push(BASE_WALLET_SELECT_SCREEN_KEY);
-  };
+  useEffect(() => {
+    (async () => {
+      if (chainType !== ChainType.ALL) {
+        location.push(targetScreen);
+      }
+    })();
+  }, [targetScreen]);
+
+  const handleClickChain = useCallback(
+    async (chainType: ChainType) => {
+      setChainType(chainType);
+      location.push(targetScreen);
+    },
+    [targetScreen, chainType]
+  );
 
   return (
     <div className="base-welcome-screen w-full pt-[30px]">
       <div className="mx-auto w-[350px]">
         <img src={A8Logo} className="mx-[auto]" />
-        <p className="text-center text-primary text-[20px] font-bold">
-          WELCOME TO
-          <br />
-          ANCIENT8 USER IDENTITY
-        </p>
+        {sdkMethod === SdkMethod.login ? (
+          <p className="text-center text-primary text-[20px] font-bold">
+            WELCOME TO
+            <br />
+            ANCIENT8 USER IDENTITY
+          </p>
+        ) : (
+          <p className="mx-auto text-[16px] text-center text-white">
+            Currently logged into the UID:
+            <span className="text-primary ml-[3px]">
+              {makeShorter(userInfo?._id)}
+            </span>
+          </p>
+        )}
+
         <p className="text-white text-center text-[16px] mt-[20px]">
           Please select desired chain below
         </p>

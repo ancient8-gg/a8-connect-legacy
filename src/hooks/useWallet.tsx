@@ -10,7 +10,7 @@ import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 
 interface WalletContextProps {
-  chainType: ChainType | "all";
+  chainType: ChainType;
   walletName: string;
   walletAddress: string;
   getWalletAdapter(walletName: string): BaseWalletAdapter;
@@ -31,11 +31,9 @@ export const WalletProvider = ({
 }: {
   children: ReactNode;
   onConnected: (payload: ConnectedWalletPayload | null) => void;
-  selectedChainType: ChainType | "all";
+  selectedChainType: ChainType;
 }) => {
-  const [chainType, setChainType] = useState<ChainType | "all">(
-    selectedChainType
-  );
+  const [chainType, setChainType] = useState<ChainType>(selectedChainType);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
 

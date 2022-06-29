@@ -40,6 +40,14 @@ export const RouterProvider: FC<ProviderProps> = () => {
     return screenPipe[screenPipe.length - 1].children;
   }, [screenPipe, setPipe]);
 
+  const isBack = useMemo(() => {
+    return (
+      screenPipe.length > 1 &&
+      screenPipe[screenPipe.length - 1].key !==
+        SCREEN_KEYS.WELCOME_APP_SCREEN_KEY
+    );
+  }, [screenPipe]);
+
   useEffect(() => {
     const screens =
       sdkMethod === SdkMethod.connect
@@ -56,11 +64,7 @@ export const RouterProvider: FC<ProviderProps> = () => {
         <Modal
           modalIsOpen={modalIsOpen}
           onCloseModal={() => setModalIsOpen(false)}
-          isBack={
-            screenPipe.length > 1 &&
-            screenPipe[screenPipe.length - 1].key !==
-              SCREEN_KEYS.WELCOME_APP_SCREEN_KEY
-          }
+          isBack={isBack}
         >
           {CurrentScreen && <CurrentScreen />}
         </Modal>
@@ -76,6 +80,7 @@ export const RouterProvider: FC<ProviderProps> = () => {
         screenPipe,
         currentScreen: CurrentScreen,
         setPipe,
+        isBack,
       }}
     >
       {layout}
@@ -85,15 +90,21 @@ export const RouterProvider: FC<ProviderProps> = () => {
 
 export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   const { screens, screenPipe, setPipe } = useRouter();
+  const [goBackCallback, setGoBackCallback] = useState(null);
 
-  const goBack = async () => {
+  const goBack = useCallback(() => {
     const _pipe = [...screenPipe];
     _pipe.pop();
     setPipe(_pipe);
-  };
+  }, [screenPipe, setPipe]);
+
+  const goBackWithCallback = useCallback(() => {
+    goBackCallback && goBackCallback();
+    goBack();
+  }, [goBack, goBackCallback]);
 
   const push = useCallback(
-    async (key: string, deleted?: boolean | false) => {
+    (key: string, deleted?: boolean | false) => {
       const screen = screens.find((screen) => screen.key === key);
 
       if (!screen) {
@@ -113,8 +124,10 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   return (
     <LocationContext.Provider
       value={{
+        setGoBackCallback: setGoBackCallback,
         goBack,
         push,
+        goBackWithCallback,
       }}
     >
       {children as ReactNode}

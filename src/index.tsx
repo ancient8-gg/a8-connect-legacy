@@ -1,5 +1,6 @@
 import { render } from "react-dom";
 import A8ConnectContainer from "./container";
+import { ChainType } from "./libs/adapters";
 
 const rootDOM = document.getElementById("a8-connect");
 if (rootDOM !== null) {
@@ -8,7 +9,7 @@ if (rootDOM !== null) {
       onClose={() => {}}
       onAuth={() => {}}
       onConnected={() => {}}
-      selectedChainType={"all"}
+      selectedChainType={ChainType.ALL}
     />,
     rootDOM
   );
