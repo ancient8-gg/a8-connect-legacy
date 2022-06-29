@@ -81,7 +81,7 @@ export class UserProvider extends BusinessProvider {
       `/user/profile/auth-entities/${authId}/make-primary`,
       {
         method: "POST",
-        body: "",
+        body: "{}",
       }
     );
   }
@@ -106,7 +106,7 @@ export class UserProvider extends BusinessProvider {
       `/user/profile/init-kyc-session`,
       {
         method: "POST",
-        body: "",
+        body: "{}",
       }
     );
   }
