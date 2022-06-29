@@ -1,4 +1,11 @@
-import { createContext, FC, ReactNode, useCallback, useContext } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import { OnAuthPayload } from "./useSession";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 
@@ -14,6 +21,8 @@ interface AppStateContextProvider {
   onError: (error: Error) => void;
   onAuth: (payload: OnAuthPayload) => void;
   onConnected: (payload: ConnectedWalletPayload) => void;
+  isReady: boolean;
+  setReady: (val: boolean) => void;
 }
 
 const AppStateContext = createContext<AppStateContextProvider>(null);
@@ -23,6 +32,8 @@ export const AppStateProvider: FC<
     children: ReactNode;
   } & AppStateContextProviderProps
 > = (props) => {
+  const [isReady, setReady] = useState(false);
+
   const onAuth = useCallback(
     (payload: OnAuthPayload) => {
       // do something before emit events
@@ -67,6 +78,8 @@ export const AppStateProvider: FC<
         onError,
         onConnected,
         onClose,
+        setReady,
+        isReady,
       }}
     >
       {props.children}

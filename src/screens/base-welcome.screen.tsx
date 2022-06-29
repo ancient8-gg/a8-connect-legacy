@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo } from "react";
 
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters";
-import { useLocation } from "../hooks/router";
+import { useLocation, useRouter } from "../hooks/router";
 import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
 import A8Logo from "../assets/images/a8-logo.png";
 import SolBtnImage from "../assets/images/sol-btn.png";
@@ -10,12 +10,15 @@ import EvmBtnImage from "../assets/images/evm-btn.png";
 import { useSession } from "../hooks/useSession";
 import { SdkMethod } from "../libs/dto/entities";
 import { makeShorter } from "../utils";
+import { useAppState } from "../hooks/useAppState";
 
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: FC = () => {
+  const { isReady } = useAppState();
   const { setChainType, chainType } = useWallet();
   const { sdkMethod, userInfo } = useSession();
+  const { isRouterReady } = useRouter();
   const location = useLocation();
 
   const targetScreen = useMemo(() => {
@@ -23,12 +26,11 @@ export const BaseWelcomeScreen: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (chainType !== ChainType.ALL) {
-      setTimeout(() => {
-        location.push(targetScreen);
-      }, 300);
+    console.log({ isReady });
+    if (chainType !== ChainType.ALL && isReady && isRouterReady) {
+      location.push(targetScreen);
     }
-  }, [chainType]);
+  }, [isReady, isRouterReady]);
 
   const handleClickChain = useCallback(
     (chainType: ChainType) => {

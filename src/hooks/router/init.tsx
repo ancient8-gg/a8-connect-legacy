@@ -74,6 +74,10 @@ export const SCREENS: Record<Flows, ScreenType[]> = {
       children: BaseWelcomeScreen,
     },
     {
+      key: BASE_WALLET_SELECT_SCREEN_KEY,
+      children: BaseWalletSelect,
+    },
+    {
       key: BASE_CONNECT_UID_SCREEN_KEY,
       children: BaseConnectUIDScreen,
     },

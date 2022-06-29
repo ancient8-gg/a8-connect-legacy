@@ -28,10 +28,11 @@ export const SessionProvider: FC<{
   const userAction = getUserAction();
   const authAction = getAuthAction();
 
-  const { onAuth } = useAppState();
+  const { onAuth, isReady, setReady } = useAppState();
+
   const [userInfo, setUserInfo] = useState<UserInfo>(null);
   const [authEntities, setAuthEntities] = useState<AuthEntity[]>([]);
-  const [sdkMethod, setSdkMethod] = useState<SdkMethod>();
+  const [sdkMethod, setSdkMethod] = useState<SdkMethod>(SdkMethod.login);
 
   const logout = useCallback(async () => {
     await authAction.logout();
@@ -43,7 +44,6 @@ export const SessionProvider: FC<{
       try {
         const userInfo = await userAction.getUserProfile();
 
-        console.log({ userInfo });
         if (userInfo && userInfo._id) {
           setSdkMethod(SdkMethod.connect);
           setUserInfo(userInfo);
@@ -53,12 +53,15 @@ export const SessionProvider: FC<{
           setAuthEntities(authEntities);
 
           onAuth && onAuth(userInfo);
-          return;
         }
       } catch {
         setSdkMethod(SdkMethod.login);
         setUserInfo(null);
         onAuth && onAuth(null);
+      }
+
+      if (!isReady) {
+        setReady(true);
       }
     })();
   }, []);
