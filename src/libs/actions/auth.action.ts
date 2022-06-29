@@ -27,9 +27,9 @@ export class AuthAction extends OffChainAction {
   async isWalletExisted(walletAddress: string): Promise<boolean> {
     try {
       await this.userProvider.validateWalletAddress(walletAddress);
-      return true;
-    } catch {
       return false;
+    } catch {
+      return true;
     }
   }
 

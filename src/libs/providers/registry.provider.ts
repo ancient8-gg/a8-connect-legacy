@@ -8,8 +8,8 @@ export type RegistryOptions = {
 };
 
 export const BaseUrl = {
-  [NetworkType.testnet]: "https://dev-id-api.ancient8.gg/api",
-  [NetworkType.mainnet]: "https://ancient8.gg/api",
+  [NetworkType.testnet]: "https://dev-id.ancient8.gg/profile/api",
+  [NetworkType.mainnet]: "https://ancient8.gg/profile/api",
 };
 
 /**

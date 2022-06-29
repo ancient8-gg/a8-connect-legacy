@@ -1,12 +1,12 @@
 {
   "name": "@ancient8/connect",
-  "version": "1.0.4",
+  "version": "1.0.23",
   "author": "Ancient8 Developer <dev@ancient8.gg>",
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
   "sideEffects": false,
-  "main:umd": "dist/index.js",
-  "types": "index.d.ts",
+  "main": "dist/lib.entrypoint.js",
+  "types": "dist/lib.entrypoint.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -80,7 +80,7 @@
     "format": "prettier --write ./**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint \"**/*.ts\" \"**/*.tsx\" --fix",
     "prepare": "husky install",
-    "gen-doc": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/ src/",
+    "gen-doc": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/docs/ src/",
     "build-lib": "rollup -c && yarn gen-doc"
   },
   "browserslist": {

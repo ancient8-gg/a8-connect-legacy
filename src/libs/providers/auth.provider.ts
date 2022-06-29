@@ -57,6 +57,7 @@ export class AuthProvider extends BusinessProvider {
       `/auth/challenge/${encodeURIComponent(target)}`,
       {
         method: "POST",
+        body: "{}",
       }
     );
   }
@@ -70,6 +71,7 @@ export class AuthProvider extends BusinessProvider {
       `/auth/send-email-otp/${encodeURIComponent(email)}`,
       {
         method: "POST",
+        body: "{}",
       }
     );
   }
@@ -83,6 +85,7 @@ export class AuthProvider extends BusinessProvider {
       `/auth/send-connect-wallet-link/${encodeURIComponent(email)}`,
       {
         method: "POST",
+        body: "{}",
       }
     );
   }
@@ -100,7 +103,7 @@ export class AuthProvider extends BusinessProvider {
 
   /**
    * The function to connect user wallet using credential from wallet signature.
-   * @param payload
+   * @param createAuthPayload
    */
   connectWallet(createAuthPayload: CreateAuthDto): Promise<AuthEntity> {
     return this.requestWithCredential<AuthEntity>("/auth/connect-wallet", {
@@ -115,6 +118,7 @@ export class AuthProvider extends BusinessProvider {
   logout(): Promise<void> {
     return this.requestWithCredential<void>("/auth/logout", {
       method: "POST",
+      body: "{}",
     });
   }
 }

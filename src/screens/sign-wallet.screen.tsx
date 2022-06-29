@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AuthChallenge, AuthType, LoginResponse } from "../libs/dto/entities";
 import { BaseSignWalletScreen } from "./base-sign-wallet.screen";
 import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto";
@@ -19,34 +19,39 @@ export const SignWalletScreen: React.FC = () => {
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const authAction = getAuthAction();
 
-  const handleOnSigned = async (signature: string) => {
-    if (chainType === "all") return;
+  const handleOnSigned = useCallback(
+    async (signature: string) => {
+      if (chainType === "all") return;
 
-    const credential: WalletCredentialAuthDto = {
-      authChallengeId: authChallenge._id,
-      walletAddress: authChallenge.target,
-      signedData: signature,
-    };
+      const credential: WalletCredentialAuthDto = {
+        authChallengeId: authChallenge._id,
+        walletAddress: authChallenge.target,
+        signedData: signature,
+      };
 
-    // TODO: refactor using AuthType instead of ChainType
-    const type =
-      chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
+      // TODO: refactor using AuthType instead of ChainType
+      const type =
+        chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
 
-    const response: LoginResponse = existedWallet
-      ? await authAction.signIn({ type: type, credential: credential })
-      : await authAction.signUp({ type: type, credential: credential });
+      console.log({ existedWallet });
+      const response: LoginResponse = existedWallet
+        ? await authAction.signIn({ type: type, credential: credential })
+        : await authAction.signUp({ type: type, credential: credential });
 
-    if (!response.accessToken) {
-      // Login failed
-      return;
-    }
+      if (!response.accessToken) {
+        // Login failed
+        return;
+      }
 
-    location.push(WELCOME_APP_SCREEN_KEY);
-  };
+      await location.push(WELCOME_APP_SCREEN_KEY);
+    },
+    [chainType, authChallenge, existedWallet]
+  );
 
   useEffect(() => {
     (async () => {
       const existedWallet = await authAction.isWalletExisted(walletAddress);
+      console.log({ existedWallet });
 
       const authChallengeData = await authAction.sendChallenge(walletAddress);
 

@@ -7,23 +7,36 @@ export { WalletAction } from "./wallet.action";
 export { AuthAction } from "./auth.action";
 export { UserAction } from "./user.action";
 
+let authAction: AuthAction;
+let walletAction: WalletAction;
+let userAction: UserAction;
+
 /**
  * The function to get auth action
  */
 export const getAuthAction = () => {
-  return new AuthAction(RegistryProvider.getInstance().networkType);
+  if (!authAction) {
+    authAction = new AuthAction(RegistryProvider.getInstance().networkType);
+  }
+  return authAction;
 };
 
 /**
  * The function to get wallet action
  */
 export const getWalletAction = () => {
-  return new WalletAction();
+  if (!walletAction) {
+    walletAction = new WalletAction();
+  }
+  return walletAction;
 };
 
 /**
  * The wallet to get user action
  */
 export const getUserAction = () => {
-  return new UserAction(RegistryProvider.getInstance().networkType);
+  if (!userAction) {
+    userAction = new UserAction(RegistryProvider.getInstance().networkType);
+  }
+  return userAction;
 };

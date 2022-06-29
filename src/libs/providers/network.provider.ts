@@ -4,6 +4,13 @@ export type NetworkOptions = {
   networkType?: NetworkType;
 } & RequestInit;
 
+export interface ErrorResponse {
+  statusCode: string;
+  path: string;
+  errorType: string;
+  errorMessage: string;
+}
+
 export class NetworkProvider {
   private readonly instance: typeof fetch;
   private readonly networkOptions: NetworkOptions;
@@ -27,18 +34,11 @@ export class NetworkProvider {
 
     delete initialSettings.networkType;
 
-    if (
-      !init.body &&
-      (initialSettings.headers as Record<string, string>)["Content-Type"] !==
-        "multipart/form-data"
-    ) {
-      delete (initialSettings.headers as Record<string, string>)[
-        "Content-Type"
-      ];
-    }
-
     const resp = await this.instance(endpoint, initialSettings);
-    return (await resp.json()) as T;
+    const jsonData = await resp.json();
+
+    if (!resp.ok) throw new Error((jsonData as ErrorResponse).errorMessage);
+    return jsonData as T;
   }
 }
 

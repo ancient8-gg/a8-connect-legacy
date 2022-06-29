@@ -35,7 +35,8 @@ export const SessionProvider: React.FC<{
       try {
         const userInfo = await userAction.getUserProfile();
 
-        if (userInfo._id) {
+        console.log({ userInfo });
+        if (userInfo && userInfo._id) {
           setSdkMethod(SdkMethod.connect);
           setUserInfo(userInfo);
 
@@ -48,6 +49,7 @@ export const SessionProvider: React.FC<{
         }
       } catch {
         setSdkMethod(SdkMethod.login);
+        setUserInfo(null);
         onAuth && onAuth(null);
       }
     })();

@@ -127,7 +127,7 @@ export class WalletAction {
    * Disconnect selected wallet and select a new wallet.
    * @param walletName
    */
-  connectWallet(walletName: string) {
+  async connectWallet(walletName: string) {
     /**
      * Select new wallet.
      */
@@ -136,22 +136,22 @@ export class WalletAction {
     /**
      * Disconnect selected wallet if applicable.
      */
-    this.disconnectWallet();
+    await this.disconnectWallet();
 
     /**
      * Connect new wallet.
      */
     this.ensureWalletIsAvailable();
-    this.selectedAdapter.connectWallet();
+    return this.selectedAdapter.connectWallet();
   }
 
   /**
    * Disconnect selected wallet.
    */
-  disconnectWallet() {
+  async disconnectWallet() {
     try {
       this.ensureWalletIsAvailable();
-      this.selectedAdapter.disconnectWallet();
+      return this.selectedAdapter.disconnectWallet();
     } catch {}
   }
 

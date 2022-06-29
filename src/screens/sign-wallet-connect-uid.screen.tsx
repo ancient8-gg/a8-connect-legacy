@@ -18,7 +18,7 @@ import {
 import WalletImage from "../assets/images/wallet.png";
 import { ChainType } from "../libs/adapters/";
 
-export const SING_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
+export const SIGN_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
 
 export const SignWalletConnectUID: React.FC = () => {
   const [description, setDescription] = useState<string>("");
@@ -37,11 +37,11 @@ export const SignWalletConnectUID: React.FC = () => {
   };
 
   const handleLogin = async (createAuthDto: CreateAuthDto) => {
-    const logiResponse = await authAction.signIn(
+    const loginResponse = await authAction.signIn(
       createAuthDto as LoginWalletAuthDto
     );
 
-    if (logiResponse.accessToken) {
+    if (loginResponse.accessToken) {
       await location.push(WELCOME_APP_SCREEN_KEY);
     }
   };

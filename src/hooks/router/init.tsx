@@ -32,7 +32,7 @@ import {
 
 import {
   SignWalletConnectUID,
-  SING_WALLET_CONNECT_UID_KEY,
+  SIGN_WALLET_CONNECT_UID_KEY,
 } from "../../screens/sign-wallet-connect-uid.screen";
 
 export const SCREEN_KEYS = {
@@ -78,7 +78,7 @@ export const SCREENS: Record<Flows, ScreenType[]> = {
       children: ConnectWalletScreen,
     },
     {
-      key: SING_WALLET_CONNECT_UID_KEY,
+      key: SIGN_WALLET_CONNECT_UID_KEY,
       children: SignWalletConnectUID,
     },
     {

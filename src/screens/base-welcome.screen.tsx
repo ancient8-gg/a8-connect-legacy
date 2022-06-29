@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useWallet } from "../hooks/useWallet";
-import { ChainType } from "../libs/adapters/interface";
+import { ChainType } from "../libs/adapters";
 import { useLocation } from "../hooks/router";
 import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
 import A8Logo from "../assets/images/a8-logo.png";

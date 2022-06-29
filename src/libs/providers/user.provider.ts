@@ -81,6 +81,7 @@ export class UserProvider extends BusinessProvider {
       `/user/profile/auth-entities/${authId}/make-primary`,
       {
         method: "POST",
+        body: "",
       }
     );
   }
@@ -105,6 +106,7 @@ export class UserProvider extends BusinessProvider {
       `/user/profile/init-kyc-session`,
       {
         method: "POST",
+        body: "",
       }
     );
   }
@@ -118,6 +120,7 @@ export class UserProvider extends BusinessProvider {
       `/user/validate/username/${encodeURIComponent(username)}`,
       {
         method: "POST",
+        body: "{}",
       }
     );
   }
@@ -131,6 +134,7 @@ export class UserProvider extends BusinessProvider {
       `/user/validate/wallet-address/${encodeURIComponent(walletAddress)}`,
       {
         method: "POST",
+        body: "{}",
       }
     );
   }

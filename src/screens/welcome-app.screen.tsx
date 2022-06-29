@@ -1,3 +1,4 @@
+import React from "react";
 export const WELCOME_APP_SCREEN_KEY = "WELCOME_APP_SCREEN";
 
 export const WelcomeAppScreen: React.FC = () => {

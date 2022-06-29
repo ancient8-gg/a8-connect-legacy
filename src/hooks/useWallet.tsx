@@ -60,7 +60,6 @@ export const WalletProvider = ({
       return walletAddress;
     } catch {
       onConnected(null);
-
       return null;
     }
   }, [walletName]);

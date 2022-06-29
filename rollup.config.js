@@ -12,7 +12,7 @@ import image from "@rollup/plugin-image";
 import copy from "rollup-plugin-copy";
 
 export default {
-  input: ["./src/index.ts"],
+  input: ["./src/lib.entrypoint.ts"],
   output: [
     {
       dir: "dist",
@@ -49,6 +49,7 @@ export default {
       extract: "lib.css",
       plugins: [
         url({
+          include: ["./src/assets/fonts/*.otf"],
           url: "inline",
           basePath: "./",
         }),

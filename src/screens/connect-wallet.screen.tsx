@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { SING_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { SIGN_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
 import { useLocation } from "../hooks/router";
 import { PolygonButton } from "../components/button";
@@ -22,7 +22,7 @@ export const ConnectWalletScreen: React.FC = () => {
     return getWalletAdapter(walletName);
   }, [walletName]);
 
-  const handleConnect = async () => {
+  const handleConnect = useCallback(async () => {
     const walletAddress = await connect();
     if (!walletAddress) {
       setConnectedError(true);
@@ -30,7 +30,7 @@ export const ConnectWalletScreen: React.FC = () => {
     }
 
     setConnected(true);
-  };
+  }, [connect]);
 
   useEffect(() => {
     handleConnect();
@@ -42,11 +42,11 @@ export const ConnectWalletScreen: React.FC = () => {
       location.push(
         sdkMethod === SdkMethod.login
           ? SIGN_WALLET_SCREEN_KEY
-          : SING_WALLET_CONNECT_UID_KEY,
+          : SIGN_WALLET_CONNECT_UID_KEY,
         true
       );
     }
-  }, [connected]);
+  }, [connected, sdkMethod, location]);
 
   return (
     <div className="sign-wallet-screen w-full pt-[30px]">

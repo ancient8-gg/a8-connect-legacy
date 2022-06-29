@@ -87,6 +87,7 @@ export const LocationProvider: React.FC<ProviderProps> = ({ children }) => {
   const push = useCallback(
     async (key: string, deleted?: boolean | false) => {
       const screen = screens.find((screen) => screen.key === key);
+      console.log({ screens, key, deleted, screen });
 
       if (!screen) {
         throw new Error(NOT_FOUND_CONTEXT_SCREEN);

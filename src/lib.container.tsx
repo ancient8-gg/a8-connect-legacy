@@ -100,7 +100,10 @@ export class A8Connect {
    * @private
    */
   private onAuth(payload: UserInfo | null): void {
-    this.currentSession.sessionUser = payload;
+    this.currentSession = {
+      ...this.currentSession,
+      sessionUser: payload,
+    };
   }
 
   /**
@@ -109,6 +112,9 @@ export class A8Connect {
    * @private
    */
   private onConnected(payload: ConnectedWalletPayload | null): void {
-    this.currentSession.connectedWallet = payload;
+    this.currentSession = {
+      ...this.currentSession,
+      connectedWallet: payload,
+    };
   }
 }
