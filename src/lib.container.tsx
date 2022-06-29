@@ -61,9 +61,6 @@ export class A8Connect {
     // initialize registry first
     this.initializeRegistryAndSession(options);
 
-    // now to restore previous session
-    await this.restoreSession();
-
     // render DOM
     if (rootDOM !== null) {
       render(
@@ -118,7 +115,7 @@ export class A8Connect {
    * The function to restore session if possible, can be fail-safe
    * @private
    */
-  private async restoreSession(): Promise<void> {
+  async restoreSession(): Promise<void> {
     /**
      * Restore wallet connection first
      */
