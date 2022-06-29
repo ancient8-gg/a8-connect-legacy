@@ -1,11 +1,11 @@
 import { FC, useMemo } from "react";
-import { useLocation } from "../hooks/router";
 import { useWallet } from "../hooks/useWallet";
 import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 import { useSession } from "../hooks/useSession";
 import { makeShorter } from "../utils";
 import { BaseWalletAdapter } from "../libs/adapters";
+import { useLocation } from "../components/router";
 
 export const BASE_CONNECT_UID_SCREEN_KEY = "BASE_CONNECT_UID_SCREEN";
 

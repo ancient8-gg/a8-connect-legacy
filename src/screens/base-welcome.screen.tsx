@@ -2,7 +2,6 @@ import { FC, useCallback, useEffect, useMemo } from "react";
 
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters";
-import { useLocation, useRouter } from "../hooks/router";
 import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
 import A8Logo from "../assets/images/a8-logo.png";
 import SolBtnImage from "../assets/images/sol-btn.png";
@@ -11,6 +10,7 @@ import { useSession } from "../hooks/useSession";
 import { SdkMethod } from "../libs/dto/entities";
 import { makeShorter } from "../utils";
 import { useAppState } from "../hooks/useAppState";
+import { useLocation, useRouter } from "../components/router";
 
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 

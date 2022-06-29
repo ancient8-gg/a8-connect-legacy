@@ -1,11 +1,11 @@
 import { CSSProperties, FC, ReactNode, useCallback } from "react";
 import ReactModal from "react-modal";
 import classnames from "classnames";
-import { useLocation } from "../../hooks/router";
 import TopGradientBorder from "../../assets/images/top-gradient-border.svg";
 import BottomGradientBorder from "../../assets/images/bottom-gradient-border.svg";
 import { ModalHeader } from "./modal.header";
 import { useAppState } from "../../hooks/useAppState";
+import { useLocation } from "../router";
 
 export interface ModalProps {
   containerClassName?: string;

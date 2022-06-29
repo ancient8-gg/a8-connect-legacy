@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo, FC, useCallback } from "react";
 import { getAuthAction } from "../libs/actions/";
-import { useLocation } from "../hooks/router";
 import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
 import { makeShorter } from "../utils";
@@ -17,6 +16,7 @@ import {
 } from "../libs/dto/entities";
 import WalletImage from "../assets/images/wallet.png";
 import { ChainType } from "../libs/adapters/";
+import { useLocation } from "../components/router";
 
 export const SIGN_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
 

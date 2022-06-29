@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { WalletProvider } from "./hooks/useWallet";
-import { RouterProvider } from "./hooks/router";
 import { OnAuthPayload, SessionProvider } from "./hooks/useSession";
 import { ChainType } from "./libs/adapters";
 import { ConnectedWalletPayload } from "./libs/dto/a8-connect-session.dto";
+import { AppStateProvider } from "./hooks/useAppState";
+import { RouterProvider } from "./hooks/useRouter";
 
 import "./index.css";
-import { AppStateProvider } from "./hooks/useAppState";
 
 const A8Connect: FC<{
   selectedChainType: ChainType;

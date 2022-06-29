@@ -1,13 +1,13 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { SIGN_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
-import { useLocation } from "../hooks/router";
 import { PolygonButton } from "../components/button";
 import { useWallet } from "../hooks/useWallet";
 import { useSession } from "../hooks/useSession";
 import { SdkMethod } from "../libs/dto/entities";
 import A8ConnectImage from "../assets/images/a8-connect.png";
 import { BaseWalletAdapter } from "../libs/adapters";
+import { useLocation } from "../components/router";
 
 export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 

@@ -1,5 +1,4 @@
 import { FC, useMemo } from "react";
-import { useLocation } from "../hooks/router";
 import { useWallet } from "../hooks/useWallet";
 import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
@@ -9,6 +8,7 @@ import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 import { useSession } from "../hooks/useSession";
 import { SdkMethod } from "../libs/dto/entities";
 import { makeShorter } from "../utils";
+import { useLocation } from "../components/router";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 

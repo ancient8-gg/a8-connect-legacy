@@ -4,11 +4,11 @@ import { BaseSignWalletScreen } from "./base-sign-wallet.screen";
 import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto";
 import { WELCOME_APP_SCREEN_KEY } from "./welcome-app.screen";
 import { BaseLoadingScreen } from "./base-loading.screen";
-import { useLocation } from "../hooks/router";
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters";
 import { useSession } from "../hooks/useSession";
 import { getAuthAction } from "../libs/actions";
+import { useLocation } from "../components/router";
 
 export const SIGN_WALLET_SCREEN_KEY = "SIGN_WALLET_SCREEN";
 

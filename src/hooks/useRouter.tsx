@@ -7,18 +7,18 @@ import {
   FunctionComponent,
   ReactNode,
 } from "react";
-import { SCREENS, SCREEN_KEYS } from "./init";
 import {
-  RouterContext,
   LocationContext,
+  NOT_FOUND_CONTEXT_SCREEN,
   ProviderProps,
+  RouterContext,
   ScreenType,
   useRouter,
-  NOT_FOUND_CONTEXT_SCREEN,
-} from "./";
-import Modal from "../../components/modal";
-import { useSession } from "../useSession";
-import { SdkMethod } from "../../libs/dto/entities";
+} from "../components/router";
+import { useSession } from "./useSession";
+import { SCREEN_KEYS, SCREENS } from "../components/router/init";
+import { SdkMethod } from "../libs/dto/entities";
+import Modal from "../components/modal";
 
 export const RouterProvider: FC<ProviderProps> = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
