@@ -55,11 +55,14 @@ export class A8Connect {
    * Consequently, the session will be stored inside the A8ConnectContainer after connecting wallet/login action.
    * @param options
    */
-  public init(options: A8ConnectInitOptions): () => void {
+  public async init(options: A8ConnectInitOptions): Promise<() => void> {
     const rootDOM = document.getElementById(this.rootSelectorId);
 
     // initialize registry first
     this.initializeRegistryAndSession(options);
+
+    // now to restore previous session
+    await this.restoreSession();
 
     // render DOM
     if (rootDOM !== null) {
@@ -86,6 +89,11 @@ export class A8Connect {
     throw new Error(`Root document #${this.rootSelectorId} not found`);
   }
 
+  /**
+   * Initialize registry and session
+   * @param options
+   * @private
+   */
   private initializeRegistryAndSession(options: A8ConnectInitOptions) {
     const registryInstance = RegistryProvider.getInstance();
 
@@ -104,6 +112,30 @@ export class A8Connect {
       connectedWallet: null,
       sessionUser: null,
     };
+  }
+
+  /**
+   * The function to restore session if possible, can be fail-safe
+   * @private
+   */
+  private async restoreSession(): Promise<void> {
+    /**
+     * Restore wallet connection first
+     */
+    try {
+      await this.currentSession.Wallet.restoreConnection();
+      const walletSession =
+        await this.currentSession.Wallet.getConnectedSession();
+      this.onConnected(walletSession);
+    } catch {}
+
+    /**
+     * Now to restore UID session
+     */
+    try {
+      const userSession = await this.currentSession.User.getUserProfile();
+      this.onAuth(userSession);
+    } catch {}
   }
 
   /**

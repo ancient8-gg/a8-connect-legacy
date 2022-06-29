@@ -53,12 +53,8 @@ export const WalletProvider = ({
       setWalletAddress(walletAddress);
 
       // trigger on connected
-      onConnected({
-        chainType: walletAction.selectedAdapter.chainType,
-        walletName: walletAction.selectedAdapter.name,
-        provider: walletAction.selectedAdapter,
-        walletAddress,
-      });
+      const walletSession = await walletAction.getConnectedSession();
+      onConnected(walletSession);
 
       return walletAddress;
     } catch {

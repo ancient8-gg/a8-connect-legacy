@@ -18,6 +18,11 @@ import {
   SlopeSolanaWallet,
   SlopeSolanaWalletName,
 } from "../adapters/sol/slope.adapter";
+import { StorageProvider } from "../providers/storage.provider";
+import { getStorageProvider } from "../providers";
+import { ConnectedWalletPayload } from "../dto/a8-connect-session.dto";
+
+export const CONNECTED_WALLET_KEY = "CONNECTED_WALLET";
 
 /**
  * Wallet action combine all the actions related to user wallets.
@@ -30,6 +35,12 @@ export class WalletAction {
   public selectedAdapter: BaseWalletAdapter | undefined;
 
   /**
+   * `Storage` provides all methods to handle storage actions.
+   * @protected
+   */
+  private readonly storageProvider: StorageProvider;
+
+  /**
    * Supported Wallets array.
    * @private
    */
@@ -39,13 +50,18 @@ export class WalletAction {
    * Public constructor without parameters.
    */
   constructor() {
-    this.init();
+    this.initializeAdapters();
+
+    /**
+     * Initialize for storage provider
+     */
+    this.storageProvider = getStorageProvider();
   }
 
   /**
    * Initialize injected adapters in a public function to callback
    */
-  public init() {
+  public initializeAdapters() {
     /**
      * Initialize BinanceChain EVM Wallet.
      */
@@ -117,6 +133,16 @@ export class WalletAction {
   }
 
   /**
+   * The function to ensure wallet is connected, otherwise raise error
+   * @private
+   */
+  private ensureWalletIsConnected() {
+    this.ensureWalletIsAvailable();
+    if (!this.selectedAdapter.isConnected())
+      throw new Error("Wallet not connected");
+  }
+
+  /**
    * To check whether the wallet is installed.
    */
   isInstalled(walletName: string) {
@@ -142,7 +168,63 @@ export class WalletAction {
      * Connect new wallet.
      */
     this.ensureWalletIsAvailable();
-    return this.selectedAdapter.connectWallet();
+    const address = await this.selectedAdapter.connectWallet();
+
+    /**
+     * Persist connect wallet
+     */
+    this.storageProvider.setItem(
+      CONNECTED_WALLET_KEY,
+      JSON.stringify({
+        walletName,
+        chainType: this.selectedAdapter.chainType,
+      })
+    );
+
+    /**
+     * return connected address
+     */
+    return address;
+  }
+
+  /**
+   * Restore connection
+   */
+  async restoreConnection() {
+    const connectedWalletData = JSON.parse(
+      this.storageProvider.getItem(CONNECTED_WALLET_KEY, null)
+    );
+
+    if (!connectedWalletData) {
+      this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
+      return;
+    }
+
+    const { walletName } = connectedWalletData;
+
+    // NOw check if the previous wallet is still connected
+    const adapter = this.getWalletAdapter(walletName);
+
+    if (await adapter.isConnected()) {
+      // If connected then we return the current wallet address
+      return this.connectWallet(walletName);
+    }
+
+    return null;
+  }
+
+  /**
+   * The function to get connected session
+   */
+  async getConnectedSession(): Promise<ConnectedWalletPayload> {
+    this.ensureWalletIsConnected();
+
+    return {
+      walletAddress: await this.getWalletAddress(),
+      walletName: this.selectedAdapter.name,
+      chainType: this.selectedAdapter.chainType,
+      provider: this.selectedAdapter,
+    };
   }
 
   /**
@@ -151,7 +233,8 @@ export class WalletAction {
   async disconnectWallet() {
     try {
       this.ensureWalletIsAvailable();
-      return this.selectedAdapter.disconnectWallet();
+      await this.selectedAdapter.disconnectWallet();
+      this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
     } catch {}
   }
 

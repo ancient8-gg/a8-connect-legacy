@@ -35,9 +35,13 @@ export class NetworkProvider {
     delete initialSettings.networkType;
 
     const resp = await this.instance(endpoint, initialSettings);
-    const jsonData = await resp.json();
+    let jsonData = null;
 
-    if (!resp.ok) throw new Error((jsonData as ErrorResponse).errorMessage);
+    try {
+      jsonData = await resp.json();
+    } catch {}
+
+    if (!resp.ok) throw new Error((jsonData as ErrorResponse)?.errorMessage);
     return jsonData as T;
   }
 }
