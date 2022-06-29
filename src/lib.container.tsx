@@ -122,7 +122,9 @@ export class A8Connect {
       const walletSession =
         await this.currentSession.Wallet.getConnectedSession();
       this.onConnected(walletSession);
-    } catch {}
+    } catch (e) {
+      console.log(e);
+    }
 
     /**
      * Now to restore UID session
@@ -130,7 +132,9 @@ export class A8Connect {
     try {
       const userSession = await this.currentSession.User.getUserProfile();
       this.onAuth(userSession);
-    } catch {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   /**

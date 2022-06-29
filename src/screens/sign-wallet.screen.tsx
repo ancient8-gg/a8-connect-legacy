@@ -5,9 +5,10 @@ import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto"
 import { WELCOME_APP_SCREEN_KEY } from "./welcome-app.screen";
 import { BaseLoadingScreen } from "./base-loading.screen";
 import { useLocation } from "../hooks/router";
-import { getAuthAction } from "../libs/actions";
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters";
+import { useSession } from "../hooks/useSession";
+import { getAuthAction } from "../libs/actions";
 
 export const SIGN_WALLET_SCREEN_KEY = "SIGN_WALLET_SCREEN";
 
@@ -17,6 +18,7 @@ export const SignWalletScreen: FC = () => {
   const [onLoad, setOnLoad] = useState<boolean>(true);
   const [existedWallet, setExistedWallet] = useState<boolean>(false);
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
+  const { signIn, signUp } = useSession();
   const authAction = getAuthAction();
 
   const handleOnSigned = useCallback(
@@ -34,8 +36,8 @@ export const SignWalletScreen: FC = () => {
         chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
 
       const response: LoginResponse = existedWallet
-        ? await authAction.signIn({ type: type, credential: credential })
-        : await authAction.signUp({ type: type, credential: credential });
+        ? await signIn({ type: type, credential: credential })
+        : await signUp({ type: type, credential: credential });
 
       if (!response.accessToken) {
         // Login failed

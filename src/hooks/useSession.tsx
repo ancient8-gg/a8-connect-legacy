@@ -8,14 +8,23 @@ import {
   useState,
 } from "react";
 import { getAuthAction, getUserAction } from "../libs/actions";
-import { AuthEntity, SdkMethod, UserInfo } from "../libs/dto/entities";
 import { useAppState } from "./useAppState";
+import {
+  AuthEntity,
+  LoginResponse,
+  SdkMethod,
+  UserInfo,
+} from "../libs/dto/entities";
+import { LoginWalletAuthDto } from "../libs/dto/login-wallet-auth.dto";
+import { RegistrationAuthDto } from "../libs/dto/registration-auth.dto";
 
 interface SessionContextProps {
   sdkMethod: SdkMethod;
   userInfo: UserInfo;
   authEntities: AuthEntity[];
   logout(): Promise<void>;
+  signIn(payload: LoginWalletAuthDto): Promise<LoginResponse>;
+  signUp(payload: RegistrationAuthDto): Promise<LoginResponse>;
 }
 
 export type OnAuthPayload = UserInfo | null;
@@ -38,6 +47,37 @@ export const SessionProvider: FC<{
     await authAction.logout();
     onAuth(null);
   }, [onAuth]);
+
+  const fetchProfile = useCallback(async () => {
+    const userInfo = await userAction.getUserProfile();
+    setUserInfo(userInfo);
+  }, [setUserInfo]);
+
+  const signIn = useCallback(
+    async (payload: LoginWalletAuthDto) => {
+      const authResponse = await authAction.signIn(payload);
+
+      await fetchProfile();
+
+      onAuth && onAuth(userInfo);
+
+      return authResponse;
+    },
+    [onAuth, fetchProfile]
+  );
+
+  const signUp = useCallback(
+    async (payload: RegistrationAuthDto) => {
+      const authResponse = await authAction.signUp(payload);
+
+      await fetchProfile();
+
+      onAuth && onAuth(userInfo);
+
+      return authResponse;
+    },
+    [onAuth, fetchProfile]
+  );
 
   useEffect(() => {
     (async () => {
@@ -73,6 +113,8 @@ export const SessionProvider: FC<{
         userInfo,
         authEntities,
         logout,
+        signUp,
+        signIn,
       }}
     >
       {children}
