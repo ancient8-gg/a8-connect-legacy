@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { SIGN_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
 import { useLocation } from "../hooks/router";
@@ -11,7 +11,7 @@ import { BaseWalletAdapter } from "../libs/adapters";
 
 export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 
-export const ConnectWalletScreen: React.FC = () => {
+export const ConnectWalletScreen: FC = () => {
   const { sdkMethod } = useSession();
   const { walletName, getWalletAdapter, connect } = useWallet();
   const [connected, setConnected] = useState<boolean>(false);

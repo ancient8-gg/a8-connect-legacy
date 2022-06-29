@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { AuthChallenge, AuthType, LoginResponse } from "../libs/dto/entities";
 import { BaseSignWalletScreen } from "./base-sign-wallet.screen";
 import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto";
@@ -11,7 +11,7 @@ import { ChainType } from "../libs/adapters";
 
 export const SIGN_WALLET_SCREEN_KEY = "SIGN_WALLET_SCREEN";
 
-export const SignWalletScreen: React.FC = () => {
+export const SignWalletScreen: FC = () => {
   const location = useLocation();
   const { walletAddress, chainType } = useWallet();
   const [onLoad, setOnLoad] = useState<boolean>(true);
@@ -33,7 +33,6 @@ export const SignWalletScreen: React.FC = () => {
       const type =
         chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
 
-      console.log({ existedWallet });
       const response: LoginResponse = existedWallet
         ? await authAction.signIn({ type: type, credential: credential })
         : await authAction.signUp({ type: type, credential: credential });
@@ -51,7 +50,6 @@ export const SignWalletScreen: React.FC = () => {
   useEffect(() => {
     (async () => {
       const existedWallet = await authAction.isWalletExisted(walletAddress);
-      console.log({ existedWallet });
 
       const authChallengeData = await authAction.sendChallenge(walletAddress);
 

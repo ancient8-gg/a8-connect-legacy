@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { FC, useEffect } from "react";
 
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters";
@@ -10,7 +10,7 @@ import EvmBtnImage from "../assets/images/evm-btn.png";
 
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
-export const BaseWelcomeScreen: React.FC = () => {
+export const BaseWelcomeScreen: FC = () => {
   const { setChainType, chainType } = useWallet();
   const location = useLocation();
 

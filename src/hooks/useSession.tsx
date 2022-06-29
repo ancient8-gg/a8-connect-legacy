@@ -1,4 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { getAuthAction, getUserAction } from "../libs/actions";
 import { AuthEntity, SdkMethod, UserInfo } from "../libs/dto/entities";
 
@@ -12,10 +20,10 @@ interface SessionContextProps {
 
 export type OnAuthPayload = UserInfo | null;
 
-export const SessionContext = React.createContext<SessionContextProps>(null);
+export const SessionContext = createContext<SessionContextProps>(null);
 
-export const SessionProvider: React.FC<{
-  children: React.ReactNode;
+export const SessionProvider: FC<{
+  children: ReactNode;
   onAuth: (payload: UserInfo | null) => void;
 }> = ({ children, onAuth }) => {
   const userAction = getUserAction();
@@ -71,7 +79,7 @@ export const SessionProvider: React.FC<{
 };
 
 export const useSession = () => {
-  const context = React.useContext(SessionContext);
+  const context = useContext(SessionContext);
   if (context === undefined) {
     throw new Error("Must be in hook");
   }

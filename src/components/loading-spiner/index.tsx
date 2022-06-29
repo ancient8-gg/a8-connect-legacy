@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import classnames from "classnames";
 
 export interface LoadingSpinnerProps {
@@ -6,7 +6,7 @@ export interface LoadingSpinnerProps {
   height: number;
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ width, height }) => {
+const LoadingSpinner: FC<LoadingSpinnerProps> = ({ width, height }) => {
   return (
     <svg
       role="status"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, FC } from "react";
 import { getAuthAction } from "../libs/actions/";
 import { useLocation } from "../hooks/router";
 import { useSession } from "../hooks/useSession";
@@ -20,7 +20,7 @@ import { ChainType } from "../libs/adapters/";
 
 export const SIGN_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
 
-export const SignWalletConnectUID: React.FC = () => {
+export const SignWalletConnectUID: FC = () => {
   const [description, setDescription] = useState<string>("");
   const [signing, setSigning] = useState<boolean>(false);
   const [isBelongedError, setBelongedError] = useState<boolean>(false);

@@ -1,6 +1,7 @@
-import React from "react";
+import { FC } from "react";
+
+import { BaseWalletAdapter } from "../libs/adapters";
 import Button from "./button";
-import { BaseWalletAdapter } from "../libs/adapters/interface";
 
 export interface ConnectButtonProps {
   adapter: BaseWalletAdapter;
@@ -8,7 +9,7 @@ export interface ConnectButtonProps {
   trackingId?: string;
 }
 
-export const ConnectButton: React.FC<ConnectButtonProps> = ({
+export const ConnectButton: FC<ConnectButtonProps> = ({
   adapter,
   trackingId,
   onClick,

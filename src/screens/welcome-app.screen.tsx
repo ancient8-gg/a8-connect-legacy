@@ -1,7 +1,8 @@
-import React from "react";
+import { FC } from "react";
+
 export const WELCOME_APP_SCREEN_KEY = "WELCOME_APP_SCREEN";
 
-export const WelcomeAppScreen: React.FC = () => {
+export const WelcomeAppScreen: FC = () => {
   return (
     <div className="w-full pt-[30px]">
       <div className="mx-auto w-[350px]">

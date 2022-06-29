@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { makeShorter } from "../utils";
 import { useWallet } from "../hooks/useWallet";
 import { PolygonButton } from "../components/button";
@@ -11,7 +11,7 @@ export interface BaseSignWalletScreenProps {
   onSigned(signature: string): void;
 }
 
-export const BaseSignWalletScreen: React.FC<BaseSignWalletScreenProps> = ({
+export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   description,
   signedMessage,
   onSigned,

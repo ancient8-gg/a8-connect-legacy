@@ -1,4 +1,12 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  FC,
+  FunctionComponent,
+  ReactNode,
+} from "react";
 import { SCREENS, SCREEN_KEYS } from "./init";
 import {
   RouterContext,
@@ -12,7 +20,7 @@ import Modal from "../../components/modal";
 import { useSession } from "../useSession";
 import { SdkMethod } from "../../libs/dto/entities";
 
-export const RouterProvider: React.FC<ProviderProps> = () => {
+export const RouterProvider: FC<ProviderProps> = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
   const { sdkMethod } = useSession();
   /**
@@ -25,7 +33,7 @@ export const RouterProvider: React.FC<ProviderProps> = () => {
    */
   const [screenPipe, setPipe] = useState<ScreenType[]>([]);
 
-  const CurrentScreen = useMemo<React.FunctionComponent>(() => {
+  const CurrentScreen = useMemo<FunctionComponent>(() => {
     if (!screenPipe.length) {
       return null;
     }
@@ -75,7 +83,7 @@ export const RouterProvider: React.FC<ProviderProps> = () => {
   );
 };
 
-export const LocationProvider: React.FC<ProviderProps> = ({ children }) => {
+export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   const { screens, screenPipe, setPipe } = useRouter();
 
   const goBack = async () => {
@@ -87,7 +95,6 @@ export const LocationProvider: React.FC<ProviderProps> = ({ children }) => {
   const push = useCallback(
     async (key: string, deleted?: boolean | false) => {
       const screen = screens.find((screen) => screen.key === key);
-      console.log({ screens, key, deleted, screen });
 
       if (!screen) {
         throw new Error(NOT_FOUND_CONTEXT_SCREEN);
@@ -110,7 +117,7 @@ export const LocationProvider: React.FC<ProviderProps> = ({ children }) => {
         push,
       }}
     >
-      {children as React.ReactNode}
+      {children as ReactNode}
     </LocationContext.Provider>
   );
 };

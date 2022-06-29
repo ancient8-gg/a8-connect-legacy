@@ -1,4 +1,10 @@
-import React, { useState, useCallback } from "react";
+import {
+  useState,
+  useCallback,
+  createContext,
+  ReactNode,
+  useContext,
+} from "react";
 import { getWalletAction } from "../libs/actions";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
@@ -16,14 +22,14 @@ interface WalletContextProps {
   disconnect(): void;
 }
 
-const WalletContext = React.createContext<WalletContextProps>(null);
+const WalletContext = createContext<WalletContextProps>(null);
 
 export const WalletProvider = ({
   children,
   onConnected,
   selectedChainType,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   onConnected: (payload: ConnectedWalletPayload | null) => void;
   selectedChainType: ChainType | "all";
 }) => {
@@ -97,7 +103,7 @@ export const WalletProvider = ({
 };
 
 export const useWallet = () => {
-  const context = React.useContext(WalletContext);
+  const context = useContext(WalletContext);
   if (context === undefined) {
     throw new Error("Must be in hook");
   }

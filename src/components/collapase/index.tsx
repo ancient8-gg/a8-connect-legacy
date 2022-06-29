@@ -1,8 +1,8 @@
-import React from "react";
+import { FC, ReactNode } from "react";
 
-const Collapse: React.FC<{
+const Collapse: FC<{
   isOpened: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 }> = ({ isOpened, children }) => {
   return isOpened ? (
     <div className="uid-collapse-container">{children}</div>

@@ -1,5 +1,14 @@
-import React from "react";
+import {
+  CSSProperties,
+  ReactNode,
+  FC,
+  useState,
+  useEffect,
+  MouseEventHandler,
+} from "react";
+
 import classnames from "classnames";
+
 import styles from "./index.module.scss";
 
 export interface ButtonProps {
@@ -7,15 +16,15 @@ export interface ButtonProps {
   type?: "button" | "submit" | "reset" | undefined;
   className?: string;
   textClassName?: string;
-  containerStyle?: React.CSSProperties;
-  textStyle?: React.CSSProperties;
+  containerStyle?: CSSProperties;
+  textStyle?: CSSProperties;
   disabled?: boolean | false;
-  onClick?: (event?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   id?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: FC<ButtonProps> = ({
   type,
   className,
   textClassName,
@@ -27,10 +36,10 @@ const Button: React.FC<ButtonProps> = ({
   text,
   children,
 }) => {
-  const [coords, setCoords] = React.useState({ x: -1, y: -1 });
-  const [isRippling, setIsRippling] = React.useState(false);
+  const [coords, setCoords] = useState({ x: -1, y: -1 });
+  const [isRippling, setIsRippling] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (coords.x !== -1 && coords.y !== -1) {
       setIsRippling(true);
       setTimeout(() => setIsRippling(false), 300);
@@ -39,7 +48,7 @@ const Button: React.FC<ButtonProps> = ({
     }
   }, [coords]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isRippling) setCoords({ x: -1, y: -1 });
   }, [isRippling]);
 
@@ -58,7 +67,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={(e) => {
         const rect = (e?.target as any)?.getBoundingClientRect();
         setCoords({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-        onClick && onClick();
+        onClick && onClick(e);
       }}
     >
       {isRippling ? (
@@ -89,10 +98,10 @@ export default Button;
 
 export interface PolygonButtonProps extends ButtonProps {
   boxClassName?: string;
-  boxStyle?: React.CSSProperties;
+  boxStyle?: CSSProperties;
 }
 
-export const PolygonButton: React.FC<PolygonButtonProps> = ({
+export const PolygonButton: FC<PolygonButtonProps> = ({
   type,
   boxClassName,
   boxStyle,

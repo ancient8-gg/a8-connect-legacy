@@ -1,7 +1,7 @@
-import React from "react";
+import { CSSProperties, FC, ReactNode } from "react";
 import ReactModal from "react-modal";
 import classnames from "classnames";
-import { useLocation } from "../../hooks/router/component";
+import { useLocation } from "../../hooks/router";
 import TopGradientBorder from "../../assets/images/top-gradient-border.svg";
 import BottomGradientBorder from "../../assets/images/bottom-gradient-border.svg";
 import BackBtnImage from "../../assets/images/back-btn.png";
@@ -10,8 +10,8 @@ export interface ModalProps {
   containerClassName?: string;
   modalIsOpen: boolean;
   onCloseModal(): void;
-  contentStyle?: React.CSSProperties;
-  children?: React.ReactNode;
+  contentStyle?: CSSProperties;
+  children?: ReactNode;
   isBack?: boolean | false;
 }
 
@@ -28,7 +28,7 @@ export const customStyles = {
   },
 };
 
-const Modal: React.FC<ModalProps> = ({
+const Modal: FC<ModalProps> = ({
   containerClassName,
   modalIsOpen,
   onCloseModal,

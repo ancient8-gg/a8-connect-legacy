@@ -1,5 +1,4 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 import A8ConnectContainer from "./container";
 
 import { ChainType, SupportedWallets } from "./libs/adapters";
@@ -15,6 +14,7 @@ import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
 export interface A8ConnectInitOptions {
   chainType: ChainType | "all";
   networkType: NetworkType;
+  onClose: () => void;
 }
 
 /**
@@ -59,15 +59,16 @@ export class A8Connect {
 
     // render DOM
     if (rootDOM !== null) {
-      ReactDOM.render(
+      render(
         <A8ConnectContainer
+          onClose={options.onClose}
           onAuth={this.onAuth.bind(this)}
           onConnected={this.onConnected.bind(this)}
           selectedChainType={options.chainType}
         />,
         rootDOM
       );
-      return () => ReactDOM.unmountComponentAtNode(rootDOM);
+      return () => unmountComponentAtNode(rootDOM);
     }
 
     // Or throw error

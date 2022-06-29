@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useLocation } from "../hooks/router";
 import { useWallet } from "../hooks/useWallet";
 import { ConnectButton } from "../components/WalletConnect.button";
@@ -9,7 +9,7 @@ import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
-export const BaseWalletSelect: React.FC = () => {
+export const BaseWalletSelect: FC = () => {
   const { chainType, getAdapters, setWalletName } = useWallet();
   const location = useLocation();
 
