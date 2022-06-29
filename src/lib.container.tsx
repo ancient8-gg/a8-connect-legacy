@@ -68,7 +68,7 @@ export class A8Connect {
     this.initializeRegistryAndSession();
 
     // restore the session if applicable
-    await this.restoreSession();
+    await this.fetchSession();
   }
 
   /**
@@ -113,7 +113,7 @@ export class A8Connect {
    * The function to restore session if possible, can be fail-safe
    * @private
    */
-  private async restoreSession(): Promise<void> {
+  private async fetchSession(): Promise<void> {
     /**
      * Restore wallet connection first
      */
