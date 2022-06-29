@@ -18,9 +18,9 @@ export const ModalHeader: FC<{
       <div className="flow-root">
         <button
           onClick={() => props.onCloseModal()}
-          className="float-right text-[25px] text-primary-super mr-[20px]"
+          className="float-right text-[25px] text-primary-super mr-[20px] text-white"
         >
-          <i className="bx bx-x"></i>
+          x
         </button>
       </div>
     </>

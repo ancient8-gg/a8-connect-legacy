@@ -1,10 +1,11 @@
-import { CSSProperties, FC, ReactNode } from "react";
+import { CSSProperties, FC, ReactNode, useCallback } from "react";
 import ReactModal from "react-modal";
 import classnames from "classnames";
 import { useLocation } from "../../hooks/router";
 import TopGradientBorder from "../../assets/images/top-gradient-border.svg";
 import BottomGradientBorder from "../../assets/images/bottom-gradient-border.svg";
 import { ModalHeader } from "./modal.header";
+import { useAppState } from "../../hooks/useAppState";
 
 export interface ModalProps {
   containerClassName?: string;
@@ -37,6 +38,13 @@ const Modal: FC<ModalProps> = ({
   isBack,
 }: ModalProps) => {
   const location = useLocation();
+  const { onClose } = useAppState();
+
+  const handleClose = useCallback(() => {
+    onClose();
+    onCloseModal();
+  }, [onCloseModal, onClose]);
+
   return (
     <ReactModal
       isOpen={modalIsOpen}
@@ -56,7 +64,7 @@ const Modal: FC<ModalProps> = ({
         >
           <div className="polygon-modal-child pt-[10px] pb-[30px] ">
             <ModalHeader
-              onCloseModal={onCloseModal}
+              onCloseModal={handleClose}
               isBack={isBack}
               goBack={() => location.goBack()}
             />

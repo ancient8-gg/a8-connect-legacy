@@ -19,12 +19,10 @@ import {
 import Modal from "../../components/modal";
 import { useSession } from "../useSession";
 import { SdkMethod } from "../../libs/dto/entities";
-import { useAppState } from "../useAppState";
 
 export const RouterProvider: FC<ProviderProps> = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
   const { sdkMethod } = useSession();
-  const { isReady } = useAppState();
   /**
    * @description Initialize screens depend on what sdk type it is
    */
@@ -90,7 +88,6 @@ export const RouterProvider: FC<ProviderProps> = () => {
         isRouterReady,
       }}
     >
-      {!isReady && <h1>Loading ...</h1>}
       {layout}
     </RouterContext.Provider>
   );
