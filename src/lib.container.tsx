@@ -42,6 +42,11 @@ export class A8Connect {
   public currentSession: A8ConnectSession | null = null;
 
   /**
+   * Init options for UID container
+   */
+  public options: A8ConnectInitOptions | null = null;
+
+  /**
    * Constructor to initialize the A8Connect Container
    * @param rootSelectorId: the id selector of the A8Connect Container DOM object.
    */
@@ -55,44 +60,53 @@ export class A8Connect {
    * Consequently, the session will be stored inside the A8ConnectContainer after connecting wallet/login action.
    * @param options
    */
-  public async init(options: A8ConnectInitOptions): Promise<{
-    openModal: () => void;
-    closeModal: () => void;
-  }> {
-    const rootDOM = document.getElementById(this.rootSelectorId);
+  public async init(options: A8ConnectInitOptions): Promise<void> {
+    // binding options
+    this.options = options;
 
     // initialize registry first
-    this.initializeRegistryAndSession(options);
+    this.initializeRegistryAndSession();
 
     // restore the session if applicable
     await this.restoreSession();
+  }
 
-    // render DOM
-    if (rootDOM !== null) {
-      return {
-        closeModal: () => unmountComponentAtNode(rootDOM),
-        openModal: () =>
-          render(
-            <A8ConnectContainer
-              onError={options.onError}
-              onClose={options.onClose}
-              onAuth={(payload) => {
-                this.onAuth(payload);
-                options.onAuth && options.onAuth(payload);
-              }}
-              onConnected={(payload) => {
-                this.onConnected(payload);
-                options.onConnected && options.onConnected(payload);
-              }}
-              selectedChainType={options.chainType}
-            />,
-            rootDOM
-          ),
-      };
+  /**
+   * The function to open the UID modal
+   */
+  public openModal(): void {
+    const rootDOM = document.getElementById(this.rootSelectorId);
+    const options = this.options;
+
+    if (!rootDOM) {
+      // Or throw error
+      throw new Error(`Root document #${this.rootSelectorId} not found`);
     }
 
-    // Or throw error
-    throw new Error(`Root document #${this.rootSelectorId} not found`);
+    render(
+      <A8ConnectContainer
+        onError={options.onError}
+        onClose={options.onClose}
+        onAuth={(payload) => {
+          this.onAuth(payload);
+          options.onAuth && options.onAuth(payload);
+        }}
+        onConnected={(payload) => {
+          this.onConnected(payload);
+          options.onConnected && options.onConnected(payload);
+        }}
+        selectedChainType={options.chainType}
+      />,
+      rootDOM
+    );
+  }
+
+  /**
+   * The function to close modal
+   */
+  closeModal(): void {
+    const rootDOM = document.getElementById(this.rootSelectorId);
+    unmountComponentAtNode(rootDOM);
   }
 
   /**
@@ -121,10 +135,10 @@ export class A8Connect {
 
   /**
    * Initialize registry and session
-   * @param options
    * @private
    */
-  private initializeRegistryAndSession(options: A8ConnectInitOptions) {
+  private initializeRegistryAndSession() {
+    const options = this.options;
     const registryInstance = RegistryProvider.getInstance();
 
     /**
