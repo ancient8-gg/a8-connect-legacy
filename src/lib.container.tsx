@@ -55,31 +55,40 @@ export class A8Connect {
    * Consequently, the session will be stored inside the A8ConnectContainer after connecting wallet/login action.
    * @param options
    */
-  public async init(options: A8ConnectInitOptions): Promise<() => void> {
+  public async init(options: A8ConnectInitOptions): Promise<{
+    openModal: () => void;
+    closeModal: () => void;
+  }> {
     const rootDOM = document.getElementById(this.rootSelectorId);
 
     // initialize registry first
     this.initializeRegistryAndSession(options);
 
+    // restore the session if applicable
+    await this.restoreSession();
+
     // render DOM
     if (rootDOM !== null) {
-      render(
-        <A8ConnectContainer
-          onError={options.onError}
-          onClose={options.onClose}
-          onAuth={(payload) => {
-            this.onAuth(payload);
-            options.onAuth && options.onAuth(payload);
-          }}
-          onConnected={(payload) => {
-            this.onConnected(payload);
-            options.onConnected && options.onConnected(payload);
-          }}
-          selectedChainType={options.chainType}
-        />,
-        rootDOM
-      );
-      return () => unmountComponentAtNode(rootDOM);
+      return {
+        closeModal: () => unmountComponentAtNode(rootDOM),
+        openModal: () =>
+          render(
+            <A8ConnectContainer
+              onError={options.onError}
+              onClose={options.onClose}
+              onAuth={(payload) => {
+                this.onAuth(payload);
+                options.onAuth && options.onAuth(payload);
+              }}
+              onConnected={(payload) => {
+                this.onConnected(payload);
+                options.onConnected && options.onConnected(payload);
+              }}
+              selectedChainType={options.chainType}
+            />,
+            rootDOM
+          ),
+      };
     }
 
     // Or throw error
@@ -90,7 +99,7 @@ export class A8Connect {
    * The function to restore session if possible, can be fail-safe
    * @private
    */
-  public async restoreSession(): Promise<void> {
+  private async restoreSession(): Promise<void> {
     /**
      * Restore wallet connection first
      */
