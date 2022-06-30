@@ -16,13 +16,15 @@ import {
   useRouter,
 } from "../components/router";
 import { useSession } from "./useSession";
-import { SCREEN_KEYS, SCREENS } from "../components/router/init";
+import { SCREENS } from "../components/router/init";
 import { SdkMethod } from "../libs/dto/entities";
+import { useAppState } from "../hooks/useAppState";
 import Modal from "../components/modal";
 
 export const RouterProvider: FC<ProviderProps> = () => {
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
   const { sdkMethod } = useSession();
+  const { isModalOpen } = useAppState();
+
   /**
    * @description Initialize screens depend on what sdk type it is
    */
@@ -39,14 +41,6 @@ export const RouterProvider: FC<ProviderProps> = () => {
     }
     return screenPipe[screenPipe.length - 1].children;
   }, [screenPipe, setPipe]);
-
-  const isBack = useMemo(() => {
-    return (
-      screenPipe.length > 1 &&
-      screenPipe[screenPipe.length - 1].key !==
-        SCREEN_KEYS.WELCOME_APP_SCREEN_KEY
-    );
-  }, [screenPipe]);
 
   const isRouterReady = useMemo(() => {
     return screens.length > 0 && screenPipe.length > 0;
@@ -65,11 +59,7 @@ export const RouterProvider: FC<ProviderProps> = () => {
   const layout = useMemo(
     () => (
       <LocationProvider>
-        <Modal
-          modalIsOpen={modalIsOpen}
-          onCloseModal={() => setModalIsOpen(false)}
-          isBack={isBack}
-        >
+        <Modal modalIsOpen={isModalOpen}>
           {CurrentScreen && <CurrentScreen />}
         </Modal>
       </LocationProvider>
@@ -84,7 +74,6 @@ export const RouterProvider: FC<ProviderProps> = () => {
         screenPipe,
         currentScreen: CurrentScreen,
         setPipe,
-        isBack,
         isRouterReady,
       }}
     >

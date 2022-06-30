@@ -21,8 +21,13 @@ interface AppStateContextProvider {
   onError: (error: Error) => void;
   onAuth: (payload: OnAuthPayload) => void;
   onConnected: (payload: ConnectedWalletPayload) => void;
-  isReady: boolean;
   setReady: (val: boolean) => void;
+  setIsModalOpen(val: boolean): void;
+  handleClose(): void;
+  setIsBack(val: boolean): void;
+  isBack: boolean;
+  isReady: boolean;
+  isModalOpen: boolean;
 }
 
 const AppStateContext = createContext<AppStateContextProvider>(null);
@@ -33,6 +38,8 @@ export const AppStateProvider: FC<
   } & AppStateContextProviderProps
 > = (props) => {
   const [isReady, setReady] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isBack, setIsBack] = useState(true);
 
   const onAuth = useCallback(
     (payload: OnAuthPayload) => {
@@ -46,6 +53,9 @@ export const AppStateProvider: FC<
 
   const onClose = useCallback(() => {
     // do something before emit events
+
+    // Close modal
+    setIsModalOpen(false);
 
     // now emit events
     props.onClose && props.onClose();
@@ -71,6 +81,11 @@ export const AppStateProvider: FC<
     [props.onError]
   );
 
+  const handleClose = useCallback(() => {
+    setIsModalOpen(false);
+    onClose && onClose();
+  }, [onClose]);
+
   return (
     <AppStateContext.Provider
       value={{
@@ -79,7 +94,12 @@ export const AppStateProvider: FC<
         onConnected,
         onClose,
         setReady,
+        setIsModalOpen,
+        handleClose,
+        setIsBack,
         isReady,
+        isModalOpen,
+        isBack,
       }}
     >
       {props.children}

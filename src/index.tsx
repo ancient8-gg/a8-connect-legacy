@@ -9,7 +9,7 @@ if (rootDOM !== null) {
       onClose={() => {}}
       onAuth={() => {}}
       onConnected={() => {}}
-      selectedChainType={ChainType.SOL}
+      selectedChainType={ChainType.ALL}
     />,
     rootDOM
   );

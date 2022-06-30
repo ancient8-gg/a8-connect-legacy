@@ -9,6 +9,8 @@ import { ChainType } from "../libs/adapters";
 import { useSession } from "../hooks/useSession";
 import { getAuthAction } from "../libs/actions";
 import { useLocation } from "../components/router";
+import { useAppState } from "../hooks/useAppState";
+import { ModalHeader } from "../components/modal/modal.header";
 
 export const SIGN_WALLET_SCREEN_KEY = "SIGN_WALLET_SCREEN";
 
@@ -19,6 +21,7 @@ export const SignWalletScreen: FC = () => {
   const [existedWallet, setExistedWallet] = useState<boolean>(false);
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const { signIn, signUp } = useSession();
+  const { isBack, handleClose } = useAppState();
   const authAction = getAuthAction();
 
   const handleOnSigned = useCallback(
@@ -63,17 +66,28 @@ export const SignWalletScreen: FC = () => {
     })();
   }, [chainType, walletAddress]);
 
-  return onLoad ? (
-    <BaseLoadingScreen />
-  ) : (
-    <BaseSignWalletScreen
-      description={
-        existedWallet
-          ? "Sign a message to confirm you own the wallet address to sign in the User Identity"
-          : `Hey, <span class='text-primary'> this is a new wallet </span> <br /> Please continue below to proceed with the signature request and to create a new Ancient8 User Identity account`
-      }
-      signedMessage={authChallenge.message}
-      onSigned={handleOnSigned}
-    />
+  return (
+    <div>
+      <ModalHeader
+        isBack={isBack}
+        onCloseModal={handleClose}
+        goBack={location.goBack}
+      />
+      <div className="content px-[20px]">
+        {onLoad ? (
+          <BaseLoadingScreen />
+        ) : (
+          <BaseSignWalletScreen
+            description={
+              existedWallet
+                ? "Sign a message to confirm you own the wallet address to sign in the User Identity"
+                : `Hey, <span class='text-primary'> this is a new wallet </span> <br /> Please continue below to proceed with the signature request and to create a new Ancient8 User Identity account`
+            }
+            signedMessage={authChallenge.message}
+            onSigned={handleOnSigned}
+          />
+        )}
+      </div>
+    </div>
   );
 };

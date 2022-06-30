@@ -32,11 +32,6 @@ export interface RouterContextObject {
   setPipe: Dispatch<SetStateAction<ScreenType[]>>;
 
   /**
-   * The property to indicate whether the previous screen is back-able
-   */
-  isBack: boolean;
-
-  /**
    * The property to indicate whether the router is ready or not
    */
   isRouterReady: boolean;
