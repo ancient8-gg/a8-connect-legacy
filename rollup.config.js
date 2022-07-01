@@ -64,7 +64,9 @@ export default {
     copy({
       targets: [
         { src: "dist/dts/src/*", dest: "dist/" },
-        { src: "exports/*", dest: "dist/" },
+        { src: "package.json", dest: "dist/" },
+        { src: "LICENSE", dest: "dist/" },
+        { src: "README.md", dest: "dist/" },
       ],
       hook: "writeBundle",
     }),

@@ -28,7 +28,7 @@ export const SignWalletConnectUID: FC = () => {
   const [isBelongedError, setBelongedError] = useState<boolean>(false);
   const [connectAgenda, setConnectAgenda] = useState<ConnectAgendaType>();
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>();
-  const { userInfo, authEntities, logout } = useSession();
+  const { userInfo, authEntities, logout, signIn } = useSession();
   const { chainType, walletAddress, sign, disconnect } = useWallet();
   const { handleClose } = useAppState();
   const authAction = getAuthAction();
@@ -39,15 +39,16 @@ export const SignWalletConnectUID: FC = () => {
     setAuthChallenge(authChallenge);
   };
 
-  const handleLogin = async (createAuthDto: CreateAuthDto) => {
-    const loginResponse = await authAction.signIn(
-      createAuthDto as LoginWalletAuthDto
-    );
+  const handleLogin = useCallback(
+    async (createAuthDto: CreateAuthDto) => {
+      const loginResponse = await signIn(createAuthDto as LoginWalletAuthDto);
 
-    if (loginResponse.accessToken) {
-      push(WELCOME_APP_SCREEN_KEY);
-    }
-  };
+      if (loginResponse.accessToken) {
+        push(WELCOME_APP_SCREEN_KEY);
+      }
+    },
+    [signIn]
+  );
 
   const handleConnectNewWallet = async (createAuthDto: CreateAuthDto) => {
     const authEntity = await authAction.connectWallet(createAuthDto);
