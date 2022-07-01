@@ -86,7 +86,10 @@ export class A8Connect {
     render(
       <A8ConnectContainer
         onError={options.onError}
-        onClose={options.onClose}
+        onClose={() => {
+          options.onClose && options.onClose();
+          this.closeModal();
+        }}
         onAuth={(payload) => {
           this.onAuth(payload);
           options.onAuth && options.onAuth(payload);
