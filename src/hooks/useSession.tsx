@@ -63,7 +63,7 @@ export const SessionProvider: FC<{
 
       return authResponse;
     },
-    [onAuth, fetchProfile]
+    [onAuth, fetchProfile, userInfo]
   );
 
   const signUp = useCallback(
@@ -76,7 +76,7 @@ export const SessionProvider: FC<{
 
       return authResponse;
     },
-    [onAuth, fetchProfile]
+    [onAuth, fetchProfile, userInfo]
   );
 
   useEffect(() => {

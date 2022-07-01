@@ -26,3 +26,4 @@ bundle-analysis.html
 dist/
 bundle/
 public/docs/*
+test.html

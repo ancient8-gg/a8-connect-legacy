@@ -111,9 +111,9 @@ export class A8Connect {
 
   /**
    * The function to restore session if possible, can be fail-safe
-   * @private
+   * @public
    */
-  private async fetchSession(): Promise<void> {
+  public async fetchSession(): Promise<void> {
     /**
      * Restore wallet connection first
      */

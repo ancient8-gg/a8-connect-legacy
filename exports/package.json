@@ -1,0 +1,13 @@
+{
+  "name": "@ancient8/connect",
+  "version": "1.0.45",
+  "author": "Ancient8 Developer <dev@ancient8.gg>",
+  "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
+  "license": "GPL-3.0",
+  "sideEffects": false,
+  "main": "lib.entrypoint.js",
+  "types": "lib.entrypoint.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
+}

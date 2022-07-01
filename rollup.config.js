@@ -24,6 +24,7 @@ export default {
   ],
   plugins: [
     replace({
+      "process.env.NODE_ENV": JSON.stringify("production"),
       __buildDate__: () => JSON.stringify(new Date()),
       __buildVersion: process.env.VERSION || "develop",
     }),
@@ -61,7 +62,10 @@ export default {
       },
     }),
     copy({
-      targets: [{ src: "dist/dts/src/*", dest: "dist/" }],
+      targets: [
+        { src: "dist/dts/src/*", dest: "dist/" },
+        { src: "exports/*", dest: "dist/" },
+      ],
       hook: "writeBundle",
     }),
     del({

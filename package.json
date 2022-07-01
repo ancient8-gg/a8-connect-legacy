@@ -1,6 +1,6 @@
 {
   "name": "@ancient8/connect",
-  "version": "1.0.44",
+  "version": "1.0.45",
   "author": "Ancient8 Developer <dev@ancient8.gg>",
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
@@ -80,8 +80,9 @@
     "format": "prettier --write ./**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint \"**/*.ts\" \"**/*.tsx\" --fix",
     "prepare": "husky install",
-    "gen-doc": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/docs/ src/",
-    "build-lib": "rollup -c && yarn gen-doc"
+    "gen-doc": "typedoc --name \"A8 Connect\" --readme exports/README.md --out ./public/docs/ src/",
+    "cleanup": "rm -rf dist/dts/",
+    "build-lib": "npx rollup -c && yarn gen-doc && yarn cleanup"
   },
   "browserslist": {
     "production": [
