@@ -77,7 +77,7 @@
     "eject": "react-scripts eject",
     "format": "prettier --write ./**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint \"**/*.ts\" \"**/*.tsx\" --fix",
-    "prepare": "husky install",
+    "postinstall": "husky install",
     "gen-doc": "typedoc --name \"A8 Connect\" --readme exports/README.md --out ./public/docs/ src/",
     "cleanup": "rm -rf dist/dts/",
     "build-lib": "npx rollup -c && yarn gen-doc && yarn cleanup"
