@@ -26,8 +26,6 @@ interface AppStateContextProvider {
   onConnected: (payload: ConnectedWalletPayload) => void;
   setIsModalOpen(val: boolean): void;
   handleClose(): void;
-  setIsBack(val: boolean): void;
-  isBack: boolean;
   isModalOpen: boolean;
   defaultChainType: ChainType;
   isRouterReady: boolean;
@@ -45,7 +43,6 @@ export const AppStateProvider: FC<
   } & AppStateContextProviderProps
 > = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [isBack, setIsBack] = useState(true);
   const [defaultChainType] = useState(props.defaultChainType || ChainType.ALL);
   const [isRouterReady, setRouterReady] = useState(false);
   const [isSessionReady, setSessionReady] = useState(false);
@@ -108,9 +105,7 @@ export const AppStateProvider: FC<
         onClose,
         setIsModalOpen,
         handleClose,
-        setIsBack,
         isModalOpen,
-        isBack,
         defaultChainType,
         setRouterReady,
         setSessionReady,

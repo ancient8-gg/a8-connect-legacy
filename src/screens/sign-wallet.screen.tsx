@@ -21,7 +21,7 @@ export const SignWalletScreen: FC = () => {
   const [existedWallet, setExistedWallet] = useState<boolean>(false);
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const { signIn, signUp } = useSession();
-  const { isBack, handleClose } = useAppState();
+  const { handleClose } = useAppState();
   const authAction = getAuthAction();
 
   const handleOnSigned = useCallback(
@@ -69,7 +69,7 @@ export const SignWalletScreen: FC = () => {
   return (
     <div>
       <ModalHeader
-        isBack={isBack}
+        isBack={location.isBack}
         onCloseModal={handleClose}
         goBack={location.goBack}
       />

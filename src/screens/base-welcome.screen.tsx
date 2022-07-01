@@ -16,7 +16,7 @@ import { ModalHeader } from "../components/modal/modal.header";
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: FC = () => {
-  const { isAppReady, setIsBack, onClose, setIsModalOpen, defaultChainType } =
+  const { isAppReady, onClose, setIsModalOpen, defaultChainType } =
     useAppState();
   const { setChainType, chainType } = useWallet();
   const { sdkMethod, userInfo } = useSession();
@@ -28,7 +28,6 @@ export const BaseWelcomeScreen: FC = () => {
 
   useEffect(() => {
     if (defaultChainType !== ChainType.ALL && isAppReady) {
-      setIsBack(false);
       location.push(targetScreen, true);
     }
   }, [isAppReady]);

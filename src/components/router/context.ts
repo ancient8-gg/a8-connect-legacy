@@ -57,6 +57,11 @@ export interface LocationContextObject {
    * @param func
    */
   setGoBackCallback(func: () => void | null): void;
+
+  /**
+   * The boolean flag to indicate whether the current route is back-able or not
+   */
+  isBack: boolean;
 }
 
 export const LocationContext = createContext<LocationContextObject>(null);

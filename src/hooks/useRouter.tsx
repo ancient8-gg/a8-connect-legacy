@@ -16,7 +16,7 @@ import {
   useRouter,
 } from "../components/router";
 import { useSession } from "./useSession";
-import { SCREENS } from "../components/router/init";
+import { SCREEN_KEYS, SCREENS } from "../components/router/init";
 import { SdkMethod } from "../libs/dto/entities";
 import { useAppState } from "./useAppState";
 import Modal from "../components/modal";
@@ -85,6 +85,14 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   const { screens, screenPipe, setPipe } = useRouter();
   const [goBackCallback, setGoBackCallback] = useState(null);
 
+  const isBack = useMemo(() => {
+    return (
+      screenPipe.length > 1 &&
+      screenPipe[screenPipe.length - 1].key !==
+        SCREEN_KEYS.WELCOME_APP_SCREEN_KEY
+    );
+  }, [screenPipe]);
+
   const goBack = useCallback(() => {
     const _pipe = [...screenPipe];
     _pipe.pop();
@@ -97,7 +105,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   }, [goBack, goBackCallback]);
 
   const push = useCallback(
-    (key: string, deleted?: boolean | false) => {
+    (key: string, deleted?: boolean) => {
       const screen = screens.find((screen) => screen.key === key);
 
       if (!screen) {
@@ -121,6 +129,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
         goBack,
         push,
         goBackWithCallback,
+        isBack,
       }}
     >
       {children as ReactNode}

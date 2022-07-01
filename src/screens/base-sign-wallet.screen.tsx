@@ -21,7 +21,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
 }) => {
   const { walletAddress, sign } = useWallet();
   const [signing, setSigning] = useState<boolean>(false);
-  const { isBack, handleClose } = useAppState();
+  const { handleClose } = useAppState();
   const location = useLocation();
 
   const handleClickSign = async () => {
@@ -33,7 +33,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   return (
     <div>
       <ModalHeader
-        isBack={isBack}
+        isBack={location.isBack}
         goBack={location.goBack}
         onCloseModal={handleClose}
       />

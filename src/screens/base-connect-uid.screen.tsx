@@ -13,7 +13,7 @@ export const BASE_CONNECT_UID_SCREEN_KEY = "BASE_CONNECT_UID_SCREEN";
 
 export const BaseConnectUIDScreen: FC = () => {
   const { getAdapters, setWalletName } = useWallet();
-  const { isBack, handleClose } = useAppState();
+  const { handleClose } = useAppState();
   const { userInfo } = useSession();
   const location = useLocation();
 
@@ -29,7 +29,7 @@ export const BaseConnectUIDScreen: FC = () => {
   return (
     <div>
       <ModalHeader
-        isBack={isBack}
+        isBack={location.isBack}
         onCloseModal={handleClose}
         goBack={location.goBack}
       />

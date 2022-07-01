@@ -16,7 +16,7 @@ export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 export const ConnectWalletScreen: FC = () => {
   const { sdkMethod } = useSession();
   const { walletName, getWalletAdapter, connect } = useWallet();
-  const { handleClose, isBack } = useAppState();
+  const { handleClose } = useAppState();
   const [connected, setConnected] = useState<boolean>(false);
   const [connectedError, setConnectedError] = useState<boolean>(false);
   const location = useLocation();
@@ -55,7 +55,7 @@ export const ConnectWalletScreen: FC = () => {
     <div>
       <ModalHeader
         onCloseModal={handleClose}
-        isBack={isBack}
+        isBack={location.isBack}
         goBack={() => location.goBack()}
       />
 
