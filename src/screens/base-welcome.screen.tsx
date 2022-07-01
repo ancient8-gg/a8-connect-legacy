@@ -16,8 +16,7 @@ import { ModalHeader } from "../components/modal/modal.header";
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: FC = () => {
-  const { isAppReady, onClose, setIsModalOpen, defaultChainType } =
-    useAppState();
+  const { isAppReady, handleClose, defaultChainType } = useAppState();
   const { setChainType, chainType } = useWallet();
   const { sdkMethod, userInfo } = useSession();
   const location = useLocation();
@@ -40,14 +39,9 @@ export const BaseWelcomeScreen: FC = () => {
     [targetScreen, chainType]
   );
 
-  const handleOnClose = useCallback(() => {
-    onClose && onClose();
-    setIsModalOpen(false);
-  }, []);
-
   return (
     <div>
-      <ModalHeader isBack={false} onCloseModal={handleOnClose} goBack={null} />
+      <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
       <div className="content px-[20px]">
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto w-[350px]">
