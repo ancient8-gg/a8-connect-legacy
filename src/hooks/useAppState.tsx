@@ -4,16 +4,19 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useMemo,
   useState,
 } from "react";
 import { OnAuthPayload } from "./useSession";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
+import { ChainType } from "../libs/adapters";
 
 interface AppStateContextProviderProps {
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
+  defaultChainType?: ChainType;
 }
 
 interface AppStateContextProvider {
@@ -21,13 +24,17 @@ interface AppStateContextProvider {
   onError: (error: Error) => void;
   onAuth: (payload: OnAuthPayload) => void;
   onConnected: (payload: ConnectedWalletPayload) => void;
-  setReady: (val: boolean) => void;
   setIsModalOpen(val: boolean): void;
   handleClose(): void;
   setIsBack(val: boolean): void;
   isBack: boolean;
-  isReady: boolean;
   isModalOpen: boolean;
+  defaultChainType: ChainType;
+  isRouterReady: boolean;
+  setRouterReady: (flag: boolean) => void;
+  isSessionReady: boolean;
+  setSessionReady: (flag: boolean) => void;
+  isAppReady: boolean;
 }
 
 const AppStateContext = createContext<AppStateContextProvider>(null);
@@ -37,9 +44,15 @@ export const AppStateProvider: FC<
     children: ReactNode;
   } & AppStateContextProviderProps
 > = (props) => {
-  const [isReady, setReady] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isBack, setIsBack] = useState(true);
+  const [defaultChainType] = useState(props.defaultChainType || ChainType.ALL);
+  const [isRouterReady, setRouterReady] = useState(false);
+  const [isSessionReady, setSessionReady] = useState(false);
+
+  const isAppReady = useMemo(() => {
+    return isRouterReady && isSessionReady;
+  }, [isRouterReady, isSessionReady]);
 
   const onAuth = useCallback(
     (payload: OnAuthPayload) => {
@@ -93,13 +106,17 @@ export const AppStateProvider: FC<
         onError,
         onConnected,
         onClose,
-        setReady,
         setIsModalOpen,
         handleClose,
         setIsBack,
-        isReady,
         isModalOpen,
         isBack,
+        defaultChainType,
+        setRouterReady,
+        setSessionReady,
+        isSessionReady,
+        isRouterReady,
+        isAppReady,
       }}
     >
       {props.children}

@@ -10,16 +10,16 @@ import EvmBtnImage from "../assets/images/evm-btn.png";
 import { useSession } from "../hooks/useSession";
 import { SdkMethod } from "../libs/dto/entities";
 import { makeShorter } from "../utils";
-import { useLocation, useRouter } from "../components/router";
+import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: FC = () => {
-  const { isReady, setIsBack, onClose, setIsModalOpen } = useAppState();
+  const { isAppReady, setIsBack, onClose, setIsModalOpen, defaultChainType } =
+    useAppState();
   const { setChainType, chainType } = useWallet();
   const { sdkMethod, userInfo } = useSession();
-  const { isRouterReady } = useRouter();
   const location = useLocation();
 
   const targetScreen = useMemo(() => {
@@ -27,12 +27,11 @@ export const BaseWelcomeScreen: FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log({ isReady });
-    if (chainType !== ChainType.ALL && isReady && isRouterReady) {
+    if (defaultChainType !== ChainType.ALL && isAppReady) {
       setIsBack(false);
       location.push(targetScreen, true);
     }
-  }, [isReady, isRouterReady]);
+  }, [isAppReady]);
 
   const handleClickChain = useCallback(
     (chainType: ChainType) => {

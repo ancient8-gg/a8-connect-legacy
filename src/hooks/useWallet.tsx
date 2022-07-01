@@ -24,14 +24,9 @@ interface WalletContextProps {
 
 const WalletContext = createContext<WalletContextProps>(null);
 
-export const WalletProvider = ({
-  children,
-  selectedChainType,
-}: {
-  children: ReactNode;
-  selectedChainType: ChainType;
-}) => {
-  const [chainType, setChainType] = useState<ChainType>(selectedChainType);
+export const WalletProvider = ({ children }: { children: ReactNode }) => {
+  const { defaultChainType } = useAppState();
+  const [chainType, setChainType] = useState<ChainType>(defaultChainType);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
   const { onConnected } = useAppState();

@@ -37,7 +37,7 @@ export const SessionProvider: FC<{
   const userAction = getUserAction();
   const authAction = getAuthAction();
 
-  const { onAuth, isReady, setReady } = useAppState();
+  const { onAuth, isSessionReady, setSessionReady } = useAppState();
 
   const [userInfo, setUserInfo] = useState<UserInfo>(null);
   const [authEntities, setAuthEntities] = useState<AuthEntity[]>([]);
@@ -100,8 +100,8 @@ export const SessionProvider: FC<{
         onAuth && onAuth(null);
       }
 
-      if (!isReady) {
-        setReady(true);
+      if (!isSessionReady) {
+        setSessionReady(true);
       }
     })();
   }, []);

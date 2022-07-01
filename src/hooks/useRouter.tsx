@@ -18,12 +18,12 @@ import {
 import { useSession } from "./useSession";
 import { SCREENS } from "../components/router/init";
 import { SdkMethod } from "../libs/dto/entities";
-import { useAppState } from "../hooks/useAppState";
+import { useAppState } from "./useAppState";
 import Modal from "../components/modal";
 
 export const RouterProvider: FC<ProviderProps> = () => {
   const { sdkMethod } = useSession();
-  const { isModalOpen } = useAppState();
+  const { isModalOpen, setRouterReady } = useAppState();
 
   /**
    * @description Initialize screens depend on what sdk type it is
@@ -42,8 +42,8 @@ export const RouterProvider: FC<ProviderProps> = () => {
     return screenPipe[screenPipe.length - 1].children;
   }, [screenPipe, setPipe]);
 
-  const isRouterReady = useMemo(() => {
-    return screens.length > 0 && screenPipe.length > 0;
+  useEffect(() => {
+    setRouterReady(screens.length > 0 && screenPipe.length > 0);
   }, [screens, screenPipe]);
 
   useEffect(() => {
@@ -74,7 +74,6 @@ export const RouterProvider: FC<ProviderProps> = () => {
         screenPipe,
         currentScreen: CurrentScreen,
         setPipe,
-        isRouterReady,
       }}
     >
       {layout}

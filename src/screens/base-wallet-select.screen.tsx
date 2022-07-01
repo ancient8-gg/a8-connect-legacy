@@ -17,7 +17,7 @@ export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 export const BaseWalletSelect: FC = () => {
   const { chainType, getAdapters, setWalletName, setChainType } = useWallet();
   const { userInfo, sdkMethod } = useSession();
-  const { onClose, setIsModalOpen, isBack } = useAppState();
+  const { onClose, setIsModalOpen, isBack, defaultChainType } = useAppState();
   const location = useLocation();
 
   const handleClickWallet = (walletName: string) => {
@@ -36,14 +36,18 @@ export const BaseWalletSelect: FC = () => {
   }, [onClose, setIsModalOpen]);
 
   const handleGoback = useCallback(() => {
-    setChainType(ChainType.ALL);
+    if (defaultChainType !== ChainType.ALL) {
+      return;
+    }
+
+    setChainType(defaultChainType);
     location.goBack();
   }, [setChainType, location.goBack]);
 
   return (
     <div>
       <ModalHeader
-        isBack={isBack}
+        isBack={defaultChainType === ChainType.ALL && isBack}
         goBack={handleGoback}
         onCloseModal={handleClose}
       />

@@ -30,11 +30,6 @@ export interface RouterContextObject {
    * @details Handle goback and push screen value
    */
   setPipe: Dispatch<SetStateAction<ScreenType[]>>;
-
-  /**
-   * The property to indicate whether the router is ready or not
-   */
-  isRouterReady: boolean;
 }
 
 export const RouterContext = createContext<RouterContextObject>(null);
