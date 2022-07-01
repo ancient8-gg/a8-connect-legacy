@@ -9,8 +9,6 @@ import { ChainType } from "../libs/adapters";
 import { useSession } from "../hooks/useSession";
 import { getAuthAction } from "../libs/actions";
 import { useLocation } from "../components/router";
-import { useAppState } from "../hooks/useAppState";
-import { ModalHeader } from "../components/modal/modal.header";
 
 export const SIGN_WALLET_SCREEN_KEY = "SIGN_WALLET_SCREEN";
 
@@ -21,7 +19,6 @@ export const SignWalletScreen: FC = () => {
   const [existedWallet, setExistedWallet] = useState<boolean>(false);
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const { signIn, signUp } = useSession();
-  const { handleClose } = useAppState();
   const authAction = getAuthAction();
 
   const handleOnSigned = useCallback(
@@ -49,7 +46,7 @@ export const SignWalletScreen: FC = () => {
 
       location.push(WELCOME_APP_SCREEN_KEY);
     },
-    [chainType, authChallenge, existedWallet]
+    [chainType, authChallenge, existedWallet, signIn, signUp]
   );
 
   useEffect(() => {
@@ -68,11 +65,6 @@ export const SignWalletScreen: FC = () => {
 
   return (
     <div>
-      <ModalHeader
-        isBack={location.isBack}
-        onCloseModal={handleClose}
-        goBack={location.goBack}
-      />
       <div className="content px-[20px]">
         {onLoad ? (
           <BaseLoadingScreen />

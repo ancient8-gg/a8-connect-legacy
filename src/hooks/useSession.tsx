@@ -51,15 +51,16 @@ export const SessionProvider: FC<{
   const fetchProfile = useCallback(async () => {
     const userInfo = await userAction.getUserProfile();
     setUserInfo(userInfo);
+    return userInfo;
   }, [setUserInfo]);
 
   const signIn = useCallback(
     async (payload: LoginWalletAuthDto) => {
       const authResponse = await authAction.signIn(payload);
 
-      await fetchProfile();
+      const sessionUser = await fetchProfile();
 
-      onAuth && onAuth(userInfo);
+      onAuth(sessionUser);
 
       return authResponse;
     },
@@ -70,9 +71,9 @@ export const SessionProvider: FC<{
     async (payload: RegistrationAuthDto) => {
       const authResponse = await authAction.signUp(payload);
 
-      await fetchProfile();
+      const sessionUser = await fetchProfile();
 
-      onAuth && onAuth(userInfo);
+      onAuth(sessionUser);
 
       return authResponse;
     },
@@ -82,22 +83,20 @@ export const SessionProvider: FC<{
   useEffect(() => {
     (async () => {
       try {
-        const userInfo = await userAction.getUserProfile();
+        const userInfo = await fetchProfile();
 
         if (userInfo && userInfo._id) {
           setSdkMethod(SdkMethod.connect);
-          setUserInfo(userInfo);
 
           // fetch auth entities
           const authEntities = await userAction.getAuthEntities();
           setAuthEntities(authEntities);
 
-          onAuth && onAuth(userInfo);
+          onAuth(userInfo);
         }
       } catch {
         setSdkMethod(SdkMethod.login);
-        setUserInfo(null);
-        onAuth && onAuth(null);
+        onAuth(null);
       }
 
       if (!isSessionReady) {
