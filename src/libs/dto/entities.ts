@@ -30,7 +30,7 @@ export interface AuthSession {
   checksum: string;
   sessionType: SessionType;
   expiresAt: Date;
-  authWallets: [];
+  authWallets: AuthEntity[];
 }
 
 export interface User {
