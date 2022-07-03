@@ -2,10 +2,10 @@ import {
   useState,
   useMemo,
   useCallback,
-  useEffect,
   FC,
   FunctionComponent,
   ReactNode,
+  useEffect,
 } from "react";
 import {
   LocationContext,
@@ -15,15 +15,12 @@ import {
   ScreenType,
   useRouter,
 } from "../components/router";
-import { useSession } from "./useSession";
 import { SCREEN_KEYS, SCREENS } from "../components/router/init";
-import { SdkMethod } from "../libs/dto/entities";
 import { useAppState } from "./useAppState";
 import Modal from "../components/modal";
 
 export const RouterProvider: FC<ProviderProps> = () => {
-  const { sdkMethod } = useSession();
-  const { isModalOpen, setRouterReady } = useAppState();
+  const { isModalOpen, setRouterReady, currentAppFlow } = useAppState();
 
   /**
    * @description Initialize screens depend on what sdk type it is
@@ -42,19 +39,13 @@ export const RouterProvider: FC<ProviderProps> = () => {
     return screenPipe[screenPipe.length - 1].children;
   }, [screenPipe, setPipe]);
 
-  useEffect(() => {
-    setRouterReady(screens.length > 0 && screenPipe.length > 0);
-  }, [screens, screenPipe]);
-
-  useEffect(() => {
-    const screens =
-      sdkMethod === SdkMethod.connect
-        ? SCREENS["CONNECT_FLOW"]
-        : SCREENS["LOGIN_FLOW"];
+  const initState = useCallback(() => {
+    const screens = SCREENS[currentAppFlow];
 
     setScreens(screens);
     setPipe([screens[0]]);
-  }, [sdkMethod]);
+    setRouterReady(true);
+  }, [currentAppFlow]);
 
   const layout = useMemo(
     () => (
@@ -67,6 +58,12 @@ export const RouterProvider: FC<ProviderProps> = () => {
     [screenPipe, setPipe]
   );
 
+  useEffect(() => {
+    setScreens(SCREENS.BUFFER_FLOW);
+    setPipe(SCREENS.BUFFER_FLOW);
+    setRouterReady(true);
+  }, []);
+
   return (
     <RouterContext.Provider
       value={{
@@ -74,6 +71,7 @@ export const RouterProvider: FC<ProviderProps> = () => {
         screenPipe,
         currentScreen: CurrentScreen,
         setPipe,
+        initState,
       }}
     >
       {layout}
@@ -89,7 +87,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
     return (
       screenPipe.length > 1 &&
       screenPipe[screenPipe.length - 1].key !==
-        SCREEN_KEYS.WELCOME_APP_SCREEN_KEY
+        SCREEN_KEYS.BUFFER_LOADING_APP_SCREEN_KEY
     );
   }, [screenPipe]);
 

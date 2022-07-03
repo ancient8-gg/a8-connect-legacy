@@ -8,17 +8,17 @@ import A8Logo from "../assets/images/a8-logo.png";
 import SolBtnImage from "../assets/images/sol-btn.png";
 import EvmBtnImage from "../assets/images/evm-btn.png";
 import { useSession } from "../hooks/useSession";
-import { SdkMethod } from "../libs/dto/entities";
 import { makeShorter } from "../utils";
-import { useLocation } from "../components/router";
+import { AppFlow, useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: FC = () => {
-  const { isAppReady, handleClose, defaultChainType } = useAppState();
+  const { isAppReady, handleClose, desiredChainType, currentAppFlow } =
+    useAppState();
   const { setChainType, chainType } = useWallet();
-  const { sdkMethod, userInfo } = useSession();
+  const { userInfo } = useSession();
   const location = useLocation();
 
   const targetScreen = useMemo(() => {
@@ -26,7 +26,11 @@ export const BaseWelcomeScreen: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (defaultChainType !== ChainType.ALL && isAppReady) {
+    if (
+      currentAppFlow === AppFlow.CONNECT_FLOW &&
+      desiredChainType !== ChainType.ALL &&
+      isAppReady
+    ) {
       location.push(targetScreen, true);
     }
   }, [isAppReady]);
@@ -46,7 +50,7 @@ export const BaseWelcomeScreen: FC = () => {
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto w-[350px]">
             <img src={A8Logo} className="mx-[auto]" />
-            {sdkMethod === SdkMethod.login ? (
+            {currentAppFlow === AppFlow.LOGIN_FLOW ? (
               <p className="text-center text-primary text-[20px] font-bold">
                 WELCOME TO
                 <br />

@@ -3,20 +3,17 @@ import { SIGN_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
 import { PolygonButton } from "../components/button";
 import { useWallet } from "../hooks/useWallet";
-import { useSession } from "../hooks/useSession";
 import { useAppState } from "../hooks/useAppState";
-import { SdkMethod } from "../libs/dto/entities";
 import A8ConnectImage from "../assets/images/a8-connect.png";
 import { BaseWalletAdapter } from "../libs/adapters";
-import { useLocation } from "../components/router";
+import { AppFlow, useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 
 export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 
 export const ConnectWalletScreen: FC = () => {
-  const { sdkMethod } = useSession();
   const { walletName, getWalletAdapter, connect } = useWallet();
-  const { handleClose } = useAppState();
+  const { handleClose, currentAppFlow } = useAppState();
   const [connected, setConnected] = useState<boolean>(false);
   const [connectedError, setConnectedError] = useState<boolean>(false);
   const location = useLocation();
@@ -43,13 +40,13 @@ export const ConnectWalletScreen: FC = () => {
     if (connected) {
       setConnected(false);
       location.push(
-        sdkMethod === SdkMethod.login
+        currentAppFlow === AppFlow.LOGIN_FLOW
           ? SIGN_WALLET_SCREEN_KEY
           : SIGN_WALLET_CONNECT_UID_KEY,
         true
       );
     }
-  }, [connected, sdkMethod, location]);
+  }, [connected, currentAppFlow, location]);
 
   return (
     <div>

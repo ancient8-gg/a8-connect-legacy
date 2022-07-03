@@ -9,22 +9,18 @@ import {
 } from "react";
 import { getAuthAction, getUserAction } from "../libs/actions";
 import { useAppState } from "./useAppState";
-import {
-  AuthEntity,
-  LoginResponse,
-  SdkMethod,
-  UserInfo,
-} from "../libs/dto/entities";
+import { AuthEntity, LoginResponse, UserInfo } from "../libs/dto/entities";
 import { LoginWalletAuthDto } from "../libs/dto/login-wallet-auth.dto";
 import { RegistrationAuthDto } from "../libs/dto/registration-auth.dto";
+import { AppFlow } from "../components/router";
 
 interface SessionContextProps {
-  sdkMethod: SdkMethod;
   userInfo: UserInfo;
   authEntities: AuthEntity[];
   logout(): Promise<void>;
   signIn(payload: LoginWalletAuthDto): Promise<LoginResponse>;
   signUp(payload: RegistrationAuthDto): Promise<LoginResponse>;
+  initState: () => Promise<void>;
 }
 
 export type OnAuthPayload = UserInfo | null;
@@ -37,11 +33,11 @@ export const SessionProvider: FC<{
   const userAction = getUserAction();
   const authAction = getAuthAction();
 
-  const { onAuth, isSessionReady, setSessionReady } = useAppState();
+  const { onAuth, isSessionReady, setSessionReady, setCurrentAppFlow } =
+    useAppState();
 
   const [userInfo, setUserInfo] = useState<UserInfo>(null);
   const [authEntities, setAuthEntities] = useState<AuthEntity[]>([]);
-  const [sdkMethod, setSdkMethod] = useState<SdkMethod>(SdkMethod.login);
 
   const logout = useCallback(async () => {
     await authAction.logout();
@@ -80,40 +76,44 @@ export const SessionProvider: FC<{
     [onAuth, fetchProfile, userInfo]
   );
 
+  const initState = useCallback(async () => {
+    setSessionReady(false);
+
+    try {
+      const userInfo = await fetchProfile();
+
+      if (userInfo && userInfo._id) {
+        setCurrentAppFlow(AppFlow.CONNECT_FLOW);
+
+        // fetch auth entities
+        const authEntities = await userAction.getAuthEntities();
+        setAuthEntities(authEntities);
+
+        onAuth(userInfo);
+      }
+    } catch {
+      setCurrentAppFlow(AppFlow.LOGIN_FLOW);
+      onAuth(null);
+    }
+
+    if (!isSessionReady) {
+      setSessionReady(true);
+    }
+  }, [onAuth, setCurrentAppFlow, setSessionReady, setAuthEntities]);
+
   useEffect(() => {
-    (async () => {
-      try {
-        const userInfo = await fetchProfile();
-
-        if (userInfo && userInfo._id) {
-          setSdkMethod(SdkMethod.connect);
-
-          // fetch auth entities
-          const authEntities = await userAction.getAuthEntities();
-          setAuthEntities(authEntities);
-
-          onAuth(userInfo);
-        }
-      } catch {
-        setSdkMethod(SdkMethod.login);
-        onAuth(null);
-      }
-
-      if (!isSessionReady) {
-        setSessionReady(true);
-      }
-    })();
+    initState();
   }, []);
 
   return (
     <SessionContext.Provider
       value={{
-        sdkMethod,
         userInfo,
         authEntities,
         logout,
         signUp,
         signIn,
+        initState,
       }}
     >
       {children}

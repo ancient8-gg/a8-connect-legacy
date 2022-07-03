@@ -30,6 +30,11 @@ export interface RouterContextObject {
    * @details Handle goback and push screen value
    */
   setPipe: Dispatch<SetStateAction<ScreenType[]>>;
+
+  /**
+   * Init state for router
+   */
+  initState: () => void;
 }
 
 export const RouterContext = createContext<RouterContextObject>(null);

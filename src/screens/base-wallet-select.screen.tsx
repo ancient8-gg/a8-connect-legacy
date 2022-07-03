@@ -7,17 +7,16 @@ import SolChainPreviewIcon from "../assets/images/sol-chain-preview.png";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 import { useSession } from "../hooks/useSession";
 import { useAppState } from "../hooks/useAppState";
-import { SdkMethod } from "../libs/dto/entities";
 import { makeShorter } from "../utils";
-import { useLocation } from "../components/router";
+import { AppFlow, useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
 export const BaseWalletSelect: FC = () => {
   const { chainType, getAdapters, setWalletName, setChainType } = useWallet();
-  const { userInfo, sdkMethod } = useSession();
-  const { handleClose, defaultChainType } = useAppState();
+  const { userInfo } = useSession();
+  const { handleClose, desiredChainType, currentAppFlow } = useAppState();
   const location = useLocation();
 
   const handleClickWallet = (walletName: string) => {
@@ -31,18 +30,18 @@ export const BaseWalletSelect: FC = () => {
   }, [chainType]);
 
   const handleGoback = useCallback(() => {
-    if (defaultChainType !== ChainType.ALL) {
+    if (desiredChainType !== ChainType.ALL) {
       return;
     }
 
-    setChainType(defaultChainType);
+    setChainType(desiredChainType);
     location.goBack();
   }, [setChainType, location.goBack]);
 
   return (
     <div>
       <ModalHeader
-        isBack={defaultChainType === ChainType.ALL && location.isBack}
+        isBack={desiredChainType === ChainType.ALL && location.isBack}
         goBack={handleGoback}
         onCloseModal={handleClose}
       />
@@ -63,7 +62,7 @@ export const BaseWalletSelect: FC = () => {
               )}
             </div>
 
-            {sdkMethod === SdkMethod.connect && (
+            {currentAppFlow === AppFlow.CONNECT_FLOW && (
               <p className="mx-auto text-[16px] text-center text-white">
                 Currently logged into the UID:
                 <span className="text-primary ml-[3px]">

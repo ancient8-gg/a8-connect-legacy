@@ -85,11 +85,6 @@ export enum SessionType {
   ResetCredential = "SESSION_TYPE::RESET_CREDENTIAL",
 }
 
-export enum SdkMethod {
-  login = "SDK-METHOD::LOGIN",
-  connect = "SDK-METHOD::CONNECT",
-}
-
 export enum ConnectAgendaType {
   connectExistWallet = "CONNECT-AGENDA-TYPE::CONNECT-WIDTH-EXIST-WALLET",
   connectNewWallet = "CONNECT-AGENDA-TYPE::CONNECT-WITH-NEW-WALLET",

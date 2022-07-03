@@ -10,13 +10,14 @@ import {
 import { OnAuthPayload } from "./useSession";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 import { ChainType } from "../libs/adapters";
+import { AppFlow } from "../components/router";
 
 interface AppStateContextProviderProps {
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
-  defaultChainType?: ChainType;
+  desiredChainType?: ChainType;
 }
 
 interface AppStateContextProvider {
@@ -27,12 +28,17 @@ interface AppStateContextProvider {
   setIsModalOpen(val: boolean): void;
   handleClose(): void;
   isModalOpen: boolean;
-  defaultChainType: ChainType;
-  isRouterReady: boolean;
+  desiredChainType: ChainType;
   setRouterReady: (flag: boolean) => void;
-  isSessionReady: boolean;
   setSessionReady: (flag: boolean) => void;
+  setWalletReady: (flag: boolean) => void;
+  setCurrentAppFlow: (flow: AppFlow) => void;
+  isWalletReady: boolean;
+  isRouterReady: boolean;
+  isSessionReady: boolean;
   isAppReady: boolean;
+  isUIDReady: boolean;
+  currentAppFlow: AppFlow;
 }
 
 const AppStateContext = createContext<AppStateContextProvider>(null);
@@ -43,13 +49,19 @@ export const AppStateProvider: FC<
   } & AppStateContextProviderProps
 > = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [defaultChainType] = useState(props.defaultChainType || ChainType.ALL);
+  const [desiredChainType] = useState(props.desiredChainType || ChainType.ALL);
   const [isRouterReady, setRouterReady] = useState(false);
   const [isSessionReady, setSessionReady] = useState(false);
+  const [isWalletReady, setWalletReady] = useState(false);
+  const [currentAppFlow, setCurrentAppFlow] = useState(AppFlow.LOGIN_FLOW);
 
   const isAppReady = useMemo(() => {
-    return isRouterReady && isSessionReady;
-  }, [isRouterReady, isSessionReady]);
+    return isRouterReady && isSessionReady && isWalletReady;
+  }, [isRouterReady, isSessionReady, isWalletReady]);
+
+  const isUIDReady = useMemo(() => {
+    return isSessionReady && isWalletReady;
+  }, [isSessionReady, isWalletReady]);
 
   const onAuth = useCallback(
     (payload: OnAuthPayload) => {
@@ -106,12 +118,17 @@ export const AppStateProvider: FC<
         setIsModalOpen,
         handleClose,
         isModalOpen,
-        defaultChainType,
+        desiredChainType,
         setRouterReady,
         setSessionReady,
+        setWalletReady,
+        isWalletReady,
         isSessionReady,
         isRouterReady,
         isAppReady,
+        isUIDReady,
+        currentAppFlow,
+        setCurrentAppFlow,
       }}
     >
       {props.children}

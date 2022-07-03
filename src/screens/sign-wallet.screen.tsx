@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { AuthChallenge, AuthType, LoginResponse } from "../libs/dto/entities";
 import { BaseSignWalletScreen } from "./base-sign-wallet.screen";
 import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto";
-import { WELCOME_APP_SCREEN_KEY } from "./welcome-app.screen";
+import { BUFFER_LOADING_APP_SCREEN_KEY } from "./buffer-loading.screen";
 import { BaseLoadingScreen } from "./base-loading.screen";
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters";
@@ -44,7 +44,7 @@ export const SignWalletScreen: FC = () => {
         return;
       }
 
-      location.push(WELCOME_APP_SCREEN_KEY);
+      location.push(BUFFER_LOADING_APP_SCREEN_KEY);
     },
     [chainType, authChallenge, existedWallet, signIn, signUp]
   );

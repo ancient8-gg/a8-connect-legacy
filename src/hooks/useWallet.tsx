@@ -4,10 +4,12 @@ import {
   createContext,
   ReactNode,
   useContext,
+  useEffect,
 } from "react";
 import { getWalletAction } from "../libs/actions";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 import { useAppState } from "./useAppState";
+import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 
 interface WalletContextProps {
   chainType: ChainType;
@@ -20,18 +22,39 @@ interface WalletContextProps {
   sign(message: string): Promise<string>;
   setWalletName(walletName: string): void;
   disconnect(): void;
+  initState: () => Promise<ConnectedWalletPayload>;
 }
 
 const WalletContext = createContext<WalletContextProps>(null);
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const { defaultChainType } = useAppState();
-  const [chainType, setChainType] = useState<ChainType>(defaultChainType);
+  const { desiredChainType } = useAppState();
+  const [chainType, setChainType] = useState<ChainType>(desiredChainType);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
   const { onConnected } = useAppState();
+  const { setWalletReady } = useAppState();
 
   const walletAction = getWalletAction();
+
+  const initState = useCallback(async () => {
+    setWalletReady(false);
+    let session = null;
+
+    try {
+      await walletAction.restoreConnection();
+      session = await walletAction.getConnectedSession();
+
+      setChainType(session.chainType);
+      setWalletAddress(session.walletAddress);
+      setWalletName(session.walletName);
+
+      onConnected(session);
+    } catch {}
+
+    setWalletReady(true);
+    return session;
+  }, [onConnected, setWalletReady]);
 
   const getAdapters = useCallback(() => {
     return walletAction.getWalletAdapters(chainType);
@@ -48,7 +71,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       setWalletAddress(walletAddress);
 
       // trigger on connected
-      const walletSession = await walletAction.getConnectedSession();
+      const walletSession = await initState();
       onConnected(walletSession);
 
       return walletAddress;
@@ -56,7 +79,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       onConnected(null);
       return null;
     }
-  }, [walletName]);
+  }, [walletName, initState]);
 
   const disconnect = () => {
     return walletAction.disconnectWallet();
@@ -69,6 +92,10 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     },
     [walletName, walletAddress]
   );
+
+  useEffect(() => {
+    initState();
+  }, []);
 
   return (
     <WalletContext.Provider
@@ -83,6 +110,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         sign,
         setChainType,
         setWalletName,
+        initState,
       }}
     >
       {children}

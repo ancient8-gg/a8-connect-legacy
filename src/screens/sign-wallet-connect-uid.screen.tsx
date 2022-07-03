@@ -8,7 +8,7 @@ import { LoginWalletAuthDto } from "../libs/dto/login-wallet-auth.dto";
 import { CreateAuthDto } from "../libs/dto/create-auth.dto";
 import { PolygonButton } from "../components/button";
 import LoadingSpinner from "../components/loading-spiner";
-import { WELCOME_APP_SCREEN_KEY } from "./welcome-app.screen";
+import { BUFFER_LOADING_APP_SCREEN_KEY } from "./buffer-loading.screen";
 import {
   ConnectAgendaType,
   AuthChallenge,
@@ -44,7 +44,7 @@ export const SignWalletConnectUID: FC = () => {
       const loginResponse = await signIn(createAuthDto as LoginWalletAuthDto);
 
       if (loginResponse.accessToken) {
-        push(WELCOME_APP_SCREEN_KEY);
+        push(BUFFER_LOADING_APP_SCREEN_KEY);
       }
     },
     [signIn]
@@ -53,7 +53,7 @@ export const SignWalletConnectUID: FC = () => {
   const handleConnectNewWallet = async (createAuthDto: CreateAuthDto) => {
     const authEntity = await authAction.connectWallet(createAuthDto);
     if (authEntity) {
-      push(WELCOME_APP_SCREEN_KEY);
+      push(BUFFER_LOADING_APP_SCREEN_KEY);
     }
   };
 

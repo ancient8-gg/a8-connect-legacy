@@ -1,0 +1,5 @@
+export enum AppFlow {
+  LOGIN_FLOW = "LOGIN_FLOW",
+  CONNECT_FLOW = "CONNECT_FLOW",
+  BUFFER_FLOW = "BUFFER_FLOW",
+}

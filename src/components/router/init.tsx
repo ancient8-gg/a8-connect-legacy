@@ -1,4 +1,4 @@
-import { ScreenType } from ".";
+import { AppFlow, ScreenType } from ".";
 
 import {
   BaseWelcomeScreen,
@@ -21,14 +21,9 @@ import {
 } from "../../screens/sign-wallet.screen";
 
 import {
-  WelcomeAppScreen,
-  WELCOME_APP_SCREEN_KEY,
-} from "../../screens/welcome-app.screen";
-
-import {
-  BaseConnectUIDScreen,
-  BASE_CONNECT_UID_SCREEN_KEY,
-} from "../../screens/base-connect-uid.screen";
+  BufferLoadingAppScreen,
+  BUFFER_LOADING_APP_SCREEN_KEY,
+} from "../../screens/buffer-loading.screen";
 
 import {
   SignWalletConnectUID,
@@ -40,12 +35,16 @@ export const SCREEN_KEYS = {
   BASE_WALLET_SELECT_SCREEN_KEY,
   CONNECT_WALLET_SCREEN_KEY,
   SIGN_WALLET_SCREEN_KEY,
-  WELCOME_APP_SCREEN_KEY,
+  BUFFER_LOADING_APP_SCREEN_KEY,
 };
 
-export type Flows = "LOGIN_FLOW" | "CONNECT_FLOW";
-
-export const SCREENS: Record<Flows, ScreenType[]> = {
+export const SCREENS: Record<AppFlow, ScreenType[]> = {
+  BUFFER_FLOW: [
+    {
+      key: BUFFER_LOADING_APP_SCREEN_KEY,
+      children: BufferLoadingAppScreen,
+    },
+  ],
   LOGIN_FLOW: [
     {
       key: BASE_WELCOME_SCREEN_KEY,
@@ -64,8 +63,8 @@ export const SCREENS: Record<Flows, ScreenType[]> = {
       children: SignWalletScreen,
     },
     {
-      key: WELCOME_APP_SCREEN_KEY,
-      children: WelcomeAppScreen,
+      key: BUFFER_LOADING_APP_SCREEN_KEY,
+      children: BufferLoadingAppScreen,
     },
   ],
   CONNECT_FLOW: [
@@ -78,10 +77,6 @@ export const SCREENS: Record<Flows, ScreenType[]> = {
       children: BaseWalletSelect,
     },
     {
-      key: BASE_CONNECT_UID_SCREEN_KEY,
-      children: BaseConnectUIDScreen,
-    },
-    {
       key: CONNECT_WALLET_SCREEN_KEY,
       children: ConnectWalletScreen,
     },
@@ -90,8 +85,8 @@ export const SCREENS: Record<Flows, ScreenType[]> = {
       children: SignWalletConnectUID,
     },
     {
-      key: WELCOME_APP_SCREEN_KEY,
-      children: WelcomeAppScreen,
+      key: BUFFER_LOADING_APP_SCREEN_KEY,
+      children: BufferLoadingAppScreen,
     },
   ],
 };

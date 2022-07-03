@@ -22,7 +22,7 @@ const A8Connect: FC<{
         onAuth={onAuth}
         onConnected={onConnected}
         onError={onError}
-        defaultChainType={selectedChainType}
+        desiredChainType={selectedChainType}
       >
         <SessionProvider>
           <WalletProvider>
