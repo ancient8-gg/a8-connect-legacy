@@ -73,7 +73,8 @@ export const BaseWalletSelect: FC = () => {
 
             <div className="pt-[30px]">
               <p className="mx-auto text-primary text-[20px] font-bold text-center">
-                Select wallet provider
+                Select {chainType === ChainType.EVM ? "EVM" : "SOLANA"} wallet
+                provider
               </p>
               <div className="pt-[20px]">
                 {chainAdapter

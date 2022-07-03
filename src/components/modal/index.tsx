@@ -33,6 +33,7 @@ const Modal: FC<ModalProps> = ({
 }: ModalProps) => {
   return (
     <ReactModal
+      ariaHideApp={false}
       isOpen={modalIsOpen}
       style={customStyles}
       contentLabel="UID Modal"

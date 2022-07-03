@@ -2,46 +2,93 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ModalHeader } from "../components/modal/modal.header";
 import { useAppState } from "../hooks/useAppState";
 import LoadingSpinner from "../components/loading-spiner";
-import { useLocation, useRouter } from "../components/router";
+import { AppFlow, useLocation } from "../components/router";
 import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
+import { BASE_WELCOME_SCREEN_KEY } from "./base-welcome.screen";
+import { ChainType } from "../libs/adapters";
 
 export const BUFFER_LOADING_APP_SCREEN_KEY = "BUFFER_LOADING_APP_SCREEN";
 
 export const BufferLoadingAppScreen: FC = () => {
-  const { handleClose, desiredChainType, isUIDReady } = useAppState();
-  const { initState: initRouterState } = useRouter();
-  const { initState: initWalletState } = useWallet();
-  const { initState: initSessionState, userInfo } = useSession();
-  const [isStateReset, setStateReset] = useState(false);
+  const { handleClose, desiredChainType, currentAppFlow, isAppReady } =
+    useAppState();
+  const {
+    initState: initWalletState,
+    isWalletConnected,
+    chainType,
+    walletAddress,
+  } = useWallet();
+  const { initState: initSessionState, userInfo, authEntities } = useSession();
   const { push } = useLocation();
 
-  const handleNextFlow = useCallback(() => {
-    /**
-     * Do nothing if the state isn't reset
-     */
-    if (!isStateReset) return;
+  const [isStateReset, setStateReset] = useState(false);
 
-    /**
-     * Do nothing if UID isn't ready
-     */
-    if (!isUIDReady) return;
+  const screenStateReady = useMemo(() => {
+    return isStateReset && isAppReady;
+  }, [isStateReset, isAppReady]);
 
-    if (!userInfo) {
-    }
+  const shouldGoToLoginFlow = useMemo(() => {
+    return currentAppFlow === AppFlow.LOGIN_FLOW;
+  }, [currentAppFlow]);
 
+  const shouldGoToConnectFlow = useMemo(() => {
     /**
      * Extract uid chain type
      */
-    const uidConnectedChainType = userInfo?.session.authWallets[0]
-      .type as string;
+    const uidConnectedChainType =
+      (userInfo?.session.authWallets[0].type as string) || "";
 
     /**
-     * Do nothing if desired chain type matched UID connected chain type
+     * Prepare conditions
      */
-    if (uidConnectedChainType.toString() === desiredChainType.toString())
-      return;
-  }, [userInfo, isStateReset, isUIDReady]);
+    const connectedWalletBelongsToCurrentUid = !!authEntities.find(
+      (wallet) => wallet.credential.walletAddress === walletAddress
+    );
+
+    const connectedWalletMatchedDesiredChainType =
+      (isWalletConnected && chainType === desiredChainType) ||
+      desiredChainType === ChainType.ALL;
+
+    const uidConnectedChainTypeMatchedDesiredChainType =
+      uidConnectedChainType.toString() !== desiredChainType.toString() ||
+      desiredChainType === ChainType.ALL;
+
+    /**
+     * Go to connect flow
+     */
+    return !(
+      connectedWalletMatchedDesiredChainType &&
+      connectedWalletBelongsToCurrentUid &&
+      uidConnectedChainTypeMatchedDesiredChainType
+    );
+  }, [isWalletConnected, userInfo, desiredChainType, walletAddress]);
+
+  const handleNextFlow = useCallback(() => {
+    /**
+     * Do nothing if screen state isn't ready
+     */
+    if (!screenStateReady) return;
+
+    /**
+     * Prioritize redirecting to login flow first
+     */
+    if (shouldGoToLoginFlow || shouldGoToConnectFlow) {
+      return push(BASE_WELCOME_SCREEN_KEY);
+    }
+
+    /**
+     * Otherwise, close the modal
+     */
+    setTimeout(() => {
+      handleClose();
+    }, 300);
+  }, [
+    shouldGoToLoginFlow,
+    shouldGoToConnectFlow,
+    handleClose,
+    screenStateReady,
+  ]);
 
   const resetAppState = useCallback(async () => {
     /**
@@ -58,7 +105,15 @@ export const BufferLoadingAppScreen: FC = () => {
      * Set state reset flag
      */
     setStateReset(true);
-  }, [initSessionState, initRouterState, initWalletState]);
+  }, [initSessionState, initWalletState]);
+
+  useEffect(() => {
+    resetAppState();
+  }, []);
+
+  useEffect(() => {
+    handleNextFlow();
+  }, [screenStateReady]);
 
   return (
     <div>

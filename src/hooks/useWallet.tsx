@@ -23,17 +23,19 @@ interface WalletContextProps {
   setWalletName(walletName: string): void;
   disconnect(): void;
   initState: () => Promise<ConnectedWalletPayload>;
+  isWalletConnected: boolean;
 }
 
 const WalletContext = createContext<WalletContextProps>(null);
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const { desiredChainType } = useAppState();
+  const { desiredChainType, setWalletReady } = useAppState();
+  const { onConnected } = useAppState();
+
   const [chainType, setChainType] = useState<ChainType>(desiredChainType);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
-  const { onConnected } = useAppState();
-  const { setWalletReady } = useAppState();
+  const [isWalletConnected, setWalletConnected] = useState(false);
 
   const walletAction = getWalletAction();
 
@@ -48,13 +50,22 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       setChainType(session.chainType);
       setWalletAddress(session.walletAddress);
       setWalletName(session.walletName);
-
-      onConnected(session);
     } catch {}
 
     setWalletReady(true);
     return session;
   }, [onConnected, setWalletReady]);
+
+  const handleWalletConnected = useCallback(
+    (walletSession: ConnectedWalletPayload | null) => {
+      if (walletSession) {
+        setWalletConnected(!!walletSession);
+      }
+
+      onConnected(walletSession);
+    },
+    [initState]
+  );
 
   const getAdapters = useCallback(() => {
     return walletAction.getWalletAdapters(chainType);
@@ -67,19 +78,17 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const connect = useCallback(async () => {
     try {
       await walletAction.connectWallet(walletName);
-      const walletAddress = await walletAction.getWalletAddress();
-      setWalletAddress(walletAddress);
 
       // trigger on connected
       const walletSession = await initState();
-      onConnected(walletSession);
+      handleWalletConnected(walletSession);
 
-      return walletAddress;
+      return walletSession.walletAddress;
     } catch {
-      onConnected(null);
+      handleWalletConnected(null);
       return null;
     }
-  }, [walletName, initState]);
+  }, [walletName, initState, handleWalletConnected]);
 
   const disconnect = () => {
     return walletAction.disconnectWallet();
@@ -94,7 +103,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
-    initState();
+    initState().then((session) => handleWalletConnected(session));
   }, []);
 
   return (
@@ -111,6 +120,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         setChainType,
         setWalletName,
         initState,
+        isWalletConnected,
       }}
     >
       {children}

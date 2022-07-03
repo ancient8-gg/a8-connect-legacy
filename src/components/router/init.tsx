@@ -30,14 +30,6 @@ import {
   SIGN_WALLET_CONNECT_UID_KEY,
 } from "../../screens/sign-wallet-connect-uid.screen";
 
-export const SCREEN_KEYS = {
-  BASE_WELCOME_SCREEN_KEY,
-  BASE_WALLET_SELECT_SCREEN_KEY,
-  CONNECT_WALLET_SCREEN_KEY,
-  SIGN_WALLET_SCREEN_KEY,
-  BUFFER_LOADING_APP_SCREEN_KEY,
-};
-
 export const SCREENS: Record<AppFlow, ScreenType[]> = {
   BUFFER_FLOW: [
     {
@@ -46,6 +38,10 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
     },
   ],
   LOGIN_FLOW: [
+    {
+      key: BUFFER_LOADING_APP_SCREEN_KEY,
+      children: BufferLoadingAppScreen,
+    },
     {
       key: BASE_WELCOME_SCREEN_KEY,
       children: BaseWelcomeScreen,
@@ -62,12 +58,12 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
       key: SIGN_WALLET_SCREEN_KEY,
       children: SignWalletScreen,
     },
+  ],
+  CONNECT_FLOW: [
     {
       key: BUFFER_LOADING_APP_SCREEN_KEY,
       children: BufferLoadingAppScreen,
     },
-  ],
-  CONNECT_FLOW: [
     {
       key: BASE_WELCOME_SCREEN_KEY,
       children: BaseWelcomeScreen,
@@ -84,16 +80,5 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
       key: SIGN_WALLET_CONNECT_UID_KEY,
       children: SignWalletConnectUID,
     },
-    {
-      key: BUFFER_LOADING_APP_SCREEN_KEY,
-      children: BufferLoadingAppScreen,
-    },
   ],
-};
-
-export {
-  BaseWelcomeScreen,
-  BASE_WELCOME_SCREEN_KEY,
-  BaseWalletSelect,
-  BASE_WALLET_SELECT_SCREEN_KEY,
 };

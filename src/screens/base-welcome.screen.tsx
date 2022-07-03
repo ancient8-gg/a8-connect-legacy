@@ -15,8 +15,7 @@ import { ModalHeader } from "../components/modal/modal.header";
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
 export const BaseWelcomeScreen: FC = () => {
-  const { isAppReady, handleClose, desiredChainType, currentAppFlow } =
-    useAppState();
+  const { handleClose, desiredChainType, currentAppFlow } = useAppState();
   const { setChainType, chainType } = useWallet();
   const { userInfo } = useSession();
   const location = useLocation();
@@ -28,12 +27,12 @@ export const BaseWelcomeScreen: FC = () => {
   useEffect(() => {
     if (
       currentAppFlow === AppFlow.CONNECT_FLOW &&
-      desiredChainType !== ChainType.ALL &&
-      isAppReady
+      desiredChainType !== ChainType.ALL
     ) {
+      setChainType(desiredChainType);
       location.push(targetScreen, true);
     }
-  }, [isAppReady]);
+  }, []);
 
   const handleClickChain = useCallback(
     (chainType: ChainType) => {

@@ -1,4 +1,4 @@
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 import A8ConnectContainer from "./container";
 
 import { ChainType, SupportedWallets } from "./libs/adapters";
@@ -26,10 +26,10 @@ export interface A8ConnectInitOptions {
  */
 export class A8Connect {
   /**
-   * The selector id to determine the root DOM node.
+   * Root node
    * @private
    */
-  private readonly rootSelectorId: string;
+  private readonly rootNode: Root;
 
   /**
    * Current available wallets that A8Connect supports.
@@ -51,7 +51,14 @@ export class A8Connect {
    * @param rootSelectorId: the id selector of the A8Connect Container DOM object.
    */
   constructor(rootSelectorId: string) {
-    this.rootSelectorId = rootSelectorId;
+    const rootDOM = document.getElementById(rootSelectorId);
+
+    if (!rootDOM) {
+      // Or throw error
+      throw new Error(`Root document #${rootSelectorId} not found`);
+    }
+
+    this.rootNode = createRoot(document.getElementById(rootSelectorId));
   }
 
   /**
@@ -75,16 +82,12 @@ export class A8Connect {
    * The function to open the UID modal
    */
   public openModal(): void {
-    const rootDOM = document.getElementById(this.rootSelectorId);
     const options = this.options;
 
-    if (!rootDOM) {
-      // Or throw error
-      throw new Error(`Root document #${this.rootSelectorId} not found`);
-    }
-
-    render(
+    this.rootNode.render(
       <A8ConnectContainer
+        networkType={options.networkType}
+        chainType={options.chainType}
         onError={options.onError}
         onClose={() => {
           options.onClose && options.onClose();
@@ -98,9 +101,7 @@ export class A8Connect {
           this.onConnected(payload);
           options.onConnected && options.onConnected(payload);
         }}
-        selectedChainType={options.chainType}
-      />,
-      rootDOM
+      />
     );
   }
 
@@ -108,8 +109,7 @@ export class A8Connect {
    * The function to close modal
    */
   closeModal(): void {
-    const rootDOM = document.getElementById(this.rootSelectorId);
-    unmountComponentAtNode(rootDOM);
+    this.rootNode.unmount();
   }
 
   /**

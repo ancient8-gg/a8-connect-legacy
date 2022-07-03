@@ -5,16 +5,18 @@ import { ChainType } from "./libs/adapters";
 import { ConnectedWalletPayload } from "./libs/dto/a8-connect-session.dto";
 import { AppStateProvider } from "./hooks/useAppState";
 import { RouterProvider } from "./hooks/useRouter";
+import { NetworkType } from "./libs/providers/registry.provider";
 
 import "./index.css";
 
 const A8Connect: FC<{
-  selectedChainType: ChainType;
+  networkType: NetworkType;
+  chainType: ChainType;
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
-}> = ({ onAuth, onConnected, selectedChainType, onClose, onError }) => {
+}> = ({ onAuth, onConnected, chainType, onClose, onError, networkType }) => {
   return (
     <div className="layout">
       <AppStateProvider
@@ -22,7 +24,8 @@ const A8Connect: FC<{
         onAuth={onAuth}
         onConnected={onConnected}
         onError={onError}
-        desiredChainType={selectedChainType}
+        desiredChainType={chainType}
+        networkType={networkType}
       >
         <SessionProvider>
           <WalletProvider>

@@ -118,7 +118,6 @@ export const SignWalletConnectUID: FC = () => {
         /**
          * Disconnect wallet when have error while connect with the UID
          */
-        await disconnect();
         setBelongedError(true);
         return;
       }

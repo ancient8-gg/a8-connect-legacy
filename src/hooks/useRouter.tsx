@@ -15,9 +15,10 @@ import {
   ScreenType,
   useRouter,
 } from "../components/router";
-import { SCREEN_KEYS, SCREENS } from "../components/router/init";
+import { SCREENS } from "../components/router/init";
 import { useAppState } from "./useAppState";
 import Modal from "../components/modal";
+import { BUFFER_LOADING_APP_SCREEN_KEY } from "../screens/buffer-loading.screen";
 
 export const RouterProvider: FC<ProviderProps> = () => {
   const { isModalOpen, setRouterReady, currentAppFlow } = useAppState();
@@ -61,8 +62,11 @@ export const RouterProvider: FC<ProviderProps> = () => {
   useEffect(() => {
     setScreens(SCREENS.BUFFER_FLOW);
     setPipe(SCREENS.BUFFER_FLOW);
-    setRouterReady(true);
   }, []);
+
+  useEffect(() => {
+    initState();
+  }, [currentAppFlow]);
 
   return (
     <RouterContext.Provider
@@ -86,8 +90,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   const isBack = useMemo(() => {
     return (
       screenPipe.length > 1 &&
-      screenPipe[screenPipe.length - 1].key !==
-        SCREEN_KEYS.BUFFER_LOADING_APP_SCREEN_KEY
+      screenPipe[screenPipe.length - 1].key !== BUFFER_LOADING_APP_SCREEN_KEY
     );
   }, [screenPipe]);
 
@@ -117,7 +120,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
       _pipe.push(screen);
       setPipe(_pipe);
     },
-    [screenPipe, setPipe]
+    [screenPipe, setPipe, screens]
   );
 
   return (

@@ -44,52 +44,58 @@ export const SessionProvider: FC<{
     onAuth(null);
   }, [onAuth]);
 
-  const fetchProfile = useCallback(async () => {
-    const userInfo = await userAction.getUserProfile();
-    setUserInfo(userInfo);
-    return userInfo;
-  }, [setUserInfo]);
+  const fetchSession = useCallback(async () => {
+    const [_sessionUser, _authEntities] = await Promise.all([
+      userAction.getUserProfile(),
+      userAction.getAuthEntities(),
+    ]).then(([_sessionUser, _authEntities]) => {
+      setUserInfo(_sessionUser);
+      setAuthEntities(_authEntities);
+
+      return [_sessionUser, _authEntities];
+    });
+
+    return {
+      sessionUser: _sessionUser as UserInfo,
+      authEntities: _authEntities as AuthEntity[],
+    };
+  }, []);
 
   const signIn = useCallback(
     async (payload: LoginWalletAuthDto) => {
       const authResponse = await authAction.signIn(payload);
 
-      const sessionUser = await fetchProfile();
+      const { sessionUser } = await fetchSession();
 
       onAuth(sessionUser);
 
       return authResponse;
     },
-    [onAuth, fetchProfile, userInfo]
+    [onAuth, userInfo]
   );
 
   const signUp = useCallback(
     async (payload: RegistrationAuthDto) => {
       const authResponse = await authAction.signUp(payload);
 
-      const sessionUser = await fetchProfile();
+      const { sessionUser } = await fetchSession();
 
       onAuth(sessionUser);
 
       return authResponse;
     },
-    [onAuth, fetchProfile, userInfo]
+    [onAuth, userInfo]
   );
 
   const initState = useCallback(async () => {
     setSessionReady(false);
 
     try {
-      const userInfo = await fetchProfile();
+      const { sessionUser } = await fetchSession();
 
-      if (userInfo && userInfo._id) {
+      if (sessionUser && sessionUser._id) {
         setCurrentAppFlow(AppFlow.CONNECT_FLOW);
-
-        // fetch auth entities
-        const authEntities = await userAction.getAuthEntities();
-        setAuthEntities(authEntities);
-
-        onAuth(userInfo);
+        onAuth(sessionUser);
       }
     } catch {
       setCurrentAppFlow(AppFlow.LOGIN_FLOW);

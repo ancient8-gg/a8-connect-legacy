@@ -4,6 +4,7 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -11,6 +12,10 @@ import { OnAuthPayload } from "./useSession";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 import { ChainType } from "../libs/adapters";
 import { AppFlow } from "../components/router";
+import {
+  NetworkType,
+  RegistryProvider,
+} from "../libs/providers/registry.provider";
 
 interface AppStateContextProviderProps {
   onClose?: () => void;
@@ -18,6 +23,7 @@ interface AppStateContextProviderProps {
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
   desiredChainType?: ChainType;
+  networkType?: NetworkType;
 }
 
 interface AppStateContextProvider {
@@ -39,6 +45,7 @@ interface AppStateContextProvider {
   isAppReady: boolean;
   isUIDReady: boolean;
   currentAppFlow: AppFlow;
+  networkType: NetworkType;
 }
 
 const AppStateContext = createContext<AppStateContextProvider>(null);
@@ -50,10 +57,11 @@ export const AppStateProvider: FC<
 > = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [desiredChainType] = useState(props.desiredChainType || ChainType.ALL);
+  const [networkType] = useState(props.networkType || NetworkType.mainnet);
   const [isRouterReady, setRouterReady] = useState(false);
   const [isSessionReady, setSessionReady] = useState(false);
   const [isWalletReady, setWalletReady] = useState(false);
-  const [currentAppFlow, setCurrentAppFlow] = useState(AppFlow.LOGIN_FLOW);
+  const [currentAppFlow, setCurrentAppFlow] = useState(AppFlow.BUFFER_FLOW);
 
   const isAppReady = useMemo(() => {
     return isRouterReady && isSessionReady && isWalletReady;
@@ -108,6 +116,11 @@ export const AppStateProvider: FC<
     onClose && onClose();
   }, [onClose]);
 
+  useEffect(() => {
+    const registry = RegistryProvider.getInstance();
+    registry.networkType = networkType;
+  }, [networkType]);
+
   return (
     <AppStateContext.Provider
       value={{
@@ -129,6 +142,7 @@ export const AppStateProvider: FC<
         isUIDReady,
         currentAppFlow,
         setCurrentAppFlow,
+        networkType,
       }}
     >
       {props.children}
