@@ -4,6 +4,7 @@ import { StorageProvider } from "./storage.provider";
 import { RegistryProvider } from "./registry.provider";
 import { AuthProvider } from "./auth.provider";
 import { UserProvider } from "./user.provider";
+import { UtilsProvider } from "./utils.provider";
 
 /**
  * Export Registry Provider
@@ -47,3 +48,8 @@ export const getAuthProvider = () =>
  */
 export const getUserProvider = () =>
   new UserProvider(getNetworkProvider, getStorageProvider, getCookieProvider);
+
+/**
+ * Utils provider
+ */
+export const getUtilsProvider = () => new UtilsProvider();

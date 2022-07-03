@@ -155,14 +155,14 @@ export class WalletAction {
    */
   async connectWallet(walletName: string) {
     /**
-     * Select new wallet.
-     */
-    this.selectedAdapter = this.supportedWallets[walletName];
-
-    /**
      * Disconnect selected wallet if applicable.
      */
     await this.disconnectWallet();
+
+    /**
+     * Select new wallet.
+     */
+    this.selectedAdapter = this.supportedWallets[walletName];
 
     /**
      * Connect new wallet.
@@ -205,12 +205,17 @@ export class WalletAction {
     // NOw check if the previous wallet is still connected
     const adapter = this.getWalletAdapter(walletName);
 
-    if (await adapter.isConnected()) {
-      // If connected then we return the current wallet address
-      return this.connectWallet(walletName);
-    }
+    // Delay check connected
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        if (await adapter.isConnected()) {
+          // If connected then we return the current wallet address
+          return this.connectWallet(walletName).then(resolve);
+        }
 
-    return null;
+        return resolve(null);
+      }, 300);
+    });
   }
 
   /**

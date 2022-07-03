@@ -51,7 +51,7 @@ export const BufferLoadingAppScreen: FC = () => {
       desiredChainType === ChainType.ALL;
 
     const uidConnectedChainTypeMatchedDesiredChainType =
-      uidConnectedChainType.toString() !== desiredChainType.toString() ||
+      uidConnectedChainType.toString() === desiredChainType.toString() ||
       desiredChainType === ChainType.ALL;
 
     /**

@@ -1,13 +1,14 @@
 import {
-  useState,
-  useMemo,
-  useCallback,
   FC,
   FunctionComponent,
   ReactNode,
+  useCallback,
   useEffect,
+  useMemo,
+  useState,
 } from "react";
 import {
+  AppFlow,
   LocationContext,
   NOT_FOUND_CONTEXT_SCREEN,
   ProviderProps,
@@ -41,11 +42,15 @@ export const RouterProvider: FC<ProviderProps> = () => {
   }, [screenPipe, setPipe]);
 
   const initState = useCallback(() => {
-    const screens = SCREENS[currentAppFlow];
+    setRouterReady(false);
+    const screens = [...SCREENS[currentAppFlow]];
 
     setScreens(screens);
     setPipe([screens[0]]);
-    setRouterReady(true);
+
+    if (currentAppFlow !== AppFlow.BUFFER_FLOW) {
+      setRouterReady(true);
+    }
   }, [currentAppFlow]);
 
   const layout = useMemo(
@@ -58,11 +63,6 @@ export const RouterProvider: FC<ProviderProps> = () => {
     ),
     [screenPipe, setPipe]
   );
-
-  useEffect(() => {
-    setScreens(SCREENS.BUFFER_FLOW);
-    setPipe(SCREENS.BUFFER_FLOW);
-  }, []);
 
   useEffect(() => {
     initState();
@@ -85,6 +85,7 @@ export const RouterProvider: FC<ProviderProps> = () => {
 
 export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   const { screens, screenPipe, setPipe } = useRouter();
+  const { isRouterReady, currentAppFlow } = useAppState();
   const [goBackCallback, setGoBackCallback] = useState(null);
 
   const isBack = useMemo(() => {
@@ -120,7 +121,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
       _pipe.push(screen);
       setPipe(_pipe);
     },
-    [screenPipe, setPipe, screens]
+    [screenPipe, setPipe, screens, isRouterReady, currentAppFlow]
   );
 
   return (

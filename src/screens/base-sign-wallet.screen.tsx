@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { makeShorter } from "../utils";
 import { useAppState } from "../hooks/useAppState";
 import { useWallet } from "../hooks/useWallet";
@@ -7,6 +7,7 @@ import { PolygonButton } from "../components/button";
 import LoadingSpinner from "../components/loading-spiner";
 import DefendIcon from "../assets/images/defend.png";
 import { ModalHeader } from "../components/modal/modal.header";
+import { getUtilsProvider } from "../libs/providers";
 
 export interface BaseSignWalletScreenProps {
   description: string;
@@ -19,16 +20,25 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   signedMessage,
   onSigned,
 }) => {
-  const { walletAddress, sign } = useWallet();
+  const { walletAddress, sign, connect } = useWallet();
   const [signing, setSigning] = useState<boolean>(false);
   const { handleClose } = useAppState();
   const location = useLocation();
+  const utilsProvider = getUtilsProvider();
 
   const handleClickSign = async () => {
     setSigning(true);
     const signature = await sign(signedMessage);
     onSigned(signature);
   };
+
+  useEffect(() => {
+    const stopHandler = utilsProvider.withInterval(async () => {
+      await connect();
+    }, 500);
+
+    return () => stopHandler();
+  }, []);
 
   return (
     <div>

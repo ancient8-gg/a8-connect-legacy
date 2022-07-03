@@ -19,6 +19,7 @@ import { ChainType } from "../libs/adapters/";
 import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import { useAppState } from "../hooks/useAppState";
+import { getUtilsProvider } from "../libs/providers";
 
 export const SIGN_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
 
@@ -29,10 +30,11 @@ export const SignWalletConnectUID: FC = () => {
   const [connectAgenda, setConnectAgenda] = useState<ConnectAgendaType>();
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>();
   const { userInfo, authEntities, logout, signIn } = useSession();
-  const { chainType, walletAddress, sign, disconnect } = useWallet();
+  const { chainType, walletAddress, sign, connect } = useWallet();
   const { handleClose } = useAppState();
   const authAction = getAuthAction();
   const { goBack, isBack, push } = useLocation();
+  const utilsProvider = getUtilsProvider();
 
   const handleSendAuthChallenge = async () => {
     const authChallenge = await authAction.sendChallenge(walletAddress);
@@ -60,7 +62,7 @@ export const SignWalletConnectUID: FC = () => {
   const handleLogout = useCallback(async () => {
     await logout();
     goBack();
-  }, [logout, location]);
+  }, [logout, goBack]);
 
   const handleSign = async () => {
     setSigning(true);
@@ -85,9 +87,9 @@ export const SignWalletConnectUID: FC = () => {
     setSigning(false);
   };
 
-  const handleCancelConnectUid = async () => {
-    await disconnect();
-  };
+  const handleCancelConnectUid = useCallback(() => {
+    goBack();
+  }, [goBack]);
 
   const authType = useMemo<AuthType>(() => {
     return chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
@@ -114,13 +116,16 @@ export const SignWalletConnectUID: FC = () => {
        Inform error exists in another UID
        */
       const isWalletExisted = await authAction.isWalletExisted(walletAddress);
+      setBelongedError(isWalletExisted);
       if (isWalletExisted) {
+        setConnectAgenda(ConnectAgendaType.connectExistWallet);
+        setDescription(null);
         /**
          * Disconnect wallet when have error while connect with the UID
          */
-        setBelongedError(true);
         return;
       }
+
       await handleSendAuthChallenge();
       setConnectAgenda(ConnectAgendaType.connectNewWallet);
       setDescription(
@@ -131,6 +136,14 @@ export const SignWalletConnectUID: FC = () => {
       );
     })();
   }, [walletAddress, userInfo, authEntities]);
+
+  useEffect(() => {
+    const stopHandler = utilsProvider.withInterval(async () => {
+      await connect();
+    }, 500);
+
+    return () => stopHandler();
+  }, []);
 
   return (
     <div>

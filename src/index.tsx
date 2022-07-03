@@ -6,7 +6,7 @@ const a8Connect = new A8Connect("a8-connect");
 a8Connect
   .init({
     networkType: NetworkType.testnet,
-    chainType: ChainType.ALL,
+    chainType: ChainType.EVM,
     onClose: () => {
       a8Connect.closeModal();
     },
@@ -14,3 +14,7 @@ a8Connect
   .then(() => {
     a8Connect.openModal();
   });
+
+if (window) {
+  (window as any).a8Connect = a8Connect;
+}
