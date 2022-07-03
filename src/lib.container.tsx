@@ -26,10 +26,16 @@ export interface A8ConnectInitOptions {
  */
 export class A8Connect {
   /**
+   * Root node selector id
+   * @private
+   */
+  private readonly rootSelectorId: string;
+
+  /**
    * Root node
    * @private
    */
-  private readonly rootNode: Root;
+  private rootNode: Root | null = null;
 
   /**
    * Current available wallets that A8Connect supports.
@@ -58,7 +64,7 @@ export class A8Connect {
       throw new Error(`Root document #${rootSelectorId} not found`);
     }
 
-    this.rootNode = createRoot(document.getElementById(rootSelectorId));
+    this.rootSelectorId = rootSelectorId;
   }
 
   /**
@@ -84,6 +90,14 @@ export class A8Connect {
   public openModal(): void {
     const options = this.options;
 
+    /**
+     * Initialize root node
+     */
+    this.initializeRootNode();
+
+    /**
+     * Now to render root node
+     */
     this.rootNode.render(
       <A8ConnectContainer
         networkType={options.networkType}
@@ -109,7 +123,11 @@ export class A8Connect {
    * The function to close modal
    */
   closeModal(): void {
+    /**
+     * Unmount root node
+     */
     this.rootNode.unmount();
+    this.rootNode = null;
   }
 
   /**
@@ -138,6 +156,14 @@ export class A8Connect {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  /**
+   * The function to initialize root node
+   * @private
+   */
+  private initializeRootNode() {
+    this.rootNode = createRoot(document.getElementById(this.rootSelectorId));
   }
 
   /**
