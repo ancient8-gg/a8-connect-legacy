@@ -126,7 +126,7 @@ export class A8Connect {
     /**
      * Unmount root node
      */
-    this.rootNode.unmount();
+    this.rootNode?.unmount();
     this.rootNode = null;
   }
 
