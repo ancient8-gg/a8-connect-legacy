@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, FC, useCallback } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { getAuthAction } from "../libs/actions/";
 import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
@@ -10,9 +10,9 @@ import { PolygonButton } from "../components/button";
 import LoadingSpinner from "../components/loading-spiner";
 import { BUFFER_LOADING_APP_SCREEN_KEY } from "./buffer-loading.screen";
 import {
-  ConnectAgendaType,
   AuthChallenge,
   AuthType,
+  ConnectAgendaType,
 } from "../libs/dto/entities";
 import { ChainType } from "../libs/adapters/";
 import { useLocation } from "../components/router";
@@ -93,9 +93,7 @@ export const SignWalletConnectUID: FC = () => {
         credential: credential,
       };
 
-      if (connectAgenda === ConnectAgendaType.connectExistWallet) {
-        await handleLogin(createAuthDto);
-      } else {
+      if (connectAgenda !== ConnectAgendaType.connectExistWallet) {
         if (authEntities.length >= 10) {
           toast.open(
             "Failed to add wallet!",
@@ -132,11 +130,17 @@ export const SignWalletConnectUID: FC = () => {
         ).length > 0;
 
       if (inIncluded) {
+        /**
+         * Explain a little about this screen: user already chose the provider that matched with
+         * the desired chain. So it's ok to redirect back to BUFFER_LOADING_APP_SCREEN to process
+         * next flow.
+         */
         setConnectAgenda(ConnectAgendaType.connectExistWallet);
-        setDescription(
-          `You are logged into UID with this wallet
-          Sign to connect wallet to Ancient8's apps`
-        );
+        setDescription(`Redirecting ...`);
+
+        setTimeout(() => {
+          push(BUFFER_LOADING_APP_SCREEN_KEY);
+        }, 1000);
         return;
       }
 
@@ -183,7 +187,9 @@ export const SignWalletConnectUID: FC = () => {
           <div className="pt-[50px]">
             <div className="mt-[30px]">
               <p className="text-white text-[20px] text-center font-bold">
-                SIGNING WITH THIS ADDRESS
+                {connectAgenda === ConnectAgendaType.connectExistWallet
+                  ? "CONNECTED AS"
+                  : "SIGNING WITH THIS ADDRESS"}
               </p>
               <p className="text-primary text-[20px] text-center font-bold">
                 {makeShorter(walletAddress)}
@@ -194,22 +200,22 @@ export const SignWalletConnectUID: FC = () => {
               />
             </div>
             {isBelongedError && (
-              <div className="flex justify-center mt-[30px] items-center">
-                <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#25282D] flex">
-                  <div className="float-left pl-[20px] text-white">
-                    <p className="text-[14px]">
-                      The wallet you selected already belongs to another UID.
-                    </p>
+              <>
+                <div className="flex justify-center mt-[30px] items-center">
+                  <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#25282D] flex">
+                    <div className="float-left pl-[20px] text-white">
+                      <p className="text-[14px]">
+                        The wallet you selected already belongs to another UID.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {isBelongedError && (
-              <div className="mt-[20px]">
-                <p className="text-[16px] text-white text-center font-bold">
-                  Please select another wallet or re-login with this wallet
-                </p>
-              </div>
+                <div className="mt-[20px]">
+                  <p className="text-[16px] text-white text-center font-bold">
+                    Please select another wallet or re-login with this wallet
+                  </p>
+                </div>
+              </>
             )}
           </div>
           {connectAgenda === ConnectAgendaType.connectNewWallet && (
@@ -243,9 +249,9 @@ export const SignWalletConnectUID: FC = () => {
             </div>
           )}
           <div className="bottom-container mt-[20px] mb-[30px]">
-            <p className="text-center text-[14px] text-white">
-              Having trouble?
-              {isBelongedError ? (
+            {isBelongedError && (
+              <p className="text-center text-[14px] text-white">
+                Having trouble?
                 <a
                   className="text-primary underline"
                   onClick={() => handleLogout()}
@@ -253,13 +259,8 @@ export const SignWalletConnectUID: FC = () => {
                   {" "}
                   Logout UID
                 </a>
-              ) : (
-                <a className="text-primary underline" onClick={() => goBack()}>
-                  {" "}
-                  Go back
-                </a>
-              )}
-            </p>
+              </p>
+            )}
           </div>
         </div>
       </div>
