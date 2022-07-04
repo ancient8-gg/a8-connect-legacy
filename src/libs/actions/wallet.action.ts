@@ -259,7 +259,6 @@ export class WalletAction {
     message: string
   ): Promise<{ signature: string; walletAddress: string; walletName: string }> {
     this.ensureWalletIsAvailable();
-
     const walletName = this.selectedAdapter.name;
     const signature = await this.selectedAdapter.sign(message);
     const walletAddress = await this.selectedAdapter.getWalletAddress();

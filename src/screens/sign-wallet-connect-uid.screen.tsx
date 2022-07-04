@@ -14,7 +14,6 @@ import {
   AuthChallenge,
   AuthType,
 } from "../libs/dto/entities";
-import WalletImage from "../assets/images/wallet.png";
 import { ChainType } from "../libs/adapters/";
 import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
@@ -35,6 +34,14 @@ export const SignWalletConnectUID: FC = () => {
   const authAction = getAuthAction();
   const { goBack, isBack, push } = useLocation();
   const utilsProvider = getUtilsProvider();
+
+  let handler: () => void;
+
+  const stopHandler = useCallback(() => {
+    if (typeof handler === "function") {
+      handler();
+    }
+  }, []);
 
   const handleSendAuthChallenge = async () => {
     const authChallenge = await authAction.sendChallenge(walletAddress);
@@ -64,27 +71,35 @@ export const SignWalletConnectUID: FC = () => {
 
   const handleLogout = useCallback(async () => {
     await logout();
-    goBack();
+    push(BUFFER_LOADING_APP_SCREEN_KEY);
   }, [logout, goBack]);
 
   const handleSign = useCallback(async () => {
     setSigning(true);
-    const signature = await sign(authChallenge.message);
-    const credential: WalletCredentialAuthDto = {
-      authChallengeId: authChallenge._id,
-      walletAddress: authChallenge.target,
-      signedData: signature,
-    };
+    try {
+      stopHandler();
+      await connect();
+      const signature = await sign(authChallenge.message);
+      const credential: WalletCredentialAuthDto = {
+        authChallengeId: authChallenge._id,
+        walletAddress: authChallenge.target,
+        signedData: signature,
+      };
 
-    const createAuthDto: CreateAuthDto = {
-      type: authType,
-      credential: credential,
-    };
+      const createAuthDto: CreateAuthDto = {
+        type: authType,
+        credential: credential,
+      };
 
-    if (connectAgenda === ConnectAgendaType.connectExistWallet) {
-      await handleLogin(createAuthDto);
-    } else {
-      await handleConnectNewWallet(createAuthDto);
+      if (connectAgenda === ConnectAgendaType.connectExistWallet) {
+        await handleLogin(createAuthDto);
+      } else {
+        await handleConnectNewWallet(createAuthDto);
+      }
+    } catch {
+      handler = utilsProvider.withInterval(async () => {
+        await connect();
+      }, 500);
     }
 
     setSigning(false);
@@ -142,11 +157,10 @@ export const SignWalletConnectUID: FC = () => {
   }, [walletAddress, userInfo, authEntities]);
 
   useEffect(() => {
-    const stopHandler = utilsProvider.withInterval(async () => {
+    handler = utilsProvider.withInterval(async () => {
       await connect();
     }, 500);
-
-    return () => stopHandler();
+    return () => handler();
   }, []);
 
   return (
@@ -216,26 +230,6 @@ export const SignWalletConnectUID: FC = () => {
                 onClick={handleCancelConnectUid}
               >
                 <p className="text-white">Cancel</p>
-              </PolygonButton>
-            </div>
-          )}
-          {connectAgenda === ConnectAgendaType.connectExistWallet && (
-            <div className="button-container mt-[30px]">
-              <PolygonButton
-                boxStyle={{ width: "100%" }}
-                containerStyle={{ width: "100%", background: "#12151B" }}
-                onClick={handleSign}
-              >
-                <div className="flex w-full justify-center items-center">
-                  {signing ? (
-                    <div className="float-left">
-                      <LoadingSpinner width={20} height={20} />
-                    </div>
-                  ) : (
-                    <img src={WalletImage} className="w-[18px] h-[18px]" />
-                  )}
-                  <p className="text-white ml-[10px]">Sign to connect wallet</p>
-                </div>
               </PolygonButton>
             </div>
           )}

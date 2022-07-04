@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useCallback } from "react";
 import { makeShorter } from "../utils";
 import { useAppState } from "../hooks/useAppState";
 import { useWallet } from "../hooks/useWallet";
@@ -26,18 +26,34 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   const location = useLocation();
   const utilsProvider = getUtilsProvider();
 
-  const handleClickSign = async () => {
+  let handler: () => void;
+
+  const stopHandler = useCallback(() => {
+    if (typeof handler === "function") {
+      handler();
+    }
+  }, []);
+
+  const handleClickSign = useCallback(async () => {
     setSigning(true);
-    const signature = await sign(signedMessage);
-    onSigned(signature);
-  };
+    try {
+      stopHandler();
+      await connect();
+      const signature = await sign(signedMessage);
+      onSigned(signature);
+    } catch {
+      handler = utilsProvider.withInterval(async () => {
+        await connect();
+      }, 500);
+    }
+    setSigning(false);
+  }, [signedMessage, onSigned, stopHandler]);
 
   useEffect(() => {
-    const stopHandler = utilsProvider.withInterval(async () => {
+    handler = utilsProvider.withInterval(async () => {
       await connect();
     }, 500);
-
-    return () => stopHandler();
+    return () => handler();
   }, []);
 
   return (
