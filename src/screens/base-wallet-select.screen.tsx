@@ -36,7 +36,7 @@ export const BaseWalletSelect: FC = () => {
 
     setChainType(desiredChainType);
     location.goBack();
-  }, [setChainType, location.goBack]);
+  }, [desiredChainType, location.goBack]);
 
   return (
     <div>
