@@ -122,6 +122,7 @@ export const SignWalletConnectUID: FC = () => {
       const isWalletExisted = await authAction.isWalletExisted(walletAddress);
       setBelongedError(isWalletExisted);
       if (isWalletExisted) {
+        await handleSendAuthChallenge();
         setConnectAgenda(ConnectAgendaType.connectExistWallet);
         setDescription(null);
         /**
