@@ -59,7 +59,7 @@ export const ConnectWalletScreen: FC = () => {
       <div className="content px-[20px]">
         <div className="sign-wallet-screen w-full pt-[30px]">
           <div className="mx-auto w-[350px]">
-            <p className="text-center text-gray text-[20px] mt-[-25px] font-[100]">
+            <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
               CONNECT WALLET
             </p>
             <div className="pt-[50px]">

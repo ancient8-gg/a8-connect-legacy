@@ -177,7 +177,7 @@ export const SignWalletConnectUID: FC = () => {
       <ModalHeader isBack={isBack} onCloseModal={handleClose} goBack={goBack} />
       <div className="sign-wallet-screen w-full pt-[30px]">
         <div className="mx-auto w-[350px]">
-          <p className="text-center text-gray text-[20px] mt-[-25px] font-[100]">
+          <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
             CONNECT WALLET TO APP
           </p>
           <div className="pt-[50px]">
@@ -224,9 +224,9 @@ export const SignWalletConnectUID: FC = () => {
                 containerStyle={{ width: "100%", background: "#2EB835" }}
                 onClick={handleSign}
               >
-                <div className="flex w-full justify-center items-center">
+                <div className="flex w-full justify-center items-center relative">
                   {signing && (
-                    <div className="float-left">
+                    <div className="absolute left-[-20px]">
                       <LoadingSpinner width={7} height={7} />
                     </div>
                   )}

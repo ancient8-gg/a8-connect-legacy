@@ -48,7 +48,7 @@ export const BaseWalletSelect: FC = () => {
       <div className="content px-[20px]">
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto w-[350px]">
-            <p className="text-center text-gray text-[20px] mt-[-25px] font-[100]">
+            <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
               {chainType === ChainType.EVM ? "EVM" : "SOLANA"}
             </p>
             <div className="mx-auto w-[350px] pt-[20px]">
