@@ -19,7 +19,7 @@ export const BufferLoadingAppScreen: FC = () => {
     chainType,
     walletAddress,
   } = useWallet();
-  const { initState: initSessionState, userInfo, authEntities } = useSession();
+  const { initState: initSessionState, authEntities } = useSession();
   const { push } = useLocation();
 
   const [isStateReset, setStateReset] = useState(false);
@@ -34,25 +34,27 @@ export const BufferLoadingAppScreen: FC = () => {
 
   const shouldGoToConnectFlow = useMemo(() => {
     /**
-     * Extract uid chain type
-     */
-    const uidConnectedChainType =
-      (userInfo?.session.authWallets[0].type as string) || "";
-
-    /**
      * Prepare conditions
      */
-    const connectedWalletBelongsToCurrentUid = !!authEntities.find(
+    const connectedAuthEntity = authEntities.find(
       (wallet) => wallet.credential.walletAddress === walletAddress
     );
+
+    const connectedWalletBelongsToCurrentUid = !!connectedAuthEntity;
 
     const connectedWalletMatchedDesiredChainType =
       (isWalletConnected && chainType === desiredChainType) ||
       desiredChainType === ChainType.ALL;
 
     const uidConnectedChainTypeMatchedDesiredChainType =
-      uidConnectedChainType.toString() === desiredChainType.toString() ||
+      connectedAuthEntity.type.toString() === desiredChainType.toString() ||
       desiredChainType === ChainType.ALL;
+
+    console.log({
+      connectedWalletMatchedDesiredChainType,
+      connectedWalletBelongsToCurrentUid,
+      uidConnectedChainTypeMatchedDesiredChainType,
+    });
 
     /**
      * Go to connect flow
@@ -62,9 +64,15 @@ export const BufferLoadingAppScreen: FC = () => {
       connectedWalletBelongsToCurrentUid &&
       uidConnectedChainTypeMatchedDesiredChainType
     );
-  }, [isWalletConnected, userInfo, desiredChainType, walletAddress]);
+  }, [isWalletConnected, desiredChainType, walletAddress]);
 
   const handleNextFlow = useCallback(() => {
+    console.log({
+      shouldGoToLoginFlow,
+      shouldGoToConnectFlow,
+      screenStateReady,
+    });
+
     /**
      * Do nothing if screen state isn't ready
      */
@@ -112,7 +120,10 @@ export const BufferLoadingAppScreen: FC = () => {
   }, []);
 
   useEffect(() => {
-    handleNextFlow();
+    if (screenStateReady) {
+      console.log("screenStateReady", screenStateReady);
+      handleNextFlow();
+    }
   }, [screenStateReady]);
 
   return (
