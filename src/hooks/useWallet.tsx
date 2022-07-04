@@ -50,6 +50,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       setChainType(session.chainType);
       setWalletAddress(session.walletAddress);
       setWalletName(session.walletName);
+      setWalletConnected(!!session);
     } catch {}
 
     setWalletReady(true);
@@ -58,10 +59,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
 
   const handleWalletConnected = useCallback(
     (walletSession: ConnectedWalletPayload | null) => {
-      if (walletSession) {
-        setWalletConnected(!!walletSession);
-      }
-
       onConnected(walletSession);
     },
     []
@@ -101,7 +98,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     },
     [walletName, walletAddress]
   );
-
+  //
   useEffect(() => {
     initState().then((session) => handleWalletConnected(session));
   }, []);
