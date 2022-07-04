@@ -9,7 +9,7 @@ if (document) {
       a8Connect
         .init({
           networkType: NetworkType.testnet,
-          chainType: ChainType.EVM,
+          chainType: ChainType.SOL,
           onClose: () => {
             a8Connect.closeModal();
           },

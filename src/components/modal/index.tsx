@@ -9,7 +9,6 @@ export interface ModalProps {
   modalIsOpen: boolean;
   contentStyle?: CSSProperties;
   children?: ReactNode;
-  isBack?: boolean | false;
 }
 
 export const customStyles = {

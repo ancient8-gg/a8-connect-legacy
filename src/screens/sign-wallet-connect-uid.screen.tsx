@@ -18,6 +18,7 @@ import { ChainType } from "../libs/adapters/";
 import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import { useAppState } from "../hooks/useAppState";
+import { useToast } from "../hooks/useToast";
 import { getUtilsProvider } from "../libs/providers";
 
 export const SIGN_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
@@ -31,8 +32,9 @@ export const SignWalletConnectUID: FC = () => {
   const { userInfo, authEntities, logout, signIn } = useSession();
   const { chainType, walletAddress, sign, connect } = useWallet();
   const { handleClose } = useAppState();
-  const authAction = getAuthAction();
   const { goBack, isBack, push } = useLocation();
+  const toast = useToast();
+  const authAction = getAuthAction();
   const utilsProvider = getUtilsProvider();
 
   let handler: () => void;
@@ -94,7 +96,14 @@ export const SignWalletConnectUID: FC = () => {
       if (connectAgenda === ConnectAgendaType.connectExistWallet) {
         await handleLogin(createAuthDto);
       } else {
-        await handleConnectNewWallet(createAuthDto);
+        if (authEntities.length >= 10) {
+          toast.open(
+            "Failed to add wallet!",
+            "You can only add a maximum of 10 wallets to your UID."
+          );
+        } else {
+          await handleConnectNewWallet(createAuthDto);
+        }
       }
     } catch {
       handler = utilsProvider.withInterval(async () => {

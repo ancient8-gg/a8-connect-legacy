@@ -16,6 +16,7 @@ import {
   ScreenType,
   useRouter,
 } from "../components/router";
+import { ToastProvider } from "./useToast";
 import { SCREENS } from "../components/router/init";
 import { useAppState } from "./useAppState";
 import Modal from "../components/modal";
@@ -78,7 +79,7 @@ export const RouterProvider: FC<ProviderProps> = () => {
         initState,
       }}
     >
-      {layout}
+      <ToastProvider>{layout}</ToastProvider>
     </RouterContext.Provider>
   );
 };
