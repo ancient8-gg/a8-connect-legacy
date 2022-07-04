@@ -52,19 +52,22 @@ export const SignWalletConnectUID: FC = () => {
     [signIn]
   );
 
-  const handleConnectNewWallet = async (createAuthDto: CreateAuthDto) => {
-    const authEntity = await authAction.connectWallet(createAuthDto);
-    if (authEntity) {
-      push(BUFFER_LOADING_APP_SCREEN_KEY);
-    }
-  };
+  const handleConnectNewWallet = useCallback(
+    async (createAuthDto: CreateAuthDto) => {
+      const authEntity = await authAction.connectWallet(createAuthDto);
+      if (authEntity) {
+        push(BUFFER_LOADING_APP_SCREEN_KEY);
+      }
+    },
+    []
+  );
 
   const handleLogout = useCallback(async () => {
     await logout();
     goBack();
   }, [logout, goBack]);
 
-  const handleSign = async () => {
+  const handleSign = useCallback(async () => {
     setSigning(true);
     const signature = await sign(authChallenge.message);
     const credential: WalletCredentialAuthDto = {
@@ -85,7 +88,7 @@ export const SignWalletConnectUID: FC = () => {
     }
 
     setSigning(false);
-  };
+  }, [authChallenge, connectAgenda, sign, handleLogin, handleConnectNewWallet]);
 
   const handleCancelConnectUid = useCallback(() => {
     goBack();
@@ -97,13 +100,14 @@ export const SignWalletConnectUID: FC = () => {
 
   useEffect(() => {
     (async () => {
+      await handleSendAuthChallenge();
+
       const inIncluded =
         authEntities.filter(
           (item) => item.credential.walletAddress === walletAddress
         ).length > 0;
 
       if (inIncluded) {
-        await handleSendAuthChallenge();
         setConnectAgenda(ConnectAgendaType.connectExistWallet);
         setDescription(
           `You are logged into UID with this wallet
@@ -126,7 +130,6 @@ export const SignWalletConnectUID: FC = () => {
         return;
       }
 
-      await handleSendAuthChallenge();
       setConnectAgenda(ConnectAgendaType.connectNewWallet);
       setDescription(
         `Hey, <span class='text-primary'> this is a new wallet, </span> 
