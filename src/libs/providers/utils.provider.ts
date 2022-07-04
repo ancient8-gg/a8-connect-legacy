@@ -34,7 +34,7 @@ export class UtilsProvider {
      * The stop handler
      */
     return () => {
-      isStopped = false;
+      isStopped = true;
     };
   }
 }
