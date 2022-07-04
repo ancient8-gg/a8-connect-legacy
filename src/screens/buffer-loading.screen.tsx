@@ -58,7 +58,13 @@ export const BufferLoadingAppScreen: FC = () => {
       connectedWalletBelongsToCurrentUid &&
       uidConnectedChainTypeMatchedDesiredChainType
     );
-  }, [isWalletConnected, desiredChainType, walletAddress, authEntities]);
+  }, [
+    isWalletConnected,
+    desiredChainType,
+    walletAddress,
+    authEntities,
+    chainType,
+  ]);
 
   const handleNextFlow = useCallback(() => {
     /**
