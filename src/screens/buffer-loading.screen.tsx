@@ -47,14 +47,8 @@ export const BufferLoadingAppScreen: FC = () => {
       desiredChainType === ChainType.ALL;
 
     const uidConnectedChainTypeMatchedDesiredChainType =
-      connectedAuthEntity.type.toString() === desiredChainType.toString() ||
+      connectedAuthEntity?.type.toString() === desiredChainType.toString() ||
       desiredChainType === ChainType.ALL;
-
-    console.log({
-      connectedWalletMatchedDesiredChainType,
-      connectedWalletBelongsToCurrentUid,
-      uidConnectedChainTypeMatchedDesiredChainType,
-    });
 
     /**
      * Go to connect flow
@@ -64,15 +58,9 @@ export const BufferLoadingAppScreen: FC = () => {
       connectedWalletBelongsToCurrentUid &&
       uidConnectedChainTypeMatchedDesiredChainType
     );
-  }, [isWalletConnected, desiredChainType, walletAddress]);
+  }, [isWalletConnected, desiredChainType, walletAddress, authEntities]);
 
   const handleNextFlow = useCallback(() => {
-    console.log({
-      shouldGoToLoginFlow,
-      shouldGoToConnectFlow,
-      screenStateReady,
-    });
-
     /**
      * Do nothing if screen state isn't ready
      */
@@ -92,10 +80,11 @@ export const BufferLoadingAppScreen: FC = () => {
       handleClose();
     }, 300);
   }, [
+    handleClose,
     shouldGoToLoginFlow,
     shouldGoToConnectFlow,
-    handleClose,
     screenStateReady,
+    walletAddress,
   ]);
 
   const resetAppState = useCallback(async () => {
@@ -121,7 +110,6 @@ export const BufferLoadingAppScreen: FC = () => {
 
   useEffect(() => {
     if (screenStateReady) {
-      console.log("screenStateReady", screenStateReady);
       handleNextFlow();
     }
   }, [screenStateReady]);

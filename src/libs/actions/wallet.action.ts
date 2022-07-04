@@ -214,7 +214,7 @@ export class WalletAction {
         }
 
         return resolve(null);
-      }, 300);
+      }, 1000);
     });
   }
 

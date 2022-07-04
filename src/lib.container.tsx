@@ -143,9 +143,7 @@ export class A8Connect {
       const walletSession =
         await this.currentSession.Wallet.getConnectedSession();
       this.onConnected(walletSession);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch {}
 
     /**
      * Now to restore UID session
@@ -153,9 +151,7 @@ export class A8Connect {
     try {
       const userSession = await this.currentSession.User.getUserProfile();
       this.onAuth(userSession);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch {}
   }
 
   /**
