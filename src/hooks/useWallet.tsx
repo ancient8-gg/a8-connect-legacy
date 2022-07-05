@@ -51,7 +51,11 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       setWalletAddress(session.walletAddress);
       setWalletName(session.walletName);
       setWalletConnected(!!session);
-    } catch {}
+
+      handleWalletConnected(session);
+    } catch {
+      handleWalletConnected(null);
+    }
 
     setWalletReady(true);
     return session;
@@ -73,18 +77,13 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const connect = useCallback(async () => {
-    try {
-      await walletAction.connectWallet(walletName);
+    await walletAction.connectWallet(walletName);
 
-      // trigger on connected
-      const walletSession = await initState();
-      handleWalletConnected(walletSession);
+    // trigger on connected
+    const walletSession = await initState();
 
-      return walletSession.walletAddress;
-    } catch {
-      handleWalletConnected(null);
-      return null;
-    }
+    // return wallet address
+    return walletSession?.walletAddress;
   }, [walletName, initState, handleWalletConnected]);
 
   const disconnect = () => {
@@ -100,7 +99,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   );
   //
   useEffect(() => {
-    initState().then((session) => handleWalletConnected(session));
+    initState();
   }, []);
 
   return (

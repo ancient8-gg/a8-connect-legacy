@@ -82,7 +82,8 @@
     "cleanup-dts": "rm -rf dist/dts/",
     "cleanup-pkg": "NODE_PATH=. node scripts/clean-pkg.js",
     "cleanup": "yarn cleanup-dts && yarn cleanup-pkg",
-    "build-lib": "npx rollup -c && yarn gen-doc && yarn cleanup"
+    "build-lib": "npx rollup -c && yarn gen-doc && yarn cleanup",
+    "build-lib:dev": "npx rollup -c && yarn gen-doc && yarn cleanup && rm -rf ../dist/ && cp -r dist/ ../dist"
   },
   "browserslist": {
     "production": [
