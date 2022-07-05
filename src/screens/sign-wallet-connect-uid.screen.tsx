@@ -136,11 +136,12 @@ export const SignWalletConnectUID: FC = () => {
          * next flow.
          */
         setConnectAgenda(ConnectAgendaType.connectExistWallet);
-        setDescription(`Redirecting ...`);
-
-        setTimeout(() => {
-          push(BUFFER_LOADING_APP_SCREEN_KEY);
-        }, 1000);
+        setDescription(
+          `The wallet was already connected and added to your UID: <span class="text-primary">${makeShorter(
+            userInfo?._id
+          )}</span><br/><br/>You can <span class="text-primary">choose another wallet</span> or close this dialog.`
+        );
+        setBelongedError(false);
         return;
       }
 
@@ -218,6 +219,22 @@ export const SignWalletConnectUID: FC = () => {
               </>
             )}
           </div>
+          {connectAgenda === ConnectAgendaType.connectExistWallet &&
+            !isBelongedError && (
+              <div className="button-container mt-[30px] flex justify-center">
+                <PolygonButton
+                  boxStyle={{
+                    width: "50%",
+                    marginRight: "10px",
+                    background: "#2EB835",
+                  }}
+                  containerStyle={{ width: "100%", background: "#2EB835" }}
+                  onClick={() => push(BUFFER_LOADING_APP_SCREEN_KEY)}
+                >
+                  Close
+                </PolygonButton>
+              </div>
+            )}
           {connectAgenda === ConnectAgendaType.connectNewWallet && (
             <div className="button-container mt-[30px] flex">
               <PolygonButton
