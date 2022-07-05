@@ -8,6 +8,7 @@ import { RouterProvider } from "./hooks/useRouter";
 import { NetworkType } from "./libs/providers/registry.provider";
 
 import "./index.css";
+import LoadingSpinner from "./components/loading-spiner";
 
 const A8Connect: FC<{
   networkType: NetworkType;
@@ -28,9 +29,12 @@ const A8Connect: FC<{
         networkType={networkType}
       >
         <SessionProvider>
-          <WalletProvider>
-            <RouterProvider />
-          </WalletProvider>
+          <div className="loading-screen w-full py-[50px] flex justify-center items-center">
+            <LoadingSpinner width={40} height={40} />
+          </div>
+          {/*<WalletProvider>*/}
+          {/*  <RouterProvider />*/}
+          {/*</WalletProvider>*/}
         </SessionProvider>
       </AppStateProvider>
     </div>
