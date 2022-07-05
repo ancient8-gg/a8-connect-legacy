@@ -1,5 +1,4 @@
 import { AuthAction } from "./auth.action";
-import { RegistryProvider } from "../providers";
 import { WalletAction } from "./wallet.action";
 import { UserAction } from "./user.action";
 
@@ -16,7 +15,7 @@ let userAction: UserAction;
  */
 export const getAuthAction = () => {
   if (!authAction) {
-    authAction = new AuthAction(RegistryProvider.getInstance().networkType);
+    authAction = new AuthAction();
   }
   return authAction;
 };
@@ -36,7 +35,7 @@ export const getWalletAction = () => {
  */
 export const getUserAction = () => {
   if (!userAction) {
-    userAction = new UserAction(RegistryProvider.getInstance().networkType);
+    userAction = new UserAction();
   }
   return userAction;
 };

@@ -190,6 +190,13 @@ export class WalletAction {
   }
 
   /**
+   * The function to clean wallet cache
+   */
+  cleanWalletCache() {
+    return this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
+  }
+
+  /**
    * Restore connection
    */
   async restoreConnection() {
@@ -199,7 +206,7 @@ export class WalletAction {
 
     if (!connectedWalletData) {
       this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
-      return;
+      return null;
     }
 
     const { walletName } = connectedWalletData;

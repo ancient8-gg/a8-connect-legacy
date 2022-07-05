@@ -15,6 +15,7 @@ import { OnAuthPayload } from "./hooks/useSession";
 export interface A8ConnectInitOptions {
   chainType: ChainType;
   networkType: NetworkType;
+  cleanWalletCache?: boolean;
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
@@ -171,9 +172,19 @@ export class A8Connect {
     const registryInstance = RegistryProvider.getInstance();
 
     /**
-     * Initialize network type
+     * Initialize registry provider
      */
     registryInstance.networkType = options.networkType;
+    registryInstance.document = window.document;
+    registryInstance.fetch = window.fetch.bind(window);
+    registryInstance.storage = window.localStorage;
+
+    /**
+     * Clean wallet cache
+     */
+    if (!!options.cleanWalletCache) {
+      getWalletAction().cleanWalletCache();
+    }
 
     /**
      * Initialize session
