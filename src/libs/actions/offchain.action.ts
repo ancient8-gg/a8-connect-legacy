@@ -6,9 +6,7 @@ import {
   getCookieProvider,
   getStorageProvider,
   getUserProvider,
-  RegistryProvider,
 } from "../providers";
-import { NetworkType } from "../providers/registry.provider";
 import { UserProvider } from "../providers/user.provider";
 
 /**
@@ -42,16 +40,8 @@ export class OffChainAction {
 
   /**
    * Constructor needs `NetworkType` passing as parameter.
-   * @param networkType
    */
-  constructor(networkType: NetworkType) {
-    // Initialize registry
-    const registryProvider = RegistryProvider.getInstance();
-    registryProvider.networkType = networkType;
-    registryProvider.document = window.document;
-    registryProvider.fetch = window.fetch.bind(window);
-    registryProvider.storage = window.localStorage;
-
+  constructor() {
     // Initialize provider
     this.authProvider = getAuthProvider();
     this.userProvider = getUserProvider();

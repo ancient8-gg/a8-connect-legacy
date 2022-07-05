@@ -13,6 +13,7 @@ import {
   MetamaskEVMWalletName,
   PhantomSolanaWallet,
   PhantomSolanaWalletName,
+  WalletProvider,
 } from "../adapters";
 import {
   SlopeSolanaWallet,
@@ -62,54 +63,55 @@ export class WalletAction {
    * Initialize injected adapters in a public function to callback
    */
   public initializeAdapters() {
+    const windowInstance = window as any;
     /**
      * Initialize BinanceChain EVM Wallet.
      */
     this.supportedWallets[BinanceEVMWalletName] = new BinanceEVMWallet(
-      (window as any).BinanceChain
+      windowInstance.BinanceChain
     );
 
     /**
      * Initialize Coin98 EVM Wallet.
      */
     this.supportedWallets[Coin98EVMWalletName] = new Coin98EVMWallet(
-      (window as any).coin98?.provider
+      windowInstance.coin98?.provider
     );
 
     /**
      * Initialize Coinbase EVM Wallet.
      */
     this.supportedWallets[CoinbaseEVMWalletName] = new CoinbaseEVMWallet(
-      (window as any).coinbaseWalletExtension
+      windowInstance.coinbaseWalletExtension
     );
 
     /**
      * Initialize Metamask EVM Wallet.
      */
     this.supportedWallets[MetamaskEVMWalletName] = new MetamaskEVMWallet(
-      (window as any).ethereum?.providers?.find(
-        (provider: any) => provider.isMetaMask === true
-      ) || (window as any).ethereum
+      windowInstance.ethereum?.providers?.find(
+        (provider: WalletProvider) => provider.isMetaMask === true
+      ) || windowInstance.ethereum
     );
 
     /**
      * Initialize Coin98 Solana Wallet.
      */
     this.supportedWallets[Coin98SolanaWalletName] = new Coin98SolanaWallet(
-      (window as any).coin98?.sol
+      windowInstance.coin98?.sol
     );
 
     /**
      * Initialize Phantom Solana Wallet.
      */
     this.supportedWallets[PhantomSolanaWalletName] = new PhantomSolanaWallet(
-      (window as any).solana
+      windowInstance.solana
     );
     /**
      * Initialize Slope Solana Wallet.
      */
     this.supportedWallets[SlopeSolanaWalletName] = new SlopeSolanaWallet(
-      !!(window as any).Slope && new (window as any).Slope()
+      !!windowInstance.Slope && new windowInstance.Slope()
     );
     //
     // /**
@@ -188,6 +190,13 @@ export class WalletAction {
   }
 
   /**
+   * The function to clean wallet cache
+   */
+  cleanWalletCache() {
+    return this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
+  }
+
+  /**
    * Restore connection
    */
   async restoreConnection() {
@@ -197,7 +206,7 @@ export class WalletAction {
 
     if (!connectedWalletData) {
       this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
-      return;
+      return null;
     }
 
     const { walletName } = connectedWalletData;
