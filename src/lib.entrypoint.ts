@@ -11,12 +11,13 @@ export const getA8ConnectInstance = () => {
 };
 
 /**
- * Init function that must set correctly boundary context
+ * Init function that must set correctly boundary context.
+ * Always create another A8Connect instance when trigger.
  * @param rootDOMId
  * @param options
  */
 export const init = (rootDOMId: string, options: A8ConnectInitOptions) => {
-  if (!a8ConnectInstance) a8ConnectInstance = new A8Connect(rootDOMId);
+  a8ConnectInstance = new A8Connect(rootDOMId);
   return a8ConnectInstance.init.call(a8ConnectInstance, options);
 };
 
