@@ -12,7 +12,7 @@ $ yarn add @ancient8/connect
 
 ## Documentation
 
-For details API please refer the [docs](https://docs.ancient8.dev/a8-connect/a8-id/a8-connect/public/docs/modules.html#default).
+For details API please refer the [docs](https://docs.ancient8.dev/modules.html#default).
 
 ## Examples
 
