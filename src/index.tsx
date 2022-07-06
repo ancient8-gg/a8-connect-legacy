@@ -8,6 +8,7 @@ if (document) {
       const a8Connect = new A8Connect("a8-connect");
       a8Connect
         .init({
+          disableCloseButton: true,
           cleanWalletCache: true,
           networkType: NetworkType.testnet,
           chainType: ChainType.SOL,

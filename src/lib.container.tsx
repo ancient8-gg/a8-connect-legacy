@@ -15,7 +15,9 @@ import { OnAuthPayload } from "./hooks/useSession";
 export interface A8ConnectInitOptions {
   chainType: ChainType;
   networkType: NetworkType;
+  withCredential?: string;
   cleanWalletCache?: boolean;
+  disableCloseButton?: boolean;
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
@@ -79,7 +81,7 @@ export class A8Connect {
     this.options = options;
 
     // initialize registry first
-    this.initializeRegistryAndSession();
+    await this.initializeRegistryAndSession();
 
     // restore the session if applicable
     await this.fetchSession();
@@ -101,6 +103,7 @@ export class A8Connect {
      */
     this.rootNode.render(
       <A8ConnectContainer
+        disableCloseButton={options.disableCloseButton}
         networkType={options.networkType}
         chainType={options.chainType}
         onError={options.onError}
@@ -118,6 +121,24 @@ export class A8Connect {
         }}
       />
     );
+  }
+
+  /**
+   * The function to replace credential.
+   * Call this function to remove the old credential and replace with a new one.
+   * Set parameter to null to delete current credential.
+   * @param jwt
+   */
+  private async setCredential(jwt: string | null) {
+    /**
+     * Remove current credential
+     */
+    await this.currentSession.Auth.removeCredential();
+
+    /**
+     * Persist new credential
+     */
+    await this.currentSession.Auth.setCredential(jwt);
   }
 
   /**
@@ -167,7 +188,7 @@ export class A8Connect {
    * Initialize registry and session
    * @private
    */
-  private initializeRegistryAndSession() {
+  private async initializeRegistryAndSession() {
     const options = this.options;
     const registryInstance = RegistryProvider.getInstance();
 
@@ -196,6 +217,13 @@ export class A8Connect {
       connectedWallet: null,
       sessionUser: null,
     };
+
+    /**
+     * Replace credential if needed
+     */
+    if (!!options.withCredential) {
+      await this.setCredential(options.withCredential);
+    }
   }
 
   /**

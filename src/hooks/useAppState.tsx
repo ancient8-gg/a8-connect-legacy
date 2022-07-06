@@ -24,6 +24,7 @@ interface AppStateContextProviderProps {
   onConnected?: (payload: ConnectedWalletPayload) => void;
   desiredChainType?: ChainType;
   networkType?: NetworkType;
+  disableCloseButton?: boolean;
 }
 
 interface AppStateContextProvider {
@@ -44,6 +45,7 @@ interface AppStateContextProvider {
   isSessionReady: boolean;
   isAppReady: boolean;
   isUIDReady: boolean;
+  disableCloseButton: boolean;
   currentAppFlow: AppFlow;
   networkType: NetworkType;
 }
@@ -56,6 +58,7 @@ export const AppStateProvider: FC<
   } & AppStateContextProviderProps
 > = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [disableCloseButton] = useState(!!props.disableCloseButton || false);
   const [desiredChainType] = useState(props.desiredChainType || ChainType.ALL);
   const [networkType] = useState(props.networkType || NetworkType.mainnet);
   const [isRouterReady, setRouterReady] = useState(false);
@@ -143,6 +146,7 @@ export const AppStateProvider: FC<
         currentAppFlow,
         setCurrentAppFlow,
         networkType,
+        disableCloseButton,
       }}
     >
       {props.children}

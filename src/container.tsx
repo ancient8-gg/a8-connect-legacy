@@ -12,14 +12,24 @@ import "./index.css";
 const A8Connect: FC<{
   networkType: NetworkType;
   chainType: ChainType;
+  disableCloseButton?: boolean;
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
-}> = ({ onAuth, onConnected, chainType, onClose, onError, networkType }) => {
+}> = ({
+  onAuth,
+  onConnected,
+  chainType,
+  onClose,
+  onError,
+  networkType,
+  disableCloseButton,
+}) => {
   return (
     <div className="layout">
       <AppStateProvider
+        disableCloseButton={disableCloseButton}
         onClose={onClose}
         onAuth={onAuth}
         onConnected={onConnected}

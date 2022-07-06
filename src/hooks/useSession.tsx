@@ -45,19 +45,23 @@ export const SessionProvider: FC<{
   }, [onAuth]);
 
   const fetchSession = useCallback(async () => {
-    const [_sessionUser, _authEntities] = await Promise.all([
-      userAction.getUserProfile(),
-      userAction.getAuthEntities(),
-    ]).then(([_sessionUser, _authEntities]) => {
-      setUserInfo(_sessionUser);
-      setAuthEntities(_authEntities);
+    let sessionUser = null;
+    let authEntities: AuthEntity[] = [];
 
-      return [_sessionUser, _authEntities];
-    });
+    try {
+      sessionUser = await userAction.getUserProfile();
+    } catch {}
+
+    try {
+      authEntities = await userAction.getAuthEntities();
+    } catch {}
+
+    setUserInfo(sessionUser);
+    setAuthEntities(authEntities);
 
     return {
-      sessionUser: _sessionUser as UserInfo,
-      authEntities: _authEntities as AuthEntity[],
+      sessionUser,
+      authEntities,
     };
   }, []);
 
@@ -90,22 +94,20 @@ export const SessionProvider: FC<{
   const initState = useCallback(async () => {
     setSessionReady(false);
 
-    try {
-      const { sessionUser } = await fetchSession();
+    const { sessionUser } = await fetchSession();
 
-      if (sessionUser && sessionUser._id) {
-        setCurrentAppFlow(AppFlow.CONNECT_FLOW);
-        onAuth(sessionUser);
-      }
-    } catch {
+    if (sessionUser && sessionUser._id) {
+      setCurrentAppFlow(AppFlow.CONNECT_FLOW);
+    } else {
       setCurrentAppFlow(AppFlow.LOGIN_FLOW);
-      onAuth(null);
     }
+
+    onAuth(sessionUser);
 
     if (!isSessionReady) {
       setSessionReady(true);
     }
-  }, [onAuth, setCurrentAppFlow, setSessionReady, setAuthEntities]);
+  }, [onAuth]);
 
   useEffect(() => {
     initState();

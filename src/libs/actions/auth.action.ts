@@ -9,6 +9,25 @@ import { CreateAuthDto } from "../dto/create-auth.dto";
  */
 export class AuthAction extends OffChainAction {
   /**
+   * The function to modify/delete credential
+   */
+  async setCredential(jwt: string | null) {
+    if (jwt === null) return this.removeCredential();
+    this.storageProvider.setItem("jwt", jwt);
+  }
+
+  /**
+   * The function to remove credential
+   */
+  async removeCredential() {
+    try {
+      await this.logout();
+    } catch {}
+
+    this.storageProvider.removeItem("jwt");
+  }
+
+  /**
    * Send challenge data to server to confirm action
    * @param walletAddress
    */
@@ -49,11 +68,7 @@ export class AuthAction extends OffChainAction {
    * Connect new wallet to UID
    */
   async connectWallet(createAuthDto: CreateAuthDto): Promise<AuthEntity> {
-    try {
-      return this.authProvider.connectWallet(createAuthDto);
-    } catch {
-      return null;
-    }
+    return this.authProvider.connectWallet(createAuthDto);
   }
 
   /**

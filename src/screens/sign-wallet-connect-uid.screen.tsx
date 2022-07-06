@@ -61,26 +61,39 @@ export const SignWalletConnectUID: FC = () => {
     [signIn]
   );
 
-  const handleConnectNewWallet = useCallback(
-    async (createAuthDto: CreateAuthDto) => {
-      const authEntity = await authAction.connectWallet(createAuthDto);
-      if (authEntity) {
-        push(BUFFER_LOADING_APP_SCREEN_KEY);
-      }
-    },
-    []
-  );
-
   const handleLogout = useCallback(async () => {
     await logout();
     push(BUFFER_LOADING_APP_SCREEN_KEY);
   }, [logout, goBack]);
 
-  const handleSign = useCallback(async () => {
+  const handleConnectNewWallet = useCallback(async () => {
+    /**
+     * Raise this error if user already has 10 wallets
+     */
+    if (authEntities.length >= 10) {
+      toast.open(
+        "Failed to add wallet!",
+        "You can only add a maximum of 10 wallets to your UID."
+      );
+      return;
+    }
+
+    /**
+     * Indicate the signing process is running
+     */
     setSigning(true);
+
+    /**
+     * Call stop handler
+     */
+    stopHandler();
+
+    /**
+     * Re-connect again to make sure the wallet is always connected
+     */
+    await connect();
+
     try {
-      stopHandler();
-      await connect();
       const signature = await sign(authChallenge.message);
       const credential: WalletCredentialAuthDto = {
         authChallengeId: authChallenge._id,
@@ -93,24 +106,30 @@ export const SignWalletConnectUID: FC = () => {
         credential: credential,
       };
 
-      if (connectAgenda !== ConnectAgendaType.connectExistWallet) {
-        if (authEntities.length >= 10) {
-          toast.open(
-            "Failed to add wallet!",
-            "You can only add a maximum of 10 wallets to your UID."
-          );
-        } else {
-          await handleConnectNewWallet(createAuthDto);
-        }
-      }
+      await authAction.connectWallet(createAuthDto);
+
+      /**
+       * Push to loading screen if connect successfully
+       */
+      push(BUFFER_LOADING_APP_SCREEN_KEY);
     } catch {
+      /**
+       * Raise error and restart interval wallet syncing process
+       */
+      toast.open(
+        "Failed to add wallet!",
+        "The wallet isn't eligible to add to your UID."
+      );
       handler = utilsProvider.withInterval(async () => {
         await connect();
       }, 500);
     }
 
+    /**
+     * Close signing process
+     */
     setSigning(false);
-  }, [authChallenge, connectAgenda, sign, handleLogin, handleConnectNewWallet]);
+  }, [authChallenge, connectAgenda, sign, handleLogin]);
 
   const handleCancelConnectUid = useCallback(() => {
     goBack();
@@ -247,7 +266,7 @@ export const SignWalletConnectUID: FC = () => {
                   background: "#2EB835",
                 }}
                 containerStyle={{ width: "100%", background: "#2EB835" }}
-                onClick={handleSign}
+                onClick={handleConnectNewWallet}
               >
                 <div className="flex w-full justify-center items-center relative">
                   {signing && (
