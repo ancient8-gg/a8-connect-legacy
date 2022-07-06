@@ -122,8 +122,6 @@ export const SignWalletConnectUID: FC = () => {
 
   useEffect(() => {
     (async () => {
-      await handleRequestAuthChallenge();
-
       const inIncluded =
         authEntities.filter(
           (item) => item.credential.walletAddress === walletAddress
@@ -146,12 +144,16 @@ export const SignWalletConnectUID: FC = () => {
       }
 
       /**
+       * Request auth challenge here
+       */
+      await handleRequestAuthChallenge();
+
+      /**
        Inform error exists in another UID
        */
       const isWalletExisted = await authAction.isWalletExisted(walletAddress);
       setBelongedError(isWalletExisted);
       if (isWalletExisted) {
-        await handleRequestAuthChallenge();
         setConnectAgenda(ConnectAgendaType.connectExistWallet);
         setDescription(null);
         /**
