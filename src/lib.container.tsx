@@ -2,26 +2,20 @@ import { createRoot, Root } from "react-dom/client";
 import A8ConnectContainer from "./container";
 
 import { ChainType, SupportedWallets } from "./libs/adapters";
-import {
-  A8ConnectSession,
-  ConnectedWalletPayload,
-  NetworkType,
-  RegistryProvider,
-  UserInfo,
-} from "./types";
+import { ConnectSessionDto, Providers, Entities } from "./types";
 import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
 import { OnAuthPayload } from "./hooks/useSession";
 
 export interface A8ConnectInitOptions {
   chainType: ChainType;
-  networkType: NetworkType;
+  networkType: Providers.NetworkType;
   withCredential?: string;
   cleanWalletCache?: boolean;
   disableCloseButton?: boolean;
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
-  onConnected?: (payload: ConnectedWalletPayload) => void;
+  onConnected?: (payload: ConnectSessionDto.ConnectedWalletPayload) => void;
 }
 
 /**
@@ -48,7 +42,7 @@ export class A8Connect {
   /**
    * Current user session is initially set as null. After connecting wallet/login action, the `currentSession` will be available.
    */
-  public currentSession: A8ConnectSession | null = null;
+  public currentSession: ConnectSessionDto.A8ConnectSession | null = null;
 
   /**
    * Init options for UID container
@@ -190,7 +184,7 @@ export class A8Connect {
    */
   private async initializeRegistryAndSession() {
     const options = this.options;
-    const registryInstance = RegistryProvider.getInstance();
+    const registryInstance = Providers.RegistryProvider.getInstance();
 
     /**
      * Initialize registry provider
@@ -231,7 +225,7 @@ export class A8Connect {
    * @param payload
    * @private
    */
-  private onAuth(payload: UserInfo | null): void {
+  private onAuth(payload: Entities.UserInfo | null): void {
     this.currentSession = {
       ...this.currentSession,
       sessionUser: payload,
@@ -243,7 +237,9 @@ export class A8Connect {
    * @param payload
    * @private
    */
-  private onConnected(payload: ConnectedWalletPayload | null): void {
+  private onConnected(
+    payload: ConnectSessionDto.ConnectedWalletPayload | null
+  ): void {
     this.currentSession = {
       ...this.currentSession,
       connectedWallet: payload,

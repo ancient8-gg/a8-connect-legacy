@@ -79,7 +79,7 @@
     "format": "prettier --write ./**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint \"**/*.ts\" \"**/*.tsx\" --fix",
     "prepare": "husky install",
-    "gen-doc": "typedoc --name \"A8 Connect\" --readme exports/README.md --out ./public/docs/ src/",
+    "gen-doc": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/docs/ src/lib.entrypoint.ts",
     "cleanup-dts": "rm -rf dist/dts/",
     "cleanup-pkg": "NODE_PATH=. node scripts/clean-pkg.js",
     "cleanup": "yarn cleanup-dts && yarn cleanup-pkg",

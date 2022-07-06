@@ -1,28 +1,25 @@
-import { A8Connect } from "./lib.container";
-import { NetworkType } from "./libs/providers/registry.provider";
-import { ChainType } from "./libs/adapters";
+import {
+  init,
+  openModal,
+  closeModal,
+  Providers,
+  Adapters,
+} from "./lib.entrypoint";
 
 if (document) {
   document.onreadystatechange = function () {
     if (document.readyState == "complete") {
-      const a8Connect = new A8Connect("a8-connect");
-      a8Connect
-        .init({
-          disableCloseButton: true,
-          cleanWalletCache: true,
-          networkType: NetworkType.testnet,
-          chainType: ChainType.SOL,
-          onClose: () => {
-            a8Connect.closeModal();
-          },
-        })
-        .then(() => {
-          a8Connect.openModal();
-        });
-
-      if (window) {
-        (window as any).a8Connect = a8Connect;
-      }
+      init("a8-connect", {
+        disableCloseButton: true,
+        cleanWalletCache: true,
+        networkType: Providers.NetworkType.testnet,
+        chainType: Adapters.ChainType.SOL,
+        onClose: () => {
+          closeModal();
+        },
+      }).then(() => {
+        openModal();
+      });
     }
   };
 }

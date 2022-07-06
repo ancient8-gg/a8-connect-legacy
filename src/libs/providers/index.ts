@@ -1,7 +1,11 @@
-import { CookieProvider } from "./cookie.provider";
-import { NetworkProvider } from "./network.provider";
-import { StorageProvider } from "./storage.provider";
-import { RegistryProvider } from "./registry.provider";
+import { CookieProvider, CookieProviderGetter } from "./cookie.provider";
+import {
+  NetworkOptions,
+  NetworkProvider,
+  NetworkProviderGetter,
+} from "./network.provider";
+import { StorageProvider, StorageProviderGetter } from "./storage.provider";
+import { NetworkType, RegistryProvider } from "./registry.provider";
 import { AuthProvider } from "./auth.provider";
 import { UserProvider } from "./user.provider";
 import { UtilsProvider } from "./utils.provider";
@@ -9,7 +13,23 @@ import { UtilsProvider } from "./utils.provider";
 /**
  * Export Registry Provider
  */
-export { RegistryProvider };
+export {
+  RegistryProvider,
+  UtilsProvider,
+  UserProvider,
+  AuthProvider,
+  StorageProvider,
+  NetworkProvider,
+  CookieProvider,
+  NetworkType,
+};
+
+export type {
+  CookieProviderGetter,
+  NetworkProviderGetter,
+  StorageProviderGetter,
+  NetworkOptions,
+};
 
 /**
  * Storage Provider
