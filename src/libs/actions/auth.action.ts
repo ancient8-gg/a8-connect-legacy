@@ -12,9 +12,9 @@ export class AuthAction extends OffChainAction {
    * Send challenge data to server to confirm action
    * @param walletAddress
    */
-  async sendChallenge(walletAddress: string): Promise<AuthChallenge> {
+  async requestAuthChallenge(walletAddress: string): Promise<AuthChallenge> {
     try {
-      return this.authProvider.sendAuthChallenge(walletAddress);
+      return this.authProvider.requestAuthChallenge(walletAddress);
     } catch {
       return null;
     }

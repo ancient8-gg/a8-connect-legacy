@@ -53,7 +53,9 @@ export const SignWalletScreen: FC = () => {
     (async () => {
       const existedWallet = await authAction.isWalletExisted(walletAddress);
 
-      const authChallengeData = await authAction.sendChallenge(walletAddress);
+      const authChallengeData = await authAction.requestAuthChallenge(
+        walletAddress
+      );
 
       setAuthChallenge(authChallengeData);
 

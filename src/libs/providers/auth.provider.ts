@@ -52,7 +52,7 @@ export class AuthProvider extends BusinessProvider {
    * The function to request auth challenge before login/logout/connect wallet
    * @param target
    */
-  sendAuthChallenge(target: string): Promise<AuthChallenge> {
+  requestAuthChallenge(target: string): Promise<AuthChallenge> {
     return this.request<AuthChallenge>(
       `/auth/challenge/${encodeURIComponent(target)}`,
       {

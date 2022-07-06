@@ -45,8 +45,8 @@ export const SignWalletConnectUID: FC = () => {
     }
   }, []);
 
-  const handleSendAuthChallenge = async () => {
-    const authChallenge = await authAction.sendChallenge(walletAddress);
+  const handleRequestAuthChallenge = async () => {
+    const authChallenge = await authAction.requestAuthChallenge(walletAddress);
     setAuthChallenge(authChallenge);
   };
 
@@ -122,7 +122,7 @@ export const SignWalletConnectUID: FC = () => {
 
   useEffect(() => {
     (async () => {
-      await handleSendAuthChallenge();
+      await handleRequestAuthChallenge();
 
       const inIncluded =
         authEntities.filter(
@@ -151,7 +151,7 @@ export const SignWalletConnectUID: FC = () => {
       const isWalletExisted = await authAction.isWalletExisted(walletAddress);
       setBelongedError(isWalletExisted);
       if (isWalletExisted) {
-        await handleSendAuthChallenge();
+        await handleRequestAuthChallenge();
         setConnectAgenda(ConnectAgendaType.connectExistWallet);
         setDescription(null);
         /**
