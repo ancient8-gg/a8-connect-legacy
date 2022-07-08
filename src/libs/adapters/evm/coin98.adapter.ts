@@ -21,13 +21,23 @@ export class Coin98EVMWallet implements BaseWalletAdapter {
   }
 
   async connectWallet(): Promise<string | null> {
-    if (!this.isInstalled()) return null;
+    return new Promise(async (resolve, reject) => {
+      let wallet: string = null;
 
-    const [wallet] = await this.injectedProvider.request<undefined, string[]>({
-      method: "eth_requestAccounts",
+      setTimeout(() => {
+        if (!wallet) {
+          return reject(
+            new Error(`Timeout when connect to ${this.name} wallet`)
+          );
+        }
+      }, 10000);
+
+      [wallet] = await this.injectedProvider.request<undefined, string[]>({
+        method: "eth_requestAccounts",
+      });
+
+      return resolve(wallet || null);
     });
-
-    return wallet;
   }
 
   disconnectWallet(): Promise<void> {

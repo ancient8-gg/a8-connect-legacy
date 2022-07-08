@@ -20,14 +20,23 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
   }
 
   async connectWallet(): Promise<string | null> {
-    try {
-      const [wallet] = await this.injectedProvider.request<undefined, string[]>(
-        { method: "sol_requestAccounts" }
-      );
-      return wallet;
-    } catch {
-      return null;
-    }
+    return new Promise(async (resolve, reject) => {
+      let wallet: string = null;
+
+      setTimeout(() => {
+        if (!wallet) {
+          return reject(
+            new Error(`Timeout when connect to ${this.name} wallet`)
+          );
+        }
+      }, 10000);
+
+      [wallet] = await this.injectedProvider.request<undefined, string[]>({
+        method: "sol_requestAccounts",
+      });
+
+      return resolve(wallet || null);
+    });
   }
 
   disconnectWallet(): Promise<void> {

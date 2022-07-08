@@ -14,7 +14,6 @@ export const CONNECT_WALLET_SCREEN_KEY = "CONNECT_WALLET_SCREEN_KEY";
 export const ConnectWalletScreen: FC = () => {
   const { walletName, getWalletAdapter, connect } = useWallet();
   const { handleClose, currentAppFlow } = useAppState();
-  const [connected, setConnected] = useState<boolean>(false);
   const [connectedError, setConnectedError] = useState<boolean>(false);
   const location = useLocation();
 
@@ -23,30 +22,28 @@ export const ConnectWalletScreen: FC = () => {
   }, [walletName]);
 
   const handleConnect = useCallback(async () => {
-    const walletAddress = await connect();
-    if (!walletAddress) {
-      setConnectedError(true);
-      return;
-    }
+    try {
+      const walletAddress = await connect();
 
-    setConnected(true);
-  }, [connect]);
+      if (!walletAddress) {
+        setConnectedError(true);
+        return;
+      }
 
-  useEffect(() => {
-    handleConnect();
-  }, []);
-
-  useEffect(() => {
-    if (connected) {
-      setConnected(false);
       location.push(
         currentAppFlow === AppFlow.LOGIN_FLOW
           ? SIGN_WALLET_SCREEN_KEY
           : SIGN_WALLET_CONNECT_UID_KEY,
         true
       );
+    } catch {
+      location.goBack();
     }
-  }, [connected, currentAppFlow, location]);
+  }, [connect, location, currentAppFlow]);
+
+  useEffect(() => {
+    handleConnect();
+  }, []);
 
   return (
     <div>
