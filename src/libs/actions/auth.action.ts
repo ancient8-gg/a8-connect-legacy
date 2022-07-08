@@ -1,6 +1,7 @@
 import { OffChainAction } from "./offchain.action";
 import { RegistrationAuthDto } from "../dto/registration-auth.dto";
 import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
+import { ConnectEmailAuthDto } from "../dto/connect-email-auth.dto";
 import { LoginResponse, AuthChallenge, AuthEntity } from "../dto/entities";
 import { CreateAuthDto } from "../dto/create-auth.dto";
 
@@ -69,6 +70,13 @@ export class AuthAction extends OffChainAction {
    */
   async connectWallet(createAuthDto: CreateAuthDto): Promise<AuthEntity> {
     return this.authProvider.connectWallet(createAuthDto);
+  }
+
+  /**
+   * Connect new email to UID
+   */
+  async connectEmail(connectEmailAuthDto: ConnectEmailAuthDto) {
+    return this.authProvider.connectEmail(connectEmailAuthDto);
   }
 
   /**
