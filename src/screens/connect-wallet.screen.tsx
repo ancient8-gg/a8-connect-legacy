@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { SIGN_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
+import { SIGN_WALLET_ADD_WALLET_KEY } from "./sign-wallet-add-wallet.screen";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
 import { PolygonButton } from "../components/button";
 import { useWallet } from "../hooks/useWallet";
@@ -30,12 +31,17 @@ export const ConnectWalletScreen: FC = () => {
         return;
       }
 
-      location.push(
-        currentAppFlow === AppFlow.LOGIN_FLOW
-          ? SIGN_WALLET_SCREEN_KEY
-          : SIGN_WALLET_CONNECT_UID_KEY,
-        true
-      );
+      if (currentAppFlow === AppFlow.LOGIN_FLOW) {
+        location.push(SIGN_WALLET_SCREEN_KEY, true);
+      }
+
+      if (currentAppFlow === AppFlow.CONNECT_FLOW) {
+        location.push(SIGN_WALLET_CONNECT_UID_KEY, true);
+      }
+
+      if (currentAppFlow === AppFlow.ADD_WALLET_FLOW) {
+        location.push(SIGN_WALLET_ADD_WALLET_KEY, true);
+      }
     } catch {
       location.goBack();
     }
@@ -54,7 +60,7 @@ export const ConnectWalletScreen: FC = () => {
       />
 
       <div className="content px-[20px]">
-        <div className="sign-wallet-screen w-full pt-[30px]">
+        <div className="sign-wallet-screen w-full">
           <div className="mx-auto w-[350px]">
             <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
               CONNECT WALLET

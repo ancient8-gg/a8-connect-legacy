@@ -22,6 +22,7 @@ interface AppStateContextProviderProps {
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
+  initAppFlow?: AppFlow;
   desiredChainType?: ChainType;
   networkType?: NetworkType;
   disableCloseButton?: boolean;
@@ -59,7 +60,9 @@ export const AppStateProvider: FC<
 > = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [disableCloseButton] = useState(!!props.disableCloseButton || false);
-  const [desiredChainType] = useState(props.desiredChainType || ChainType.ALL);
+  const [desiredChainType, setDesiredChainType] = useState(
+    props.desiredChainType || ChainType.ALL
+  );
   const [networkType] = useState(props.networkType || NetworkType.mainnet);
   const [isRouterReady, setRouterReady] = useState(false);
   const [isSessionReady, setSessionReady] = useState(false);
@@ -123,6 +126,12 @@ export const AppStateProvider: FC<
     const registry = RegistryProvider.getInstance();
     registry.networkType = networkType;
   }, [networkType]);
+
+  useEffect(() => {
+    if (props.initAppFlow === AppFlow.ADD_WALLET_FLOW) {
+      setDesiredChainType(ChainType.ALL);
+    }
+  }, [props.initAppFlow]);
 
   return (
     <AppStateContext.Provider

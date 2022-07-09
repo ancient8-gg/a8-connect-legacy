@@ -21,6 +21,7 @@ import { SCREENS } from "../components/router/init";
 import { useAppState } from "./useAppState";
 import Modal from "../components/modal";
 import { BUFFER_LOADING_APP_SCREEN_KEY } from "../screens/buffer-loading.screen";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 export const RouterProvider: FC<ProviderProps> = () => {
   const { isModalOpen, setRouterReady, currentAppFlow } = useAppState();
@@ -43,6 +44,8 @@ export const RouterProvider: FC<ProviderProps> = () => {
   }, [screenPipe, setPipe]);
 
   const initState = useCallback(() => {
+    console.log("urrentAppFlow", currentAppFlow);
+
     setRouterReady(false);
     const screens = [...SCREENS[currentAppFlow]];
 

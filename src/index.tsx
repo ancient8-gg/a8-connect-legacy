@@ -4,6 +4,7 @@ import {
   closeModal,
   Providers,
   Adapters,
+  AppFlow,
 } from "./lib.entrypoint";
 
 if (document) {
@@ -14,6 +15,7 @@ if (document) {
         cleanWalletCache: true,
         networkType: Providers.NetworkType.testnet,
         chainType: Adapters.ChainType.SOL,
+        initAppFlow: AppFlow.ADD_WALLET_FLOW,
         onClose: () => {
           closeModal();
         },

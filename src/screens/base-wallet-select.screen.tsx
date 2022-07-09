@@ -46,7 +46,7 @@ export const BaseWalletSelect: FC = () => {
         onCloseModal={handleClose}
       />
       <div className="content px-[20px]">
-        <div className="base-welcome-screen w-full pt-[30px]">
+        <div className="base-welcome-screen w-full">
           <div className="mx-auto w-[350px]">
             <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
               {chainType === ChainType.EVM ? "EVM" : "SOLANA"}
