@@ -4,6 +4,8 @@ import CloseIcon from "../assets/icons/close-icon.svg";
 
 export interface ToastContextProps {
   open(title: string, description: string): void;
+  success(title: string, description: string): void;
+  error(title: string, description: string): void;
   close(): void;
 }
 
@@ -13,11 +15,22 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [isOpened, setIsOpened] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [titleColor, setTitleColor] = useState("#30C021");
 
   const open = (title: string, description: string) => {
     setTitle(title);
     setDescription(description);
     setIsOpened(true);
+  };
+
+  const error = (title: string, description: string) => {
+    open(title, description);
+    setTitleColor("#FF4647");
+  };
+
+  const success = (title: string, description: string) => {
+    open(title, description);
+    setTitleColor("#30C021");
   };
 
   const close = () => {
@@ -28,6 +41,8 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     <ToastContext.Provider
       value={{
         open,
+        success,
+        error,
         close,
       }}
     >
@@ -39,7 +54,9 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
         >
           <img src={CloseIcon} />
         </div>
-        <p className="text-[#FF4647] text-[20px] bold-[100]">{title}</p>
+        <p className={`text-[20px] bold-[100] text-[${titleColor}] `}>
+          {title}
+        </p>
         <p className="text-[#FFFFFF] mt-[10px] text-[16px] bold-[100]">
           {description}
         </p>

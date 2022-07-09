@@ -36,7 +36,7 @@ import {
 } from "../../screens/base-welcome-add-wallet.screen";
 
 import {
-  SignWalletAddWallet,
+  SignWalletAddWalletScreen,
   SIGN_WALLET_ADD_WALLET_KEY,
 } from "../../screens/sign-wallet-add-wallet.screen";
 
@@ -92,6 +92,10 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
     },
   ],
   ADD_WALLET_FLOW: [
+    // {
+    //   key: SIGN_WALLET_ADD_WALLET_KEY,
+    //   children: SignWalletAddWalletScreen,
+    // },
     {
       key: BUFFER_LOADING_APP_SCREEN_KEY,
       children: BufferLoadingAppScreen,
@@ -110,7 +114,7 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
     },
     {
       key: SIGN_WALLET_ADD_WALLET_KEY,
-      children: SignWalletScreen,
+      children: SignWalletAddWalletScreen,
     },
   ],
 };

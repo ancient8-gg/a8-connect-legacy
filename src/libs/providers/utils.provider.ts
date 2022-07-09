@@ -37,4 +37,15 @@ export class UtilsProvider {
       isStopped = true;
     };
   }
+
+  /**
+   * The function to collapse the wallet address shorter
+   * @param walletAddress
+   */
+  public makeWalletAddressShorter(walletAddress: string) {
+    return `${walletAddress?.substring(0, 5)}...${walletAddress?.substring(
+      walletAddress.length - 3,
+      walletAddress.length
+    )}`;
+  }
 }

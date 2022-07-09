@@ -4,20 +4,22 @@ import { useAppState } from "../hooks/useAppState";
 import { useWallet } from "../hooks/useWallet";
 import { useLocation } from "../components/router";
 import { PolygonButton } from "../components/button";
-import LoadingSpinner from "../components/loading-spiner";
-import DefendIcon from "../assets/images/defend.png";
 import { ModalHeader } from "../components/modal/modal.header";
 import { getUtilsProvider } from "../libs/providers";
+import LoadingSpinner from "../components/loading-spiner";
+import DefendIcon from "../assets/images/defend-yellow.png";
 
 export interface BaseSignWalletScreenProps {
   description: string;
   signedMessage: string;
+  title: string;
   onSigned(signature: string): void;
 }
 
 export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   description,
   signedMessage,
+  title,
   onSigned,
 }) => {
   const { walletAddress, sign, connect } = useWallet();
@@ -64,10 +66,10 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
         onCloseModal={handleClose}
       />
       <div className="content px-[20px]">
-        <div className="sign-wallet-screen w-full pt-[30px]">
+        <div className="sign-wallet-screen w-full">
           <div className="mx-auto w-[350px]">
             <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
-              SIGN IN
+              {title.toUpperCase()}
             </p>
             <div className="pt-[50px]">
               <p
@@ -83,14 +85,14 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
                 </p>
               </div>
               <div className="flex justify-center mt-[30px] items-center">
-                <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#25282D] flex">
+                <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#5537004d] flex">
                   <div className="float-left">
                     <img
                       src={DefendIcon}
                       className="w-[16px] h-[16px] mt-[3px]"
                     />
                   </div>
-                  <div className="float-left pl-[20px] text-white">
+                  <div className="float-left pl-[20px] text-[#b57b0ff5]">
                     <p className="text-[14px] font-bold">
                       View only permission.
                     </p>

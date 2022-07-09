@@ -72,6 +72,7 @@ export const SignWalletScreen: FC = () => {
           <BaseLoadingScreen />
         ) : (
           <BaseSignWalletScreen
+            title="sign in"
             description={
               existedWallet
                 ? "Sign a message to confirm you own the wallet address to sign in the User Identity"
