@@ -47,7 +47,7 @@ export const BaseWelcomeScreen: FC = () => {
       <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
       <div className="content px-[20px]">
         <div className="base-welcome-screen w-full pt-[30px]">
-          <div className="mx-auto w-[350px]">
+          <div className="mx-auto ">
             <img src={A8Logo} className="mx-[auto]" />
             {currentAppFlow === AppFlow.LOGIN_FLOW ? (
               <p className="text-center text-primary text-[20px] font-bold">

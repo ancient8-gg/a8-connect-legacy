@@ -30,11 +30,7 @@ const Modal: FC<ModalProps> = ({ modalIsOpen, children }: ModalProps) => {
       style={customStyles}
       contentLabel="UID Toast Modal"
     >
-      <div
-        className={"sdk-toast-container md:w-[350px] w-[350px] bg-[#979797]"}
-      >
-        {children}
-      </div>
+      <div className={"sdk-toast-container md:  bg-[#979797]"}>{children}</div>
     </ReactModal>
   );
 };

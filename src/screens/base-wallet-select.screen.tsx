@@ -1,4 +1,4 @@
-import { FC, useMemo, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useWallet } from "../hooks/useWallet";
 import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
@@ -29,29 +29,38 @@ export const BaseWalletSelect: FC = () => {
     return adapters.filter((adapter) => adapter.chainType === chainType);
   }, [chainType]);
 
+  const isBack = useMemo(() => {
+    return (
+      (currentAppFlow === AppFlow.CONNECT_FLOW &&
+        desiredChainType === ChainType.ALL &&
+        location.isBack) ||
+      (currentAppFlow === AppFlow.LOGIN_FLOW && location.isBack)
+    );
+  }, [currentAppFlow, desiredChainType, location.isBack]);
+
   const handleGoback = useCallback(() => {
-    if (desiredChainType !== ChainType.ALL) {
+    if (!isBack) {
       return;
     }
 
     setChainType(desiredChainType);
     location.goBack();
-  }, [desiredChainType, location.goBack]);
+  }, [desiredChainType, location.goBack, isBack]);
 
   return (
     <div>
       <ModalHeader
-        isBack={desiredChainType === ChainType.ALL && location.isBack}
+        isBack={isBack}
         goBack={handleGoback}
         onCloseModal={handleClose}
       />
       <div className="content px-[20px]">
         <div className="base-welcome-screen w-full pt-[30px]">
-          <div className="mx-auto w-[350px]">
+          <div className="mx-auto ">
             <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
               {chainType === ChainType.EVM ? "EVM" : "SOLANA"}
             </p>
-            <div className="mx-auto w-[350px] pt-[20px]">
+            <div className="mx-auto  pt-[20px]">
               {chainType === ChainType.EVM ? (
                 <img
                   src={EvmChainPreviewIcon}
