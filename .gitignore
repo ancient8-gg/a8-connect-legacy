@@ -27,3 +27,5 @@ dist/
 bundle/
 public/docs/*
 test.html
+
+public
