@@ -111,8 +111,8 @@ export const SessionProvider: FC<
     }
 
     if (
-      initAppFlow === AppFlow.LOGIN_FLOW ||
-      initAppFlow === AppFlow.CONNECT_FLOW
+      initAppFlow !== AppFlow.LOGIN_FLOW &&
+      initAppFlow !== AppFlow.CONNECT_FLOW
     ) {
       if (sessionUser && sessionUser?._id) {
         setCurrentAppFlow(AppFlow.CONNECT_FLOW);
