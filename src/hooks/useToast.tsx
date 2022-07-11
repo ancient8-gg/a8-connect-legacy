@@ -54,7 +54,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
         >
           <img src={CloseIcon} />
         </div>
-        <p className={`text-[20px] bold-[100] text-[${titleColor}] `}>
+        <p className={`text-[20px] bold-[100]`} style={{ color: titleColor }}>
           {title}
         </p>
         <p className="text-[#FFFFFF] mt-[10px] text-[16px] bold-[100]">

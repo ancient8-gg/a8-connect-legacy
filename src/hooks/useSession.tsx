@@ -102,19 +102,23 @@ export const SessionProvider: FC<
 
     const { sessionUser } = await fetchSession();
 
-    if (initAppFlow === AppFlow.ADD_WALLET_FLOW && sessionUser?._id) {
+    if (initAppFlow === AppFlow.LOST_WALLET_FLOW) {
       setCurrentAppFlow(initAppFlow);
-      onAuth(sessionUser);
-      if (!isSessionReady) {
-        setSessionReady(true);
-      }
-      return;
     }
 
-    if (sessionUser && sessionUser?._id) {
-      setCurrentAppFlow(AppFlow.CONNECT_FLOW);
-    } else {
-      setCurrentAppFlow(AppFlow.LOGIN_FLOW);
+    if (initAppFlow === AppFlow.ADD_WALLET_FLOW && sessionUser?._id) {
+      setCurrentAppFlow(initAppFlow);
+    }
+
+    if (
+      initAppFlow === AppFlow.LOGIN_FLOW ||
+      initAppFlow === AppFlow.CONNECT_FLOW
+    ) {
+      if (sessionUser && sessionUser?._id) {
+        setCurrentAppFlow(AppFlow.CONNECT_FLOW);
+      } else {
+        setCurrentAppFlow(AppFlow.LOGIN_FLOW);
+      }
     }
 
     onAuth(sessionUser);

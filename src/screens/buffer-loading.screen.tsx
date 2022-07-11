@@ -7,6 +7,7 @@ import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
 import { BASE_WELCOME_SCREEN_KEY } from "./base-welcome.screen";
 import { BASE_WELCOME_ADD_WALLET_SCREEN_KEY } from "./base-welcome-add-wallet.screen";
+import { BASE_WELCOME_LOST_WALLET_SCREEN_KEY } from "./base-welcome-lost-wallet.screen";
 import { ChainType } from "../libs/adapters";
 
 export const BUFFER_LOADING_APP_SCREEN_KEY = "BUFFER_LOADING_APP_SCREEN";
@@ -41,6 +42,10 @@ export const BufferLoadingAppScreen: FC = () => {
   const shouldGoToAddWalletFlow = useMemo(() => {
     return currentAppFlow === AppFlow.ADD_WALLET_FLOW && userInfo !== undefined;
   }, [currentAppFlow, userInfo]);
+
+  const shouldGoToLostWalletFlow = useMemo(() => {
+    return currentAppFlow === AppFlow.LOST_WALLET_FLOW;
+  }, [currentAppFlow]);
 
   const shouldGoToConnectFlow = useMemo(() => {
     /**
@@ -83,11 +88,19 @@ export const BufferLoadingAppScreen: FC = () => {
     if (!screenStateReady) return;
 
     /**
+     * Prioritize redirecting to add lost wallet screen
+     */
+    if (shouldGoToLostWalletFlow) {
+      return push(BASE_WELCOME_LOST_WALLET_SCREEN_KEY);
+    }
+
+    /**
      * Prioritize redirecting to add wallet screen
      */
     if (shouldGoToAddWalletFlow) {
       return push(BASE_WELCOME_ADD_WALLET_SCREEN_KEY);
     }
+
     /**
      * Prioritize redirecting to login flow first
      */

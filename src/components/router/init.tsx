@@ -40,6 +40,16 @@ import {
   SIGN_WALLET_ADD_WALLET_KEY,
 } from "../../screens/sign-wallet-add-wallet.screen";
 
+import {
+  BaseWelcomeLostWalletScreen,
+  BASE_WELCOME_LOST_WALLET_SCREEN_KEY,
+} from "../../screens/base-welcome-lost-wallet.screen";
+
+import {
+  SignWalletLostWalletScreen,
+  SIGN_WALLET_LOST_WALLET_KEY,
+} from "../../screens/sign-wallet-lost-wallet.screen";
+
 export const SCREENS: Record<AppFlow, ScreenType[]> = {
   BUFFER_FLOW: [
     {
@@ -92,10 +102,6 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
     },
   ],
   ADD_WALLET_FLOW: [
-    // {
-    //   key: SIGN_WALLET_ADD_WALLET_KEY,
-    //   children: SignWalletAddWalletScreen,
-    // },
     {
       key: BUFFER_LOADING_APP_SCREEN_KEY,
       children: BufferLoadingAppScreen,
@@ -115,6 +121,28 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
     {
       key: SIGN_WALLET_ADD_WALLET_KEY,
       children: SignWalletAddWalletScreen,
+    },
+  ],
+  LOST_WALLET_FLOW: [
+    {
+      key: BUFFER_LOADING_APP_SCREEN_KEY,
+      children: BufferLoadingAppScreen,
+    },
+    {
+      key: BASE_WELCOME_LOST_WALLET_SCREEN_KEY,
+      children: BaseWelcomeLostWalletScreen,
+    },
+    {
+      key: BASE_WALLET_SELECT_SCREEN_KEY,
+      children: BaseWalletSelect,
+    },
+    {
+      key: CONNECT_WALLET_SCREEN_KEY,
+      children: ConnectWalletScreen,
+    },
+    {
+      key: SIGN_WALLET_LOST_WALLET_KEY,
+      children: SignWalletLostWalletScreen,
     },
   ],
 };

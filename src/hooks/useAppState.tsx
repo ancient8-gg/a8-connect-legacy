@@ -10,6 +10,7 @@ import {
 } from "react";
 import { OnAuthPayload } from "./useSession";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
+import { ResetWithNewWalletPayload } from "../libs/dto/reset-with-new-wallet.dto";
 import { ChainType } from "../libs/adapters";
 import { AppFlow } from "../components/router";
 import {
@@ -22,6 +23,7 @@ interface AppStateContextProviderProps {
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
+  resetWithNewWalletPayload?: ResetWithNewWalletPayload;
   initAppFlow?: AppFlow;
   desiredChainType?: ChainType;
   networkType?: NetworkType;
@@ -35,12 +37,13 @@ interface AppStateContextProvider {
   onConnected: (payload: ConnectedWalletPayload) => void;
   setIsModalOpen(val: boolean): void;
   handleClose(): void;
-  isModalOpen: boolean;
-  desiredChainType: ChainType;
   setRouterReady: (flag: boolean) => void;
   setSessionReady: (flag: boolean) => void;
   setWalletReady: (flag: boolean) => void;
   setCurrentAppFlow: (flow: AppFlow) => void;
+  resetWithNewWalletPayload: ResetWithNewWalletPayload;
+  desiredChainType: ChainType;
+  isModalOpen: boolean;
   isWalletReady: boolean;
   isRouterReady: boolean;
   isSessionReady: boolean;
@@ -128,7 +131,10 @@ export const AppStateProvider: FC<
   }, [networkType]);
 
   useEffect(() => {
-    if (props.initAppFlow === AppFlow.ADD_WALLET_FLOW) {
+    if (
+      props.initAppFlow === AppFlow.ADD_WALLET_FLOW ||
+      props.initAppFlow === AppFlow.LOST_WALLET_FLOW
+    ) {
       setDesiredChainType(ChainType.ALL);
     }
   }, [props.initAppFlow]);
@@ -136,26 +142,27 @@ export const AppStateProvider: FC<
   return (
     <AppStateContext.Provider
       value={{
-        onAuth,
-        onError,
-        onConnected,
-        onClose,
-        setIsModalOpen,
-        handleClose,
+        resetWithNewWalletPayload: props.resetWithNewWalletPayload,
         isModalOpen,
         desiredChainType,
-        setRouterReady,
-        setSessionReady,
-        setWalletReady,
         isWalletReady,
         isSessionReady,
         isRouterReady,
         isAppReady,
         isUIDReady,
         currentAppFlow,
-        setCurrentAppFlow,
         networkType,
         disableCloseButton,
+        onAuth,
+        onError,
+        onConnected,
+        onClose,
+        setIsModalOpen,
+        handleClose,
+        setRouterReady,
+        setSessionReady,
+        setWalletReady,
+        setCurrentAppFlow,
       }}
     >
       {props.children}

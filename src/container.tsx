@@ -3,6 +3,7 @@ import { WalletProvider } from "./hooks/useWallet";
 import { OnAuthPayload, SessionProvider } from "./hooks/useSession";
 import { ChainType } from "./libs/adapters";
 import { ConnectedWalletPayload } from "./libs/dto/a8-connect-session.dto";
+import { ResetWithNewWalletPayload } from "./libs/dto/reset-with-new-wallet.dto";
 import { AppStateProvider } from "./hooks/useAppState";
 import { RouterProvider } from "./hooks/useRouter";
 import { NetworkType } from "./libs/providers/registry.provider";
@@ -15,6 +16,7 @@ const A8Connect: FC<{
   chainType: ChainType;
   disableCloseButton?: boolean;
   initAppFlow?: AppFlow;
+  resetWithNewWalletPayload?: ResetWithNewWalletPayload;
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
@@ -24,6 +26,7 @@ const A8Connect: FC<{
   networkType,
   disableCloseButton,
   initAppFlow,
+  resetWithNewWalletPayload,
   onClose,
   onError,
   onAuth,
@@ -36,6 +39,7 @@ const A8Connect: FC<{
         desiredChainType={chainType}
         networkType={networkType}
         initAppFlow={initAppFlow}
+        resetWithNewWalletPayload={resetWithNewWalletPayload}
         onClose={onClose}
         onError={onError}
         onAuth={onAuth}

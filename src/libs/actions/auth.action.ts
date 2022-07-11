@@ -2,6 +2,7 @@ import { OffChainAction } from "./offchain.action";
 import { RegistrationAuthDto } from "../dto/registration-auth.dto";
 import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
 import { ConnectEmailAuthDto } from "../dto/connect-email-auth.dto";
+import { ResetWithNewWalletDto } from "../dto/reset-with-new-wallet.dto";
 import { LoginResponse, AuthChallenge, AuthEntity } from "../dto/entities";
 import { CreateAuthDto } from "../dto/create-auth.dto";
 
@@ -70,6 +71,19 @@ export class AuthAction extends OffChainAction {
    */
   async connectWallet(createAuthDto: CreateAuthDto): Promise<AuthEntity> {
     return this.authProvider.connectWallet(createAuthDto);
+  }
+
+  /**
+   * Connect new wallet to UID when forget/lost old wallets via email
+   */
+  async resetWithNewWallet(
+    authToken: string,
+    resetWithNewWalletDto: ResetWithNewWalletDto
+  ): Promise<AuthEntity> {
+    return this.authProvider.resetWithNewWallet(
+      authToken,
+      resetWithNewWalletDto
+    );
   }
 
   /**
