@@ -5,7 +5,7 @@ import { ChainType } from "./libs/adapters";
 import { ConnectedWalletPayload } from "./libs/dto/a8-connect-session.dto";
 import { AppStateProvider } from "./hooks/useAppState";
 import { RouterProvider } from "./hooks/useRouter";
-import { NetworkType } from "./libs/providers/registry.provider";
+import { NetworkType } from "./libs/providers";
 
 import "./index.css";
 
