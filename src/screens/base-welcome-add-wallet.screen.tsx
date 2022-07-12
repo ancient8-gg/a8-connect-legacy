@@ -7,7 +7,6 @@ import { useSession } from "../hooks/useSession";
 import { makeShorter } from "../utils";
 import { AppFlow, useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
-import A8Logo from "../assets/images/a8-logo.png";
 import SolBtnImage from "../assets/images/sol-btn.png";
 import EvmBtnImage from "../assets/images/evm-btn.png";
 
@@ -30,7 +29,7 @@ export const BaseWelcomeAddWallet: FC = () => {
       desiredChainType !== ChainType.ALL
     ) {
       setChainType(desiredChainType);
-      location.push(targetScreen, true);
+      location.push(targetScreen, { deleted: true });
     }
   }, []);
 

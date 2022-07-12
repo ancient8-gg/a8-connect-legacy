@@ -1,11 +1,17 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+} from "react";
 import ToastModal from "../components/modal/toast.modal";
 import CloseIcon from "../assets/icons/close-icon.svg";
 
 export interface ToastContextProps {
   open(title: string, description: string): void;
-  success(title: string, description: string): void;
-  error(title: string, description: string): void;
+  success(title: string, description: string, onClose?: () => void): void;
+  error(title: string, description: string, onClose?: () => void): void;
   close(): void;
 }
 
@@ -16,6 +22,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [titleColor, setTitleColor] = useState("#30C021");
+  const [onClose, setOnClose] = useState<() => void>();
 
   const open = (title: string, description: string) => {
     setTitle(title);
@@ -23,19 +30,26 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     setIsOpened(true);
   };
 
-  const error = (title: string, description: string) => {
+  const error = (title: string, description: string, onClose?: () => void) => {
     open(title, description);
     setTitleColor("#FF4647");
+    onClose !== undefined && setOnClose(onClose);
   };
 
-  const success = (title: string, description: string) => {
+  const success = (
+    title: string,
+    description: string,
+    onClose?: () => void
+  ) => {
     open(title, description);
     setTitleColor("#30C021");
+    onClose !== undefined && setOnClose(onClose);
   };
 
-  const close = () => {
+  const close = useCallback(() => {
     setIsOpened(false);
-  };
+    onClose !== undefined && onClose();
+  }, [onClose]);
 
   return (
     <ToastContext.Provider

@@ -29,7 +29,7 @@ export const BaseWelcomeScreen: FC = () => {
       desiredChainType !== ChainType.ALL
     ) {
       setChainType(desiredChainType);
-      location.push(targetScreen, true);
+      location.push(targetScreen, { deleted: true });
     }
   }, []);
 

@@ -26,6 +26,11 @@ export interface RouterContextObject {
   currentScreen: React.FunctionComponent;
 
   /**
+   * @description Screen params
+   */
+  params: unknown;
+
+  /**
    * @description Update current route path
    * @details Handle goback and push screen value
    */
@@ -35,9 +40,20 @@ export interface RouterContextObject {
    * Init state for router
    */
   initState: () => void;
+
+  /**
+   * @description Set screen params
+   * @param params
+   */
+  setParams: (params: unknown) => void;
 }
 
 export const RouterContext = createContext<RouterContextObject>(null);
+
+export type LocationPushPayload = {
+  deleted?: boolean | false;
+  params?: unknown;
+};
 
 export interface LocationContextObject {
   /**
@@ -55,7 +71,7 @@ export interface LocationContextObject {
    * @param key
    * @param deleted Check if want to destroy current screen before move to next screen
    */
-  push(key: string, deleted?: boolean | false): void;
+  push(key: string, payload?: LocationPushPayload): void;
 
   /**
    * The function to set a go back callback

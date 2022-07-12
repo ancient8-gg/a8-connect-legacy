@@ -15,13 +15,13 @@ import {
   RouterContext,
   ScreenType,
   useRouter,
+  LocationPushPayload,
 } from "../components/router";
 import { ToastProvider } from "./useToast";
 import { SCREENS } from "../components/router/init";
 import { useAppState } from "./useAppState";
 import Modal from "../components/modal";
 import { BUFFER_LOADING_APP_SCREEN_KEY } from "../screens/buffer-loading.screen";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 export const RouterProvider: FC<ProviderProps> = () => {
   const { isModalOpen, setRouterReady, currentAppFlow } = useAppState();
@@ -35,6 +35,11 @@ export const RouterProvider: FC<ProviderProps> = () => {
    * @description Always start from first screen in initial
    */
   const [screenPipe, setPipe] = useState<ScreenType[]>([]);
+
+  /**
+   * @description Screen params
+   */
+  const [params, setParams] = useState<unknown>();
 
   const CurrentScreen = useMemo<FunctionComponent>(() => {
     if (!screenPipe.length) {
@@ -78,6 +83,8 @@ export const RouterProvider: FC<ProviderProps> = () => {
         screens,
         screenPipe,
         currentScreen: CurrentScreen,
+        params,
+        setParams,
         setPipe,
         initState,
       }}
@@ -88,7 +95,7 @@ export const RouterProvider: FC<ProviderProps> = () => {
 };
 
 export const LocationProvider: FC<ProviderProps> = ({ children }) => {
-  const { screens, screenPipe, setPipe } = useRouter();
+  const { screens, screenPipe, setPipe, setParams } = useRouter();
   const { isRouterReady, currentAppFlow } = useAppState();
   const [goBackCallback, setGoBackCallback] = useState(null);
 
@@ -111,17 +118,28 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   }, [goBack, goBackCallback]);
 
   const push = useCallback(
-    (key: string, deleted?: boolean) => {
+    (key: string, payload?: LocationPushPayload) => {
       const screen = screens.find((screen) => screen.key === key);
 
       if (!screen) {
         throw new Error(NOT_FOUND_CONTEXT_SCREEN);
       }
 
+      /**
+       * @description Delete current screen before push to new screen
+       */
       const _pipe = [...screenPipe];
-      if (deleted) {
+      if (payload?.deleted) {
         _pipe.pop();
       }
+
+      /**
+       * @description Set screen params
+       */
+      if (payload?.params !== undefined) {
+        setParams(payload.params);
+      }
+
       _pipe.push(screen);
       setPipe(_pipe);
     },

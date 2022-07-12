@@ -33,19 +33,19 @@ export const ConnectWalletScreen: FC = () => {
       }
 
       if (currentAppFlow === AppFlow.LOST_WALLET_FLOW) {
-        location.push(SIGN_WALLET_LOST_WALLET_KEY);
+        return location.push(SIGN_WALLET_LOST_WALLET_KEY);
       }
 
       if (currentAppFlow === AppFlow.LOGIN_FLOW) {
-        location.push(SIGN_WALLET_SCREEN_KEY, true);
+        return location.push(SIGN_WALLET_SCREEN_KEY, { deleted: true });
       }
 
       if (currentAppFlow === AppFlow.CONNECT_FLOW) {
-        location.push(SIGN_WALLET_CONNECT_UID_KEY, true);
+        return location.push(SIGN_WALLET_CONNECT_UID_KEY, { deleted: true });
       }
 
       if (currentAppFlow === AppFlow.ADD_WALLET_FLOW) {
-        location.push(SIGN_WALLET_ADD_WALLET_KEY, true);
+        return location.push(SIGN_WALLET_ADD_WALLET_KEY, { deleted: true });
       }
     } catch {
       location.goBack();

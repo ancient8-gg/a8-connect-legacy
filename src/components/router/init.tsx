@@ -50,6 +50,11 @@ import {
   SIGN_WALLET_LOST_WALLET_KEY,
 } from "../../screens/sign-wallet-lost-wallet.screen";
 
+import {
+  BaseNotificationScreen,
+  BASE_NOTIFICATION_SCREEN_KEY,
+} from "../../screens/base-notification.screen";
+
 export const SCREENS: Record<AppFlow, ScreenType[]> = {
   BUFFER_FLOW: [
     {
@@ -78,6 +83,10 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
       key: SIGN_WALLET_SCREEN_KEY,
       children: SignWalletScreen,
     },
+    {
+      key: BASE_NOTIFICATION_SCREEN_KEY,
+      children: BaseNotificationScreen,
+    },
   ],
   CONNECT_FLOW: [
     {
@@ -99,6 +108,10 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
     {
       key: SIGN_WALLET_CONNECT_UID_KEY,
       children: SignWalletConnectUID,
+    },
+    {
+      key: BASE_NOTIFICATION_SCREEN_KEY,
+      children: BaseNotificationScreen,
     },
   ],
   ADD_WALLET_FLOW: [
@@ -122,6 +135,10 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
       key: SIGN_WALLET_ADD_WALLET_KEY,
       children: SignWalletAddWalletScreen,
     },
+    {
+      key: BASE_NOTIFICATION_SCREEN_KEY,
+      children: BaseNotificationScreen,
+    },
   ],
   LOST_WALLET_FLOW: [
     {
@@ -143,6 +160,10 @@ export const SCREENS: Record<AppFlow, ScreenType[]> = {
     {
       key: SIGN_WALLET_LOST_WALLET_KEY,
       children: SignWalletLostWalletScreen,
+    },
+    {
+      key: BASE_NOTIFICATION_SCREEN_KEY,
+      children: BaseNotificationScreen,
     },
   ],
 };

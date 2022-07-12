@@ -31,9 +31,7 @@ export const BaseWalletSelect: FC = () => {
 
   const isBack = useMemo(() => {
     return (
-      (currentAppFlow === AppFlow.CONNECT_FLOW &&
-        desiredChainType === ChainType.ALL &&
-        location.isBack) ||
+      (desiredChainType === ChainType.ALL && location.isBack) ||
       (currentAppFlow === AppFlow.LOGIN_FLOW && location.isBack)
     );
   }, [currentAppFlow, desiredChainType, location.isBack]);
