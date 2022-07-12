@@ -94,6 +94,8 @@ export class A8Connect {
   public openModal(): void {
     const options = this.options;
 
+    console.log("SDK options", options);
+
     /**
      * Initialize root node
      */
