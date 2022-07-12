@@ -1,5 +1,7 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { SIGN_WALLET_CONNECT_UID_KEY } from "./sign-wallet-connect-uid.screen";
+import { SIGN_WALLET_ADD_WALLET_KEY } from "./sign-wallet-add-wallet.screen";
+import { SIGN_WALLET_LOST_WALLET_KEY } from "./sign-wallet-lost-wallet.screen";
 import { SIGN_WALLET_SCREEN_KEY } from "./sign-wallet.screen";
 import { PolygonButton } from "../components/button";
 import { useWallet } from "../hooks/useWallet";
@@ -30,12 +32,21 @@ export const ConnectWalletScreen: FC = () => {
         return;
       }
 
-      location.push(
-        currentAppFlow === AppFlow.LOGIN_FLOW
-          ? SIGN_WALLET_SCREEN_KEY
-          : SIGN_WALLET_CONNECT_UID_KEY,
-        true
-      );
+      if (currentAppFlow === AppFlow.LOST_WALLET_FLOW) {
+        location.push(SIGN_WALLET_LOST_WALLET_KEY);
+      }
+
+      if (currentAppFlow === AppFlow.LOGIN_FLOW) {
+        location.push(SIGN_WALLET_SCREEN_KEY, true);
+      }
+
+      if (currentAppFlow === AppFlow.CONNECT_FLOW) {
+        location.push(SIGN_WALLET_CONNECT_UID_KEY, true);
+      }
+
+      if (currentAppFlow === AppFlow.ADD_WALLET_FLOW) {
+        location.push(SIGN_WALLET_ADD_WALLET_KEY, true);
+      }
     } catch {
       location.goBack();
     }

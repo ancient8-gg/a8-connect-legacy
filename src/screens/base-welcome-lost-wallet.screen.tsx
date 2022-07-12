@@ -1,36 +1,27 @@
-import { FC, useCallback, useEffect, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useAppState } from "../hooks/useAppState";
 import { useWallet } from "../hooks/useWallet";
 import { ChainType } from "../libs/adapters";
 import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
-import { useSession } from "../hooks/useSession";
-import { makeShorter } from "../utils";
-import { AppFlow, useLocation } from "../components/router";
+import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import A8Logo from "../assets/images/a8-logo.png";
 import SolBtnImage from "../assets/images/sol-btn.png";
 import EvmBtnImage from "../assets/images/evm-btn.png";
 
-export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
+export const BASE_WELCOME_LOST_WALLET_SCREEN_KEY =
+  "BASE_WELCOME_LOST_WALLET_SCREEN_KEY";
 
-export const BaseWelcomeScreen: FC = () => {
-  const { handleClose, desiredChainType, currentAppFlow } = useAppState();
+export const BaseWelcomeLostWalletScreen: FC = () => {
+  const {
+    handleClose,
+    resetWithNewWalletPayload: { email },
+  } = useAppState();
   const { setChainType, chainType } = useWallet();
-  const { userInfo } = useSession();
   const location = useLocation();
 
   const targetScreen = useMemo(() => {
     return BASE_WALLET_SELECT_SCREEN_KEY;
-  }, []);
-
-  useEffect(() => {
-    if (
-      currentAppFlow === AppFlow.CONNECT_FLOW &&
-      desiredChainType !== ChainType.ALL
-    ) {
-      setChainType(desiredChainType);
-      location.push(targetScreen, true);
-    }
   }, []);
 
   const handleClickChain = useCallback(
@@ -45,24 +36,22 @@ export const BaseWelcomeScreen: FC = () => {
     <div>
       <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
       <div className="content px-[20px]">
-        <div className="base-welcome-screen w-full pt-[30px]">
-          <div className="mx-auto ">
+        <div className="base-welcome-screen w-full">
+          <div className="mx-auto w-[350px]">
             <img src={A8Logo} className="mx-[auto]" />
-            {currentAppFlow === AppFlow.LOGIN_FLOW ? (
-              <p className="text-center text-primary text-[20px] font-bold">
-                WELCOME TO
-                <br />
-                ANCIENT8 USER IDENTITY
-              </p>
-            ) : (
-              <p className="mx-auto text-[16px] text-center text-white">
-                Currently logged into the UID:
-                <span className="text-primary ml-[3px]">
-                  {makeShorter(userInfo?._id)}
-                </span>
-              </p>
-            )}
-
+            <p className="text-center text-primary text-[20px] font-bold">
+              WELCOME TO
+              <br />
+              ANCIENT8 USER IDENTITY
+            </p>
+            <p className="mx-auto text-[16px] text-center text-white mt-[20px]">
+              Connect your new wallet with Ancient8
+              <br />
+              User Identity account.
+              <br />
+              Email:
+              <span className="text-primary ml-[3px]">{email}</span>
+            </p>
             <p className="text-white text-center text-[16px] mt-[20px]">
               Please select desired chain below
             </p>

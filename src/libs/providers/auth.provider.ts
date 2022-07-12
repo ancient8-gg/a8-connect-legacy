@@ -8,6 +8,7 @@ import {
 import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
 import { RegistrationAuthDto } from "../dto/registration-auth.dto";
 import { ConnectOauthDto } from "../dto/connect-oauth.dto";
+import { ResetWithNewWalletDto } from "../dto/reset-with-new-wallet.dto";
 import { ConnectEmailAuthDto } from "../dto/connect-email-auth.dto";
 import { CreateAuthDto } from "../dto/create-auth.dto";
 
@@ -110,6 +111,25 @@ export class AuthProvider extends BusinessProvider {
       body: JSON.stringify(createAuthPayload),
       method: "POST",
     });
+  }
+
+  /**
+   * The function to connect new wallet to UID when forget/lost old wallets via email
+   * @param authToken Authenticated token has been sent via the owner's email
+   * @param resetWithNewWalletDto
+   */
+  async resetWithNewWallet(
+    authToken: string,
+    resetWithNewWalletDto: ResetWithNewWalletDto
+  ): Promise<AuthEntity> {
+    return this.requestWithCredential<AuthEntity>(
+      "/auth/connect-wallet",
+      {
+        body: JSON.stringify(resetWithNewWalletDto),
+        method: "POST",
+      },
+      authToken
+    );
   }
 
   /**

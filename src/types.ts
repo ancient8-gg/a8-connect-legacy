@@ -9,7 +9,10 @@ export * as ProfileUserDto from "./libs/dto/profile-user.dto";
 export * as RegistrationAuthDto from "./libs/dto/registration-auth.dto";
 export * as WalletCredentialAuthDto from "./libs/dto/wallet-credential-auth.dto";
 export * as Entities from "./libs/dto/entities";
+export * as ResetWithNewWalletDto from "./libs/dto/reset-with-new-wallet.dto";
 
 export * as Adapters from "./libs/adapters";
 export * as Providers from "./libs/providers";
 export * as Actions from "./libs/actions";
+
+export * from "./components/router";

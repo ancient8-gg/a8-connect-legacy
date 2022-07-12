@@ -71,7 +71,7 @@ export const SignWalletConnectUID: FC = () => {
      * Raise this error if user already has 10 wallets
      */
     if (authEntities.length >= 10) {
-      toast.open(
+      toast.error(
         "Failed to add wallet!",
         "You can only add a maximum of 10 wallets to your UID."
       );
@@ -116,7 +116,7 @@ export const SignWalletConnectUID: FC = () => {
       /**
        * Raise error and restart interval wallet syncing process
        */
-      toast.open(
+      toast.error(
         "Failed to add wallet!",
         "The wallet isn't eligible to add to your UID."
       );

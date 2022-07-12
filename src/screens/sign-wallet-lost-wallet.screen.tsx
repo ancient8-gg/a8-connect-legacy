@@ -1,25 +1,28 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { AuthChallenge, AuthType, LoginResponse } from "../libs/dto/entities";
+import { AuthChallenge, AuthType } from "../libs/dto/entities";
 import { BaseSignWalletScreen } from "./base-sign-wallet.screen";
 import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto";
-import { BUFFER_LOADING_APP_SCREEN_KEY } from "./buffer-loading.screen";
 import { BaseLoadingScreen } from "./base-loading.screen";
 import { useWallet } from "../hooks/useWallet";
-import { ChainType } from "../libs/adapters";
 import { useSession } from "../hooks/useSession";
+import { useAppState } from "../hooks/useAppState";
+import { ChainType } from "../libs/adapters";
 import { getAuthAction } from "../libs/actions";
-import { useLocation } from "../components/router";
+import { useToast } from "../hooks/useToast";
+import { getUtilsProvider } from "../libs/providers";
 
-export const SIGN_WALLET_SCREEN_KEY = "SIGN_WALLET_SCREEN";
+export const SIGN_WALLET_LOST_WALLET_KEY = "SIGN_WALLET_LOST_WALLET_KEY";
 
-export const SignWalletScreen: FC = () => {
-  const location = useLocation();
+export const SignWalletLostWalletScreen: FC = () => {
   const { walletAddress, chainType } = useWallet();
+  const {
+    resetWithNewWalletPayload: { authToken },
+  } = useAppState();
   const [onLoad, setOnLoad] = useState<boolean>(true);
-  const [existedWallet, setExistedWallet] = useState<boolean>(false);
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
-  const { signIn, signUp } = useSession();
   const authAction = getAuthAction();
+  const utilsProvider = getUtilsProvider();
+  const toast = useToast();
 
   const handleOnSigned = useCallback(
     async (signature: string) => {
@@ -35,32 +38,33 @@ export const SignWalletScreen: FC = () => {
       const type =
         chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
 
-      const response: LoginResponse = existedWallet
-        ? await signIn({ type: type, credential: credential })
-        : await signUp({ type: type, credential: credential });
-
-      if (!response.accessToken) {
-        // Login failed
-        return;
+      try {
+        await authAction.resetWithNewWallet(authToken, { type, credential });
+        toast.success(
+          "Successful!",
+          `You have successfully added your new wallet.
+           Wallet: ${utilsProvider.makeWalletAddressShorter(walletAddress)}`
+        );
+      } catch (err: unknown) {
+        if (err.toString().includes("AUTH::AUTH_ENTITY::DUPLICATED_WALLET")) {
+          toast.error(
+            "Failed to add wallet",
+            `The ${utilsProvider.makeWalletAddressShorter(
+              walletAddress
+            )} wallet you selected is already connected to another UID. Please select another wallet.`
+          );
+        }
       }
-
-      location.push(BUFFER_LOADING_APP_SCREEN_KEY);
     },
-    [chainType, authChallenge, existedWallet, signIn, signUp]
+    [chainType, authChallenge]
   );
 
   useEffect(() => {
     (async () => {
-      const existedWallet = await authAction.isWalletExisted(walletAddress);
-
       const authChallengeData = await authAction.requestAuthChallenge(
         walletAddress
       );
-
       setAuthChallenge(authChallengeData);
-
-      setExistedWallet(existedWallet);
-
       setOnLoad(false);
     })();
   }, [chainType, walletAddress]);
@@ -72,12 +76,8 @@ export const SignWalletScreen: FC = () => {
           <BaseLoadingScreen />
         ) : (
           <BaseSignWalletScreen
-            title="sign in"
-            description={
-              existedWallet
-                ? "Sign a message to confirm you own the wallet address to sign in the User Identity"
-                : `Hey, <span class='text-primary'> this is a new wallet </span> <br /> Please continue below to proceed with the signature request and to create a new Ancient8 User Identity account`
-            }
+            title="Sign in"
+            description="Sign message to confirm you own the wallet address - lost wallet flow"
             signedMessage={authChallenge.message}
             onSigned={handleOnSigned}
           />

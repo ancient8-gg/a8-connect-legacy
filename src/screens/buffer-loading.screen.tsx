@@ -6,20 +6,27 @@ import { AppFlow, useLocation } from "../components/router";
 import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
 import { BASE_WELCOME_SCREEN_KEY } from "./base-welcome.screen";
+import { BASE_WELCOME_ADD_WALLET_SCREEN_KEY } from "./base-welcome-add-wallet.screen";
+import { BASE_WELCOME_LOST_WALLET_SCREEN_KEY } from "./base-welcome-lost-wallet.screen";
 import { ChainType } from "../libs/adapters";
 
 export const BUFFER_LOADING_APP_SCREEN_KEY = "BUFFER_LOADING_APP_SCREEN";
 
 export const BufferLoadingAppScreen: FC = () => {
-  const { handleClose, desiredChainType, currentAppFlow, isAppReady } =
-    useAppState();
+  const {
+    handleClose,
+    desiredChainType,
+    currentAppFlow,
+    setCurrentAppFlow,
+    isAppReady,
+  } = useAppState();
   const {
     initState: initWalletState,
     isWalletConnected,
     chainType,
     walletAddress,
   } = useWallet();
-  const { initState: initSessionState, authEntities } = useSession();
+  const { initState: initSessionState, authEntities, userInfo } = useSession();
   const { push } = useLocation();
 
   const [isStateReset, setStateReset] = useState(false);
@@ -30,6 +37,14 @@ export const BufferLoadingAppScreen: FC = () => {
 
   const shouldGoToLoginFlow = useMemo(() => {
     return currentAppFlow === AppFlow.LOGIN_FLOW;
+  }, [currentAppFlow]);
+
+  const shouldGoToAddWalletFlow = useMemo(() => {
+    return currentAppFlow === AppFlow.ADD_WALLET_FLOW && userInfo !== undefined;
+  }, [currentAppFlow, userInfo]);
+
+  const shouldGoToLostWalletFlow = useMemo(() => {
+    return currentAppFlow === AppFlow.LOST_WALLET_FLOW;
   }, [currentAppFlow]);
 
   const shouldGoToConnectFlow = useMemo(() => {
@@ -71,6 +86,20 @@ export const BufferLoadingAppScreen: FC = () => {
      * Do nothing if screen state isn't ready
      */
     if (!screenStateReady) return;
+
+    /**
+     * Prioritize redirecting to add lost wallet screen
+     */
+    if (shouldGoToLostWalletFlow) {
+      return push(BASE_WELCOME_LOST_WALLET_SCREEN_KEY);
+    }
+
+    /**
+     * Prioritize redirecting to add wallet screen
+     */
+    if (shouldGoToAddWalletFlow) {
+      return push(BASE_WELCOME_ADD_WALLET_SCREEN_KEY);
+    }
 
     /**
      * Prioritize redirecting to login flow first

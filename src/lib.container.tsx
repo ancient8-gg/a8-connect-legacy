@@ -1,8 +1,13 @@
 import { createRoot, Root } from "react-dom/client";
 import A8ConnectContainer from "./container";
-
 import { ChainType, SupportedWallets } from "./libs/adapters";
-import { ConnectSessionDto, Providers, Entities } from "./types";
+import {
+  ConnectSessionDto,
+  ResetWithNewWalletDto,
+  Providers,
+  Entities,
+  AppFlow,
+} from "./types";
 import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
 import { OnAuthPayload } from "./hooks/useSession";
 
@@ -12,6 +17,8 @@ export interface A8ConnectInitOptions {
   withCredential?: string;
   cleanWalletCache?: boolean;
   disableCloseButton?: boolean;
+  initAppFlow?: AppFlow;
+  resetWithNewWalletPayload?: ResetWithNewWalletDto.ResetWithNewWalletPayload;
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
@@ -100,6 +107,8 @@ export class A8Connect {
         disableCloseButton={options.disableCloseButton}
         networkType={options.networkType}
         chainType={options.chainType}
+        initAppFlow={options.initAppFlow}
+        resetWithNewWalletPayload={options.resetWithNewWalletPayload}
         onError={options.onError}
         onClose={() => {
           options.onClose && options.onClose();
