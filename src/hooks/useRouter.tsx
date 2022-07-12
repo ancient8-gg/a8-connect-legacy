@@ -44,7 +44,7 @@ export const RouterProvider: FC<ProviderProps> = () => {
   }, [screenPipe, setPipe]);
 
   const initState = useCallback(() => {
-    console.log("urrentAppFlow", currentAppFlow);
+    console.log("Current AppFlow", currentAppFlow);
 
     setRouterReady(false);
     const screens = [...SCREENS[currentAppFlow]];
