@@ -37,7 +37,7 @@ const Modal: FC<ModalProps> = ({
       style={customStyles}
       contentLabel="UID Modal"
     >
-      <div className={"a8connect-container absolute md:w-[450px] w-[400px]"}>
+      <div className={"a8connect-container absolute md:w-[378px] sm:w-full"}>
         <div className="w-full">
           <img
             src={TopGradientBorder}

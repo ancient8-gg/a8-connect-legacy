@@ -6,8 +6,8 @@ import { ConnectedWalletPayload } from "./libs/dto/a8-connect-session.dto";
 import { ResetWithNewWalletPayload } from "./libs/dto/reset-with-new-wallet.dto";
 import { AppStateProvider } from "./hooks/useAppState";
 import { RouterProvider } from "./hooks/useRouter";
-import { NetworkType } from "./libs/providers/registry.provider";
 import { AppFlow } from "./components/router/type";
+import { NetworkType } from "./libs/providers";
 
 import "./index.css";
 

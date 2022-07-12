@@ -66,8 +66,8 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
         onCloseModal={handleClose}
       />
       <div className="content px-[20px]">
-        <div className="sign-wallet-screen w-full">
-          <div className="mx-auto w-[350px]">
+        <div className="sign-wallet-screen w-full pt-[30px]">
+          <div className="mx-auto ">
             <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
               {title.toUpperCase()}
             </p>

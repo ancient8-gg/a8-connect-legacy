@@ -25,7 +25,5 @@ docs/
 bundle-analysis.html
 dist/
 bundle/
-public/docs/*
+public/a8-connect/*
 test.html
-
-public
