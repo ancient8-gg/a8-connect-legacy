@@ -50,6 +50,10 @@ export interface RouterContextObject {
 
 export const RouterContext = createContext<RouterContextObject>(null);
 
+/**
+ * @params deleted - deleted Check if want to destroy current screen before move to next screen
+ * @params params - screen params
+ */
 export type LocationPushPayload = {
   deleted?: boolean | false;
   params?: unknown;
@@ -68,8 +72,8 @@ export interface LocationContextObject {
 
   /**
    * @description Handle transit to another screen
-   * @param key
-   * @param deleted Check if want to destroy current screen before move to next screen
+   * @param key - defined key of screen
+   * @param payload
    */
   push(key: string, payload?: LocationPushPayload): void;
 
