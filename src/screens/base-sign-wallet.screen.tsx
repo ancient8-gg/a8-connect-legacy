@@ -61,16 +61,14 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   return (
     <div>
       <ModalHeader
+        title={title.toUpperCase()}
         isBack={location.isBack}
         goBack={location.goBack}
         onCloseModal={handleClose}
       />
-      <div className="content px-[20px]">
+      <div className="content">
         <div className="sign-wallet-screen w-full pt-[30px]">
           <div className="mx-auto ">
-            <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
-              {title.toUpperCase()}
-            </p>
             <div className="pt-[50px]">
               <p
                 dangerouslySetInnerHTML={{ __html: description || "" }}

@@ -63,7 +63,6 @@ code {
   clip-path: polygon(0px 0px, 0px 0px, 100% 0px, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0px 100%, 0px 36px);
   display: inline-block;
   position: relative;
-  min-height: 250px;
 }
 
 .polygon-modal>.top {

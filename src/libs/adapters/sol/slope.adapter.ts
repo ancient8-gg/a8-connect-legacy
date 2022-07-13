@@ -4,15 +4,20 @@ import Icon from "../../../assets/icons/slope.png";
 export const SlopeSolanaWalletName = "SlopeSolanaWallet";
 
 export class SlopeSolanaWallet implements BaseWalletAdapter {
+  displayName = "Slope";
+
   injectedProvider: WalletProvider;
+
   chainType = ChainType.SOL;
+
   name = SlopeSolanaWalletName;
+
+  url = "slope.finance";
+
   adapterStyle = {
     icon: Icon,
     background:
       "linear-gradient(90deg, rgb(108, 100, 249) 0%, rgb(86, 74, 237) 100%)",
-    title_name: "Slope",
-    url: "https://slope.finance",
   };
 
   constructor(injectedProvider: WalletProvider) {

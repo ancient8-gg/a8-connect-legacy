@@ -5,15 +5,20 @@ import Icon from "../../../assets/icons/coinbase.png";
 
 export const CoinbaseEVMWalletName = "CoinbaseEVMWallet";
 export class CoinbaseEVMWallet implements BaseWalletAdapter {
+  displayName = "Coinbase";
+
   injectedProvider: WalletProvider;
+
   chainType = ChainType.EVM;
+
   name = CoinbaseEVMWalletName;
+
+  url = "www.coinbase.com/wallet";
+
   adapterStyle = {
     icon: Icon,
     background:
       "linear-gradient(90deg, rgb(37 137 255) 0%, rgb(29 30 71) 100%)",
-    title_name: "Coinbase",
-    url: "https://www.coinbase.com/wallet",
   };
 
   constructor(injectedProvider: WalletProvider) {

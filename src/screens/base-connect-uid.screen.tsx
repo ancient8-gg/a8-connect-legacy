@@ -29,17 +29,15 @@ export const BaseConnectUIDScreen: FC = () => {
   return (
     <div>
       <ModalHeader
+        title={"CONNECT WALLET TO APP"}
         isBack={location.isBack}
         onCloseModal={handleClose}
         goBack={location.goBack}
       />
-      <div className="content px-[20px]">
+      <div className="content">
         <div className="base-welcome-screen w-full pt-[30px]">
-          <div className="mx-auto ">
-            <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
-              CONNECT WALLET TO APP
-            </p>
-            <div className="pt-[50px]">
+          <div className="mx-auto">
+            <div className="pt-[20px]">
               <p className="mx-auto text-[16px] text-center text-white">
                 Currently logged into the UID:
                 <span className="text-primary ml-[3px]">

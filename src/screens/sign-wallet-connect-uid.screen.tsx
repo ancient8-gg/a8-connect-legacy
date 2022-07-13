@@ -200,13 +200,15 @@ export const SignWalletConnectUID: FC = () => {
 
   return (
     <div>
-      <ModalHeader isBack={isBack} onCloseModal={handleClose} goBack={goBack} />
+      <ModalHeader
+        title={"CONNECT WALLET TO APP"}
+        isBack={isBack}
+        onCloseModal={handleClose}
+        goBack={goBack}
+      />
       <div className="sign-wallet-screen w-full pt-[30px]">
-        <div className="mx-auto ">
-          <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
-            CONNECT WALLET TO APP
-          </p>
-          <div className="pt-[50px]">
+        <div className="mx-auto">
+          <div>
             <div className="mt-[30px]">
               <p className="text-white text-[20px] text-center font-bold">
                 {connectAgenda === ConnectAgendaType.connectExistWallet
