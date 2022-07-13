@@ -1,6 +1,7 @@
 import { OffChainAction } from "./offchain.action";
 import { AuthEntity, AuthSession, User, UserInfo } from "../dto/entities";
 import { UpdateProfileAuthDto } from "../dto/profile-user.dto";
+import { SessionInfo } from "../dto/persist-kyc.dto";
 
 /**
  * The `UserAction` represents the underlying logic for user actions: get profile, update profile, ...
@@ -70,5 +71,12 @@ export class UserAction extends OffChainAction {
    */
   validateWalletAddress(walletAddress: string): Promise<void> {
     return this.userProvider.validateWalletAddress(walletAddress);
+  }
+
+  /**
+   * Init user KYC session
+   */
+  initKycSession(): Promise<SessionInfo> {
+    return this.userProvider.initKycSession();
   }
 }
