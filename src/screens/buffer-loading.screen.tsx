@@ -13,13 +13,8 @@ import { ChainType } from "../libs/adapters";
 export const BUFFER_LOADING_APP_SCREEN_KEY = "BUFFER_LOADING_APP_SCREEN";
 
 export const BufferLoadingAppScreen: FC = () => {
-  const {
-    handleClose,
-    desiredChainType,
-    currentAppFlow,
-    setCurrentAppFlow,
-    isAppReady,
-  } = useAppState();
+  const { handleClose, desiredChainType, currentAppFlow, isAppReady } =
+    useAppState();
   const {
     initState: initWalletState,
     isWalletConnected,

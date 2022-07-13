@@ -13,7 +13,8 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   rules: {
     "prettier/prettier": "error",
-    "@typescript-eslint/no-empty-function": "warn"
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-unused-vars": "error",
   },
   ignorePatterns: [".storybook", "**/*.stories.*"],
 };
