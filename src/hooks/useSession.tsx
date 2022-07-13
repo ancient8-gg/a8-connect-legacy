@@ -102,8 +102,6 @@ export const SessionProvider: FC<
 
     const { sessionUser } = await fetchSession();
 
-    console.log("initAppFlow", initAppFlow, sessionUser?._id);
-
     let isDefaultFlow = true;
 
     if (initAppFlow === AppFlow.LOST_WALLET_FLOW) {

@@ -10,16 +10,16 @@ class ProfileUserDto {
   @IsOptional()
   @IsAlphanumeric()
   @MaxLength(32)
-  username: string;
+  username?: string;
 
   @IsOptional()
   @IsBoolean()
-  removeEmail: boolean;
+  removeEmail?: boolean;
 
   @IsOptional()
   @IsString()
   @MaxLength(64)
-  displayName: string;
+  displayName?: string;
 }
 
 export class UpdateProfileAuthDto extends ProfileUserDto {}

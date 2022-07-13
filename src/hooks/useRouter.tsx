@@ -49,12 +49,12 @@ export const RouterProvider: FC<ProviderProps> = () => {
   }, [screenPipe, setPipe]);
 
   const initState = useCallback(() => {
-    console.log("Current AppFlow", currentAppFlow);
-
     setRouterReady(false);
+
     const screens = [...SCREENS[currentAppFlow]];
 
     setScreens(screens);
+
     setPipe([screens[0]]);
 
     if (currentAppFlow !== AppFlow.BUFFER_FLOW) {
@@ -108,12 +108,15 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
 
   const goBack = useCallback(() => {
     const _pipe = [...screenPipe];
+
     _pipe.pop();
+
     setPipe(_pipe);
   }, [screenPipe, setPipe]);
 
   const goBackWithCallback = useCallback(() => {
     goBack();
+
     goBackCallback && goBackCallback();
   }, [goBack, goBackCallback]);
 
