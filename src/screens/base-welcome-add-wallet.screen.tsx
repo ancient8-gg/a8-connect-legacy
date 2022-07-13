@@ -33,13 +33,15 @@ export const BaseWelcomeAddWallet: FC = () => {
 
   return (
     <div>
-      <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
-      <div className="content px-[20px] pb-[20px]">
+      <ModalHeader
+        isBack={true}
+        onCloseModal={handleClose}
+        goBack={null}
+        title={"ADD WALLET"}
+      />
+      <div className="content pb-[20px]">
         <div className="base-welcome-screen w-full">
-          <div className="mx-auto w-[350px]">
-            <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
-              ADD WALLET
-            </p>
+          <div className="mx-auto">
             <p className="mx-auto text-[16px] text-center text-white mt-[50px]">
               Currently logged into the UID
             </p>

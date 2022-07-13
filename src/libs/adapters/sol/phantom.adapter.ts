@@ -4,15 +4,20 @@ import Icon from "../../../assets/icons/phantom.png";
 export const PhantomSolanaWalletName = "PhantomSolanaWallet";
 
 export class PhantomSolanaWallet implements BaseWalletAdapter {
+  displayName = "Phantom";
+
   injectedProvider: WalletProvider;
+
   chainType = ChainType.SOL;
+
   name = PhantomSolanaWalletName;
+
+  url = "phantom.app";
+
   adapterStyle = {
     icon: Icon,
     background:
       "linear-gradient(90deg, rgb(144, 88, 216) 0%, rgb(83, 75, 177) 100%)",
-    title_name: "Phantom",
-    url: "https://phantom.app",
   };
 
   constructor(injectedProvider: WalletProvider) {

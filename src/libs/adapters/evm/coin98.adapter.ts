@@ -5,15 +5,20 @@ import Icon from "../../../assets/icons/coin98.png";
 
 export const Coin98EVMWalletName = "Coin98EVMWallet";
 export class Coin98EVMWallet implements BaseWalletAdapter {
+  displayName = "Coin98";
+
   injectedProvider: WalletProvider;
+
   chainType = ChainType.EVM;
+
   name = Coin98EVMWalletName;
+
+  url = "coin98.com/wallet";
+
   adapterStyle = {
     icon: Icon,
     background:
       "linear-gradient(90deg, rgb(204 173 65) 0%, rgb(13, 13, 24) 100%)",
-    title_name: "Coin98",
-    url: "https://coin98.com/wallet",
   };
 
   constructor(injectedProvider: WalletProvider) {

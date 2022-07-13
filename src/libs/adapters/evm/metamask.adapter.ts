@@ -5,14 +5,19 @@ import Icon from "../../../assets/icons/metamask.png";
 
 export const MetamaskEVMWalletName = "MetamaskEVMWallet";
 export class MetamaskEVMWallet implements BaseWalletAdapter {
+  displayName = "Metamask";
+
   injectedProvider: WalletProvider;
+
   chainType = ChainType.EVM;
+
   name = MetamaskEVMWalletName;
+
+  url = "metamask.io";
+
   adapterStyle = {
     icon: Icon,
     background: "linear-gradient(90deg, rgb(232 128 7) 0%, rgb(148 82 5) 100%)",
-    title_name: "Metamask",
-    url: "https://metamask.io",
   };
 
   constructor(injectedProvider: WalletProvider) {

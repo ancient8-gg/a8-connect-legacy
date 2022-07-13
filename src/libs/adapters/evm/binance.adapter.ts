@@ -6,15 +6,20 @@ import Icon from "../../../assets/icons/binance.png";
 export const BinanceEVMWalletName = "BinanceEVMWallet";
 
 export class BinanceEVMWallet implements BaseWalletAdapter {
+  displayName = "Binance";
+
   injectedProvider: WalletProvider;
+
   chainType = ChainType.EVM;
+
   name = BinanceEVMWalletName;
+
+  url = "www.binance.com/en/wallet-direct";
+
   adapterStyle = {
     icon: Icon,
     background:
       "linear-gradient(90deg, rgb(218 192 66) 0%, rgb(234 126 0) 100%)",
-    title_name: "Binance",
-    url: "https://www.binance.com/en/wallet-direct",
   };
 
   constructor(injectedProvider: WalletProvider) {

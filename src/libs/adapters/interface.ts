@@ -4,8 +4,6 @@
 export interface AdapterStyle {
   icon: string;
   background: string;
-  title_name: string;
-  url: string;
 }
 
 /**
@@ -100,10 +98,20 @@ export interface BaseWalletAdapter {
    */
   chainType: ChainType;
 
-  /*
+  /**
    * Adapter name
    */
   name: string;
+
+  /**
+   * Adapter url
+   */
+  url: string;
+
+  /**
+   * Adapter display name
+   */
+  displayName: string;
 
   /**
    * Injected Provider is loaded when document object is ready.

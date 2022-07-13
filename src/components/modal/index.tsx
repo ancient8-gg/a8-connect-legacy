@@ -48,7 +48,7 @@ const Modal: FC<ModalProps> = ({
           style={contentStyle}
           className={classnames("polygon-modal", containerClassName)}
         >
-          <div className="polygon-modal-child pt-[10px] pb-[30px]">
+          <div className="polygon-modal-child px-[24px] py-[20px]">
             {children}
           </div>
         </div>

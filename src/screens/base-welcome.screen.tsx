@@ -44,7 +44,7 @@ export const BaseWelcomeScreen: FC = () => {
   return (
     <div>
       <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
-      <div className="content px-[20px]">
+      <div className="content">
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto ">
             <img src={A8Logo} className="mx-[auto]" />
@@ -55,7 +55,7 @@ export const BaseWelcomeScreen: FC = () => {
                 ANCIENT8 USER IDENTITY
               </p>
             ) : (
-              <p className="mx-auto text-[16px] text-center text-white">
+              <p className="mt-[20px] mx-auto text-[16px] text-center text-white">
                 Currently logged into the UID:
                 <span className="text-primary ml-[3px]">
                   {makeShorter(userInfo?._id)}
@@ -69,20 +69,24 @@ export const BaseWelcomeScreen: FC = () => {
             <div className="pt-[50px]">
               <img
                 src={SolBtnImage}
-                className="w-full cursor-pointer mt-[20px]"
+                className="w-full cursor-pointer mt-[20px] h-[50px]"
                 onClick={() => handleClickChain(ChainType.SOL)}
               />
               <img
                 src={EvmBtnImage}
-                className="w-full cursor-pointer mt-[20px]"
+                className="w-full cursor-pointer mt-[20px] h-[50px]"
                 onClick={() => handleClickChain(ChainType.EVM)}
               />
             </div>
-            <div className="pt-[50px]">
+            <div className="pt-[50px] pb-[20px]">
               <p className="text-center text-white text-[14px] font-[100]">
                 By connecting, you agree to our
                 <br />
-                <a className="text-primary underline text-[14px]">
+                <a
+                  className="text-primary underline text-[14px]"
+                  href={"https://ancient8.gg"}
+                  target={"_blank"}
+                >
                   Privacy Policy and Terms of Services
                 </a>
               </p>
