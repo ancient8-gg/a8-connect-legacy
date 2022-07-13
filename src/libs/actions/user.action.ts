@@ -57,4 +57,18 @@ export class UserAction extends OffChainAction {
   getAuthSessions(): Promise<AuthSession[]> {
     return this.userProvider.getAuthSessions();
   }
+
+  /**
+   * Validate username
+   */
+  validateUsername(username: string): Promise<void> {
+    return this.userProvider.validateUsername(username);
+  }
+
+  /**
+   * Validate wallet address
+   */
+  validateWalletAddress(walletAddress: string): Promise<void> {
+    return this.userProvider.validateWalletAddress(walletAddress);
+  }
 }
