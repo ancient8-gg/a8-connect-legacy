@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 
-import "./index.module.scss";
+import "./index.scoped.scss";
 
 const Collapse: FC<{
   isOpened: boolean;
