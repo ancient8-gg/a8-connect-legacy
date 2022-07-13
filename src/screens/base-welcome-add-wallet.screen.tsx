@@ -40,7 +40,6 @@ export const BaseWelcomeAddWallet: FC = () => {
     },
     [targetScreen, chainType]
   );
-
   return (
     <div>
       <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />

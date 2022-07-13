@@ -43,7 +43,7 @@ export class UserProvider extends BusinessProvider {
       method: "POST",
       body: formData,
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "remove",
       },
     });
   }

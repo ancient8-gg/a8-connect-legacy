@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NetworkOptions, NetworkProviderGetter } from "./network.provider";
 import { StorageProviderGetter } from "./storage.provider";
 import { CookieProviderGetter } from "./cookie.provider";
@@ -74,14 +75,27 @@ export class BusinessProvider {
 
     if (!!authTokenFromStorage && !authTokenFromCookie)
       options.headers = {
+        ...options.headers,
         Authorization: `Bearer ${authTokenFromStorage}`,
       };
+
+    /**
+     * @description
+     * Remove Content-Type when upload image,
+     * so browser will detect content type of file automaticly
+     */
+    const defaultHeaders = this.defaultNetWorkOptions.headers;
+    if ((options.headers as any)["Content-Type"] === "remove") {
+      delete (defaultHeaders as any)["Content-Type"];
+
+      delete (options.headers as any)["Content-Type"];
+    }
 
     return networkProvider.request<T>(url, {
       ...this.defaultNetWorkOptions,
       ...options,
       headers: {
-        ...this.defaultNetWorkOptions.headers,
+        ...defaultHeaders,
         ...options.headers,
       },
     });
