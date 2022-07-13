@@ -7,8 +7,8 @@ import { useSession } from "../hooks/useSession";
 import { makeShorter } from "../utils";
 import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
-import SolBtnImage from "../assets/images/sol-btn.png";
-import EvmBtnImage from "../assets/images/evm-btn.png";
+import SolImage from "../assets/images/sol-chain-preview.png";
+import EthImage from "../assets/images/eth.png";
 
 export const BASE_WELCOME_ADD_WALLET_SCREEN_KEY =
   "BASE_WELCOME_ADD_WALLET_SCREEN_KEY";
@@ -39,7 +39,7 @@ export const BaseWelcomeAddWallet: FC = () => {
         goBack={null}
         title={"ADD WALLET"}
       />
-      <div className="content pb-[20px]">
+      <div className="content sm:py-[0px] py-[10%]">
         <div className="base-welcome-screen w-full">
           <div className="mx-auto">
             <p className="mx-auto text-[16px] text-center text-white mt-[50px]">
@@ -52,16 +52,18 @@ export const BaseWelcomeAddWallet: FC = () => {
               Please select desired chain below
             </p>
             <div className="pt-[50px]">
-              <img
-                src={SolBtnImage}
-                className="w-full cursor-pointer mt-[20px]"
+              <button
+                className="w-full cursor-pointer mt-[20px] h-[50px]"
                 onClick={() => handleClickChain(ChainType.SOL)}
-              />
-              <img
-                src={EvmBtnImage}
-                className="w-full cursor-pointer mt-[20px]"
+              >
+                <img src={SolImage} /> Continue with Solana
+              </button>
+              <button
+                className="w-full cursor-pointer mt-[20px] h-[50px]"
                 onClick={() => handleClickChain(ChainType.EVM)}
-              />
+              >
+                <img src={EthImage} /> Continue with EVM
+              </button>
             </div>
           </div>
         </div>

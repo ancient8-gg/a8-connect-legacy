@@ -1,13 +1,13 @@
 import { FC, useMemo } from "react";
 import { useAppState } from "../hooks/useAppState";
 import { useWallet } from "../hooks/useWallet";
-import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 import { useSession } from "../hooks/useSession";
 import { makeShorter } from "../utils";
 import { BaseWalletAdapter } from "../libs/adapters";
 import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
+import { ConnectButton } from "../components/select/wallet-select";
 
 export const BASE_CONNECT_UID_SCREEN_KEY = "BASE_CONNECT_UID_SCREEN";
 
@@ -34,7 +34,7 @@ export const BaseConnectUIDScreen: FC = () => {
         onCloseModal={handleClose}
         goBack={location.goBack}
       />
-      <div className="content">
+      <div className="content sm:py-[0px] py-[10%]">
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto">
             <div className="pt-[20px]">

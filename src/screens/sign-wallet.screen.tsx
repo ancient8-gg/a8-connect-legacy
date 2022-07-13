@@ -67,7 +67,7 @@ export const SignWalletScreen: FC = () => {
 
   return (
     <div>
-      <div className="content">
+      <div>
         {onLoad ? (
           <BaseLoadingScreen />
         ) : (

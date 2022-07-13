@@ -1,7 +1,6 @@
 import { FC, useCallback } from "react";
-
-import { BaseWalletAdapter } from "../libs/adapters";
-import Button from "./button";
+import { BaseWalletAdapter } from "../../libs/adapters";
+import Button from "../button";
 
 export interface ConnectButtonProps {
   adapter: BaseWalletAdapter;

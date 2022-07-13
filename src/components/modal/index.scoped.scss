@@ -1,0 +1,24 @@
+.polygon-modal {
+  width: 100%;
+  /*height: -moz-fit-content;*/
+  /*height: fit-content;*/
+  -webkit-clip-path: polygon(0px 30px, 30px 0px, 100% 0px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0px 100%, 0px 36px);
+  clip-path: polygon(0px 30px, 30px 0px, 100% 0px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0px 100%, 0px 36px);
+  display: inline-block;
+  position: relative;
+}
+
+.polygon-modal-child {
+  background: #12151B;
+  width: 100%;
+  height: 100%;
+  -webkit-clip-path: polygon(0px 0px, 0px 0px, 100% 0px, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0px 100%, 0px 36px);
+  clip-path: polygon(0px 0px, 0px 0px, 100% 0px, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0px 100%, 0px 36px);
+  display: inline-block;
+  position: relative;
+}
+
+.polygon-modal >.top {
+  top: -20px;
+  position: absolute;
+}

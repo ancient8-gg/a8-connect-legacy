@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SVN-GilroyMedium';
+  src: url('./assets/fonts/SVN-Gilroy-Medium.otf');
+  font-style: normal;
+}
+
+#a8-connect-container {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  button {
+    font-family: 'SVN-GilroyMedium';
+  }
+}

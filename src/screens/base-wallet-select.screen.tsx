@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo } from "react";
 import { useWallet } from "../hooks/useWallet";
-import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 import EvmChainPreviewIcon from "../assets/images/evm-chain-preview.png";
 import SolChainPreviewIcon from "../assets/images/sol-chain-preview.png";
@@ -10,6 +9,7 @@ import { useAppState } from "../hooks/useAppState";
 import { makeShorter } from "../utils";
 import { AppFlow, useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
+import { ConnectButton } from "../components/select/wallet-select";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
@@ -53,7 +53,7 @@ export const BaseWalletSelect: FC = () => {
         goBack={handleGoback}
         onCloseModal={handleClose}
       />
-      <div className="content">
+      <div className="content sm:py-[0px] py-[10%]">
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto">
             <div className="mx-auto pt-[20px]">

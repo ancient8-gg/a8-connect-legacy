@@ -1,5 +1,7 @@
 import { FC, ReactNode } from "react";
 
+import "./index.module.scss";
+
 const Collapse: FC<{
   isOpened: boolean;
   children: ReactNode;

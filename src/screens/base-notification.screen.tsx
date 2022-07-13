@@ -29,7 +29,7 @@ export const BaseNotificationScreen: FC = () => {
         isBack={false}
         onCloseModal={handleGoback}
       />
-      <div className="content py-[30px]">
+      <div className="content sm:py-[0px] py-[10%]">
         <div className="base-welcome-screen w-full">
           <div className="mx-auto ">
             <p

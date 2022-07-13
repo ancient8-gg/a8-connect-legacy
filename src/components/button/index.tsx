@@ -118,7 +118,7 @@ export const PolygonButton: FC<PolygonButtonProps> = ({
   return (
     <div
       style={boxStyle}
-      className={classnames("box-pp", "min-w-[250px] md:min-w-0", boxClassName)}
+      className={classnames("box-pp", "md:min-w-0", boxClassName)}
     >
       <button
         id={id}

@@ -1,8 +1,11 @@
 import { CSSProperties, FC, ReactNode } from "react";
 import ReactModal from "react-modal";
 import classnames from "classnames";
-import TopGradientBorder from "../../assets/images/top-gradient-border.svg";
-import BottomGradientBorder from "../../assets/images/bottom-gradient-border.svg";
+
+import { ReactComponent as TopGradientBorder } from "../../assets/images/top-gradient-border.svg";
+import { ReactComponent as BottomGradientBorder } from "../../assets/images/bottom-gradient-border.svg";
+
+import "./index.scoped.scss";
 
 export interface ModalProps {
   containerClassName?: string;
@@ -24,7 +27,7 @@ export const customStyles = {
   },
 };
 
-const Modal: FC<ModalProps> = ({
+export const Modal: FC<ModalProps> = ({
   containerClassName,
   modalIsOpen,
   children,
@@ -32,31 +35,31 @@ const Modal: FC<ModalProps> = ({
 }: ModalProps) => {
   return (
     <ReactModal
+      className={"w-full h-full"}
       ariaHideApp={false}
       isOpen={modalIsOpen}
       style={customStyles}
       contentLabel="UID Modal"
+      id="a8-connect-container"
     >
-      <div className={"a8connect-container absolute md:w-[378px] sm:w-full"}>
+      <div
+        className={
+          "a8connect-container absolute md:h-auto md:w-[378px] w-full h-full"
+        }
+      >
         <div className="w-full">
-          <img
-            src={TopGradientBorder}
-            className="float-right md:w-[30%] w-[40%]"
-          />
+          <TopGradientBorder className="float-right md:w-[30%] w-[40%]" />
         </div>
         <div
           style={contentStyle}
-          className={classnames("polygon-modal", containerClassName)}
+          className={classnames("polygon-modal h-full", containerClassName)}
         >
           <div className="polygon-modal-child px-[24px] py-[20px]">
             {children}
           </div>
         </div>
         <div className="w-full mt-[0px]">
-          <img
-            src={BottomGradientBorder}
-            className="float-left md:w-[30%] w-[40%]"
-          />
+          <BottomGradientBorder className="float-left md:w-[30%] w-[40%]" />
         </div>
       </div>
     </ReactModal>

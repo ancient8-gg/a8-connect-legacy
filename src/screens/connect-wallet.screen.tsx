@@ -65,7 +65,7 @@ export const ConnectWalletScreen: FC = () => {
         goBack={() => location.goBack()}
       />
 
-      <div className="content">
+      <div className="content sm:py-[0px] py-[10%]">
         <div className="sign-wallet-screen w-full pt-[30px]">
           <div className="mx-auto ">
             <div className="pt-[20px]">

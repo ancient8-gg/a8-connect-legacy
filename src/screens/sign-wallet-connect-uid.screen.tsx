@@ -206,101 +206,104 @@ export const SignWalletConnectUID: FC = () => {
         onCloseModal={handleClose}
         goBack={goBack}
       />
-      <div className="sign-wallet-screen w-full pt-[30px]">
-        <div className="mx-auto">
-          <div>
-            <div className="mt-[30px]">
-              <p className="text-white text-[20px] text-center font-bold">
-                {connectAgenda === ConnectAgendaType.connectExistWallet
-                  ? "CONNECTED AS"
-                  : "SIGNING WITH THIS ADDRESS"}
-              </p>
-              <p className="text-primary text-[20px] text-center font-bold">
-                {makeShorter(walletAddress)}
-              </p>
-              <p
-                dangerouslySetInnerHTML={{ __html: description || "" }}
-                className="text-center text-white text-[16px] mt-[30px]"
-              />
-            </div>
-            {isBelongedError && (
-              <>
-                <div className="flex justify-center mt-[30px] items-center">
-                  <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#25282D] flex">
-                    <div className="float-left pl-[20px] text-white">
-                      <p className="text-[14px]">
-                        The wallet you selected already belongs to another UID.
-                      </p>
+      <div className="content sm:py-[0px] py-[10%]">
+        <div className="sign-wallet-screen w-full pt-[30px]">
+          <div className="mx-auto">
+            <div>
+              <div className="mt-[30px]">
+                <p className="text-white text-[20px] text-center font-bold">
+                  {connectAgenda === ConnectAgendaType.connectExistWallet
+                    ? "SELECTED WALLET ADDRESS"
+                    : "SIGNING WITH THIS ADDRESS"}
+                </p>
+                <p className="text-primary text-[20px] text-center font-bold">
+                  {makeShorter(walletAddress)}
+                </p>
+                <p
+                  dangerouslySetInnerHTML={{ __html: description || "" }}
+                  className="text-center text-white text-[16px] mt-[30px]"
+                />
+              </div>
+              {isBelongedError && (
+                <>
+                  <div className="flex justify-center mt-[30px] items-center">
+                    <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#25282D] flex">
+                      <div className="float-left pl-[20px] text-white">
+                        <p className="text-[14px]">
+                          The wallet you selected already belongs to another
+                          UID.
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  <div className="mt-[20px]">
+                    <p className="text-[16px] text-white text-center font-bold">
+                      Please select another wallet or re-login with this wallet
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+            {connectAgenda === ConnectAgendaType.connectExistWallet &&
+              !isBelongedError && (
+                <div className="button-container mt-[30px] flex justify-center">
+                  <PolygonButton
+                    boxStyle={{
+                      width: "50%",
+                      marginRight: "10px",
+                      background: "#2EB835",
+                    }}
+                    containerStyle={{ width: "100%", background: "#2EB835" }}
+                    onClick={() => push(BUFFER_LOADING_APP_SCREEN_KEY)}
+                  >
+                    Close
+                  </PolygonButton>
                 </div>
-                <div className="mt-[20px]">
-                  <p className="text-[16px] text-white text-center font-bold">
-                    Please select another wallet or re-login with this wallet
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
-          {connectAgenda === ConnectAgendaType.connectExistWallet &&
-            !isBelongedError && (
-              <div className="button-container mt-[30px] flex justify-center">
+              )}
+            {connectAgenda === ConnectAgendaType.connectNewWallet && (
+              <div className="button-container mt-[30px] flex">
                 <PolygonButton
                   boxStyle={{
                     width: "50%",
+                    float: "left",
                     marginRight: "10px",
                     background: "#2EB835",
                   }}
                   containerStyle={{ width: "100%", background: "#2EB835" }}
-                  onClick={() => push(BUFFER_LOADING_APP_SCREEN_KEY)}
+                  onClick={handleConnectNewWallet}
                 >
-                  Close
+                  <div className="flex w-full justify-center items-center relative">
+                    {signing && (
+                      <div className="absolute left-[-20px]">
+                        <LoadingSpinner width={7} height={7} />
+                      </div>
+                    )}
+                    <p className="text-white">Sign</p>
+                  </div>
+                </PolygonButton>
+                <PolygonButton
+                  boxStyle={{ width: "50%", float: "left", marginLeft: "10px" }}
+                  containerStyle={{ width: "100%", background: "#12151B" }}
+                  onClick={handleCancelConnectUid}
+                >
+                  <p className="text-white">Cancel</p>
                 </PolygonButton>
               </div>
             )}
-          {connectAgenda === ConnectAgendaType.connectNewWallet && (
-            <div className="button-container mt-[30px] flex">
-              <PolygonButton
-                boxStyle={{
-                  width: "50%",
-                  float: "left",
-                  marginRight: "10px",
-                  background: "#2EB835",
-                }}
-                containerStyle={{ width: "100%", background: "#2EB835" }}
-                onClick={handleConnectNewWallet}
-              >
-                <div className="flex w-full justify-center items-center relative">
-                  {signing && (
-                    <div className="absolute left-[-20px]">
-                      <LoadingSpinner width={7} height={7} />
-                    </div>
-                  )}
-                  <p className="text-white">Sign message</p>
-                </div>
-              </PolygonButton>
-              <PolygonButton
-                boxStyle={{ width: "50%", float: "left", marginLeft: "10px" }}
-                containerStyle={{ width: "100%", background: "#12151B" }}
-                onClick={handleCancelConnectUid}
-              >
-                <p className="text-white">Cancel</p>
-              </PolygonButton>
+            <div className="bottom-container mt-[20px] mb-[30px]">
+              {isBelongedError && (
+                <p className="text-center text-[14px] text-white">
+                  Having trouble?
+                  <a
+                    className="text-primary underline"
+                    onClick={() => handleLogout()}
+                  >
+                    {" "}
+                    Logout UID
+                  </a>
+                </p>
+              )}
             </div>
-          )}
-          <div className="bottom-container mt-[20px] mb-[30px]">
-            {isBelongedError && (
-              <p className="text-center text-[14px] text-white">
-                Having trouble?
-                <a
-                  className="text-primary underline"
-                  onClick={() => handleLogout()}
-                >
-                  {" "}
-                  Logout UID
-                </a>
-              </p>
-            )}
           </div>
         </div>
       </div>
