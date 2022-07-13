@@ -68,6 +68,7 @@ export class UserProvider extends BusinessProvider {
       `/user/profile/auth-entities/${authId}`,
       {
         method: "DELETE",
+        body: "{}",
       }
     );
   }
