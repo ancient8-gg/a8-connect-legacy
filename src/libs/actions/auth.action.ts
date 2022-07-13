@@ -67,6 +67,13 @@ export class AuthAction extends OffChainAction {
   }
 
   /**
+   * Send otp verification via email
+   */
+  sendEmailVerification(email: string): Promise<void> {
+    return this.authProvider.sendEmailVerification(email);
+  }
+
+  /**
    * Connect new wallet to UID
    */
   async connectWallet(createAuthDto: CreateAuthDto): Promise<AuthEntity> {

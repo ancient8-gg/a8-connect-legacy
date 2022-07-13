@@ -78,6 +78,20 @@ export class AuthProvider extends BusinessProvider {
   }
 
   /**
+   * The function to send otp verification via email
+   * @param email
+   */
+  sendEmailVerification(email: string): Promise<void> {
+    return this.request<void>(
+      `/auth/send-email-verification/${encodeURIComponent(email)}`,
+      {
+        method: "POST",
+        body: "{}",
+      }
+    );
+  }
+
+  /**
    * The function to send email to connect wallet.
    * @param email
    */
