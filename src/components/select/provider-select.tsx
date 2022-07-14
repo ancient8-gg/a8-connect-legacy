@@ -5,8 +5,6 @@ import EthImage from "../../assets/images/2x_eth_evm_chain.png";
 
 import "./provider-select.scoped.css";
 
-// import classnames from "classnames";
-
 export const ProviderSelect: FC<{
   handleClickChain: (chainType: ChainType) => void;
 }> = ({ handleClickChain }) => {
@@ -14,7 +12,7 @@ export const ProviderSelect: FC<{
     <div>
       <button
         className={
-          "select-chain-btn-sol w-full cursor-pointer mt-[20px] h-[50px] rounded-[10px] text-white"
+          "select-chain-btn-sol w-full cursor-pointer mt-[20px] h-[50px] rounded-[3px] text-white"
         }
         onClick={() => handleClickChain(ChainType.SOL)}
       >
@@ -25,7 +23,7 @@ export const ProviderSelect: FC<{
         </span>
       </button>
       <button
-        className="w-full cursor-pointer mt-[20px] h-[50px] rounded-[10px] bg-[#637eea] text-white"
+        className="w-full cursor-pointer mt-[20px] h-[50px] rounded-[3px] bg-[#637eea] text-white"
         onClick={() => handleClickChain(ChainType.EVM)}
       >
         <span className={"flex flex-row justify-center items-center"}>
