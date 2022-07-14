@@ -7,7 +7,7 @@ import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto"
 import { LoginWalletAuthDto } from "../libs/dto/login-wallet-auth.dto";
 import { CreateAuthDto } from "../libs/dto/create-auth.dto";
 import { PolygonButton } from "../components/button";
-import LoadingSpinner from "../components/loading-spiner";
+import LoadingSpinner from "../components/loading-spinner";
 import { BUFFER_LOADING_APP_SCREEN_KEY } from "./buffer-loading.screen";
 import {
   AuthChallenge,
@@ -154,9 +154,9 @@ export const SignWalletConnectUID: FC = () => {
          */
         setConnectAgenda(ConnectAgendaType.connectExistWallet);
         setDescription(
-          `The wallet was already connected and added to your UID: <span class="text-primary">${makeShorter(
+          `The wallet already connected to App and UID: <span class="text-primary">${makeShorter(
             userInfo?._id
-          )}</span><br/><br/>You can <span class="text-primary">choose another wallet</span> or close this dialog.`
+          )}</span>.`
         );
         setBelongedError(false);
         return;
@@ -186,7 +186,7 @@ export const SignWalletConnectUID: FC = () => {
         `Hey, <span class='text-primary'> this is a new wallet, </span> 
         want to connect <br />
         wallet to the UID: 
-        <span class='text-primary'>${makeShorter(userInfo._id)}</span>`
+        <span class='text-primary'>${makeShorter(userInfo._id)}</span>?`
       );
     })();
   }, [walletAddress, userInfo, authEntities]);
@@ -206,15 +206,13 @@ export const SignWalletConnectUID: FC = () => {
         onCloseModal={handleClose}
         goBack={goBack}
       />
-      <div className="content sm:py-[0px] py-[10%]">
+      <div className="content sm:py-[0px] py-[5%]">
         <div className="sign-wallet-screen w-full pt-[30px]">
           <div className="mx-auto">
             <div>
               <div className="mt-[30px]">
                 <p className="text-white text-[20px] text-center font-bold">
-                  {connectAgenda === ConnectAgendaType.connectExistWallet
-                    ? "SELECTED WALLET ADDRESS"
-                    : "SIGNING WITH THIS ADDRESS"}
+                  SELECTED WALLET ADDRESS
                 </p>
                 <p className="text-primary text-[20px] text-center font-bold">
                   {makeShorter(walletAddress)}
@@ -227,8 +225,8 @@ export const SignWalletConnectUID: FC = () => {
               {isBelongedError && (
                 <>
                   <div className="flex justify-center mt-[30px] items-center">
-                    <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#25282D] flex">
-                      <div className="float-left pl-[20px] text-white">
+                    <div className="w-full rounded-[8px] px-[15px] py-[10px] bg-[#5537004d] flex">
+                      <div className="float-left pl-[20px] text-[#b57b0ff5] italic">
                         <p className="text-[14px]">
                           The wallet you selected already belongs to another
                           UID.
@@ -236,7 +234,7 @@ export const SignWalletConnectUID: FC = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="mt-[20px]">
+                  <div className="mt-[30px]">
                     <p className="text-[16px] text-white text-center font-bold">
                       Please select another wallet or re-login with this wallet
                     </p>
@@ -246,22 +244,22 @@ export const SignWalletConnectUID: FC = () => {
             </div>
             {connectAgenda === ConnectAgendaType.connectExistWallet &&
               !isBelongedError && (
-                <div className="button-container mt-[30px] flex justify-center">
+                <div className="button-container mt-[60px] flex justify-center">
                   <PolygonButton
                     boxStyle={{
-                      width: "50%",
-                      marginRight: "10px",
-                      background: "#2EB835",
+                      width: "100%",
+                      float: "left",
+                      marginLeft: "10px",
                     }}
-                    containerStyle={{ width: "100%", background: "#2EB835" }}
+                    containerStyle={{ width: "100%", background: "#12151B" }}
                     onClick={() => push(BUFFER_LOADING_APP_SCREEN_KEY)}
                   >
-                    Close
+                    <p className="text-white text-[0.9em]">Continue</p>
                   </PolygonButton>
                 </div>
               )}
             {connectAgenda === ConnectAgendaType.connectNewWallet && (
-              <div className="button-container mt-[30px] flex">
+              <div className="button-container mt-[60px] flex">
                 <PolygonButton
                   boxStyle={{
                     width: "50%",
@@ -269,16 +267,26 @@ export const SignWalletConnectUID: FC = () => {
                     marginRight: "10px",
                     background: "#2EB835",
                   }}
-                  containerStyle={{ width: "100%", background: "#2EB835" }}
+                  containerStyle={{
+                    width: "100%",
+                    background: "#2EB835",
+                    padding: "12px 0",
+                  }}
                   onClick={handleConnectNewWallet}
                 >
                   <div className="flex w-full justify-center items-center relative">
-                    {signing && (
-                      <div className="absolute left-[-20px]">
-                        <LoadingSpinner width={7} height={7} />
-                      </div>
+                    {signing ? (
+                      <>
+                        <div className="mr-[5px]">
+                          <LoadingSpinner width={24} height={24} />
+                        </div>
+                        <p className="text-white text-[0.9em]">Signing</p>
+                      </>
+                    ) : (
+                      <p className="text-white text-[0.9em]">
+                        Sign and Connect
+                      </p>
                     )}
-                    <p className="text-white">Sign</p>
                   </div>
                 </PolygonButton>
                 <PolygonButton
@@ -286,14 +294,14 @@ export const SignWalletConnectUID: FC = () => {
                   containerStyle={{ width: "100%", background: "#12151B" }}
                   onClick={handleCancelConnectUid}
                 >
-                  <p className="text-white">Cancel</p>
+                  <p className="text-white text-[0.9em]">Cancel</p>
                 </PolygonButton>
               </div>
             )}
-            <div className="bottom-container mt-[20px] mb-[30px]">
-              {isBelongedError && (
-                <p className="text-center text-[14px] text-white">
-                  Having trouble?
+            <div className="bottom-container mt-[30px] mb-[30px]">
+              <p className="text-center text-[14px] text-white">
+                Having trouble?
+                {isBelongedError ? (
                   <a
                     className="text-primary underline"
                     onClick={() => handleLogout()}
@@ -301,8 +309,16 @@ export const SignWalletConnectUID: FC = () => {
                     {" "}
                     Logout UID
                   </a>
-                </p>
-              )}
+                ) : (
+                  <a
+                    className="text-primary underline"
+                    onClick={() => goBack()}
+                  >
+                    {" "}
+                    Go back
+                  </a>
+                )}
+              </p>
             </div>
           </div>
         </div>

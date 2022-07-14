@@ -34,7 +34,7 @@ export const BaseConnectUIDScreen: FC = () => {
         onCloseModal={handleClose}
         goBack={location.goBack}
       />
-      <div className="content sm:py-[0px] py-[10%]">
+      <div className="content sm:py-[0px] py-[5%]">
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto">
             <div className="pt-[20px]">

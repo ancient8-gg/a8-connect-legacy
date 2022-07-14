@@ -63,14 +63,28 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
   }
 
   async sign(message: string): Promise<string> {
-    const { signature } = await this.injectedProvider.request<
-      Uint8Array[],
-      { signature: string }
-    >({
-      method: "sol_signMessage",
-      params: [new TextEncoder().encode(message)],
-    });
+    return new Promise(async (resolve, reject) => {
+      let signature: string = null;
 
-    return signature;
+      setTimeout(() => {
+        if (!signature) {
+          return reject(
+            new Error(`Timeout when connect to ${this.name} wallet`)
+          );
+        }
+      }, 10000);
+
+      const { signature: response } = await this.injectedProvider.request<
+        Uint8Array[],
+        { signature: string }
+      >({
+        method: "sol_signMessage",
+        params: [new TextEncoder().encode(message)],
+      });
+
+      signature = response;
+
+      return resolve(signature);
+    });
   }
 }

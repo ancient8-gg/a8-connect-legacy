@@ -64,11 +64,25 @@ export class Coin98EVMWallet implements BaseWalletAdapter {
   }
 
   async sign(message: string): Promise<string> {
-    const walletAddress = await this.getWalletAddress();
+    return new Promise(async (resolve, reject) => {
+      let signature: string = null;
 
-    return this.injectedProvider.request<string[], string>({
-      method: "personal_sign",
-      params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
+      const walletAddress = await this.getWalletAddress();
+
+      setTimeout(() => {
+        if (!signature) {
+          return reject(
+            new Error(`Timeout when connect to ${this.name} wallet`)
+          );
+        }
+      }, 10000);
+
+      signature = await this.injectedProvider.request<string[], string>({
+        method: "personal_sign",
+        params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
+      });
+
+      return resolve(signature);
     });
   }
 }

@@ -75,8 +75,8 @@ export const SignWalletScreen: FC = () => {
             title="Sign In"
             description={
               existedWallet
-                ? "Sign a message to confirm you own the wallet address to sign in the User Identity"
-                : `Hey, <span class='text-primary'> this is a new wallet </span> <br /> Please continue below to proceed with the signature request and to create a new Ancient8 User Identity account`
+                ? "Sign a message to confirm you own the wallet address"
+                : `Hey, <span class='text-primary'> this is a new wallet </span> <br /> Want to create a new Ancient8 UID?`
             }
             signedMessage={authChallenge.message}
             onSigned={handleOnSigned}

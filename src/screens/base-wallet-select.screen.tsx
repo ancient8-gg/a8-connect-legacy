@@ -41,6 +41,14 @@ export const BaseWalletSelect: FC = () => {
     );
   }, [currentAppFlow, desiredChainType, location.isBack]);
 
+  const title = useMemo(() => {
+    if (currentAppFlow !== AppFlow.CONNECT_FLOW) {
+      return chainType === ChainType.EVM ? "EVM" : "SOLANA";
+    }
+
+    return "CONNECT WALLET TO APP";
+  }, [currentAppFlow]);
+
   const handleGoback = useCallback(() => {
     if (!isBack) {
       return;
@@ -53,50 +61,52 @@ export const BaseWalletSelect: FC = () => {
   return (
     <div>
       <ModalHeader
-        title={chainType === ChainType.EVM ? "EVM" : "SOLANA"}
+        title={title}
         isBack={isBack}
         goBack={handleGoback}
         onCloseModal={handleClose}
       />
-      <div className="content sm:py-[0px] py-[10%]">
+      <div className="content sm:py-[0px] py-[5%]">
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto">
-            <div className="mx-auto pt-[20px]">
-              {chainType === ChainType.EVM ? (
-                <div
-                  className={
-                    "mx-auto flex flex-row items-center justify-center"
-                  }
-                >
+            {currentAppFlow !== AppFlow.CONNECT_FLOW && (
+              <div className="mx-auto pt-[20px]">
+                {chainType === ChainType.EVM ? (
+                  <div
+                    className={
+                      "mx-auto flex flex-row items-center justify-center"
+                    }
+                  >
+                    <img
+                      src={ETHChainPreviewIcon}
+                      className="w-[12px] h-[20px] mr-[15px]"
+                    />
+                    <img
+                      src={BNBChainPreviewIcon}
+                      className="w-[20px] h-[20px] mr-[15px]"
+                    />
+                    <img
+                      src={PolygonChainPreviewIcon}
+                      className="w-[20px] h-[20px] mr-[15px]"
+                    />
+                    <img
+                      src={FantomEVMChain}
+                      className="w-[20px] h-[20px] mr-[15px]"
+                    />
+                    <img
+                      src={AvaxChain}
+                      className="w-[20px] h-[20px] mr-[15px]"
+                    />
+                    <img src={ArbitrumChain} className="w-[24px] h-[24px]" />
+                  </div>
+                ) : (
                   <img
-                    src={ETHChainPreviewIcon}
-                    className="w-[12px] h-[20px] mr-[15px]"
+                    src={SolChainPreviewIcon}
+                    className="mx-auto w-[20px] h-[20px]"
                   />
-                  <img
-                    src={BNBChainPreviewIcon}
-                    className="w-[20px] h-[20px] mr-[15px]"
-                  />
-                  <img
-                    src={PolygonChainPreviewIcon}
-                    className="w-[20px] h-[20px] mr-[15px]"
-                  />
-                  <img
-                    src={FantomEVMChain}
-                    className="w-[20px] h-[20px] mr-[15px]"
-                  />
-                  <img
-                    src={AvaxChain}
-                    className="w-[20px] h-[20px] mr-[15px]"
-                  />
-                  <img src={ArbitrumChain} className="w-[24px] h-[24px]" />
-                </div>
-              ) : (
-                <img
-                  src={SolChainPreviewIcon}
-                  className="mx-auto w-[20px] h-[20px]"
-                />
-              )}
-            </div>
+                )}
+              </div>
+            )}
 
             {currentAppFlow === AppFlow.CONNECT_FLOW && (
               <p className="mx-auto mt-[20px] text-[16px] text-center text-white">
@@ -108,9 +118,17 @@ export const BaseWalletSelect: FC = () => {
             )}
 
             <div className="pt-[30px]">
-              <p className="mx-auto text-primary text-[20px] font-bold text-center">
-                Select wallet provider
-              </p>
+              {currentAppFlow === AppFlow.CONNECT_FLOW ? (
+                <p className="mx-auto text-primary text-[20px] font-bold text-center">
+                  Select wallet {chainType === ChainType.EVM ? "EVM" : "SOLANA"}{" "}
+                  provider
+                </p>
+              ) : (
+                <p className="mx-auto text-primary text-[20px] font-bold text-center">
+                  Select wallet provider
+                </p>
+              )}
+
               <div className="pt-[20px]">
                 {chainAdapter
                   .sort((elm, elm2) => {
@@ -129,9 +147,11 @@ export const BaseWalletSelect: FC = () => {
             </div>
             <div className="bottom-container my-[30px]">
               <p className="text-center text-[14px] text-primary underline">
-                <a href="https://ancient8.gg/profile/lost-wallet">
-                  Lost your wallet?
-                </a>
+                {currentAppFlow === AppFlow.LOGIN_FLOW && (
+                  <a href="https://ancient8.gg/profile/lost-wallet">
+                    Lost your wallet?
+                  </a>
+                )}
               </p>
             </div>
           </div>

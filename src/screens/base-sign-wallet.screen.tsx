@@ -6,7 +6,7 @@ import { useLocation } from "../components/router";
 import { PolygonButton } from "../components/button";
 import { ModalHeader } from "../components/modal/modal.header";
 import { getUtilsProvider } from "../libs/providers";
-import LoadingSpinner from "../components/loading-spiner";
+import LoadingSpinner from "../components/loading-spinner";
 import DefendIcon from "../assets/images/defend-yellow.png";
 
 export interface BaseSignWalletScreenProps {
@@ -66,15 +66,15 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
         goBack={location.goBack}
         onCloseModal={handleClose}
       />
-      <div className="content sm:py-[0px] py-[10%]">
+      <div className="content sm:py-[0px] py-[5%]">
         <div className="sign-wallet-screen w-full pt-[30px]">
           <div className="mx-auto ">
-            <div className="pt-[50px]">
+            <div>
               <p
                 dangerouslySetInnerHTML={{ __html: description || "" }}
-                className="text-center text-white text-[16px] mt-[30px]"
+                className="text-center text-white text-[16px] mt-[10px]"
               />
-              <div className="mt-[30px]">
+              <div className="mt-[70px]">
                 <p className="text-white text-[20px] text-center font-bold">
                   SIGNING WITH THIS ADDRESS
                 </p>
@@ -94,7 +94,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
                     <p className="text-[14px] font-bold">
                       View only permission.
                     </p>
-                    <p className="text-[14px]">
+                    <p className="text-[12px] italic">
                       We will never do anything without your approval
                     </p>
                   </div>
@@ -110,7 +110,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
                 <div className="flex items-center justify-center">
                   {signing && (
                     <div className="float-left">
-                      <LoadingSpinner width={5} height={5} />
+                      <LoadingSpinner width={24} height={24} />
                     </div>
                   )}
                   <p className="float-left text-white text-[16px]">

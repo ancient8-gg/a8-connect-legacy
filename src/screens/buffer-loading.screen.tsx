@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ModalHeader } from "../components/modal/modal.header";
 import { useAppState } from "../hooks/useAppState";
-import LoadingSpinner from "../components/loading-spiner";
+import LoadingSpinner from "../components/loading-spinner";
 import { AppFlow, useLocation } from "../components/router";
 import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
