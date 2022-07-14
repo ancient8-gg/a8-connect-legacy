@@ -1,7 +1,13 @@
 import { FC, useCallback, useMemo } from "react";
 import { useWallet } from "../hooks/useWallet";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
-import { BaseWalletAdapter, ChainType } from "../libs/adapters";
+import {
+  BaseWalletAdapter,
+  ChainType,
+  Coin98EVMWalletName,
+  Coin98SolanaWalletName,
+  CoinbaseEVMWalletName,
+} from "../libs/adapters";
 import { useSession } from "../hooks/useSession";
 import { useAppState } from "../hooks/useAppState";
 import { makeShorter } from "../utils";
@@ -15,6 +21,7 @@ import FantomEVMChain from "../assets/images/2x_phantom_evm_chain.png";
 import AvaxChain from "../assets/images/2x_avax_evm_chain.png";
 import ArbitrumChain from "../assets/images/2x_abitrum_evm_chain.png";
 import SolChainPreviewIcon from "../assets/images/2x_solana_welcome.png";
+import { Notification } from "../components/notification/notification";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
@@ -33,6 +40,35 @@ export const BaseWalletSelect: FC = () => {
     const adapters = getAdapters();
     return adapters.filter((adapter) => adapter.chainType === chainType);
   }, [chainType]);
+
+  const overrideWarnMessage = useMemo(() => {
+    const computedData = {
+      coin98:
+        chainAdapter.filter(
+          (elm) =>
+            elm.isInstalled() &&
+            (elm.name === Coin98EVMWalletName ||
+              elm.name === Coin98SolanaWalletName)
+        ).length > 0,
+      coinbase:
+        chainAdapter.filter(
+          (elm) => elm.isInstalled() && elm.name === CoinbaseEVMWalletName
+        ).length > 0,
+    };
+
+    console.log({ computedData });
+
+    if (computedData.coinbase && computedData.coin98)
+      return "You need to turn off the override on Coin98/Coinbase to use Metamask normally";
+
+    if (computedData.coin98)
+      return "You need to turn off the override on Coin98 to use Metamask normally";
+
+    if (computedData.coinbase)
+      return "You need to turn off the override on Coinbase to use Metamask normally";
+
+    return null;
+  }, [chainAdapter]);
 
   const isBack = useMemo(() => {
     return (
@@ -144,6 +180,16 @@ export const BaseWalletSelect: FC = () => {
                     />
                   ))}
               </div>
+
+              {overrideWarnMessage && (
+                <div className={"mt-30px"}>
+                  <Notification
+                    type={"warn"}
+                    title={"Turn off override function"}
+                    description={overrideWarnMessage}
+                  />
+                </div>
+              )}
             </div>
             <div className="bottom-container my-[30px]">
               <p className="text-center text-[14px] text-primary underline">
