@@ -7,8 +7,7 @@ import { useSession } from "../hooks/useSession";
 import { makeShorter } from "../utils";
 import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
-import SolImage from "../assets/images/sol-chain-preview.png";
-import EthImage from "../assets/images/eth.png";
+import { ProviderSelect } from "../components/select/provider-select";
 
 export const BASE_WELCOME_ADD_WALLET_SCREEN_KEY =
   "BASE_WELCOME_ADD_WALLET_SCREEN_KEY";
@@ -52,18 +51,7 @@ export const BaseWelcomeAddWallet: FC = () => {
               Please select desired chain below
             </p>
             <div className="pt-[50px]">
-              <button
-                className="w-full cursor-pointer mt-[20px] h-[50px]"
-                onClick={() => handleClickChain(ChainType.SOL)}
-              >
-                <img src={SolImage} /> Continue with Solana
-              </button>
-              <button
-                className="w-full cursor-pointer mt-[20px] h-[50px]"
-                onClick={() => handleClickChain(ChainType.EVM)}
-              >
-                <img src={EthImage} /> Continue with EVM
-              </button>
+              <ProviderSelect handleClickChain={handleClickChain} />
             </div>
           </div>
         </div>

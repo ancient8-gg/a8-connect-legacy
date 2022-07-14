@@ -6,8 +6,7 @@ import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
 import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import A8Logo from "../assets/images/a8-logo.png";
-import SolImage from "../assets/images/sol-chain-preview.png";
-import EthImage from "../assets/images/eth.png";
+import { ProviderSelect } from "../components/select/provider-select";
 
 export const BASE_WELCOME_LOST_WALLET_SCREEN_KEY =
   "BASE_WELCOME_LOST_WALLET_SCREEN_KEY";
@@ -56,18 +55,7 @@ export const BaseWelcomeLostWalletScreen: FC = () => {
               Please select desired chain below
             </p>
             <div className="pt-[50px]">
-              <button
-                className="w-full cursor-pointer mt-[20px] h-[50px]"
-                onClick={() => handleClickChain(ChainType.SOL)}
-              >
-                <img src={SolImage} /> Continue with Solana
-              </button>
-              <button
-                className="w-full cursor-pointer mt-[20px] h-[50px]"
-                onClick={() => handleClickChain(ChainType.EVM)}
-              >
-                <img src={EthImage} /> Continue with EVM
-              </button>
+              <ProviderSelect handleClickChain={handleClickChain} />
             </div>
             <div className="pt-[50px] pb-[20px]">
               <p className="text-center text-white text-[14px] font-[100]">
