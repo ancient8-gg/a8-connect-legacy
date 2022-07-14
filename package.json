@@ -1,6 +1,6 @@
 {
   "name": "@ancient8/connect",
-  "version": "1.0.127",
+  "version": "1.0.128",
   "author": "Ancient8 Developer <dev@ancient8.gg>",
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
@@ -79,7 +79,7 @@
     "cleanup-build": "rm -rf build/",
     "cleanup-pkg": "NODE_PATH=. node scripts/clean-pkg.js",
     "cleanup": "yarn cleanup-dts && yarn cleanup-pkg && yarn cleanup-build",
-    "publish": "cd dist/ && npm publish",
+    "publish-lib": "cd dist/ && npm publish",
     "build-lib": "bash scripts/build.sh",
     "build-lib:dev": "yarn build-lib && rm -rf ../dist/ && cp -r dist/ ../dist"
   },
