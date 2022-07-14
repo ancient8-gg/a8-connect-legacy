@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo } from "react";
 import { useWallet } from "../hooks/useWallet";
-import { ConnectButton } from "../components/WalletConnect.button";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
 import EvmChainPreviewIcon from "../assets/images/evm-chain-preview.png";
 import SolChainPreviewIcon from "../assets/images/sol-chain-preview.png";
@@ -10,6 +9,7 @@ import { useAppState } from "../hooks/useAppState";
 import { makeShorter } from "../utils";
 import { AppFlow, useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
+import { ConnectButton } from "../components/select/wallet-select";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
@@ -48,17 +48,15 @@ export const BaseWalletSelect: FC = () => {
   return (
     <div>
       <ModalHeader
+        title={chainType === ChainType.EVM ? "EVM" : "SOLANA"}
         isBack={isBack}
         goBack={handleGoback}
         onCloseModal={handleClose}
       />
-      <div className="content px-[20px]">
+      <div className="content sm:py-[0px] py-[10%]">
         <div className="base-welcome-screen w-full pt-[30px]">
-          <div className="mx-auto ">
-            <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
-              {chainType === ChainType.EVM ? "EVM" : "SOLANA"}
-            </p>
-            <div className="mx-auto  pt-[20px]">
+          <div className="mx-auto">
+            <div className="mx-auto pt-[20px]">
               {chainType === ChainType.EVM ? (
                 <img
                   src={EvmChainPreviewIcon}
@@ -70,7 +68,7 @@ export const BaseWalletSelect: FC = () => {
             </div>
 
             {currentAppFlow === AppFlow.CONNECT_FLOW && (
-              <p className="mx-auto text-[16px] text-center text-white">
+              <p className="mx-auto mt-[20px] text-[16px] text-center text-white">
                 Currently logged into the UID:
                 <span className="text-primary ml-[3px]">
                   {makeShorter(userInfo?._id)}
@@ -80,8 +78,7 @@ export const BaseWalletSelect: FC = () => {
 
             <div className="pt-[30px]">
               <p className="mx-auto text-primary text-[20px] font-bold text-center">
-                Select {chainType === ChainType.EVM ? "EVM" : "SOLANA"} wallet
-                provider
+                Select wallet provider
               </p>
               <div className="pt-[20px]">
                 {chainAdapter

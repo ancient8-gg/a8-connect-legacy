@@ -6,8 +6,8 @@ import { BASE_WALLET_SELECT_SCREEN_KEY } from "./base-wallet-select.screen";
 import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import A8Logo from "../assets/images/a8-logo.png";
-import SolBtnImage from "../assets/images/sol-btn.png";
-import EvmBtnImage from "../assets/images/evm-btn.png";
+import SolImage from "../assets/images/sol-chain-preview.png";
+import EthImage from "../assets/images/eth.png";
 
 export const BASE_WELCOME_LOST_WALLET_SCREEN_KEY =
   "BASE_WELCOME_LOST_WALLET_SCREEN_KEY";
@@ -35,7 +35,7 @@ export const BaseWelcomeLostWalletScreen: FC = () => {
   return (
     <div>
       <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
-      <div className="content px-[20px]">
+      <div className="content sm:py-[0px] py-[10%]">
         <div className="base-welcome-screen w-full">
           <div className="mx-auto w-[350px]">
             <img src={A8Logo} className="mx-[auto]" />
@@ -56,22 +56,28 @@ export const BaseWelcomeLostWalletScreen: FC = () => {
               Please select desired chain below
             </p>
             <div className="pt-[50px]">
-              <img
-                src={SolBtnImage}
-                className="w-full cursor-pointer mt-[20px]"
+              <button
+                className="w-full cursor-pointer mt-[20px] h-[50px]"
                 onClick={() => handleClickChain(ChainType.SOL)}
-              />
-              <img
-                src={EvmBtnImage}
-                className="w-full cursor-pointer mt-[20px]"
+              >
+                <img src={SolImage} /> Continue with Solana
+              </button>
+              <button
+                className="w-full cursor-pointer mt-[20px] h-[50px]"
                 onClick={() => handleClickChain(ChainType.EVM)}
-              />
+              >
+                <img src={EthImage} /> Continue with EVM
+              </button>
             </div>
-            <div className="pt-[50px]">
+            <div className="pt-[50px] pb-[20px]">
               <p className="text-center text-white text-[14px] font-[100]">
                 By connecting, you agree to our
                 <br />
-                <a className="text-primary underline text-[14px]">
+                <a
+                  className="text-primary underline text-[14px]"
+                  href={"https://ancient8.gg"}
+                  target={"_blank"}
+                >
                   Privacy Policy and Terms of Services
                 </a>
               </p>

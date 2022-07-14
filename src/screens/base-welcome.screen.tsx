@@ -8,8 +8,7 @@ import { makeShorter } from "../utils";
 import { AppFlow, useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import A8Logo from "../assets/images/a8-logo.png";
-import SolBtnImage from "../assets/images/sol-btn.png";
-import EvmBtnImage from "../assets/images/evm-btn.png";
+import { ProviderSelect } from "../components/select/provider-select";
 
 export const BASE_WELCOME_SCREEN_KEY = "BASE_WELCOME_SCREEN_KEY";
 
@@ -44,10 +43,10 @@ export const BaseWelcomeScreen: FC = () => {
   return (
     <div>
       <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
-      <div className="content px-[20px]">
-        <div className="base-welcome-screen w-full pt-[30px]">
-          <div className="mx-auto ">
-            <img src={A8Logo} className="mx-[auto]" />
+      <div className="content sm:py-[0px] py-[10%]">
+        <div className="base-welcome-screen w-full">
+          <div className="mx-auto">
+            <img src={A8Logo} className="mx-[auto] mt-[-20px] mb-[10px]" />
             {currentAppFlow === AppFlow.LOGIN_FLOW ? (
               <p className="text-center text-primary text-[20px] font-bold">
                 WELCOME TO
@@ -55,7 +54,7 @@ export const BaseWelcomeScreen: FC = () => {
                 ANCIENT8 USER IDENTITY
               </p>
             ) : (
-              <p className="mx-auto text-[16px] text-center text-white">
+              <p className="mt-[20px] mx-auto text-[16px] text-center text-white">
                 Currently logged into the UID:
                 <span className="text-primary ml-[3px]">
                   {makeShorter(userInfo?._id)}
@@ -67,22 +66,17 @@ export const BaseWelcomeScreen: FC = () => {
               Please select desired chain below
             </p>
             <div className="pt-[50px]">
-              <img
-                src={SolBtnImage}
-                className="w-full cursor-pointer mt-[20px]"
-                onClick={() => handleClickChain(ChainType.SOL)}
-              />
-              <img
-                src={EvmBtnImage}
-                className="w-full cursor-pointer mt-[20px]"
-                onClick={() => handleClickChain(ChainType.EVM)}
-              />
+              <ProviderSelect handleClickChain={handleClickChain} />
             </div>
-            <div className="pt-[50px]">
+            <div className="pt-[50px] pb-[20px]">
               <p className="text-center text-white text-[14px] font-[100]">
                 By connecting, you agree to our
                 <br />
-                <a className="text-primary underline text-[14px]">
+                <a
+                  className="text-primary underline text-[14px]"
+                  href={"https://ancient8.gg"}
+                  target={"_blank"}
+                >
                   Privacy Policy and Terms of Services
                 </a>
               </p>

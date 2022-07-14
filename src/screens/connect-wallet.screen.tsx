@@ -59,24 +59,22 @@ export const ConnectWalletScreen: FC = () => {
   return (
     <div>
       <ModalHeader
+        title="CONNECT WALLET"
         onCloseModal={handleClose}
         isBack={location.isBack}
         goBack={() => location.goBack()}
       />
 
-      <div className="content px-[20px]">
+      <div className="content sm:py-[0px] py-[10%]">
         <div className="sign-wallet-screen w-full pt-[30px]">
           <div className="mx-auto ">
-            <p className="text-center text-gray text-[20px] mt-[-60px] font-[100]">
-              CONNECT WALLET
-            </p>
-            <div className="pt-[50px]">
+            <div className="pt-[20px]">
               <p className="text-center text-primary text-[20px]">
                 CONNECTING...
               </p>
               <p className="text-center text-white text-[16px] mt-[30px]">
-                Please unlock your Phantom wallet and select which wallet
-                address you want to connect.
+                Please unlock your {walletAdapter.displayName} and select which
+                wallet address you want to connect.
               </p>
               <div className="flex justify-center mt-[30px] items-center">
                 <img

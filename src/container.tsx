@@ -6,10 +6,10 @@ import { ConnectedWalletPayload } from "./libs/dto/a8-connect-session.dto";
 import { ResetWithNewWalletPayload } from "./libs/dto/reset-with-new-wallet.dto";
 import { AppStateProvider } from "./hooks/useAppState";
 import { RouterProvider } from "./hooks/useRouter";
-import { AppFlow } from "./components/router/type";
+import { AppFlow } from "./components/router";
 import { NetworkType } from "./libs/providers";
 
-import "./index.css";
+import "./index.scss";
 
 const A8Connect: FC<{
   networkType: NetworkType;

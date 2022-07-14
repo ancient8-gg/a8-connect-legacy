@@ -9,7 +9,7 @@ import {
 
 import classnames from "classnames";
 
-import styles from "./index.module.scss";
+import "./index.scoped.scss";
 
 export interface ButtonProps {
   text?: string;
@@ -60,7 +60,7 @@ const Button: FC<ButtonProps> = ({
       className={classnames(
         className,
         "rounded-[3px] py-[10px] px-[30px]",
-        styles["ripple-button"],
+        "ripple-button",
         { "bg-[#b8b8b8]": disabled }
       )}
       disabled={disabled}
@@ -72,7 +72,7 @@ const Button: FC<ButtonProps> = ({
     >
       {isRippling ? (
         <span
-          className={styles.ripple}
+          className={"ripple"}
           style={{
             left: coords.x,
             top: coords.y,
@@ -118,7 +118,7 @@ export const PolygonButton: FC<PolygonButtonProps> = ({
   return (
     <div
       style={boxStyle}
-      className={classnames("box-pp", "min-w-[250px] md:min-w-0", boxClassName)}
+      className={classnames("box-pp", "md:min-w-0", boxClassName)}
     >
       <button
         id={id}

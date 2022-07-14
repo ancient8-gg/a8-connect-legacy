@@ -1,6 +1,8 @@
 import { CSSProperties, FC, ReactNode } from "react";
 import ReactModal from "react-modal";
 
+import "./toast.modal.scoped.scss";
+
 export interface ModalProps {
   containerClassName?: string;
   modalIsOpen: boolean;

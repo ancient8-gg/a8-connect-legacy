@@ -67,12 +67,12 @@ export const SignWalletScreen: FC = () => {
 
   return (
     <div>
-      <div className="content px-[20px]">
+      <div>
         {onLoad ? (
           <BaseLoadingScreen />
         ) : (
           <BaseSignWalletScreen
-            title="sign in"
+            title="Sign In"
             description={
               existedWallet
                 ? "Sign a message to confirm you own the wallet address to sign in the User Identity"
