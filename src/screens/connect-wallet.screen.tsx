@@ -31,24 +31,25 @@ export const ConnectWalletScreen: FC = () => {
         setConnectedError(true);
         return;
       }
-
-      if (currentAppFlow === AppFlow.LOST_WALLET_FLOW) {
-        return location.push(SIGN_WALLET_LOST_WALLET_KEY);
-      }
-
-      if (currentAppFlow === AppFlow.LOGIN_FLOW) {
-        return location.push(SIGN_WALLET_SCREEN_KEY, { deleted: true });
-      }
-
-      if (currentAppFlow === AppFlow.CONNECT_FLOW) {
-        return location.push(SIGN_WALLET_CONNECT_UID_KEY, { deleted: true });
-      }
-
-      if (currentAppFlow === AppFlow.ADD_WALLET_FLOW) {
-        return location.push(SIGN_WALLET_ADD_WALLET_KEY, { deleted: true });
-      }
     } catch {
-      location.goBack();
+      setConnectedError(true);
+      return;
+    }
+
+    if (currentAppFlow === AppFlow.LOST_WALLET_FLOW) {
+      return location.push(SIGN_WALLET_LOST_WALLET_KEY);
+    }
+
+    if (currentAppFlow === AppFlow.LOGIN_FLOW) {
+      return location.push(SIGN_WALLET_SCREEN_KEY, { deleted: true });
+    }
+
+    if (currentAppFlow === AppFlow.CONNECT_FLOW) {
+      return location.push(SIGN_WALLET_CONNECT_UID_KEY, { deleted: true });
+    }
+
+    if (currentAppFlow === AppFlow.ADD_WALLET_FLOW) {
+      return location.push(SIGN_WALLET_ADD_WALLET_KEY, { deleted: true });
     }
   }, [connect, location, currentAppFlow]);
 

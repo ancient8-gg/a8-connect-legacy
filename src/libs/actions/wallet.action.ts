@@ -19,7 +19,7 @@ import {
   SlopeSolanaWallet,
   SlopeSolanaWalletName,
 } from "../adapters/sol/slope.adapter";
-import { StorageProvider } from "../providers/storage.provider";
+import { StorageProvider } from "../providers";
 import { getStorageProvider } from "../providers";
 import { ConnectedWalletPayload } from "../dto/a8-connect-session.dto";
 
@@ -64,6 +64,16 @@ export class WalletAction {
    */
   public initializeAdapters() {
     const windowInstance = window as any;
+
+    /**
+     * Initialize Metamask EVM Wallet.
+     */
+    this.supportedWallets[MetamaskEVMWalletName] = new MetamaskEVMWallet(
+      windowInstance.ethereum?.providers?.find(
+        (provider: WalletProvider) => provider.isMetaMask === true
+      ) || windowInstance.ethereum
+    );
+
     /**
      * Initialize BinanceChain EVM Wallet.
      */
@@ -86,12 +96,17 @@ export class WalletAction {
     );
 
     /**
-     * Initialize Metamask EVM Wallet.
+     * Initialize Phantom Solana Wallet.
      */
-    this.supportedWallets[MetamaskEVMWalletName] = new MetamaskEVMWallet(
-      windowInstance.ethereum?.providers?.find(
-        (provider: WalletProvider) => provider.isMetaMask === true
-      ) || windowInstance.ethereum
+    this.supportedWallets[PhantomSolanaWalletName] = new PhantomSolanaWallet(
+      windowInstance.solana
+    );
+
+    /**
+     * Initialize Slope Solana Wallet.
+     */
+    this.supportedWallets[SlopeSolanaWalletName] = new SlopeSolanaWallet(
+      !!windowInstance.Slope && new windowInstance.Slope()
     );
 
     /**
@@ -101,18 +116,6 @@ export class WalletAction {
       windowInstance.coin98?.sol
     );
 
-    /**
-     * Initialize Phantom Solana Wallet.
-     */
-    this.supportedWallets[PhantomSolanaWalletName] = new PhantomSolanaWallet(
-      windowInstance.solana
-    );
-    /**
-     * Initialize Slope Solana Wallet.
-     */
-    this.supportedWallets[SlopeSolanaWalletName] = new SlopeSolanaWallet(
-      !!windowInstance.Slope && new windowInstance.Slope()
-    );
     //
     // /**
     //  * Initialize Torus Wallet.
@@ -175,13 +178,15 @@ export class WalletAction {
     /**
      * Persist connect wallet
      */
-    this.storageProvider.setItem(
-      CONNECTED_WALLET_KEY,
-      JSON.stringify({
-        walletName,
-        chainType: this.selectedAdapter.chainType,
-      })
-    );
+    if (!!address) {
+      this.storageProvider.setItem(
+        CONNECTED_WALLET_KEY,
+        JSON.stringify({
+          walletName,
+          chainType: this.selectedAdapter.chainType,
+        })
+      );
+    }
 
     /**
      * return connected address

@@ -13,7 +13,9 @@ export class CoinbaseEVMWallet implements BaseWalletAdapter {
 
   name = CoinbaseEVMWalletName;
 
-  url = "www.coinbase.com/wallet";
+  url = "coinbase.com";
+
+  downloadUrl = "https://www.coinbase.com/wallet";
 
   adapterStyle = {
     icon: Icon,

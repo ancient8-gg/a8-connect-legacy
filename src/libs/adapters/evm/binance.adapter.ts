@@ -14,7 +14,9 @@ export class BinanceEVMWallet implements BaseWalletAdapter {
 
   name = BinanceEVMWalletName;
 
-  url = "www.binance.com/en/wallet-direct";
+  url = "binance.org";
+
+  downloadUrl = "https://www.bnbchain.org/en/binance-wallet";
 
   adapterStyle = {
     icon: Icon,

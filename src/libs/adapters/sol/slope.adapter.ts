@@ -14,6 +14,8 @@ export class SlopeSolanaWallet implements BaseWalletAdapter {
 
   url = "slope.finance";
 
+  downloadUrl = "https://slope.finance";
+
   adapterStyle = {
     icon: Icon,
     background:

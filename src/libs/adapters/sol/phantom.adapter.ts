@@ -14,6 +14,8 @@ export class PhantomSolanaWallet implements BaseWalletAdapter {
 
   url = "phantom.app";
 
+  downloadUrl = "https://phantom.app";
+
   adapterStyle = {
     icon: Icon,
     background:
