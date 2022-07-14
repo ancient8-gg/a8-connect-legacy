@@ -95,7 +95,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
                       View only permission.
                     </p>
                     <p className="text-[14px]">
-                      We wil never do anything without your approval
+                      We will never do anything without your approval
                     </p>
                   </div>
                 </div>

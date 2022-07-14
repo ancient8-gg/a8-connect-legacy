@@ -12,7 +12,9 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
 
   name = Coin98SolanaWalletName;
 
-  url = "coin98.com/wallet";
+  url = "wallet.coin98.com";
+
+  downloadUrl = "https://wallet.coin98.com";
 
   adapterStyle = {
     icon: Icon,

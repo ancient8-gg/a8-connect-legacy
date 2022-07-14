@@ -15,6 +15,8 @@ export class MetamaskEVMWallet implements BaseWalletAdapter {
 
   url = "metamask.io";
 
+  downloadUrl = "https://metamask.io";
+
   adapterStyle = {
     icon: Icon,
     background: "linear-gradient(90deg, rgb(232 128 7) 0%, rgb(148 82 5) 100%)",

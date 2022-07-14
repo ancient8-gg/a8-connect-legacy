@@ -109,6 +109,11 @@ export interface BaseWalletAdapter {
   url: string;
 
   /**
+   * Adapter download url
+   */
+  downloadUrl: string;
+
+  /**
    * Adapter display name
    */
   displayName: string;

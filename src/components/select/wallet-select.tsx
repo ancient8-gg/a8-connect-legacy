@@ -15,7 +15,7 @@ export const ConnectButton: FC<ConnectButtonProps> = ({
 }) => {
   const handleClick = useCallback(() => {
     if (!adapter.isInstalled()) {
-      return window.open(`https://${adapter.url}`, "_blank");
+      return window.open(`${adapter.downloadUrl}`, "_blank");
     }
 
     return onClick();
@@ -47,7 +47,7 @@ export const ConnectButton: FC<ConnectButtonProps> = ({
             {adapter.url}
             {!adapter.isInstalled() && (
               <span className={"ml-[3px] opacity-[0.6] text-[9px]"}>
-                (Not installed)
+                (not installed)
               </span>
             )}
           </p>
