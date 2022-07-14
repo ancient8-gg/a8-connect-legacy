@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { ChainType } from "../../libs/adapters";
-import SolImage from "../../assets/images/sol-chain-preview.png";
-import EthImage from "../../assets/images/eth.png";
+import SolImage from "../../assets/images/2x_solana_welcome.png";
+import EthImage from "../../assets/images/2x_eth_evm_chain.png";
 
 import "./provider-select.scoped.css";
 
@@ -19,7 +19,7 @@ export const ProviderSelect: FC<{
         onClick={() => handleClickChain(ChainType.SOL)}
       >
         <span className={"flex flex-row justify-center items-center"}>
-          <img src={SolImage} className="h-[24px] w-[24px]" />
+          <img src={SolImage} className="h-[24px] w-[24px] mr-[3px]" />
           {"  "}
           Continue with Solana
         </span>
@@ -29,8 +29,7 @@ export const ProviderSelect: FC<{
         onClick={() => handleClickChain(ChainType.EVM)}
       >
         <span className={"flex flex-row justify-center items-center"}>
-          <img src={EthImage} className="h-[24px] w-[24px]" />
-          {"  "}
+          <img src={EthImage} className="h-[24px] w-[16px] mr-[3px]" />
           Continue with EVM
         </span>
       </button>

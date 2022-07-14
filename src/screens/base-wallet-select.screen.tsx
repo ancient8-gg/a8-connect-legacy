@@ -1,8 +1,6 @@
 import { FC, useCallback, useMemo } from "react";
 import { useWallet } from "../hooks/useWallet";
 import { CONNECT_WALLET_SCREEN_KEY } from "./connect-wallet.screen";
-import EvmChainPreviewIcon from "../assets/images/evm-chain-preview.png";
-import SolChainPreviewIcon from "../assets/images/sol-chain-preview.png";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 import { useSession } from "../hooks/useSession";
 import { useAppState } from "../hooks/useAppState";
@@ -10,6 +8,13 @@ import { makeShorter } from "../utils";
 import { AppFlow, useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import { ConnectButton } from "../components/select/wallet-select";
+import ETHChainPreviewIcon from "../assets/images/2x_eth_evm_chain.png";
+import BNBChainPreviewIcon from "../assets/images/2x_bnb_evm_chain.png";
+import PolygonChainPreviewIcon from "../assets/images/2x_matic_evm_chain.png";
+import FantomEVMChain from "../assets/images/2x_phantom_evm_chain.png";
+import AvaxChain from "../assets/images/2x_avax_evm_chain.png";
+import ArbitrumChain from "../assets/images/2x_abitrum_evm_chain.png";
+import SolChainPreviewIcon from "../assets/images/2x_solana_welcome.png";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
@@ -58,12 +63,38 @@ export const BaseWalletSelect: FC = () => {
           <div className="mx-auto">
             <div className="mx-auto pt-[20px]">
               {chainType === ChainType.EVM ? (
-                <img
-                  src={EvmChainPreviewIcon}
-                  className="mx-auto w-[260px] ml-[20%]"
-                />
+                <div
+                  className={
+                    "mx-auto flex flex-row items-center justify-center"
+                  }
+                >
+                  <img
+                    src={ETHChainPreviewIcon}
+                    className="w-[12px] h-[20px] mr-[15px]"
+                  />
+                  <img
+                    src={BNBChainPreviewIcon}
+                    className="w-[20px] h-[20px] mr-[15px]"
+                  />
+                  <img
+                    src={PolygonChainPreviewIcon}
+                    className="w-[20px] h-[20px] mr-[15px]"
+                  />
+                  <img
+                    src={FantomEVMChain}
+                    className="w-[20px] h-[20px] mr-[15px]"
+                  />
+                  <img
+                    src={AvaxChain}
+                    className="w-[20px] h-[20px] mr-[15px]"
+                  />
+                  <img src={ArbitrumChain} className="w-[24px] h-[24px]" />
+                </div>
               ) : (
-                <img src={SolChainPreviewIcon} className="mx-auto w-[40px]" />
+                <img
+                  src={SolChainPreviewIcon}
+                  className="mx-auto w-[20px] h-[20px]"
+                />
               )}
             </div>
 
