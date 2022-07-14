@@ -79,7 +79,7 @@
     "cleanup-build": "rm -rf build/",
     "cleanup-pkg": "NODE_PATH=. node scripts/clean-pkg.js",
     "cleanup": "yarn cleanup-dts && yarn cleanup-pkg && yarn cleanup-build",
-    "publish": "cd dist/ && npm publish",
+    "publish-lib": "cd dist/ && npm publish",
     "build-lib": "bash scripts/build.sh",
     "build-lib:dev": "yarn build-lib && rm -rf ../dist/ && cp -r dist/ ../dist"
   },
