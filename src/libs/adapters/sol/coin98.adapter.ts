@@ -38,10 +38,7 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
         }
       }, 10000);
 
-      [wallet] = await this.injectedProvider.request<undefined, string[]>({
-        method: "sol_requestAccounts",
-      });
-
+      [wallet] = await this.injectedProvider.connect<string[]>();
       return resolve(wallet || null);
     });
   }
@@ -55,7 +52,11 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
   }
 
   async isConnected(): Promise<boolean> {
-    return this.injectedProvider.isConnected();
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        return resolve(this.injectedProvider.isConnected());
+      }, 100);
+    });
   }
 
   isInstalled(): boolean {

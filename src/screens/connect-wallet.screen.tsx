@@ -31,7 +31,7 @@ export const ConnectWalletScreen: FC = () => {
         setConnectedError(true);
         return;
       }
-    } catch {
+    } catch (e) {
       setConnectedError(true);
       return;
     }

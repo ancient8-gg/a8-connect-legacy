@@ -41,7 +41,7 @@ export class CoinbaseEVMWallet implements BaseWalletAdapter {
     return this.injectedProvider.disconnect();
   }
 
-  getWalletAddress(): Promise<string | null> {
+  async getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 

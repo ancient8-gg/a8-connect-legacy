@@ -29,20 +29,30 @@ export class BinanceEVMWallet implements BaseWalletAdapter {
   }
 
   async connectWallet(): Promise<string | null> {
-    if (!this.isInstalled()) return null;
+    return new Promise(async (resolve, reject) => {
+      let wallet: string = null;
 
-    const [wallet] = await this.injectedProvider.request<undefined, string[]>({
-      method: "eth_requestAccounts",
+      setTimeout(() => {
+        if (!wallet) {
+          return reject(
+            new Error(`Timeout when connect to ${this.name} wallet`)
+          );
+        }
+      }, 10000);
+
+      [wallet] = await this.injectedProvider.request<undefined, string[]>({
+        method: "eth_requestAccounts",
+      });
+
+      return resolve(wallet || null);
     });
-
-    return wallet;
   }
 
   disconnectWallet(): Promise<void> {
     return this.injectedProvider.disconnect();
   }
 
-  getWalletAddress(): Promise<string | null> {
+  async getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 
@@ -55,11 +65,25 @@ export class BinanceEVMWallet implements BaseWalletAdapter {
   }
 
   async sign(message: string): Promise<string> {
-    const walletAddress = await this.getWalletAddress();
+    return new Promise(async (resolve, reject) => {
+      let signature: string = null;
 
-    return this.injectedProvider.request<string[], string>({
-      method: "personal_sign",
-      params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
+      const walletAddress = await this.getWalletAddress();
+
+      setTimeout(() => {
+        if (!signature) {
+          return reject(
+            new Error(`Timeout when connect to ${this.name} wallet`)
+          );
+        }
+      }, 10000);
+
+      signature = await this.injectedProvider.request<string[], string>({
+        method: "personal_sign",
+        params: [hexlify(toUtf8Bytes(message)), walletAddress.toLowerCase()],
+      });
+
+      return resolve(signature);
     });
   }
 }

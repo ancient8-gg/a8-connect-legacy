@@ -22,6 +22,8 @@ export class SlopeSolanaWallet implements BaseWalletAdapter {
       "linear-gradient(90deg, rgb(108, 100, 249) 0%, rgb(86, 74, 237) 100%)",
   };
 
+  private _isConnected = false;
+
   constructor(injectedProvider: WalletProvider) {
     this.injectedProvider = injectedProvider;
   }
@@ -35,6 +37,10 @@ export class SlopeSolanaWallet implements BaseWalletAdapter {
         data: { publicKey?: string };
       }>();
 
+      if (!!publicKey) {
+        this._isConnected = true;
+      }
+
       return publicKey || null;
     } catch {
       return null;
@@ -42,16 +48,16 @@ export class SlopeSolanaWallet implements BaseWalletAdapter {
   }
 
   disconnectWallet(): Promise<void> {
+    this._isConnected = false;
     return this.injectedProvider.disconnect();
   }
 
-  getWalletAddress(): Promise<string | null> {
+  async getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 
   async isConnected(): Promise<boolean> {
-    const wallet = await this.connectWallet();
-    return !!wallet;
+    return this._isConnected;
   }
 
   isInstalled(): boolean {

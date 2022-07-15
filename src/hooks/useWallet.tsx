@@ -53,7 +53,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       setWalletConnected(!!session);
 
       handleWalletConnected(session);
-    } catch {
+    } catch (e) {
       handleWalletConnected(null);
     }
 

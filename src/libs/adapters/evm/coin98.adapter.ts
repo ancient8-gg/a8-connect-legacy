@@ -51,12 +51,16 @@ export class Coin98EVMWallet implements BaseWalletAdapter {
     return this.injectedProvider.disconnect();
   }
 
-  getWalletAddress(): Promise<string | null> {
+  async getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 
   async isConnected(): Promise<boolean> {
-    return this.injectedProvider.isConnected();
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        return resolve(this.injectedProvider.isConnected());
+      }, 100);
+    });
   }
 
   isInstalled(): boolean {

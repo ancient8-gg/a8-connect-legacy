@@ -141,9 +141,9 @@ export class WalletAction {
    * The function to ensure wallet is connected, otherwise raise error
    * @private
    */
-  private ensureWalletIsConnected() {
+  private async ensureWalletIsConnected() {
     this.ensureWalletIsAvailable();
-    if (!this.selectedAdapter.isConnected())
+    if (!(await this.selectedAdapter.isConnected()))
       throw new Error("Wallet not connected");
   }
 
@@ -236,7 +236,7 @@ export class WalletAction {
    * The function to get connected session
    */
   async getConnectedSession(): Promise<ConnectedWalletPayload> {
-    this.ensureWalletIsConnected();
+    await this.ensureWalletIsConnected();
 
     return {
       walletAddress: await this.getWalletAddress(),

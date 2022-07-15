@@ -43,7 +43,7 @@ export class MetamaskEVMWallet implements BaseWalletAdapter {
     return;
   }
 
-  getWalletAddress(): Promise<string | null> {
+  async getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 

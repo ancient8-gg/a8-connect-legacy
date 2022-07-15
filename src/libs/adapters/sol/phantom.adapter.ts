@@ -1,3 +1,5 @@
+import { encode } from "bs58";
+
 import { BaseWalletAdapter, WalletProvider, ChainType } from "../interface";
 import Icon from "../../../assets/icons/phantom.png";
 
@@ -42,7 +44,7 @@ export class PhantomSolanaWallet implements BaseWalletAdapter {
     return this.injectedProvider.disconnect();
   }
 
-  getWalletAddress(): Promise<string | null> {
+  async getWalletAddress(): Promise<string | null> {
     return this.connectWallet();
   }
 
@@ -55,17 +57,11 @@ export class PhantomSolanaWallet implements BaseWalletAdapter {
   }
 
   async sign(message: string): Promise<string> {
-    const { signature } = await this.injectedProvider.request<
-      { message: Uint8Array; display: string },
-      { signature: string }
-    >({
-      method: "signMessage",
-      params: {
-        display: "utf-8",
-        message: new TextEncoder().encode(message),
-      },
-    });
+    const { signature } = await this.injectedProvider.signMessage<
+      Uint8Array,
+      { signature: Buffer }
+    >(new TextEncoder().encode(message));
 
-    return signature;
+    return encode(signature);
   }
 }
