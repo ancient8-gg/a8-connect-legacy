@@ -77,25 +77,9 @@ export class BusinessProvider {
         Authorization: `Bearer ${authTokenFromStorage}`,
       };
 
-    /**
-     * @description
-     * Remove Content-Type when upload image,
-     * so browser will detect content type of file automaticly
-     */
-    const defaultHeaders = this.defaultNetWorkOptions.headers;
-    if ((options.headers as any)["Content-Type"] === "remove") {
-      delete (defaultHeaders as any)["Content-Type"];
-
-      delete (options.headers as any)["Content-Type"];
-    }
-
     return networkProvider.request<T>(url, {
       ...this.defaultNetWorkOptions,
       ...options,
-      headers: {
-        ...defaultHeaders,
-        ...options.headers,
-      },
     });
   }
 
