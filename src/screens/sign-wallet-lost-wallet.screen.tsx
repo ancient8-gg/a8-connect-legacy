@@ -4,7 +4,6 @@ import { BaseSignWalletScreen } from "./base-sign-wallet.screen";
 import { WalletCredentialAuthDto } from "../libs/dto/wallet-credential-auth.dto";
 import { BaseLoadingScreen } from "./base-loading.screen";
 import { useWallet } from "../hooks/useWallet";
-import { useAppState } from "../hooks/useAppState";
 import { useLocation } from "../components/router";
 import { ChainType } from "../libs/adapters";
 import { getAuthAction } from "../libs/actions";
@@ -15,9 +14,6 @@ export const SIGN_WALLET_LOST_WALLET_KEY = "SIGN_WALLET_LOST_WALLET_KEY";
 
 export const SignWalletLostWalletScreen: FC = () => {
   const { walletAddress, chainType } = useWallet();
-  const {
-    resetWithNewWalletPayload: { authToken },
-  } = useAppState();
   const [onLoad, setOnLoad] = useState<boolean>(true);
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const authAction = getAuthAction();
@@ -39,7 +35,7 @@ export const SignWalletLostWalletScreen: FC = () => {
         chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
 
       try {
-        await authAction.resetWithNewWallet(authToken, { type, credential });
+        await authAction.resetWithNewWallet({ type, credential });
         return push(BASE_NOTIFICATION_SCREEN_KEY, {
           params: {
             status: 1,

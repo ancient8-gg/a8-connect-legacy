@@ -10,20 +10,15 @@ import {
 } from "react";
 import { OnAuthPayload } from "./useSession";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
-import { ResetWithNewWalletPayload } from "../libs/dto/reset-with-new-wallet.dto";
 import { ChainType } from "../libs/adapters";
 import { AppFlow } from "../components/router";
-import {
-  NetworkType,
-  RegistryProvider,
-} from "../libs/providers/registry.provider";
+import { NetworkType, RegistryProvider } from "../libs/providers";
 
 interface AppStateContextProviderProps {
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
-  resetWithNewWalletPayload?: ResetWithNewWalletPayload;
   initAppFlow?: AppFlow;
   desiredChainType?: ChainType;
   networkType?: NetworkType;
@@ -41,7 +36,6 @@ interface AppStateContextProvider {
   setSessionReady: (flag: boolean) => void;
   setWalletReady: (flag: boolean) => void;
   setCurrentAppFlow: (flow: AppFlow) => void;
-  resetWithNewWalletPayload: ResetWithNewWalletPayload;
   desiredChainType: ChainType;
   isModalOpen: boolean;
   isWalletReady: boolean;
@@ -52,6 +46,8 @@ interface AppStateContextProvider {
   disableCloseButton: boolean;
   currentAppFlow: AppFlow;
   networkType: NetworkType;
+  initAppFlow: AppFlow;
+  setupAppFlow: (isUserLoggedIn: boolean) => void;
 }
 
 const AppStateContext = createContext<AppStateContextProvider>(null);
@@ -61,16 +57,18 @@ export const AppStateProvider: FC<
     children: ReactNode;
   } & AppStateContextProviderProps
 > = (props) => {
+  // Writable configurations
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [disableCloseButton] = useState(!!props.disableCloseButton || false);
-  const [desiredChainType, setDesiredChainType] = useState(
-    props.desiredChainType || ChainType.ALL
-  );
-  const [networkType] = useState(props.networkType || NetworkType.mainnet);
   const [isRouterReady, setRouterReady] = useState(false);
   const [isSessionReady, setSessionReady] = useState(false);
   const [isWalletReady, setWalletReady] = useState(false);
   const [currentAppFlow, setCurrentAppFlow] = useState(AppFlow.BUFFER_FLOW);
+
+  // Read only configurations
+  const [initAppFlow] = useState(props.initAppFlow);
+  const [disableCloseButton] = useState(!!props.disableCloseButton || false);
+  const [desiredChainType] = useState(props.desiredChainType || ChainType.ALL);
+  const [networkType] = useState(props.networkType || NetworkType.mainnet);
 
   const isAppReady = useMemo(() => {
     return isRouterReady && isSessionReady && isWalletReady;
@@ -120,6 +118,30 @@ export const AppStateProvider: FC<
     [props.onError]
   );
 
+  const setupAppFlow = useCallback(
+    (isUserLoggedIn: boolean) => {
+      if (!isUserLoggedIn) {
+        setCurrentAppFlow(AppFlow.LOGIN_FLOW);
+        return;
+      }
+
+      if (initAppFlow === AppFlow.LOST_WALLET_FLOW) {
+        setCurrentAppFlow(initAppFlow);
+        return;
+      }
+
+      if (initAppFlow === AppFlow.ADD_WALLET_FLOW) {
+        setCurrentAppFlow(initAppFlow);
+        return;
+      }
+
+      // fallback to default flow
+      setCurrentAppFlow(AppFlow.CONNECT_FLOW);
+      return;
+    },
+    [initAppFlow]
+  );
+
   const handleClose = useCallback(() => {
     setIsModalOpen(false);
     onClose && onClose();
@@ -130,19 +152,9 @@ export const AppStateProvider: FC<
     registry.networkType = networkType;
   }, [networkType]);
 
-  useEffect(() => {
-    if (
-      props.initAppFlow === AppFlow.ADD_WALLET_FLOW ||
-      props.initAppFlow === AppFlow.LOST_WALLET_FLOW
-    ) {
-      setDesiredChainType(ChainType.ALL);
-    }
-  }, [props.initAppFlow]);
-
   return (
     <AppStateContext.Provider
       value={{
-        resetWithNewWalletPayload: props.resetWithNewWalletPayload,
         isModalOpen,
         desiredChainType,
         isWalletReady,
@@ -163,6 +175,8 @@ export const AppStateProvider: FC<
         setSessionReady,
         setWalletReady,
         setCurrentAppFlow,
+        initAppFlow,
+        setupAppFlow,
       }}
     >
       {props.children}

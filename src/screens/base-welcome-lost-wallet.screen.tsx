@@ -7,16 +7,15 @@ import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import A8Logo from "../assets/images/a8-logo.png";
 import { ProviderSelect } from "../components/select/provider-select";
+import { useSession } from "../hooks/useSession";
 
 export const BASE_WELCOME_LOST_WALLET_SCREEN_KEY =
   "BASE_WELCOME_LOST_WALLET_SCREEN_KEY";
 
 export const BaseWelcomeLostWalletScreen: FC = () => {
-  const {
-    handleClose,
-    resetWithNewWalletPayload: { email },
-  } = useAppState();
+  const { handleClose } = useAppState();
   const { setChainType, chainType } = useWallet();
+  const { userInfo } = useSession();
   const location = useLocation();
 
   const targetScreen = useMemo(() => {
@@ -49,7 +48,7 @@ export const BaseWelcomeLostWalletScreen: FC = () => {
               User Identity account.
               <br />
               Email:
-              <span className="text-primary ml-[3px]">{email}</span>
+              <span className="text-primary ml-[3px]">{userInfo.email}</span>
             </p>
             <p className="text-white text-center text-[16px] mt-[20px]">
               Please select desired chain below

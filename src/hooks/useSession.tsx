@@ -12,11 +12,6 @@ import { useAppState } from "./useAppState";
 import { AuthEntity, LoginResponse, UserInfo } from "../libs/dto/entities";
 import { LoginWalletAuthDto } from "../libs/dto/login-wallet-auth.dto";
 import { RegistrationAuthDto } from "../libs/dto/registration-auth.dto";
-import { AppFlow } from "../components/router";
-
-interface SessionProviderProps {
-  initAppFlow?: AppFlow;
-}
 
 interface SessionContextProps {
   userInfo: UserInfo;
@@ -31,15 +26,13 @@ export type OnAuthPayload = UserInfo | null;
 
 export const SessionContext = createContext<SessionContextProps>(null);
 
-export const SessionProvider: FC<
-  {
-    children: ReactNode;
-  } & SessionProviderProps
-> = ({ children, initAppFlow }) => {
+export const SessionProvider: FC<{
+  children: ReactNode;
+}> = ({ children }) => {
   const userAction = getUserAction();
   const authAction = getAuthAction();
 
-  const { isSessionReady, onAuth, setSessionReady, setCurrentAppFlow } =
+  const { isSessionReady, onAuth, setSessionReady, setupAppFlow } =
     useAppState();
 
   const [userInfo, setUserInfo] = useState<UserInfo>(null);
@@ -101,32 +94,13 @@ export const SessionProvider: FC<
     setSessionReady(false);
 
     const { sessionUser } = await fetchSession();
-
-    let isDefaultFlow = true;
-
-    if (initAppFlow === AppFlow.LOST_WALLET_FLOW) {
-      setCurrentAppFlow(initAppFlow);
-      isDefaultFlow = false;
-    }
-
-    if (initAppFlow === AppFlow.ADD_WALLET_FLOW && sessionUser?._id) {
-      setCurrentAppFlow(initAppFlow);
-      isDefaultFlow = false;
-    }
-
-    if (isDefaultFlow) {
-      if (sessionUser && sessionUser?._id) {
-        setCurrentAppFlow(AppFlow.CONNECT_FLOW);
-      } else {
-        setCurrentAppFlow(AppFlow.LOGIN_FLOW);
-      }
-    }
+    setupAppFlow(!!sessionUser && !!sessionUser?._id);
 
     onAuth(sessionUser);
     if (!isSessionReady) {
       setSessionReady(true);
     }
-  }, [onAuth, initAppFlow]);
+  }, [onAuth]);
 
   useEffect(() => {
     initState();
