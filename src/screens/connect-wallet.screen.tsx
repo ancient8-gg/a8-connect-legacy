@@ -60,7 +60,11 @@ export const ConnectWalletScreen: FC = () => {
   return (
     <div>
       <ModalHeader
-        title="CONNECT WALLET"
+        title={
+          currentAppFlow === AppFlow.CONNECT_FLOW
+            ? "CONNECT WALLET TO APP"
+            : "CONNECT WALLET"
+        }
         onCloseModal={handleClose}
         isBack={location.isBack}
         goBack={() => location.goBack()}

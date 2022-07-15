@@ -42,6 +42,8 @@ export const BaseWalletSelect: FC = () => {
   }, [chainType]);
 
   const overrideWarnMessage = useMemo(() => {
+    if (chainType === ChainType.SOL) return null;
+
     const computedData = {
       coin98:
         chainAdapter.filter(
@@ -56,8 +58,6 @@ export const BaseWalletSelect: FC = () => {
         ).length > 0,
     };
 
-    console.log({ computedData });
-
     if (computedData.coinbase && computedData.coin98)
       return "You need to turn off the override on Coin98/Coinbase to use Metamask normally";
 
@@ -68,7 +68,7 @@ export const BaseWalletSelect: FC = () => {
       return "You need to turn off the override on Coinbase to use Metamask normally";
 
     return null;
-  }, [chainAdapter]);
+  }, [chainAdapter, chainType]);
 
   const isBack = useMemo(() => {
     return (
@@ -153,14 +153,14 @@ export const BaseWalletSelect: FC = () => {
               </p>
             )}
 
-            <div className="pt-[30px]">
+            <div>
               {currentAppFlow === AppFlow.CONNECT_FLOW ? (
-                <p className="mx-auto text-primary text-[20px] font-bold text-center">
-                  Select wallet {chainType === ChainType.EVM ? "EVM" : "SOLANA"}{" "}
-                  provider
+                <p className="mt-[10px] mb-[20px] bmx-auto text-white text-center">
+                  Please connect to a{" "}
+                  {chainType === ChainType.EVM ? "EVM" : "Solana"} wallet below
                 </p>
               ) : (
-                <p className="mx-auto text-primary text-[20px] font-bold text-center">
+                <p className="pt-[30px] mx-auto text-primary text-[20px] font-bold text-center">
                   Select wallet provider
                 </p>
               )}

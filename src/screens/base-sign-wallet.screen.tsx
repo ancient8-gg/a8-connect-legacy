@@ -119,6 +119,19 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
                 </div>
               </PolygonButton>
             </div>
+
+            <div className={"my-[20px] text-center text-[14px]"}>
+              <div className={"text-white "}>
+                Want to connect this wallet to an existed UID?
+              </div>
+              <a
+                className={"text-primary underline"}
+                href={"https://ancient8.gg"}
+                target={"_blank"}
+              >
+                Learn how here
+              </a>
+            </div>
           </div>
         </div>
       </div>

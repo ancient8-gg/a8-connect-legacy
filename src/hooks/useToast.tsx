@@ -63,7 +63,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
       <div className="absolute inset-0">{children}</div>
       <ToastModal modalIsOpen={isOpened}>
         <div
-          className="absolute right-[20px] top-[10px] cursor-pointer"
+          className="absolute right-[5px] top-[5px] cursor-pointer"
           onClick={close}
         >
           <img src={CloseIcon} />
