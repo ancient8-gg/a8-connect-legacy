@@ -26,7 +26,7 @@ export interface A8ConnectInitOptions {
   withCredential?: string;
 
   /**
-   * `cleanWalletCache` option to indicate the wallet connect session should be flush at initial loading
+   * `cleanWalletCache` option to indicate the wallet connect session should be flushed at initial loading
    */
   cleanWalletCache?: boolean;
 
