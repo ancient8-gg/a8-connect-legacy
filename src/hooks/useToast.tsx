@@ -6,7 +6,7 @@ import {
   useCallback,
 } from "react";
 import ToastModal from "../components/modal/toast.modal";
-import CloseIcon from "../assets/icons/close-icon.svg";
+import { ReactComponent as CloseIcon } from "../assets/icons/close-icon.svg";
 
 export interface ToastContextProps {
   open(title: string, description: string): void;
@@ -66,7 +66,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
           className="absolute right-[5px] top-[5px] cursor-pointer"
           onClick={close}
         >
-          <img src={CloseIcon} />
+          <CloseIcon className={"h-[20px] w-[20px]"} />
         </div>
         <p className={`text-[20px] bold-[100]`} style={{ color: titleColor }}>
           {title}
