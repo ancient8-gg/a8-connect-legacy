@@ -13,7 +13,7 @@ import { ChainType } from "../libs/adapters";
 export const BUFFER_LOADING_APP_SCREEN_KEY = "BUFFER_LOADING_APP_SCREEN";
 
 export const BufferLoadingAppScreen: FC = () => {
-  const { handleClose, desiredChainType, currentAppFlow, isAppReady } =
+  const { handleClose, desiredChainType, isAppReady, currentAppFlow } =
     useAppState();
   const {
     initState: initWalletState,
@@ -21,7 +21,7 @@ export const BufferLoadingAppScreen: FC = () => {
     chainType,
     walletAddress,
   } = useWallet();
-  const { initState: initSessionState, authEntities, userInfo } = useSession();
+  const { initState: initSessionState, authEntities } = useSession();
   const { push } = useLocation();
 
   const [isStateReset, setStateReset] = useState(false);
@@ -30,19 +30,7 @@ export const BufferLoadingAppScreen: FC = () => {
     return isStateReset && isAppReady;
   }, [isStateReset, isAppReady]);
 
-  const shouldGoToLoginFlow = useMemo(() => {
-    return currentAppFlow === AppFlow.LOGIN_FLOW;
-  }, [currentAppFlow]);
-
-  const shouldGoToAddWalletFlow = useMemo(() => {
-    return currentAppFlow === AppFlow.ADD_WALLET_FLOW && userInfo !== undefined;
-  }, [currentAppFlow, userInfo]);
-
-  const shouldGoToLostWalletFlow = useMemo(() => {
-    return currentAppFlow === AppFlow.LOST_WALLET_FLOW;
-  }, [currentAppFlow]);
-
-  const shouldGoToConnectFlow = useMemo(() => {
+  const shouldAutoCloseModal = useMemo(() => {
     /**
      * Prepare conditions
      */
@@ -63,7 +51,7 @@ export const BufferLoadingAppScreen: FC = () => {
     /**
      * Go to connect flow
      */
-    return !(
+    return (
       connectedWalletMatchedDesiredChainType &&
       connectedWalletBelongsToCurrentUid &&
       uidConnectedChainTypeMatchedDesiredChainType
@@ -82,40 +70,36 @@ export const BufferLoadingAppScreen: FC = () => {
      */
     if (!screenStateReady) return;
 
+    if (shouldAutoCloseModal) {
+      /**
+       * Otherwise, close the modal
+       */
+      setTimeout(() => {
+        handleClose();
+      }, 300);
+
+      return;
+    }
+
     /**
      * Prioritize redirecting to add lost wallet screen
      */
-    if (shouldGoToLostWalletFlow) {
+    if (currentAppFlow === AppFlow.LOST_WALLET_FLOW) {
       return push(BASE_WELCOME_LOST_WALLET_SCREEN_KEY);
     }
 
     /**
      * Prioritize redirecting to add wallet screen
      */
-    if (shouldGoToAddWalletFlow) {
+    if (currentAppFlow === AppFlow.ADD_WALLET_FLOW) {
       return push(BASE_WELCOME_ADD_WALLET_SCREEN_KEY);
     }
 
     /**
-     * Prioritize redirecting to login flow first
+     * Prioritize fallback to default flow
      */
-    if (shouldGoToLoginFlow || shouldGoToConnectFlow) {
-      return push(BASE_WELCOME_SCREEN_KEY);
-    }
-
-    /**
-     * Otherwise, close the modal
-     */
-    setTimeout(() => {
-      handleClose();
-    }, 300);
-  }, [
-    handleClose,
-    shouldGoToLoginFlow,
-    shouldGoToConnectFlow,
-    screenStateReady,
-    walletAddress,
-  ]);
+    return push(BASE_WELCOME_SCREEN_KEY);
+  }, [handleClose, currentAppFlow, screenStateReady, shouldAutoCloseModal]);
 
   const resetAppState = useCallback(async () => {
     /**

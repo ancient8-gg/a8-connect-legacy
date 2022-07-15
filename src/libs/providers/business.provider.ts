@@ -73,15 +73,13 @@ export class BusinessProvider {
 
     if (!!authTokenFromStorage && !authTokenFromCookie)
       options.headers = {
+        ...this.defaultNetWorkOptions.headers,
         ...options.headers,
         Authorization: `Bearer ${authTokenFromStorage}`,
       };
 
-    const networkOptions = {
-      ...this.defaultNetWorkOptions,
-      ...options,
-    };
-
+    let networkOptions = Object.assign({}, this.defaultNetWorkOptions);
+    networkOptions = Object.assign(networkOptions, options);
     networkOptions.headers = JSON.parse(JSON.stringify(networkOptions.headers));
 
     return networkProvider.request<T>(url, networkOptions);
@@ -95,11 +93,8 @@ export class BusinessProvider {
   protected request<T>(url: string, options: NetworkOptions): Promise<T> {
     const networkProvider = this.getNetworkProvider();
 
-    const networkOptions = {
-      ...this.defaultNetWorkOptions,
-      ...options,
-    };
-
+    let networkOptions = Object.assign({}, this.defaultNetWorkOptions);
+    networkOptions = Object.assign(networkOptions, options);
     networkOptions.headers = JSON.parse(JSON.stringify(networkOptions.headers));
 
     return networkProvider.request<T>(url, networkOptions);
