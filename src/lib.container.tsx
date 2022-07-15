@@ -1,20 +1,65 @@
 import { createRoot, Root } from "react-dom/client";
 import A8ConnectContainer from "./container";
 import { ChainType, SupportedWallets } from "./libs/adapters";
-import { ConnectSessionDto, Providers, Entities, AppFlow } from "./types";
+import { ConnectSessionDto, Providers, Entities } from "./types";
 import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
 import { OnAuthPayload } from "./hooks/useSession";
+import { AppFlow } from "./components/router";
 
+/**
+ * A8Connect init explanations
+ */
 export interface A8ConnectInitOptions {
+  /**
+   * `chainType` option to detect whether the sdk onboarding flow will be associated with EVM or Solana wallets
+   */
   chainType: ChainType;
+
+  /**
+   * `networkType` option to detect either mainnet or testnet network.
+   */
   networkType: Providers.NetworkType;
+
+  /**
+   * `withCredential` Inject the jwt credential into the local storage. This options will be useful for Lost Wallet flow.
+   */
   withCredential?: string;
+
+  /**
+   * `cleanWalletCache` option to indicate the wallet connect session should be flush at initial loading
+   */
   cleanWalletCache?: boolean;
+
+  /**
+   * `disableCloseButton` to indicate that the modal isn't able to be closed until users complete the onboarding flow
+   */
   disableCloseButton?: boolean;
+
+  /**
+   * `initAppFlow` to determine the onboarding flow, default will be Login/Connect Flow.
+   */
   initAppFlow?: AppFlow;
+
+  /**
+   * `onClose` callback will be triggered when user complete onboarding flow or close the A8Connect popup
+   */
   onClose?: () => void;
+
+  /**
+   * `onError` callback will be triggered errors occur.
+   */
   onError?: (error: Error) => void;
+
+  /**
+   * `onAuth` callback will be triggered when user is authenticated.
+   * @param payload
+   */
   onAuth?: (payload: OnAuthPayload) => void;
+
+  /**
+   * `onConnected` callback will be triggered when user connected to a wallet
+   * @param payload
+   */
   onConnected?: (payload: ConnectSessionDto.ConnectedWalletPayload) => void;
 }
 
@@ -65,8 +110,7 @@ export class A8Connect {
   }
 
   /**
-   * The function to open the A8 Connect Modal.
-   * The returned value will be the function to close the modal.
+   * The function to init the A8Connect session.
    * Consequently, the session will be stored inside the A8ConnectContainer after connecting wallet/login action.
    * @param options
    */

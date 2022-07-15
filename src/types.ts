@@ -14,4 +14,4 @@ export * as Adapters from "./libs/adapters";
 export * as Providers from "./libs/providers";
 export * as Actions from "./libs/actions";
 
-export * from "./components/router";
+export * as Router from "./components/router";
