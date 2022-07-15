@@ -303,7 +303,7 @@ export const SignWalletConnectUID: FC = () => {
                 Having trouble?
                 {isBelongedError ? (
                   <a
-                    className="text-primary underline"
+                    className="text-primary underline cursor-pointer"
                     onClick={() => handleLogout()}
                   >
                     {" "}
@@ -311,7 +311,7 @@ export const SignWalletConnectUID: FC = () => {
                   </a>
                 ) : (
                   <a
-                    className="text-primary underline"
+                    className="text-primary underline cursor-pointer"
                     onClick={() => goBack()}
                   >
                     {" "}

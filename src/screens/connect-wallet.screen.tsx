@@ -108,7 +108,7 @@ export const ConnectWalletScreen: FC = () => {
               <p className="text-center text-[14px] text-white">
                 Having trouble?
                 <a
-                  className="text-primary underline"
+                  className="text-primary underline cursor-pointer"
                   onClick={() => location.goBack()}
                 >
                   {" "}
