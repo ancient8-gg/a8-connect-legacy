@@ -50,7 +50,11 @@ export class CoinbaseEVMWallet implements BaseWalletAdapter {
   }
 
   isInstalled(): boolean {
-    return !!this.injectedProvider && !this.injectedProvider.isCoin98;
+    return (
+      !!this.injectedProvider &&
+      (this.injectedProvider.isCoinbaseWallet ||
+        this.injectedProvider.isCoinbaseBrowser)
+    );
   }
 
   async sign(message: string): Promise<string> {

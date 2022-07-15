@@ -82,6 +82,16 @@ export interface WalletProvider {
    * A flag to detect whether current provider is phantom or not.
    */
   isPhantom?: boolean;
+
+  /**
+   * A flag to detect whether current provider is coinbase wallet or not.
+   */
+  isCoinbaseWallet?: boolean;
+
+  /**
+   * A flag to detect whether current provider is coinbase wallet or not.
+   */
+  isCoinbaseBrowser?: boolean;
 }
 
 /**

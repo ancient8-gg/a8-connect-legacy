@@ -92,7 +92,13 @@ export class WalletAction {
      * Initialize Coinbase EVM Wallet.
      */
     this.supportedWallets[CoinbaseEVMWalletName] = new CoinbaseEVMWallet(
-      windowInstance.coinbaseWalletExtension
+      windowInstance.ethereum?.providers?.find(
+        (provider: WalletProvider) =>
+          provider.isCoinbaseWallet === true ||
+          provider.isCoinbaseBrowser === true
+      ) ||
+        windowInstance.coinbaseWalletExtension ||
+        windowInstance.ethereum
     );
 
     /**
