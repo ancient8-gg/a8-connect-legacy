@@ -46,7 +46,7 @@ export interface A8ConnectInitOptions {
   onClose?: () => void;
 
   /**
-   * `onError` callback will be triggered errors occur.
+   * `onError` callback will be triggered when errors occur.
    */
   onError?: (error: Error) => void;
 
