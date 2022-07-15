@@ -57,7 +57,7 @@ export interface A8ConnectInitOptions {
   onAuth?: (payload: OnAuthPayload) => void;
 
   /**
-   * `onConnected` callback will be triggered when user connected to a wallet
+   * `onConnected` callback will be triggered when user connect to a wallet
    * @param payload
    */
   onConnected?: (payload: ConnectSessionDto.ConnectedWalletPayload) => void;
