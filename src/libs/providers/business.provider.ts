@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NetworkOptions, NetworkProviderGetter } from "./network.provider";
 import { StorageProviderGetter } from "./storage.provider";
 import { CookieProviderGetter } from "./cookie.provider";
@@ -58,15 +57,14 @@ export class BusinessProvider {
    */
   protected requestWithCredential<T>(
     url: string,
-    options: NetworkOptions,
-    authToken?: string
+    options: NetworkOptions
   ): Promise<T> {
     const networkProvider = this.getNetworkProvider();
     const storage = this.getStorageProvider();
     const cookie = this.getCookieProvider();
 
     const authTokenFromCookie = cookie.getCookie("jwt");
-    const authTokenFromStorage = authToken || storage.getItem("jwt", null);
+    const authTokenFromStorage = storage.getItem("jwt", null);
 
     if (!authTokenFromCookie && !authTokenFromStorage)
       throw new Error("Credentials is not available");
