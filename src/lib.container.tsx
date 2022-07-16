@@ -21,7 +21,7 @@ export interface A8ConnectInitOptions {
   networkType: Providers.NetworkType;
 
   /**
-   * `withCredential` Inject the jwt credential into the local storage. This options will be useful for Lost Wallet flow.
+   * `withCredential` Inject the jwt credential into the local storage. This option will be useful for "Lost wallet" flow.
    */
   withCredential?: string;
 
