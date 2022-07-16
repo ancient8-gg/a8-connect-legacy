@@ -69,7 +69,7 @@ export const BaseWelcomeScreen: FC = () => {
               <ProviderSelect handleClickChain={handleClickChain} />
             </div>
             <div className="pt-[50px] pb-[20px]">
-              <p className="text-center text-white text-[14px] font-[100]">
+              <p className="text-center text-white text-[14px] ">
                 By connecting, you agree to our
                 <br />
                 <a

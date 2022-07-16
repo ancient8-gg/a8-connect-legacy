@@ -17,7 +17,7 @@ export const BaseNotificationScreen: FC = () => {
       <ModalHeader
         title={
           <p
-            className="text-[20px] font-[100]"
+            className="text-[20px] "
             style={{ color: params?.status === 0 ? "#FF4647" : "#30C021" }}
           >
             {params?.title}
@@ -30,7 +30,7 @@ export const BaseNotificationScreen: FC = () => {
         <div className="base-welcome-screen w-full">
           <div className="mx-auto ">
             <p
-              className="text-center text-[16px] font-[100] text-white"
+              className="text-center text-[16px]  text-white"
               dangerouslySetInnerHTML={{ __html: params?.description || "" }}
             />
           </div>
