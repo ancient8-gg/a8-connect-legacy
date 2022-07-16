@@ -4,7 +4,6 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
 } from "react";
 import { getWalletAction } from "../libs/actions";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
@@ -98,10 +97,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     },
     [walletName, walletAddress]
   );
-  //
-  useEffect(() => {
-    initState();
-  }, []);
 
   return (
     <WalletContext.Provider

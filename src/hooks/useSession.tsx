@@ -4,7 +4,6 @@ import {
   ReactNode,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from "react";
 import { getAuthAction, getUserAction } from "../libs/actions";
@@ -32,8 +31,7 @@ export const SessionProvider: FC<{
   const userAction = getUserAction();
   const authAction = getAuthAction();
 
-  const { isSessionReady, onAuth, setSessionReady, setupAppFlow } =
-    useAppState();
+  const { isSessionReady, onAuth, setSessionReady } = useAppState();
 
   const [userInfo, setUserInfo] = useState<UserInfo>(null);
   const [authEntities, setAuthEntities] = useState<AuthEntity[]>([]);
@@ -94,17 +92,10 @@ export const SessionProvider: FC<{
     setSessionReady(false);
 
     const { sessionUser } = await fetchSession();
-    setupAppFlow(!!sessionUser && !!sessionUser?._id);
 
+    setSessionReady(true);
     onAuth(sessionUser);
-    if (!isSessionReady) {
-      setSessionReady(true);
-    }
-  }, [onAuth]);
-
-  useEffect(() => {
-    initState();
-  }, []);
+  }, [onAuth, isSessionReady]);
 
   return (
     <SessionContext.Provider
