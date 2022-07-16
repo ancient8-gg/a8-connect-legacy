@@ -51,7 +51,10 @@ export const Modal: FC<ModalProps> = ({
         </div>
         <div
           style={contentStyle}
-          className={classnames("polygon-modal h-full", containerClassName)}
+          className={classnames(
+            "polygon-modal h-full w-full",
+            containerClassName
+          )}
         >
           <div className="polygon-modal-child px-[24px] py-[20px]">
             {children}

@@ -45,6 +45,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       await walletAction.restoreConnection();
+
       session = await walletAction.getConnectedSession();
 
       setChainType(session.chainType);
