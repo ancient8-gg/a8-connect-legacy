@@ -13,22 +13,28 @@ import { ChainType } from "../libs/adapters";
 export const BUFFER_LOADING_APP_SCREEN_KEY = "BUFFER_LOADING_APP_SCREEN";
 
 export const BufferLoadingAppScreen: FC = () => {
-  const { handleClose, desiredChainType, isAppReady, currentAppFlow } =
-    useAppState();
+  const {
+    handleClose,
+    desiredChainType,
+    isAppReady,
+    currentAppFlow,
+    detectAppFlow,
+  } = useAppState();
   const {
     initState: initWalletState,
     isWalletConnected,
     chainType,
     walletAddress,
   } = useWallet();
-  const { initState: initSessionState, authEntities } = useSession();
+  const { initState: initSessionState, authEntities, userInfo } = useSession();
   const { push } = useLocation();
 
   const [isStateReset, setStateReset] = useState(false);
+  const [isAppFlowReady, setAppFlowReady] = useState(false);
 
   const screenStateReady = useMemo(() => {
-    return isStateReset && isAppReady;
-  }, [isStateReset, isAppReady]);
+    return isStateReset && isAppReady && isAppFlowReady;
+  }, [isStateReset, isAppReady, isAppFlowReady]);
 
   const shouldAutoCloseModal = useMemo(() => {
     /**
@@ -121,9 +127,23 @@ export const BufferLoadingAppScreen: FC = () => {
     setStateReset(true);
   }, [initSessionState, initWalletState]);
 
+  const setupAppFlow = useCallback(() => {
+    setAppFlowReady(false);
+
+    detectAppFlow(!!userInfo);
+
+    setAppFlowReady(true);
+  }, [userInfo]);
+
   useEffect(() => {
     resetAppState();
   }, []);
+
+  useEffect(() => {
+    if (isStateReset) {
+      setupAppFlow();
+    }
+  }, [isStateReset]);
 
   useEffect(() => {
     if (screenStateReady) {
