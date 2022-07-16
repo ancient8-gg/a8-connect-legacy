@@ -1,11 +1,16 @@
+/**
+ * Network cluster that SDK supports.
+ */
 export enum NetworkType {
+  /**
+   * Mainnet network cluster. Endpoint is located https://ancient8.gg/profile/api/.
+   */
   mainnet = "mainnet",
+  /**
+   * Testnet network cluster. Endpoint is located https://ancient8.dev/profile/api.
+   */
   testnet = "testnet",
 }
-
-export type RegistryOptions = {
-  network: NetworkType;
-};
 
 export const BaseUrl = {
   [NetworkType.testnet]: "https://ancient8.dev/profile/api",

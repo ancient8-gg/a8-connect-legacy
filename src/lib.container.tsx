@@ -11,32 +11,33 @@ import { AppFlow } from "./components/router";
  */
 export interface A8ConnectInitOptions {
   /**
-   * `chainType` option to detect whether the sdk onboarding flow will be associated with EVM or Solana wallets
+   * `chainType` select supported chains for dapps
    */
   chainType: ChainType;
 
   /**
-   * `networkType` option to detect either mainnet or testnet network.
+   * `networkType` select supported cluster for dapps
    */
   networkType: Providers.NetworkType;
 
   /**
-   * `withCredential` Inject the jwt credential into the local storage. This option will be useful for "Lost wallet" flow.
+   * `withCredential` replace current jwt credential. Usually useful for `LOST_WALLET_FLOW` flow.
    */
   withCredential?: string;
 
   /**
-   * `cleanWalletCache` option to indicate the wallet connect session should be flushed at initial loading
+   * `cleanWalletCache` to clean wallet cache.
    */
   cleanWalletCache?: boolean;
 
   /**
-   * `disableCloseButton` to indicate that the modal isn't able to be closed until users complete the onboarding flow
+   * `disableCloseButton` to disable close button,
+   * so the popup won't be able to be closed manually until user completes the onboarding flow.
    */
   disableCloseButton?: boolean;
 
   /**
-   * `initAppFlow` to determine the onboarding flow, default will be Login/Connect Flow.
+   * `initAppFlow` select the initial flow, default will be Login/Connect Flow.
    */
   initAppFlow?: AppFlow;
 
@@ -90,7 +91,7 @@ export class A8Connect {
   public currentSession: ConnectSessionDto.A8ConnectSession | null = null;
 
   /**
-   * Init options for UID container
+   * Init options for UID container.
    */
   public options: A8ConnectInitOptions | null = null;
 
@@ -111,7 +112,7 @@ export class A8Connect {
 
   /**
    * The function to init the A8Connect session.
-   * Consequently, the session will be stored inside the A8ConnectContainer after connecting wallet/login action.
+   * The session will be updated whenever connecting wallet/login actions occur.
    * @param options
    */
   public async init(options: A8ConnectInitOptions): Promise<void> {
@@ -180,9 +181,16 @@ export class A8Connect {
   }
 
   /**
-   * The function to close modal
+   * The function to close modal.
    */
   closeModal(): void {
+    this.destroy();
+  }
+
+  /**
+   * The function to destroy root node.
+   */
+  public destroy() {
     /**
      * Unmount root node
      */
@@ -191,7 +199,7 @@ export class A8Connect {
   }
 
   /**
-   * The function to restore session if possible, can be fail-safe
+   * The function to restore session if possible, can be fail-safe.
    * @public
    */
   public async fetchSession(): Promise<void> {
@@ -206,7 +214,7 @@ export class A8Connect {
     } catch {}
 
     /**
-     * Now to restore UID session
+     * Now to restore UID session.
      */
     try {
       const userSession = await this.currentSession.User.getUserProfile();
@@ -215,7 +223,7 @@ export class A8Connect {
   }
 
   /**
-   * The function to initialize root node
+   * The function to initialize root node.
    * @private
    */
   private initializeRootNode() {
@@ -223,7 +231,7 @@ export class A8Connect {
   }
 
   /**
-   * Initialize registry and session
+   * Initialize registry and session.
    * @private
    */
   private async initializeRegistryAndSession() {
@@ -239,14 +247,14 @@ export class A8Connect {
     registryInstance.storage = window.localStorage;
 
     /**
-     * Clean wallet cache
+     * Clean wallet cache.
      */
     if (!!options.cleanWalletCache) {
       getWalletAction().cleanWalletCache();
     }
 
     /**
-     * Initialize session
+     * Initialize session.
      */
     this.currentSession = {
       Auth: getAuthAction(),

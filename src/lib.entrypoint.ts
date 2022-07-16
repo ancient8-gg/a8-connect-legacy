@@ -11,18 +11,26 @@ export const getA8ConnectInstance = () => {
 };
 
 /**
- * Init function that must set correctly boundary context.
- * Always create another A8Connect instance when trigger.
+ * Init an A8Connect instance.
+ * The function has its own boundary context.
  * @param rootDOMId
  * @param options
  */
 export const init = (rootDOMId: string, options: A8ConnectInitOptions) => {
+  /**
+   * Destroy the old node if possible
+   */
+  a8ConnectInstance?.destroy();
+
+  /**
+   * Initialize new instance
+   */
   a8ConnectInstance = new A8Connect(rootDOMId);
   return a8ConnectInstance.init.call(a8ConnectInstance, options);
 };
 
 /**
- * The function open modal
+ * The function to open modal
  */
 export const openModal = () => {
   if (!a8ConnectInstance) throw new Error("A8Connect isn't initialized");

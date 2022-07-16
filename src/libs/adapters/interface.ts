@@ -11,8 +11,19 @@ export interface AdapterStyle {
  * Includes two main chain: Solana chain and Ethereum chain
  */
 export enum ChainType {
+  /**
+   * Enable only EVM wallets.
+   */
   EVM = "AUTH_TYPE::EVM_CHAIN",
+
+  /**
+   * Enable only Solana wallets
+   */
   SOL = "AUTH_TYPE::SOLANA",
+
+  /**
+   * Enable both Solana and EVM wallets
+   */
   ALL = "AUTH_TYPE::ALL",
 }
 
