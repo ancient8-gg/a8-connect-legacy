@@ -37,16 +37,28 @@ export const BufferLoadingAppScreen: FC = () => {
     const connectedAuthEntity = authEntities.find(
       (wallet) => wallet.credential.walletAddress === walletAddress
     );
+    console.log("connectedAuthEntity", connectedAuthEntity);
 
     const connectedWalletBelongsToCurrentUid = !!connectedAuthEntity;
+    console.log(
+      "connectedWalletBelongsToCurrentUid",
+      connectedWalletBelongsToCurrentUid
+    );
 
     const connectedWalletMatchedDesiredChainType =
       (isWalletConnected && chainType === desiredChainType) ||
       desiredChainType === ChainType.ALL;
-
+    console.log(
+      "connectedWalletMatchedDesiredChainType",
+      connectedWalletMatchedDesiredChainType
+    );
     const uidConnectedChainTypeMatchedDesiredChainType =
       connectedAuthEntity?.type.toString() === desiredChainType.toString() ||
       desiredChainType === ChainType.ALL;
+    console.log(
+      "uidConnectedChainTypeMatchedDesiredChainType",
+      uidConnectedChainTypeMatchedDesiredChainType
+    );
 
     /**
      * Go to connect flow
@@ -69,7 +81,7 @@ export const BufferLoadingAppScreen: FC = () => {
      * Do nothing if screen state isn't ready
      */
     if (!screenStateReady) return;
-
+    console.log("shouldAutoCloseModal", shouldAutoCloseModal);
     if (shouldAutoCloseModal) {
       /**
        * Otherwise, close the modal
