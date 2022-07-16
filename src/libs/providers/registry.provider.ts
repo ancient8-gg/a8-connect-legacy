@@ -13,8 +13,8 @@ export enum NetworkType {
 }
 
 export const BaseUrl = {
-  [NetworkType.testnet]: "https://ancient8.dev/profile/api",
-  [NetworkType.mainnet]: "https://ancient8.gg/profile/api",
+  [NetworkType.testnet]: "https://ancient8.dev/profile",
+  [NetworkType.mainnet]: "https://ancient8.gg/profile",
 };
 
 /**

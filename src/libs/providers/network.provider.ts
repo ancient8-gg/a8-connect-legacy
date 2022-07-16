@@ -25,7 +25,7 @@ export class NetworkProvider {
       init?.networkType || this.networkOptions.networkType || null;
 
     const baseUrl = !!networkType ? BaseUrl[networkType] : "";
-    const endpoint = `${baseUrl}${url}`;
+    const endpoint = `${baseUrl}/api${url}`;
 
     const initialSettings = {
       ...this.networkOptions,
