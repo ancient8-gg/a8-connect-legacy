@@ -21,6 +21,8 @@ export const customStyles = {
     display: "flex",
     background: "none",
     border: "none",
+    width: "100%",
+    height: "100%",
   },
   overlay: {
     background: "#191919bf",
@@ -40,13 +42,10 @@ export const Modal: FC<ModalProps> = ({
       isOpen={modalIsOpen}
       style={customStyles}
       contentLabel="UID Modal"
-      id="a8-connect-container"
+      portalClassName={"a8-connect-container"}
+      parentSelector={() => document.getElementById("a8-connect-container")}
     >
-      <div
-        className={
-          "a8connect-container absolute md:h-auto md:w-[378px] w-full h-full"
-        }
-      >
+      <div className={"absolute md:h-auto md:w-[378px] w-full h-full"}>
         <div className="w-full">
           <TopGradientBorder className="float-right md:w-[30%] w-[40%]" />
         </div>

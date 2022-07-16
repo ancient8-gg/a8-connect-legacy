@@ -31,6 +31,8 @@ const Modal: FC<ModalProps> = ({ modalIsOpen, children }: ModalProps) => {
       isOpen={modalIsOpen}
       style={customStyles}
       contentLabel="UID Toast Modal"
+      portalClassName={"a8-connect-container"}
+      parentSelector={() => document.getElementById("a8-connect-container")}
     >
       <div className={"sdk-toast-container w-[283px] bg-[#979797]"}>
         {children}

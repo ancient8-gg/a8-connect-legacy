@@ -30,7 +30,7 @@ const A8Connect: FC<{
   onConnected,
 }) => {
   return (
-    <div className="layout">
+    <div className="layout" id={"a8-connect-container"}>
       <AppStateProvider
         disableCloseButton={disableCloseButton}
         desiredChainType={chainType}

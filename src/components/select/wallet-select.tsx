@@ -43,7 +43,7 @@ export const ConnectButton: FC<ConnectButtonProps> = ({
           <p className="normal-case text-[14px] text-white font-bold">
             {adapter.displayName}
           </p>
-          <p className="text-[9px] text-bold italic max-w-[80%]">
+          <p className="text-[9px] text-white text-bold italic max-w-[80%]">
             {adapter.url}
             {!adapter.isInstalled() && (
               <span className={"ml-[3px] opacity-[0.6] text-[9px]"}>

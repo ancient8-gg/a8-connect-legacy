@@ -27,3 +27,4 @@ dist/
 bundle/
 public/a8-connect/*
 test.html
+generated.scss

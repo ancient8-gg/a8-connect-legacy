@@ -15,7 +15,7 @@ if (document) {
         cleanWalletCache: true,
         networkType: Providers.NetworkType.testnet,
         chainType: Adapters.ChainType.ALL,
-        initAppFlow: Router.AppFlow.ADD_WALLET_FLOW,
+        initAppFlow: Router.AppFlow.LOGIN_FLOW,
         onClose: () => {
           closeModal();
         },

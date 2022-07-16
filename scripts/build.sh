@@ -9,8 +9,9 @@ rm -rf build/
 mkdir dist/
 
 # build
-npm run gen-dts
-npm run build
+yarn run gen-dts
+yarn run build-css
+yarn run build:craco
 
 # copy bundles
 cp -r dts/src/* dist/
@@ -23,4 +24,4 @@ cp package.json dist/
 cp LICENSE dist/
 
 # clean up
-npm run cleanup
+yarn run cleanup

@@ -70,17 +70,6 @@ export const BufferLoadingAppScreen: FC = () => {
      */
     if (!screenStateReady) return;
 
-    if (shouldAutoCloseModal) {
-      /**
-       * Otherwise, close the modal
-       */
-      setTimeout(() => {
-        handleClose();
-      }, 300);
-
-      return;
-    }
-
     /**
      * Prioritize redirecting to add lost wallet screen
      */
@@ -96,7 +85,21 @@ export const BufferLoadingAppScreen: FC = () => {
     }
 
     /**
-     * Prioritize fallback to default flow
+     * Auto close modal
+     */
+    if (shouldAutoCloseModal) {
+      /**
+       * Otherwise, close the modal
+       */
+      setTimeout(() => {
+        handleClose();
+      }, 300);
+
+      return;
+    }
+
+    /**
+     * Fallback to default flow
      */
     return push(BASE_WELCOME_SCREEN_KEY);
   }, [handleClose, currentAppFlow, screenStateReady, shouldAutoCloseModal]);
