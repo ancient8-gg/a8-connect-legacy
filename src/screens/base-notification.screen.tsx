@@ -1,16 +1,13 @@
-import { FC, useCallback } from "react";
-import { useLocation, useRouter } from "../components/router";
+import { FC } from "react";
+import { useRouter } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
+import { useAppState } from "../hooks/useAppState";
 
 export const BASE_NOTIFICATION_SCREEN_KEY = "BASE_NOTIFICATION_SCREEN_KEY";
 
 export const BaseNotificationScreen: FC = () => {
   const { params: screenParams } = useRouter();
-  const location = useLocation();
-
-  const handleGoback = useCallback(() => {
-    location.goBack();
-  }, [location.goBack]);
+  const { handleClose } = useAppState();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params = screenParams as any;
@@ -27,7 +24,7 @@ export const BaseNotificationScreen: FC = () => {
           </p>
         }
         isBack={false}
-        onCloseModal={handleGoback}
+        onCloseModal={handleClose}
       />
       <div className="content sm:py-[0px] py-[5%]">
         <div className="base-welcome-screen w-full">
