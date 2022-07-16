@@ -125,7 +125,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
       const screen = screens.find((screen) => screen.key === key);
 
       if (!screen) {
-        throw new Error(`${NOT_FOUND_CONTEXT_SCREEN} - ${screen}`);
+        throw new Error(`${NOT_FOUND_CONTEXT_SCREEN} - ${key} - ${screen}`);
       }
 
       /**
