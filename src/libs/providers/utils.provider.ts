@@ -1,3 +1,5 @@
+import { encode } from "bs58";
+
 /**
  * Utils provider provides utilities functions
  */
@@ -47,5 +49,13 @@ export class UtilsProvider {
       walletAddress.length - 3,
       walletAddress.length
     )}`;
+  }
+
+  /**
+   * The function to randomize a string based on base58 hash algorithm
+   */
+  public randomize(): string {
+    const seed = new Date().getUTCMilliseconds().toString();
+    return encode(new TextEncoder().encode(seed));
   }
 }

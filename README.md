@@ -21,67 +21,104 @@ Please see the demo [here](https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connec
 # Usages
 
 There is three main flow usage of SDK
+
 1. Login flow
 
 ```ts
-await init("uid", {
-  chainType: Adapters.ChainType.ALL,
-  networkType:
-    Providers.NetworkType.testnet ||
-    Providers.NetworkType.mainnet,
-  disableCloseButton: true,
-  onClose: () => {
-    handlerUser();
-  },
-  onAuth: async () => {
-    handlerUser();
-  },
+import {
+    init,
+    closeModal,
+    openModal,
+    Adapters,
+    Providers,
+    Router
+} from "@ancient8/connect"
+
+await init({
+    chainType: Adapters.ChainType.ALL,
+    networkType:
+        Providers.NetworkType.testnet ||
+        Providers.NetworkType.mainnet,
+    disableCloseButton: true,
+    onClose: async () => {
+        // do somthing
+    },
+    onAuth: () => {
+        // do something
+    },
+    onConnected: () => {
+        // do something
+    }
 }).then(() => {
-  openModal();
+    openModal();
 });
 ```
 
 2. Add wallet flow
+
 ```ts
-await init("uid", {
-  chainType: Adapters.ChainType.ALL,
-  networkType:
-    Providers.NetworkType.testnet ||
-    Providers.NetworkType.mainnet,
-  initAppFlow: Router.AppFlow.ADD_WALLET_FLOW,
-  cleanWalletCache: true,
-  onClose: async () => {
-    const a8Connect = getA8ConnectInstance();
-    await a8Connect.fetchSession();
-    const { currentSession } = a8Connect;
-    try {
-      const authEntities = await currentSession?.User.getAuthEntities();
-      dispatch({ type: "SET_AUTH_ENTITIES", payload: authEntities });
-    } catch {}
-  },
+import {
+    init,
+    closeModal,
+    openModal,
+    Adapters,
+    Providers,
+    Router
+} from "@ancient8/connect"
+
+await init({
+    chainType: Adapters.ChainType.ALL,
+    networkType:
+        Providers.NetworkType.testnet ||
+        Providers.NetworkType.mainnet,
+    initAppFlow: Router.AppFlow.ADD_WALLET_FLOW,
+    cleanWalletCache: true,
+    onClose: async () => {
+        // do somthing
+    },
+    onAuth: () => {
+        // do something
+    },
+    onConnected: () => {
+        // do something
+    }
 }).then(() => {
-  openModal();
+    openModal();
 });
 ```
 
 3. Lost wallet flow
+
 ```ts
-const handleInit = async () => {
-await init("uid", {
-  chainType: Adapters.ChainType.ALL,
-  networkType:
-    Providers.NetworkType.testnet ||
-    Providers.NetworkType.mainnet,
-  initAppFlow: Router.AppFlow.LOST_WALLET_FLOW,
-  withCredential: authToken as string,
-  cleanWalletCache: true,
-  onClose: async () => {
-    router.push("/login");
-  },
+import {
+    init,
+    closeModal,
+    openModal,
+    Adapters,
+    Providers,
+    Router
+} from "@ancient8/connect"
+
+await init({
+    chainType: Adapters.ChainType.ALL,
+    networkType:
+        Providers.NetworkType.testnet ||
+        Providers.NetworkType.mainnet,
+    initAppFlow: Router.AppFlow.LOST_WALLET_FLOW,
+    withCredential: authToken as string,
+    cleanWalletCache: true,
+    onClose: async () => {
+        // do somthing
+    },
+    onAuth: () => {
+        // do something
+    },
+    onConnected: () => {
+        // do something
+    }
 }).then(() => {
-  openModal();
+    openModal();
 });
-};
 ```
 
 # Notes

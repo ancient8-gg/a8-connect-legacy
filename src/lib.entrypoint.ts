@@ -1,4 +1,5 @@
 import { A8Connect, A8ConnectInitOptions } from "./lib.container";
+import { UtilsProvider } from "./libs/providers";
 
 let a8ConnectInstance: A8Connect;
 
@@ -13,14 +14,18 @@ export const getA8ConnectInstance = () => {
 /**
  * Init an A8Connect instance.
  * The function has its own boundary context.
- * @param rootDOMId
  * @param options
  */
-export const init = (rootDOMId: string, options: A8ConnectInitOptions) => {
+export const init = (options: A8ConnectInitOptions) => {
   /**
    * Destroy the old node if possible
    */
   a8ConnectInstance?.destroy();
+
+  /**
+   * Randomize root node id
+   */
+  const rootDOMId = new UtilsProvider().randomize();
 
   /**
    * Initialize new instance

@@ -10,7 +10,7 @@ import {
 if (document) {
   document.onreadystatechange = function () {
     if (document.readyState == "complete") {
-      init("a8-connect", {
+      init({
         disableCloseButton: false,
         cleanWalletCache: true,
         networkType: Providers.NetworkType.testnet,

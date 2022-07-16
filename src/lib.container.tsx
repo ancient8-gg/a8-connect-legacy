@@ -103,8 +103,12 @@ export class A8Connect {
     const rootDOM = document.getElementById(rootSelectorId);
 
     if (!rootDOM) {
-      // Or throw error
-      throw new Error(`Root document #${rootSelectorId} not found`);
+      /**
+       * Initialize dom node
+       */
+      const dom = document.createElement("div");
+      dom.setAttribute("id", rootSelectorId);
+      document.body.appendChild(dom);
     }
 
     this.rootSelectorId = rootSelectorId;
@@ -196,6 +200,11 @@ export class A8Connect {
      */
     this.rootNode?.unmount();
     this.rootNode = null;
+
+    /**
+     * Remove root element
+     */
+    document.getElementById(this.rootSelectorId)?.remove();
   }
 
   /**
