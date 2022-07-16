@@ -22,13 +22,15 @@ import AvaxChain from "../assets/images/2x_avax_evm_chain.png";
 import ArbitrumChain from "../assets/images/2x_abitrum_evm_chain.png";
 import SolChainPreviewIcon from "../assets/images/2x_solana_welcome.png";
 import { Notification } from "../components/notification/notification";
+import { NetworkType } from "../libs/providers";
 
 export const BASE_WALLET_SELECT_SCREEN_KEY = "BASE_WALLET_SELECT_SCREEN";
 
 export const BaseWalletSelect: FC = () => {
   const { chainType, getAdapters, setWalletName, setChainType } = useWallet();
   const { userInfo } = useSession();
-  const { handleClose, desiredChainType, currentAppFlow } = useAppState();
+  const { handleClose, desiredChainType, currentAppFlow, networkType } =
+    useAppState();
   const location = useLocation();
 
   const handleClickWallet = (walletName: string) => {
@@ -194,7 +196,14 @@ export const BaseWalletSelect: FC = () => {
             <div className="bottom-container my-[30px]">
               <p className="text-center text-[14px] text-primary underline">
                 {currentAppFlow === AppFlow.LOGIN_FLOW && (
-                  <a href="https://ancient8.gg/profile/lost-wallet">
+                  <a
+                    href={
+                      networkType === NetworkType.mainnet
+                        ? "https://ancient8.gg/profile/lost-wallet"
+                        : "https://ancient8.dev/profile/lost-wallet"
+                    }
+                    target={"_blank"}
+                  >
                     Lost your wallet?
                   </a>
                 )}
