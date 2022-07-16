@@ -7,8 +7,9 @@
 @import "generated";
 
 div.a8-connect-container {
-  @include tailwind;
-
   font-family: 'SVN-GilroyMedium'!important;
   line-height: 1.5!important;
+  font-weight: 700!important;
+
+  @include tailwind;
 }
