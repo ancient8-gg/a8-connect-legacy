@@ -33,7 +33,7 @@ export const BaseWelcomeAddWallet: FC = () => {
   return (
     <div>
       <ModalHeader
-        isBack={true}
+        isBack={false}
         onCloseModal={handleClose}
         goBack={null}
         title={"ADD WALLET"}
