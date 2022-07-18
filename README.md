@@ -40,7 +40,7 @@ await init({
         Providers.NetworkType.testnet ||
         Providers.NetworkType.mainnet,
     disableCloseButton: true,
-    onClose: async () => {
+    onClose: () => {
         // do somthing
     },
     onAuth: (payload) => {
@@ -75,7 +75,7 @@ await init({
         Providers.NetworkType.mainnet,
     initAppFlow: Router.AppFlow.ADD_WALLET_FLOW,
     cleanWalletCache: true,
-    onClose: async () => {
+    onClose: () => {
         // do somthing
     },
     onAuth: (payload) => {
@@ -111,7 +111,7 @@ await init({
     initAppFlow: Router.AppFlow.LOST_WALLET_FLOW,
     withCredential: authToken as string,
     cleanWalletCache: true,
-    onClose: async () => {
+    onClose: () => {
         // do somthing
     },
     onAuth: (payload) => {
