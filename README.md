@@ -43,12 +43,14 @@ await init({
     onClose: async () => {
         // do somthing
     },
-    onAuth: () => {
+    onAuth: (payload) => {
         // do something
+        console.log({payload});
     },
-    onConnected: () => {
+    onConnected: (payload) => {
         // do something
-    }
+        console.log({payload});
+    },
 }).then(() => {
     openModal();
 });
@@ -76,12 +78,14 @@ await init({
     onClose: async () => {
         // do somthing
     },
-    onAuth: () => {
+    onAuth: (payload) => {
         // do something
+        console.log({payload});
     },
-    onConnected: () => {
+    onConnected: (payload) => {
         // do something
-    }
+        console.log({payload});
+    },
 }).then(() => {
     openModal();
 });
@@ -110,12 +114,14 @@ await init({
     onClose: async () => {
         // do somthing
     },
-    onAuth: () => {
+    onAuth: (payload) => {
         // do something
+        console.log({payload});
     },
-    onConnected: () => {
+    onConnected: (payload) => {
         // do something
-    }
+        console.log({payload});
+    },
 }).then(() => {
     openModal();
 });
