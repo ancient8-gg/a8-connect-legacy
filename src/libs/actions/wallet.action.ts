@@ -211,6 +211,7 @@ export class WalletAction {
    * Restore connection
    */
   async restoreConnection() {
+    console.log("start restoreConnection");
     const connectedWalletData = JSON.parse(
       this.storageProvider.getItem(CONNECTED_WALLET_KEY, null)
     );
@@ -222,14 +223,19 @@ export class WalletAction {
 
     const { walletName } = connectedWalletData;
 
-    // NOw check if the previous wallet is still connected
     const adapter = this.getWalletAdapter(walletName);
 
+    /**
+     * Now to check for timeout
+     */
+    // Check if the previous wallet is still connected
     if (await adapter.isConnected()) {
-      // If connected then we return the current wallet address
+      /**
+       *  If connected then we return the current wallet address
+       */
       return this.connectWallet(walletName);
     }
-
+    console.log("stop restoreConnection");
     return null;
   }
 

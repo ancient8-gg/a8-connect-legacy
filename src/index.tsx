@@ -1,11 +1,4 @@
-import {
-  Adapters,
-  closeModal,
-  init,
-  openModal,
-  Providers,
-  Router,
-} from "./lib.entrypoint";
+import { Adapters, init, openModal, Providers, Router } from "./lib.entrypoint";
 
 if (document) {
   document.onreadystatechange = function () {
@@ -15,10 +8,7 @@ if (document) {
         cleanWalletCache: true,
         networkType: Providers.NetworkType.testnet,
         chainType: Adapters.ChainType.EVM,
-        initAppFlow: Router.AppFlow.LOGIN_FLOW,
-        onClose: () => {
-          closeModal();
-        },
+        initAppFlow: Router.AppFlow.LOST_WALLET_FLOW,
       }).then(() => {
         openModal();
       });

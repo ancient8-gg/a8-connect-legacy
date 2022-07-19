@@ -1,6 +1,8 @@
 import { CSSProperties, FC, ReactNode } from "react";
 import ReactModal from "react-modal";
 
+import { useAppState } from "../../hooks/useAppState";
+
 import "./toast.modal.scoped.scss";
 
 export interface ModalProps {
@@ -25,6 +27,8 @@ export const customStyles = {
 };
 
 const Modal: FC<ModalProps> = ({ modalIsOpen, children }: ModalProps) => {
+  const { containerSelector } = useAppState();
+
   return (
     <ReactModal
       ariaHideApp={false}
@@ -32,7 +36,7 @@ const Modal: FC<ModalProps> = ({ modalIsOpen, children }: ModalProps) => {
       style={customStyles}
       contentLabel="UID Toast Modal"
       portalClassName={"a8-connect-container"}
-      parentSelector={() => document.getElementById("a8-connect-container")}
+      parentSelector={() => document.getElementById(containerSelector)}
     >
       <div className={"sdk-toast-container w-[283px] bg-[#979797]"}>
         {children}

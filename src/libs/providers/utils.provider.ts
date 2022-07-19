@@ -41,6 +41,44 @@ export class UtilsProvider {
   }
 
   /**
+   * The function to provide a wrapper to return null if the process duration exceeds a certain msec.
+   * @param handler
+   * @param msec
+   */
+  public withTimeout<Result>(
+    handler: () => Result | Promise<Result>,
+    msec: number
+  ): Promise<Result | null> {
+    return new Promise(async (resolve) => {
+      /**
+       * Assign a random value to make sure it's unique
+       */
+      const randomizeValue = this.randomize();
+      let result: Result | string = randomizeValue;
+
+      /**
+       * Make a setTimeout to resolve the value
+       */
+      setTimeout(() => {
+        /**
+         * Compare the result to randomize value and return null.
+         */
+        if (result === randomizeValue) {
+          console.log(`Process exceeded ${msec} ms and returned null.`);
+          return resolve(null);
+        }
+      }, msec);
+
+      /**
+       * Assign the expected returned value
+       */
+      result = await handler();
+
+      return resolve(result);
+    });
+  }
+
+  /**
    * The function to collapse the wallet address shorter
    * @param walletAddress
    */

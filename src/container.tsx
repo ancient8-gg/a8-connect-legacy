@@ -13,6 +13,7 @@ import "./index.scss";
 const A8Connect: FC<{
   networkType: NetworkType;
   chainType: ChainType;
+  containerSelector: string;
   disableCloseButton?: boolean;
   initAppFlow?: AppFlow;
   onClose?: () => void;
@@ -28,26 +29,26 @@ const A8Connect: FC<{
   onError,
   onAuth,
   onConnected,
+  containerSelector,
 }) => {
   return (
-    <div className="layout" id={"a8-connect-container"}>
-      <AppStateProvider
-        disableCloseButton={disableCloseButton}
-        desiredChainType={chainType}
-        networkType={networkType}
-        initAppFlow={initAppFlow}
-        onClose={onClose}
-        onError={onError}
-        onAuth={onAuth}
-        onConnected={onConnected}
-      >
-        <SessionProvider>
-          <WalletProvider>
-            <RouterProvider />
-          </WalletProvider>
-        </SessionProvider>
-      </AppStateProvider>
-    </div>
+    <AppStateProvider
+      containerSelector={containerSelector}
+      disableCloseButton={disableCloseButton}
+      desiredChainType={chainType}
+      networkType={networkType}
+      initAppFlow={initAppFlow}
+      onClose={onClose}
+      onError={onError}
+      onAuth={onAuth}
+      onConnected={onConnected}
+    >
+      <SessionProvider>
+        <WalletProvider>
+          <RouterProvider />
+        </WalletProvider>
+      </SessionProvider>
+    </AppStateProvider>
   );
 };
 

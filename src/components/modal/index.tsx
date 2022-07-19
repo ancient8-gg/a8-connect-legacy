@@ -7,6 +7,8 @@ import { ReactComponent as BottomGradientBorder } from "../../assets/images/bott
 
 import "./index.scoped.scss";
 
+import { useAppState } from "../../hooks/useAppState";
+
 export interface ModalProps {
   containerClassName?: string;
   modalIsOpen: boolean;
@@ -35,6 +37,8 @@ export const Modal: FC<ModalProps> = ({
   children,
   contentStyle,
 }: ModalProps) => {
+  const { containerSelector } = useAppState();
+
   return (
     <ReactModal
       className={"w-full h-full"}
@@ -43,7 +47,7 @@ export const Modal: FC<ModalProps> = ({
       style={customStyles}
       contentLabel="UID Modal"
       portalClassName={"a8-connect-container"}
-      parentSelector={() => document.getElementById("a8-connect-container")}
+      parentSelector={() => document.getElementById(containerSelector)}
     >
       <div className={"absolute md:h-auto md:w-[378px] w-full h-full"}>
         <div className="w-full">

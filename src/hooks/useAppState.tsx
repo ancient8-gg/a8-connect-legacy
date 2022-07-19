@@ -12,9 +12,14 @@ import { OnAuthPayload } from "./useSession";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 import { ChainType } from "../libs/adapters";
 import { AppFlow } from "../components/router";
-import { NetworkType, RegistryProvider } from "../libs/providers";
+import {
+  NetworkType,
+  RegistryProvider,
+  UtilsProvider,
+} from "../libs/providers";
 
 interface AppStateContextProviderProps {
+  containerSelector: string;
   onClose?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
@@ -48,6 +53,7 @@ interface AppStateContextProvider {
   networkType: NetworkType;
   initAppFlow: AppFlow;
   detectAppFlow: (isUserLoggedIn: boolean) => AppFlow;
+  containerSelector: string;
 }
 
 const AppStateContext = createContext<AppStateContextProvider>(null);
@@ -66,6 +72,9 @@ export const AppStateProvider: FC<
 
   // Read only configurations
   const [initAppFlow] = useState(props.initAppFlow);
+  const [containerSelector] = useState(
+    `${props.containerSelector}${new UtilsProvider().randomize()}`
+  );
   const [disableCloseButton] = useState(!!props.disableCloseButton || false);
   const [desiredChainType] = useState(props.desiredChainType || ChainType.ALL);
   const [networkType] = useState(props.networkType || NetworkType.mainnet);
@@ -177,9 +186,12 @@ export const AppStateProvider: FC<
         setCurrentAppFlow,
         initAppFlow,
         detectAppFlow,
+        containerSelector,
       }}
     >
-      {props.children}
+      <div className="layout" id={containerSelector}>
+        {props.children}
+      </div>
     </AppStateContext.Provider>
   );
 };

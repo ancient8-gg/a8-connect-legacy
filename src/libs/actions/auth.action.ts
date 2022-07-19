@@ -21,10 +21,6 @@ export class AuthAction extends OffChainAction {
    * The function to remove credential
    */
   async removeCredential() {
-    try {
-      await this.logout();
-    } catch {}
-
     this.storageProvider.removeItem("jwt");
   }
 
@@ -128,6 +124,6 @@ export class AuthAction extends OffChainAction {
    */
   async logout(): Promise<void> {
     await this.authProvider.logout();
-    this.storageProvider.removeItem("jwt");
+    this.removeCredential();
   }
 }

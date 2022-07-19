@@ -5,6 +5,7 @@ import { ConnectSessionDto, Providers, Entities } from "./types";
 import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
 import { OnAuthPayload } from "./hooks/useSession";
 import { AppFlow } from "./components/router";
+import { UtilsProvider } from "./libs/providers";
 
 /**
  * A8Connect init explanations
@@ -145,6 +146,7 @@ export class A8Connect {
      */
     this.rootNode.render(
       <A8ConnectContainer
+        containerSelector={this.rootSelectorId}
         disableCloseButton={options.disableCloseButton}
         networkType={options.networkType}
         chainType={options.chainType}
@@ -216,7 +218,12 @@ export class A8Connect {
      * Restore wallet connection first
      */
     try {
-      await this.currentSession.Wallet.restoreConnection();
+      await new UtilsProvider().withTimeout<string>(
+        this.currentSession.Wallet.restoreConnection.bind(
+          this.currentSession.Wallet
+        ),
+        10000
+      );
       const walletSession =
         await this.currentSession.Wallet.getConnectedSession();
       this.onConnected(walletSession);
