@@ -38,24 +38,45 @@ export const SignWalletLostWalletScreen: FC = () => {
         await authAction.resetWithNewWallet({ type, credential });
         return push(BASE_NOTIFICATION_SCREEN_KEY, {
           params: {
+            isBack: false,
+            disableCloseButton: false,
             status: 1,
             title: "Successful!",
-            description: `You have successfully added your new wallet.
-          Wallet: <span class="text-[#2EB835]">${utilsProvider.makeWalletAddressShorter(
-            walletAddress
-          )}</span>`,
+            showLoginButton: true,
+            description: `You have successfully added your new wallet. Wallet: <span class="text-[#2EB835]">${utilsProvider.makeWalletAddressShorter(
+              walletAddress
+            )}</span> `,
           },
         });
       } catch (err: unknown) {
         if (err.toString().includes("AUTH::AUTH_ENTITY::DUPLICATED_WALLET")) {
           return push(BASE_NOTIFICATION_SCREEN_KEY, {
             params: {
-              status: 0,
-              title: "Failed to add wallet",
+              isBack: true,
+              disableCloseButton: true,
+              status: 2,
+              title: "ADD WALLET",
               description: `The <span class="text-[#2EB835]">${utilsProvider.makeWalletAddressShorter(
                 walletAddress
               )}</span> wallet you selected is already connected to another UID. 
+              <br/>
+              <br/>
               <p> Please select another wallet. </p>`,
+            },
+          });
+        }
+
+        if (
+          err.toString().includes("ERROR CODE: 401") ||
+          err.toString().includes("Credentials is not available")
+        ) {
+          return push(BASE_NOTIFICATION_SCREEN_KEY, {
+            params: {
+              isBack: false,
+              disableCloseButton: false,
+              status: 0,
+              title: "Fail to add wallet!",
+              description: `The link is expired, please resend the request to get a new link.`,
             },
           });
         }

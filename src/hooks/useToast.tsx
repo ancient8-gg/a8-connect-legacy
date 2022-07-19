@@ -71,7 +71,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
         <p className={`text-[20px] bold-[100]`} style={{ color: titleColor }}>
           {title}
         </p>
-        <p className="text-[#FFFFFF] mt-[10px] text-[16px] bold-[100]">
+        <p className="text-[#FFFFFF] mt-[10px] text-[16px] bold-[100] opacity-[0.75]">
           {description}
         </p>
       </ToastModal>

@@ -8,7 +8,6 @@ import { useSession } from "../hooks/useSession";
 import { useLocation } from "../components/router";
 import { ChainType } from "../libs/adapters";
 import { getAuthAction } from "../libs/actions";
-import { useToast } from "../hooks/useToast";
 import { getUtilsProvider } from "../libs/providers";
 import { BASE_NOTIFICATION_SCREEN_KEY } from "./base-notification.screen";
 
@@ -22,17 +21,20 @@ export const SignWalletAddWalletScreen: FC = () => {
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const authAction = getAuthAction();
   const utilsProvider = getUtilsProvider();
-  const toast = useToast();
 
   const handleOnSigned = useCallback(
     async (signature: string) => {
       if (chainType === ChainType.ALL) return;
       if (authEntities.length >= 10) {
-        toast.error(
-          "Failed to add wallet!",
-          "You can only add a maximum of 10 wallets to your UID."
-        );
-        return;
+        return push(BASE_NOTIFICATION_SCREEN_KEY, {
+          params: {
+            isBack: false,
+            disableCloseButton: false,
+            status: 0,
+            title: "Fail to add wallet!",
+            description: `<p class="w-[70%] mx-auto">You can add maximum 10 wallets to an UID.</p>`,
+          },
+        });
       }
 
       const credential: WalletCredentialAuthDto = {
@@ -49,23 +51,29 @@ export const SignWalletAddWalletScreen: FC = () => {
         await authAction.connectWallet({ type, credential });
         return push(BASE_NOTIFICATION_SCREEN_KEY, {
           params: {
+            isBack: false,
+            disableCloseButton: false,
             status: 1,
             title: "Successful!",
-            description: `You have successfully added your new wallet.
-            Wallet: <span class="text-[#2EB835]">${utilsProvider.makeWalletAddressShorter(
+            showLoginButton: false,
+            description: `You have successfully added your new wallet. Wallet: <span class="text-[#2EB835]">${utilsProvider.makeWalletAddressShorter(
               walletAddress
-            )}</span>`,
+            )}</span> `,
           },
         });
       } catch (err: unknown) {
         if (err.toString().includes("AUTH::AUTH_ENTITY::DUPLICATED_WALLET")) {
           return push(BASE_NOTIFICATION_SCREEN_KEY, {
             params: {
-              status: 0,
-              title: "Failed to add wallet",
+              isBack: true,
+              disableCloseButton: true,
+              status: 2,
+              title: "ADD WALLET",
               description: `The <span class="text-[#2EB835]">${utilsProvider.makeWalletAddressShorter(
                 walletAddress
               )}</span> wallet you selected is already connected to another UID. 
+              <br/>
+              <br/>
               <p> Please select another wallet. </p>`,
             },
           });

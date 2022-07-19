@@ -20,7 +20,7 @@ export class AuthAction extends OffChainAction {
   /**
    * The function to remove credential
    */
-  async removeCredential() {
+  removeCredential() {
     this.storageProvider.removeItem("jwt");
   }
 

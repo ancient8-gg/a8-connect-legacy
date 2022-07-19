@@ -9,6 +9,7 @@ import { BASE_WELCOME_SCREEN_KEY } from "./base-welcome.screen";
 import { BASE_WELCOME_ADD_WALLET_SCREEN_KEY } from "./base-welcome-add-wallet.screen";
 import { BASE_WELCOME_LOST_WALLET_SCREEN_KEY } from "./base-welcome-lost-wallet.screen";
 import { ChainType } from "../libs/adapters";
+import { BASE_NOTIFICATION_SCREEN_KEY } from "./base-notification.screen";
 
 export const BUFFER_LOADING_APP_SCREEN_KEY = "BUFFER_LOADING_APP_SCREEN";
 
@@ -19,6 +20,7 @@ export const BufferLoadingAppScreen: FC = () => {
     isAppReady,
     currentAppFlow,
     detectAppFlow,
+    initAppFlow,
   } = useAppState();
 
   const {
@@ -79,6 +81,24 @@ export const BufferLoadingAppScreen: FC = () => {
      * Do nothing if screen state isn't ready
      */
     if (!screenStateReady) return;
+
+    /**
+     * Prioritize redirecting to error screen
+     */
+    if (
+      currentAppFlow !== initAppFlow &&
+      initAppFlow === AppFlow.LOST_WALLET_FLOW
+    ) {
+      return push(BASE_NOTIFICATION_SCREEN_KEY, {
+        params: {
+          isBack: false,
+          disableCloseButton: false,
+          status: 0,
+          title: "Fail to add wallet!",
+          description: `The link is expired, please resend the request to get a new link.`,
+        },
+      });
+    }
 
     /**
      * Prioritize redirecting to add lost wallet screen

@@ -8,6 +8,7 @@ export const ModalHeader: FC<{
   onCloseModal?: () => void;
   goBack?: () => void;
   title?: string | ReactNode;
+  disableCloseButton?: boolean;
 }> = (props) => {
   const { disableCloseButton } = useAppState();
 
@@ -26,7 +27,7 @@ export const ModalHeader: FC<{
         {props.title && <div className="text-[16px]">{props.title}</div>}
       </div>
       <div className="flex-1">
-        {!disableCloseButton && (
+        {!props.disableCloseButton && !disableCloseButton && (
           <button
             onClick={() => props.onCloseModal()}
             className="float-right text-primary-super text-[#2EB835] text-[16px]"

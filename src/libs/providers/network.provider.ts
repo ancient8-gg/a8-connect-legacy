@@ -41,7 +41,12 @@ export class NetworkProvider {
       jsonData = await resp.json();
     } catch {}
 
-    if (!resp.ok) throw new Error((jsonData as ErrorResponse)?.errorMessage);
+    if (!resp.ok)
+      throw new Error(
+        `${(jsonData as ErrorResponse)?.errorMessage} - ERROR CODE: ${
+          (jsonData as ErrorResponse)?.statusCode
+        }`
+      );
     return jsonData as T;
   }
 }

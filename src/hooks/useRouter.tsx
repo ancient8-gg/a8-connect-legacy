@@ -94,7 +94,6 @@ export const RouterProvider: FC<ProviderProps> = () => {
 
 export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   const { screens, screenPipe, setPipe, setParams } = useRouter();
-  const [goBackCallback, setGoBackCallback] = useState(null);
 
   const isBack = useMemo(() => {
     return (
@@ -103,19 +102,17 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
     );
   }, [screenPipe]);
 
-  const goBack = useCallback(() => {
-    const _pipe = [...screenPipe];
-
-    _pipe.pop();
-
-    setPipe(_pipe);
-  }, [screenPipe, setPipe]);
-
-  const goBackWithCallback = useCallback(() => {
-    goBack();
-
-    goBackCallback && goBackCallback();
-  }, [goBack, goBackCallback]);
+  const goBack = useCallback(
+    (skip?: number) => {
+      const _skip = skip || 1;
+      const _pipe = screenPipe.slice(
+        0,
+        screenPipe.length - _skip < 1 ? 1 : screenPipe.length - _skip
+      );
+      setPipe(_pipe);
+    },
+    [screenPipe, setPipe]
+  );
 
   const push = useCallback(
     (key: string, payload?: LocationPushPayload) => {
@@ -149,10 +146,8 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   return (
     <LocationContext.Provider
       value={{
-        setGoBackCallback,
         goBack,
         push,
-        goBackWithCallback,
         isBack,
       }}
     >

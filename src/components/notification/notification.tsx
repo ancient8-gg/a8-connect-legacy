@@ -39,7 +39,7 @@ export const Notification: FC<{
               />
             </div>
           </div>
-          <div className={"flex-1"}>
+          <div className={"flex-1 italic"}>
             <div>{props.description}</div>
           </div>
         </div>

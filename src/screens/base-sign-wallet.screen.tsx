@@ -63,7 +63,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
       <ModalHeader
         title={title.toUpperCase()}
         isBack={location.isBack}
-        goBack={location.goBack}
+        goBack={() => location.goBack(2)}
         onCloseModal={handleClose}
       />
       <div className="content sm:py-[0px] py-[5%]">

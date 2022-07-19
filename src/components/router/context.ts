@@ -65,12 +65,7 @@ export interface LocationContextObject {
   /**
    * @description Handle go back screen
    */
-  goBack(): void;
-
-  /**
-   * @description Handle go back screen with a callback
-   */
-  goBackWithCallback(callback: () => void): void;
+  goBack(skip?: number): void;
 
   /**
    * @description Handle transit to another screen
@@ -78,12 +73,6 @@ export interface LocationContextObject {
    * @param payload
    */
   push(key: string, payload?: LocationPushPayload): void;
-
-  /**
-   * The function to set a go back callback
-   * @param func
-   */
-  setGoBackCallback(func: () => void | null): void;
 
   /**
    * The boolean flag to indicate whether the current route is back-able or not
