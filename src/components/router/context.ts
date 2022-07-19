@@ -1,12 +1,19 @@
-import React, { Dispatch, SetStateAction, createContext } from "react";
+import {
+  FunctionComponent,
+  Dispatch,
+  SetStateAction,
+  createContext,
+  ReactNode,
+} from "react";
+import { AppFlow } from "./type";
 
 export interface ProviderProps {
-  children?: React.FunctionComponent | React.ReactNode | JSX.Element;
+  children?: FunctionComponent | ReactNode | JSX.Element;
 }
 
 export interface ScreenType {
   key: string;
-  children: React.FunctionComponent;
+  children: FunctionComponent;
 }
 
 export interface RouterContextObject {
@@ -19,11 +26,6 @@ export interface RouterContextObject {
    * @description Current route path of screens
    * */
   screenPipe: ScreenType[];
-
-  /**
-   * @description Current screen
-   */
-  currentScreen: React.FunctionComponent;
 
   /**
    * @description Screen params
@@ -39,7 +41,7 @@ export interface RouterContextObject {
   /**
    * Init state for router
    */
-  initState: () => void;
+  initState: (appFlow: AppFlow) => void;
 
   /**
    * @description Set screen params

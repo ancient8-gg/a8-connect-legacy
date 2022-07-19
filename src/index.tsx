@@ -14,7 +14,7 @@ if (document) {
         disableCloseButton: false,
         cleanWalletCache: true,
         networkType: Providers.NetworkType.testnet,
-        chainType: Adapters.ChainType.ALL,
+        chainType: Adapters.ChainType.EVM,
         initAppFlow: Router.AppFlow.LOGIN_FLOW,
         onClose: () => {
           closeModal();

@@ -47,7 +47,7 @@ interface AppStateContextProvider {
   currentAppFlow: AppFlow;
   networkType: NetworkType;
   initAppFlow: AppFlow;
-  detectAppFlow: (isUserLoggedIn: boolean) => void;
+  detectAppFlow: (isUserLoggedIn: boolean) => AppFlow;
 }
 
 const AppStateContext = createContext<AppStateContextProvider>(null);
@@ -118,26 +118,26 @@ export const AppStateProvider: FC<
     [props.onError]
   );
 
-  const detectAppFlow = useCallback(
+  const detectAppFlow = useCallback<(userLoggedIn: boolean) => AppFlow>(
     (isUserLoggedIn: boolean) => {
       if (!isUserLoggedIn) {
         setCurrentAppFlow(AppFlow.LOGIN_FLOW);
-        return;
+        return AppFlow.LOGIN_FLOW;
       }
 
       if (initAppFlow === AppFlow.LOST_WALLET_FLOW) {
         setCurrentAppFlow(initAppFlow);
-        return;
+        return AppFlow.LOST_WALLET_FLOW;
       }
 
       if (initAppFlow === AppFlow.ADD_WALLET_FLOW) {
         setCurrentAppFlow(initAppFlow);
-        return;
+        return AppFlow.ADD_WALLET_FLOW;
       }
 
       // fallback to default flow
       setCurrentAppFlow(AppFlow.CONNECT_FLOW);
-      return;
+      return AppFlow.CONNECT_FLOW;
     },
     [initAppFlow]
   );

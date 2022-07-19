@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ModalHeader } from "../components/modal/modal.header";
 import { useAppState } from "../hooks/useAppState";
 import LoadingSpinner from "../components/loading-spinner";
-import { AppFlow, useLocation } from "../components/router";
+import { AppFlow, useLocation, useRouter } from "../components/router";
 import { useSession } from "../hooks/useSession";
 import { useWallet } from "../hooks/useWallet";
 import { BASE_WELCOME_SCREEN_KEY } from "./base-welcome.screen";
@@ -20,12 +20,16 @@ export const BufferLoadingAppScreen: FC = () => {
     currentAppFlow,
     detectAppFlow,
   } = useAppState();
+
   const {
     initState: initWalletState,
     isWalletConnected,
     chainType,
     walletAddress,
   } = useWallet();
+
+  const { initState: initRouterState } = useRouter();
+
   const { initState: initSessionState, authEntities, userInfo } = useSession();
   const { push } = useLocation();
 
@@ -108,7 +112,13 @@ export const BufferLoadingAppScreen: FC = () => {
      * Fallback to default flow
      */
     return push(BASE_WELCOME_SCREEN_KEY);
-  }, [handleClose, currentAppFlow, screenStateReady, shouldAutoCloseModal]);
+  }, [
+    handleClose,
+    currentAppFlow,
+    screenStateReady,
+    shouldAutoCloseModal,
+    push,
+  ]);
 
   const resetAppState = useCallback(async () => {
     /**
@@ -130,10 +140,12 @@ export const BufferLoadingAppScreen: FC = () => {
   const setupAppFlow = useCallback(() => {
     setAppFlowReady(false);
 
-    detectAppFlow(!!userInfo);
+    const appFlow = detectAppFlow(!!userInfo);
+
+    initRouterState(appFlow);
 
     setAppFlowReady(true);
-  }, [userInfo]);
+  }, [userInfo, initRouterState]);
 
   useEffect(() => {
     resetAppState();

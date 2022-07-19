@@ -46,43 +46,41 @@ export const RouterProvider: FC<ProviderProps> = () => {
       return null;
     }
     return screenPipe[screenPipe.length - 1].children;
-  }, [screenPipe, setPipe]);
+  }, [screenPipe, screenPipe.length]);
 
-  const initState = useCallback(() => {
+  const initState = useCallback((appFlow: AppFlow) => {
     setRouterReady(false);
 
-    const screens = [...SCREENS[currentAppFlow]];
+    const screens = [...SCREENS[appFlow]];
 
     setScreens(screens);
 
     setPipe([screens[0]]);
 
-    if (currentAppFlow !== AppFlow.BUFFER_FLOW) {
+    if (appFlow !== AppFlow.BUFFER_FLOW) {
       setRouterReady(true);
     }
-  }, [currentAppFlow]);
+  }, []);
 
-  const layout = useMemo(
-    () => (
+  const layout = useMemo(() => {
+    return (
       <LocationProvider>
         <Modal modalIsOpen={isModalOpen}>
           {CurrentScreen && <CurrentScreen />}
         </Modal>
       </LocationProvider>
-    ),
-    [screenPipe, setPipe]
-  );
+    );
+  }, [screenPipe, CurrentScreen]);
 
   useEffect(() => {
-    initState();
-  }, [currentAppFlow]);
+    initState(currentAppFlow);
+  }, []);
 
   return (
     <RouterContext.Provider
       value={{
         screens,
         screenPipe,
-        currentScreen: CurrentScreen,
         params,
         setParams,
         setPipe,
@@ -96,7 +94,6 @@ export const RouterProvider: FC<ProviderProps> = () => {
 
 export const LocationProvider: FC<ProviderProps> = ({ children }) => {
   const { screens, screenPipe, setPipe, setParams } = useRouter();
-  const { isRouterReady, currentAppFlow } = useAppState();
   const [goBackCallback, setGoBackCallback] = useState(null);
 
   const isBack = useMemo(() => {
@@ -131,7 +128,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
       /**
        * @description Delete current screen before push to new screen
        */
-      const _pipe = [...screenPipe];
+      const _pipe = [...screenPipe.slice()];
       if (payload?.deleted) {
         _pipe.pop();
       }
@@ -146,7 +143,7 @@ export const LocationProvider: FC<ProviderProps> = ({ children }) => {
       _pipe.push(screen);
       setPipe(_pipe);
     },
-    [screenPipe, setPipe, screens, isRouterReady, currentAppFlow]
+    [screenPipe, screens]
   );
 
   return (
