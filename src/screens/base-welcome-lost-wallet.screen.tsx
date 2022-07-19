@@ -50,10 +50,10 @@ export const BaseWelcomeLostWalletScreen: FC = () => {
               Email:
               <span className="text-primary ml-[3px]">{userInfo.email}</span>
             </p>
-            <p className="text-white text-center text-[16px] mt-[20px]">
+            <p className="text-white text-center text-[16px] mt-[50px]">
               Please select desired chain below
             </p>
-            <div className="pt-[50px]">
+            <div className="mt-[10px]">
               <ProviderSelect handleClickChain={handleClickChain} />
             </div>
             <div className="pt-[50px] pb-[20px]">
