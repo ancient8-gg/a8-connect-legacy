@@ -225,17 +225,12 @@ export class WalletAction {
     // NOw check if the previous wallet is still connected
     const adapter = this.getWalletAdapter(walletName);
 
-    // Delay check connected
-    return new Promise((resolve) => {
-      setTimeout(async () => {
-        if (await adapter.isConnected()) {
-          // If connected then we return the current wallet address
-          return this.connectWallet(walletName).then(resolve);
-        }
+    if (await adapter.isConnected()) {
+      // If connected then we return the current wallet address
+      return this.connectWallet(walletName);
+    }
 
-        return resolve(null);
-      }, 1000);
-    });
+    return null;
   }
 
   /**

@@ -103,7 +103,7 @@ export const BufferLoadingAppScreen: FC = () => {
        */
       setTimeout(() => {
         handleClose();
-      }, 300);
+      }, 200);
 
       return;
     }
