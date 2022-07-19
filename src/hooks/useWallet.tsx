@@ -88,7 +88,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
 
     // return wallet address
     return walletSession?.walletAddress;
-  }, [walletName, initState, handleWalletConnected]);
+  }, [walletName, initState]);
 
   const disconnect = () => {
     return walletAction.disconnectWallet();
