@@ -49,7 +49,7 @@ export class UtilsProvider {
     handler: () => Result | Promise<Result>,
     msec: number
   ): Promise<Result | null> {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       /**
        * Assign a random value to make sure it's unique
        */
@@ -69,12 +69,18 @@ export class UtilsProvider {
         }
       }, msec);
 
-      /**
-       * Assign the expected returned value
-       */
-      result = await handler();
-
-      return resolve(result);
+      try {
+        /**
+         * Assign the expected returned value
+         */
+        result = await handler();
+        return resolve(result);
+      } catch (e) {
+        /**
+         * If any errors occur, reserve the errors
+         */
+        return reject(e);
+      }
     });
   }
 

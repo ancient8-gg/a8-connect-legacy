@@ -35,7 +35,7 @@ export const BaseWelcomeLostWalletScreen: FC = () => {
       <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
       <div className="content sm:py-[0px] py-[5%]">
         <div className="base-welcome-screen w-full">
-          <div className="mx-auto w-[350px]">
+          <div className="mx-auto">
             <img src={A8Logo} className="mx-[auto]" />
             <p className="text-center text-primary text-[20px] font-bold">
               WELCOME TO

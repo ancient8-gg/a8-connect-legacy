@@ -19,7 +19,7 @@ import {
   SlopeSolanaWallet,
   SlopeSolanaWalletName,
 } from "../adapters/sol/slope.adapter";
-import { StorageProvider } from "../providers";
+import { StorageProvider, UtilsProvider } from "../providers";
 import { getStorageProvider } from "../providers";
 import { ConnectedWalletPayload } from "../dto/a8-connect-session.dto";
 
@@ -179,7 +179,14 @@ export class WalletAction {
      * Connect new wallet.
      */
     this.ensureWalletIsAvailable();
-    const address = await this.selectedAdapter.connectWallet();
+
+    /**
+     * Connect wallet with timeout wrapper
+     */
+    const address = await new UtilsProvider().withTimeout<string>(
+      this.selectedAdapter.connectWallet.bind(this.selectedAdapter),
+      10000
+    );
 
     /**
      * Persist connect wallet
@@ -211,7 +218,6 @@ export class WalletAction {
    * Restore connection
    */
   async restoreConnection() {
-    console.log("start restoreConnection");
     const connectedWalletData = JSON.parse(
       this.storageProvider.getItem(CONNECTED_WALLET_KEY, null)
     );
@@ -235,7 +241,6 @@ export class WalletAction {
        */
       return this.connectWallet(walletName);
     }
-    console.log("stop restoreConnection");
     return null;
   }
 

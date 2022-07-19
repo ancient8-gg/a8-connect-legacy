@@ -27,20 +27,8 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
   }
 
   async connectWallet(): Promise<string | null> {
-    return new Promise(async (resolve, reject) => {
-      let wallet: string = null;
-
-      setTimeout(() => {
-        if (!wallet) {
-          return reject(
-            new Error(`Timeout when connect to ${this.name} wallet`)
-          );
-        }
-      }, 10000);
-
-      [wallet] = await this.injectedProvider.connect<string[]>();
-      return resolve(wallet || null);
-    });
+    const [wallet] = await this.injectedProvider.connect<string[]>();
+    return wallet || null;
   }
 
   disconnectWallet(): Promise<void> {
@@ -64,28 +52,14 @@ export class Coin98SolanaWallet implements BaseWalletAdapter {
   }
 
   async sign(message: string): Promise<string> {
-    return new Promise(async (resolve, reject) => {
-      let signature: string = null;
-
-      setTimeout(() => {
-        if (!signature) {
-          return reject(
-            new Error(`Timeout when connect to ${this.name} wallet`)
-          );
-        }
-      }, 10000);
-
-      const { signature: response } = await this.injectedProvider.request<
-        Uint8Array[],
-        { signature: string }
-      >({
-        method: "sol_signMessage",
-        params: [new TextEncoder().encode(message)],
-      });
-
-      signature = response;
-
-      return resolve(signature);
+    const { signature } = await this.injectedProvider.request<
+      Uint8Array[],
+      { signature: string }
+    >({
+      method: "sol_signMessage",
+      params: [new TextEncoder().encode(message)],
     });
+
+    return signature;
   }
 }
