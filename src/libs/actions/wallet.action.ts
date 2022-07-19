@@ -286,7 +286,10 @@ export class WalletAction {
   ): Promise<{ signature: string; walletAddress: string; walletName: string }> {
     this.ensureWalletIsAvailable();
     const walletName = this.selectedAdapter.name;
-    const signature = await this.selectedAdapter.sign(message);
+    const signature = await new UtilsProvider().withTimeout<string>(
+      () => this.selectedAdapter.sign.bind(this.selectedAdapter)(message),
+      10000
+    );
     const walletAddress = await this.selectedAdapter.getWalletAddress();
 
     return {
