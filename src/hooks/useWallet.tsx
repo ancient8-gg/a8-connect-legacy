@@ -62,7 +62,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setWalletReady(true);
-    console.log("should stop init wallet state");
     return session;
   }, [onConnected, setWalletReady]);
 

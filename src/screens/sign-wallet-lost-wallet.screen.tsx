@@ -82,7 +82,7 @@ export const SignWalletLostWalletScreen: FC = () => {
         ) : (
           <BaseSignWalletScreen
             title="Sign in"
-            description="Sign message to confirm you own the wallet address - lost wallet flow"
+            description="Sign message to confirm you own the wallet address"
             signedMessage={authChallenge.message}
             onSigned={handleOnSigned}
           />

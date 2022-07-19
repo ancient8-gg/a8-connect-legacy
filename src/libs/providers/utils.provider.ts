@@ -53,18 +53,20 @@ export class UtilsProvider {
       /**
        * Assign a random value to make sure it's unique
        */
-      const randomizeValue = this.randomize();
-      let result: Result | string = randomizeValue;
+      const randomizedValue = this.randomize();
+      let result: Result | string = randomizedValue;
 
       /**
        * Make a setTimeout to resolve the value
        */
       setTimeout(() => {
         /**
-         * Compare the result to randomize value and return null.
+         * Compare the result to randomized value and return null.
          */
-        if (result === randomizeValue) {
-          console.log(`Process exceeded ${msec} ms and returned null.`);
+        if (result === randomizedValue) {
+          console.log(
+            `Process exceeded ${msec} ms and returned null. Process: ${handler}`
+          );
           return resolve(null);
         }
       }, msec);
@@ -76,6 +78,10 @@ export class UtilsProvider {
         result = await handler();
         return resolve(result);
       } catch (e) {
+        /**
+         * Re-assign as rather other value than randomized value
+         */
+        result = null;
         /**
          * If any errors occur, reserve the errors
          */

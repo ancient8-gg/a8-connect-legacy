@@ -27,7 +27,6 @@ export const SignWalletAddWalletScreen: FC = () => {
   const handleOnSigned = useCallback(
     async (signature: string) => {
       if (chainType === ChainType.ALL) return;
-      console.log("length of auth entities", authEntities.length, authEntities);
       if (authEntities.length >= 10) {
         toast.error(
           "Failed to add wallet!",

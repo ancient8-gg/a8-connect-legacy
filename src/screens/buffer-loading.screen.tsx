@@ -75,8 +75,6 @@ export const BufferLoadingAppScreen: FC = () => {
   ]);
 
   const handleNextFlow = useCallback(() => {
-    console.log({ screenStateReady });
-
     /**
      * Do nothing if screen state isn't ready
      */
@@ -109,8 +107,6 @@ export const BufferLoadingAppScreen: FC = () => {
 
       return;
     }
-
-    console.log("should push to BASE_WELCOME_SCREEN_KEY");
 
     /**
      * Fallback to default flow
