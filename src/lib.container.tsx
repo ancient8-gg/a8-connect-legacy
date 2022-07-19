@@ -5,7 +5,7 @@ import { ConnectSessionDto, Providers, Entities } from "./types";
 import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
 import { OnAuthPayload } from "./hooks/useSession";
 import { AppFlow } from "./components/router";
-import { UtilsProvider } from "./libs/providers";
+import { getUtilsProvider } from "./libs/providers";
 
 /**
  * A8Connect init explanations
@@ -218,7 +218,7 @@ export class A8Connect {
      * Restore wallet connection first
      */
     try {
-      await new UtilsProvider().withTimeout<string>(
+      await getUtilsProvider().withTimeout<string>(
         this.currentSession.Wallet.restoreConnection.bind(
           this.currentSession.Wallet
         ),

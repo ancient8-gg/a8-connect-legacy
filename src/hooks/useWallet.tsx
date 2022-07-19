@@ -9,7 +9,7 @@ import { getWalletAction } from "../libs/actions";
 import { BaseWalletAdapter, ChainType } from "../libs/adapters";
 import { useAppState } from "./useAppState";
 import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
-import { UtilsProvider } from "../libs/providers";
+import { getUtilsProvider } from "../libs/providers";
 
 interface WalletContextProps {
   chainType: ChainType;
@@ -44,7 +44,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     let session = null;
 
     try {
-      await new UtilsProvider().withTimeout<string>(
+      await getUtilsProvider().withTimeout<string>(
         walletAction.restoreConnection.bind(walletAction),
         10000
       );

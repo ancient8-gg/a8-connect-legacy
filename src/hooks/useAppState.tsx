@@ -13,9 +13,9 @@ import { ConnectedWalletPayload } from "../libs/dto/a8-connect-session.dto";
 import { ChainType } from "../libs/adapters";
 import { AppFlow } from "../components/router";
 import {
+  getUtilsProvider,
   NetworkType,
   RegistryProvider,
-  UtilsProvider,
 } from "../libs/providers";
 
 interface AppStateContextProviderProps {
@@ -73,7 +73,7 @@ export const AppStateProvider: FC<
   // Read only configurations
   const [initAppFlow] = useState(props.initAppFlow);
   const [containerSelector] = useState(
-    `${props.containerSelector}${new UtilsProvider().randomize()}`
+    `${props.containerSelector}${getUtilsProvider().randomize()}`
   );
   const [disableCloseButton] = useState(!!props.disableCloseButton || false);
   const [desiredChainType] = useState(props.desiredChainType || ChainType.ALL);
