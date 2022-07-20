@@ -5,8 +5,7 @@
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
   "sideEffects": false,
-  "browser": "browser.entrypoint.js",
-  "main": "server.entrypoint.js",
+  "main": "browser.entrypoint.js",
   "types": "browser.entrypoint.d.ts",
   "publishConfig": {
     "access": "public"
