@@ -1,4 +1,10 @@
-import { Adapters, init, openModal, Providers, Router } from "./lib.entrypoint";
+import {
+  Adapters,
+  init,
+  openModal,
+  Providers,
+  Router,
+} from "./exports/browser.entrypoint";
 
 if (document) {
   document.onreadystatechange = function () {

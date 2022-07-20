@@ -1,5 +1,5 @@
-import { A8Connect, A8ConnectInitOptions } from "./lib.container";
-import { UtilsProvider } from "./libs/providers";
+import { A8Connect, A8ConnectInitOptions } from "./browser.container";
+import { UtilsProvider } from "../libs/providers";
 
 let a8ConnectInstance: A8Connect;
 
@@ -65,5 +65,5 @@ if (window) {
 }
 
 export default A8Connect;
-export type { A8Connect, A8ConnectInitOptions } from "./lib.container";
+export type { A8Connect, A8ConnectInitOptions } from "./browser.container";
 export * from "./types";

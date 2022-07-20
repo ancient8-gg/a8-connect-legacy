@@ -8,15 +8,23 @@ rm -rf build/
 # re-create dist
 mkdir dist/
 
-# build
+# build dts
 yarn run gen-dts
-yarn run build-css
-yarn run build:craco
-
-# copy bundles
 cp -r dts/src/* dist/
-cp build/library/lib.entrypoint.js dist/
+cp -r dist/exports/* dist/
+rm -rf dist/exports
+
+### build browser exports ###
+yarn run build-css
+yarn run build:craco:browser
+
+# copy bundles for browser
+cp build/browser/browser.entrypoint.js dist/
 cp build/static/css/*.css dist/lib.css
+
+### build server exports ###
+yarn run build:craco:server
+cp build/server/server.entrypoint.js dist/
 
 # copy resource
 cp README.md dist/

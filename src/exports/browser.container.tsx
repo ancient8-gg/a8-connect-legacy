@@ -1,11 +1,12 @@
 import { createRoot, Root } from "react-dom/client";
-import A8ConnectContainer from "./container";
-import { ChainType, SupportedWallets } from "./libs/adapters";
-import { ConnectSessionDto, Providers, Entities } from "./types";
-import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
-import { OnAuthPayload } from "./hooks/useSession";
-import { AppFlow } from "./components/router";
-import { getUtilsProvider } from "./libs/providers";
+
+import A8ConnectContainer from "../container";
+import { ChainType, SupportedWallets } from "../libs/adapters";
+import { AppFlow } from "../components/router";
+import { OnAuthPayload } from "../hooks/useSession";
+import { getUtilsProvider } from "../libs/providers";
+import { getAuthAction, getUserAction, getWalletAction } from "../libs/actions";
+import { ConnectSessionDto, Entities, Providers } from "./types";
 
 /**
  * A8Connect init explanations

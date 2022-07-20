@@ -4,7 +4,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "typings.d.ts"
+    "typings.d.ts",
+    "exports",
   ],
   "exclude": [
     "node_modules"

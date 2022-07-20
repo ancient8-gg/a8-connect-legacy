@@ -5,8 +5,9 @@
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
   "sideEffects": false,
-  "main": "lib.entrypoint.js",
-  "types": "lib.entrypoint.d.ts",
+  "browser": "browser.entrypoint.js",
+  "main": "server.entrypoint.js",
+  "types": "browser.entrypoint.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -64,7 +65,8 @@
   },
   "scripts": {
     "start:craco": "craco start",
-    "build:craco": "NODE_ENV=production craco build",
+    "build:craco:browser": "NODE_ENV=production MODE=browser craco build",
+    "build:craco:server": "NODE_ENV=production MODE=server craco build",
     "test:craco": "NODE_ENV=test craco test",
     "build": "bash scripts/build.sh",
     "start": "bash scripts/start.sh",
