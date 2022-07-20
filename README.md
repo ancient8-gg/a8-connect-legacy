@@ -34,6 +34,9 @@ import {
     Router
 } from "@ancient8/connect"
 
+// Remember to import css stylesheet
+import "@ancient8/connect/lib.css";
+
 await init({
     chainType: Adapters.ChainType.ALL,
     networkType:
@@ -67,6 +70,9 @@ import {
     Providers,
     Router
 } from "@ancient8/connect"
+
+// Remember to import css stylesheet
+import "@ancient8/connect/lib.css";
 
 await init({
     chainType: Adapters.ChainType.ALL,
@@ -102,6 +108,9 @@ import {
     Providers,
     Router
 } from "@ancient8/connect"
+
+// Remember to import css stylesheet
+import "@ancient8/connect/lib.css";
 
 await init({
     chainType: Adapters.ChainType.ALL,
