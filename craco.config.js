@@ -19,9 +19,9 @@ if (process.env.NODE_ENV === "production") {
       webpack: {
         configure: {
           devtool: false,
-          entry: "src/exports/browser.entrypoint.ts",
+          entry: "src/exports/browser.ts",
           output: {
-            filename: "browser/browser.entrypoint.js",
+            filename: "browser/browser.js",
             library: "A8Connect", // Important
             libraryTarget: "umd", // Important
             umdNamedDefine: true, // Important
@@ -48,9 +48,9 @@ if (process.env.NODE_ENV === "production") {
       webpack: {
         configure: {
           devtool: false,
-          entry: "src/exports/server.entrypoint.ts",
+          entry: "src/exports/server.ts",
           output: {
-            filename: "server/server.entrypoint.js",
+            filename: "server/server.js",
             library: "A8Connect", // Important
             libraryTarget: "umd", // Important
             umdNamedDefine: true, // Important

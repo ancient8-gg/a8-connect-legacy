@@ -19,12 +19,12 @@ yarn run build-css
 yarn run build:craco:browser
 
 # copy bundles for browser
-cp build/browser/browser.entrypoint.js dist/
+cp build/browser/browser.js dist/
 cp build/static/css/*.css dist/lib.css
 
 ### build server exports ###
 yarn run build:craco:server
-cp build/server/server.entrypoint.js dist/
+cp build/server/server.js dist/
 
 # copy resource
 cp README.md dist/

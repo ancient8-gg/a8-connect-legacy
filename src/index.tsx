@@ -4,7 +4,7 @@ import {
   openModal,
   Providers,
   Router,
-} from "./exports/browser.entrypoint";
+} from "./exports/browser";
 
 if (document) {
   document.onreadystatechange = function () {
