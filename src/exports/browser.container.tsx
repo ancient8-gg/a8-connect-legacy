@@ -4,7 +4,7 @@ import A8ConnectContainer from "../container";
 import { ChainType, SupportedWallets } from "../libs/adapters";
 import { AppFlow } from "../components/router";
 import { OnAuthPayload } from "../hooks/useSession";
-import { getUtilsProvider } from "../libs/providers";
+import { getUtilsProvider, RegistryProvider } from "../libs/providers";
 import { getAuthAction, getUserAction, getWalletAction } from "../libs/actions";
 import { ConnectSessionDto, Entities, Providers } from "./types";
 
@@ -74,7 +74,7 @@ export class A8Connect {
    * Root node selector id
    * @private
    */
-  private readonly rootSelectorId: string;
+  private rootSelectorId: string;
 
   /**
    * Root node
@@ -102,18 +102,20 @@ export class A8Connect {
    * @param rootSelectorId: the id selector of the A8Connect Container DOM object.
    */
   constructor(rootSelectorId: string) {
-    const rootDOM = document.getElementById(rootSelectorId);
+    /**
+     * Initialize base registry first
+     */
+    RegistryProvider.initializeBrowserRegistry(
+      window,
+      window.document,
+      window.fetch,
+      window.localStorage
+    );
 
-    if (!rootDOM) {
-      /**
-       * Initialize dom node
-       */
-      const dom = document.createElement("div");
-      dom.setAttribute("id", rootSelectorId);
-      document.body.appendChild(dom);
-    }
-
-    this.rootSelectorId = rootSelectorId;
+    /**
+     * Then initialize root selector
+     */
+    this.initializeRootSelector(rootSelectorId);
   }
 
   /**
@@ -126,7 +128,7 @@ export class A8Connect {
     this.options = options;
 
     // initialize registry first
-    await this.initializeRegistryAndSession();
+    await this.initializeSession();
 
     // restore the session if applicable
     await this.fetchSession();
@@ -170,24 +172,6 @@ export class A8Connect {
   }
 
   /**
-   * The function to replace credential.
-   * Call this function to remove the old credential and replace with a new one.
-   * Set parameter to null to delete current credential.
-   * @param jwt
-   */
-  private async setCredential(jwt: string | null) {
-    /**
-     * Remove current credential
-     */
-    await this.currentSession.Auth.removeCredential();
-
-    /**
-     * Persist new credential
-     */
-    await this.currentSession.Auth.setCredential(jwt);
-  }
-
-  /**
    * The function to close modal.
    */
   closeModal(): void {
@@ -207,6 +191,7 @@ export class A8Connect {
     /**
      * Remove root element
      */
+    const document = RegistryProvider.getInstance().document;
     document.getElementById(this.rootSelectorId)?.remove();
   }
 
@@ -240,10 +225,51 @@ export class A8Connect {
   }
 
   /**
+   * Initialize root selector
+   * @param rootSelectorId
+   * @private
+   */
+  private initializeRootSelector(rootSelectorId: string): void {
+    const document = Providers.RegistryProvider.getInstance().document;
+
+    const rootDOM = document.getElementById(rootSelectorId);
+
+    if (!rootDOM) {
+      /**
+       * Initialize dom node
+       */
+      const dom = document.createElement("div");
+      dom.setAttribute("id", rootSelectorId);
+      document.body.appendChild(dom);
+    }
+
+    this.rootSelectorId = rootSelectorId;
+  }
+
+  /**
+   * The function to replace credential.
+   * Call this function to remove the old credential and replace with a new one.
+   * Set parameter to null to delete current credential.
+   * @param jwt
+   */
+  private async setCredential(jwt: string | null) {
+    /**
+     * Remove current credential
+     */
+    await this.currentSession.Auth.removeCredential();
+
+    /**
+     * Persist new credential
+     */
+    await this.currentSession.Auth.setCredential(jwt);
+  }
+
+  /**
    * The function to initialize root node.
    * @private
    */
   private initializeRootNode() {
+    const document = Providers.RegistryProvider.getInstance().document;
     this.rootNode = createRoot(document.getElementById(this.rootSelectorId));
   }
 
@@ -251,7 +277,7 @@ export class A8Connect {
    * Initialize registry and session.
    * @private
    */
-  private async initializeRegistryAndSession() {
+  private async initializeSession() {
     const options = this.options;
     const registryInstance = Providers.RegistryProvider.getInstance();
 
@@ -259,10 +285,6 @@ export class A8Connect {
      * Initialize registry provider
      */
     registryInstance.networkType = options.networkType;
-    registryInstance.document = window.document;
-    registryInstance.fetch = window.fetch.bind(window);
-    registryInstance.storage = window.localStorage;
-    registryInstance.window = window;
 
     /**
      * Clean wallet cache.

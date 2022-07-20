@@ -32,15 +32,18 @@ export class CookieProvider {
    */
   public getCookie(key: string): string | null {
     const cookieKey = `${BaseUrl[this.networkType]}_${key}`;
-    const cookieArray = this.document.cookie.split(";");
 
-    const foundCookie = cookieArray.find((cookieStr: string) =>
-      cookieStr.includes(cookieKey)
-    );
+    try {
+      const cookieArray = this.document.cookie.split(";");
 
-    if (foundCookie) {
-      return foundCookie.split("=")[1];
-    }
+      const foundCookie = cookieArray.find((cookieStr: string) =>
+        cookieStr.includes(cookieKey)
+      );
+
+      if (foundCookie) {
+        return foundCookie.split("=")[1];
+      }
+    } catch {}
 
     return null;
   }

@@ -4,6 +4,7 @@ import ReactModal from "react-modal";
 import { useAppState } from "../../hooks/useAppState";
 
 import "./toast.modal.scoped.scss";
+import { RegistryProvider } from "../../libs/providers";
 
 export interface ModalProps {
   containerClassName?: string;
@@ -28,6 +29,7 @@ export const customStyles = {
 
 const Modal: FC<ModalProps> = ({ modalIsOpen, children }: ModalProps) => {
   const { containerSelector } = useAppState();
+  const document = RegistryProvider.getInstance().document;
 
   return (
     <ReactModal

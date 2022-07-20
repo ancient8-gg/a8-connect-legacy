@@ -18,6 +18,7 @@ export const BaseUrl = {
 };
 
 type Window = typeof window & { [key: string]: any };
+type ExternalContext = any;
 
 /**
  * The singleton instance that stores the global configuration of A8Connect
@@ -142,5 +143,36 @@ export class RegistryProvider {
     }
 
     return this.instance;
+  }
+
+  /**
+   * Initialize browser registry
+   */
+  public static initializeBrowserRegistry(
+    window: ExternalContext,
+    document: ExternalContext,
+    fetch: ExternalContext,
+    storage: ExternalContext
+  ): void {
+    const registryInstance = RegistryProvider.getInstance();
+
+    registryInstance.window = window;
+    registryInstance.document = document;
+    registryInstance.fetch = fetch.bind(window);
+    registryInstance.storage = storage;
+  }
+
+  /**
+   * Initialize server registry
+   */
+  public static initializeServerRegistry(
+    global: ExternalContext,
+    fetch: ExternalContext,
+    storage: ExternalContext
+  ): void {
+    const registryInstance = RegistryProvider.getInstance();
+
+    registryInstance.fetch = fetch.bind(global);
+    registryInstance.storage = storage;
   }
 }

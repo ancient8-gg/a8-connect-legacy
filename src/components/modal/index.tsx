@@ -8,6 +8,7 @@ import { ReactComponent as BottomGradientBorder } from "../../assets/images/bott
 import "./index.scoped.scss";
 
 import { useAppState } from "../../hooks/useAppState";
+import { RegistryProvider } from "../../libs/providers";
 
 export interface ModalProps {
   containerClassName?: string;
@@ -38,6 +39,7 @@ export const Modal: FC<ModalProps> = ({
   contentStyle,
 }: ModalProps) => {
   const { containerSelector } = useAppState();
+  const document = RegistryProvider.getInstance().document;
 
   return (
     <ReactModal

@@ -14,7 +14,7 @@ if (document) {
         cleanWalletCache: true,
         networkType: Providers.NetworkType.testnet,
         chainType: Adapters.ChainType.EVM,
-        initAppFlow: Router.AppFlow.LOST_WALLET_FLOW,
+        initAppFlow: Router.AppFlow.LOGIN_FLOW,
       }).then(() => {
         openModal();
       });
