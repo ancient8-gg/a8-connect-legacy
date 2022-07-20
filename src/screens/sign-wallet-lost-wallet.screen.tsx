@@ -42,7 +42,8 @@ export const SignWalletLostWalletScreen: FC = () => {
             disableCloseButton: false,
             status: 1,
             title: "Successful!",
-            showLoginButton: true,
+            showSuccessButton: true,
+            successButtonText: "Login now",
             description: `You have successfully added your new wallet. Wallet: <span class="text-[#2EB835]">${utilsProvider.makeWalletAddressShorter(
               walletAddress
             )}</span> `,

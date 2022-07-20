@@ -284,13 +284,27 @@ export class WalletAction {
   async signMessage(
     message: string
   ): Promise<{ signature: string; walletAddress: string; walletName: string }> {
+    /**
+     * make sure the wallet is available
+     */
     this.ensureWalletIsAvailable();
+
     const walletName = this.selectedAdapter.name;
+    /**
+     * Sign with timeout handler
+     */
     const signature = await new UtilsProvider().withTimeout<string>(
       () => this.selectedAdapter.sign.bind(this.selectedAdapter)(message),
       10000
     );
     const walletAddress = await this.selectedAdapter.getWalletAddress();
+
+    /**
+     * Should raise error
+     */
+    if (!signature) {
+      throw new Error("Invalid signature");
+    }
 
     return {
       signature,

@@ -38,9 +38,11 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
 
   const handleClickSign = useCallback(async () => {
     setSigning(true);
+
+    stopHandler();
+    await connect();
+
     try {
-      stopHandler();
-      await connect();
       const signature = await sign(signedMessage);
       onSigned(signature);
     } catch {
@@ -48,6 +50,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
         await connect();
       }, 500);
     }
+
     setSigning(false);
   }, [signedMessage, onSigned, stopHandler]);
 

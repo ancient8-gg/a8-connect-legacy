@@ -4,8 +4,8 @@ import { useLocation, useRouter } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import { useAppState } from "../hooks/useAppState";
 import { PolygonButton } from "../components/button";
-import { BUFFER_LOADING_APP_SCREEN_KEY } from "./buffer-loading.screen";
 import { useSession } from "../hooks/useSession";
+import { useWallet } from "../hooks/useWallet";
 
 export const BASE_NOTIFICATION_SCREEN_KEY = "BASE_NOTIFICATION_SCREEN_KEY";
 
@@ -17,11 +17,19 @@ export const BaseNotificationScreen: FC = () => {
   const { push, goBack } = useLocation();
   const { handleClose } = useAppState();
   const { logout } = useSession();
+  const { disconnect } = useWallet();
 
-  const handleGoToLogin = useCallback(async () => {
-    await logout();
-    return push(BUFFER_LOADING_APP_SCREEN_KEY);
-  }, [logout, push]);
+  const handleNextFlow = useCallback(async () => {
+    try {
+      await logout();
+    } catch {}
+
+    try {
+      await disconnect();
+    } catch {}
+
+    return handleClose();
+  }, [logout, push, handleClose]);
 
   const titleColor = {
     0: "#FF4647",
@@ -55,15 +63,15 @@ export const BaseNotificationScreen: FC = () => {
             />
           </div>
 
-          {params?.showLoginButton && (
+          {params?.showSuccessButton && (
             <div className={"mt-[40px] text-white w-[70%] mx-auto"}>
               <PolygonButton
                 className={"h-[40px] leading-normal py-[5px]"}
                 boxStyle={{ width: "100%" }}
                 containerStyle={{ width: "100%", background: "#12151B" }}
-                onClick={() => handleGoToLogin()}
+                onClick={() => handleNextFlow()}
               >
-                Login now
+                {params?.successButtonText || "Close"}
               </PolygonButton>
             </div>
           )}

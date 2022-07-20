@@ -44,17 +44,28 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     let session = null;
 
     try {
+      /**
+       * Wrap timeout for restoring connection
+       */
       await getUtilsProvider().withTimeout<string>(
         walletAction.restoreConnection.bind(walletAction),
         10000
       );
 
+      /**
+       * Await session
+       */
       session = await walletAction.getConnectedSession();
 
-      setChainType(session.chainType);
-      setWalletAddress(session.walletAddress);
-      setWalletName(session.walletName);
-      setWalletConnected(!!session);
+      /**
+       * Only persist truthy state
+       */
+      if (session.walletAddress) {
+        setChainType(session.chainType);
+        setWalletAddress(session.walletAddress);
+        setWalletName(session.walletName);
+        setWalletConnected(!!session.walletAddress);
+      }
 
       handleWalletConnected(session);
     } catch (e) {

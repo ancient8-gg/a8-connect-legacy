@@ -123,7 +123,7 @@ export class AuthAction extends OffChainAction {
    * Log user out of current session. Also remove access token from storage.
    */
   async logout(): Promise<void> {
-    await this.authProvider.logout();
     this.removeCredential();
+    await this.authProvider.logout();
   }
 }
