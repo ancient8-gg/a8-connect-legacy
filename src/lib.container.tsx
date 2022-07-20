@@ -261,6 +261,7 @@ export class A8Connect {
     registryInstance.document = window.document;
     registryInstance.fetch = window.fetch.bind(window);
     registryInstance.storage = window.localStorage;
+    registryInstance.window = window;
 
     /**
      * Clean wallet cache.

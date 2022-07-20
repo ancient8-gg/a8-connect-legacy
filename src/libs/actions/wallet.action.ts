@@ -19,7 +19,7 @@ import {
   SlopeSolanaWallet,
   SlopeSolanaWalletName,
 } from "../adapters/sol/slope.adapter";
-import { StorageProvider, UtilsProvider } from "../providers";
+import { RegistryProvider, StorageProvider, UtilsProvider } from "../providers";
 import { getStorageProvider } from "../providers";
 import { ConnectedWalletPayload } from "../dto/a8-connect-session.dto";
 
@@ -63,7 +63,7 @@ export class WalletAction {
    * Initialize injected adapters in a public function to callback
    */
   public initializeAdapters() {
-    const windowInstance = window as any;
+    const windowInstance = RegistryProvider.getInstance().window;
 
     /**
      * Initialize Metamask EVM Wallet.

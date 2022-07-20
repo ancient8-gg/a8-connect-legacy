@@ -17,6 +17,8 @@ export const BaseUrl = {
   [NetworkType.mainnet]: "https://ancient8.gg/profile",
 };
 
+type Window = typeof window & { [key: string]: any };
+
 /**
  * The singleton instance that stores the global configuration of A8Connect
  */
@@ -49,6 +51,12 @@ export class RegistryProvider {
    * @private
    */
   private _fetch: typeof window.fetch;
+
+  /**
+   * Window instance
+   * @private
+   */
+  private _window: Window;
 
   /**
    * `Storage` getter.
@@ -108,6 +116,21 @@ export class RegistryProvider {
    */
   set fetch(value: typeof fetch) {
     this._fetch = value;
+  }
+
+  /**
+   * window instance
+   */
+  get window(): Window {
+    return this._window;
+  }
+
+  /**
+   * set window instance
+   * @param value
+   */
+  set window(value: Window) {
+    this._window = value;
   }
 
   /**

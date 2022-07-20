@@ -1,6 +1,7 @@
 import { FC, useCallback } from "react";
 import { BaseWalletAdapter } from "../../libs/adapters";
 import Button from "../button";
+import { RegistryProvider } from "../../libs/providers";
 
 export interface ConnectButtonProps {
   adapter: BaseWalletAdapter;
@@ -15,7 +16,10 @@ export const ConnectButton: FC<ConnectButtonProps> = ({
 }) => {
   const handleClick = useCallback(() => {
     if (!adapter.isInstalled()) {
-      return window.open(`${adapter.downloadUrl}`, "_blank");
+      return RegistryProvider.getInstance().window.open(
+        `${adapter.downloadUrl}`,
+        "_blank"
+      );
     }
 
     return onClick();
