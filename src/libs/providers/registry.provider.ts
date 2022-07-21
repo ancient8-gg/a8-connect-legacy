@@ -18,7 +18,7 @@ export const BaseUrl = {
 };
 
 export type Window = typeof window & { [key: string]: any };
-type ExternalContext = any;
+export type ExternalContext = any;
 
 /**
  * The singleton instance that stores the global configuration of A8Connect
@@ -170,6 +170,7 @@ export class RegistryProvider {
     fetch: ExternalContext,
     storage: ExternalContext
   ): void {
+    console.log({ global, fetch });
     const registryInstance = RegistryProvider.getInstance();
 
     registryInstance.fetch = fetch.bind(global);

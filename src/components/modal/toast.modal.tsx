@@ -40,7 +40,7 @@ const Modal: FC<ModalProps> = ({ modalIsOpen, children }: ModalProps) => {
       portalClassName={"a8-connect-container"}
       parentSelector={() => document.getElementById(containerSelector)}
     >
-      <div className={"sdk-toast-container w-[283px] opacity-[0.3]"}>
+      <div className={"sdk-toast-container w-[283px] opacity-[1]"}>
         {children}
       </div>
     </ReactModal>

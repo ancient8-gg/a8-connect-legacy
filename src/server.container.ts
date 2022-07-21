@@ -6,6 +6,7 @@ import {
 import { getAuthAction, getOAuthAction, getUserAction } from "./libs/actions";
 import { OAuthCredential } from "./libs/dto/connect-oauth.dto";
 import { A8ServerConnectSession } from "./libs/dto/a8-connect-session.dto";
+import { ExternalContext } from "./libs/providers/registry.provider";
 
 /**
  * A8ServerConnect init options.
@@ -31,6 +32,11 @@ export interface A8ServerConnectInitOptions {
    * `withOAuthCredential` to import oauth credential to the storage
    */
   withOAuthCredential?: OAuthCredential;
+
+  /**
+   * `globalContext` provide nodejs global context
+   */
+  globalContext?: typeof global;
 }
 
 /**
@@ -65,6 +71,20 @@ export class A8ServerConnect {
      */
     RegistryProvider.getInstance().networkType = options.networkType;
 
+    if (!!options.globalContext) {
+      /**
+       * Re-assign global context
+       */
+      RegistryProvider.getInstance().window =
+        options.globalContext as ExternalContext;
+
+      /**
+       * Re-assign fetch
+       */
+      RegistryProvider.getInstance().fetch = options.globalContext.fetch.bind(
+        options.globalContext
+      );
+    }
     /**
      * Initialize current session
      */
