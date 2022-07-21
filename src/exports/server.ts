@@ -34,4 +34,4 @@ export type {
   A8ServerConnect,
 } from "./server.container";
 
-export * from "./types";
+export * from "./server.types";

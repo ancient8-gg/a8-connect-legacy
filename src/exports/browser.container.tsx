@@ -6,7 +6,7 @@ import { AppFlow } from "../components/router";
 import { OnAuthPayload } from "../hooks/useSession";
 import { getUtilsProvider, RegistryProvider } from "../libs/providers";
 import { getAuthAction, getUserAction, getWalletAction } from "../libs/actions";
-import { ConnectSessionDto, Entities, Providers } from "./types";
+import { ConnectSessionDto, Entities, Providers } from "./browser.types";
 
 /**
  * A8Connect init explanations

@@ -66,4 +66,4 @@ if (window) {
 
 export default A8Connect;
 export type { A8Connect, A8ConnectInitOptions } from "./browser.container";
-export * from "./types";
+export * from "./browser.types";

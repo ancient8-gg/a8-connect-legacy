@@ -1,11 +1,16 @@
 import { getMemoryStorageProvider, RegistryProvider } from "../libs/providers";
 import { getAuthAction, getOAuthAction, getUserAction } from "../libs/actions";
-import { ConnectSessionDto, ConnectOAuthDto } from "./types";
+import { ConnectSessionDto, ConnectOAuthDto, Providers } from "./server.types";
 
 /**
  * A8ServerConnect init options.
  */
 export interface A8ServerConnectInitOptions {
+  /**
+   * `networkType` to determine whether the `testnet` cluster or `mainnet` cluster is in use.
+   */
+  networkType: Providers.NetworkType;
+
   /**
    * `withCredential` to import bearer jwt auth token to the storage.
    */
@@ -51,6 +56,20 @@ export class A8ServerConnect {
    */
   public init(options: A8ServerConnectInitOptions) {
     /**
+     * Assign network type
+     */
+    RegistryProvider.getInstance().networkType = options.networkType;
+
+    /**
+     * Initialize current session
+     */
+    this.currentSession = {
+      Auth: getAuthAction(),
+      User: getUserAction(),
+      OAuth: getOAuthAction(),
+    };
+
+    /**
      * Initialize credential
      */
     if (!!options.withBearerCredential) {
@@ -70,15 +89,6 @@ export class A8ServerConnect {
     if (!!options.withOAuthCredential) {
       this.setOAuthCredential(options.withOAuthCredential);
     }
-
-    /**
-     * Initialize current session
-     */
-    this.currentSession = {
-      Auth: getAuthAction(),
-      User: getUserAction(),
-      OAuth: getOAuthAction(),
-    };
   }
 
   /**
