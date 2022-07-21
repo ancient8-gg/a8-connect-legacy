@@ -14,7 +14,7 @@ export class AuthAction extends OffChainAction {
    * The function to modify/delete credential
    */
   setOAuthCredential(oauthCredential: OAuthCredential | null) {
-    if (oauthCredential === null) return this.removeCredential();
+    if (oauthCredential === null) return this.removeOAuthCredential();
     this.storageProvider.setItem(
       "oauth_credential",
       JSON.stringify(oauthCredential)
