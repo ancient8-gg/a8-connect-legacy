@@ -115,10 +115,7 @@ export class A8Connect {
    * @param rootSelectorId: the id selector of the A8Connect Container DOM object.
    */
   constructor(rootSelectorId: string) {
-    /**
-     * Then initialize root selector
-     */
-    this.initializeRootSelector(rootSelectorId);
+    this.rootSelectorId = rootSelectorId;
   }
 
   /**
@@ -144,6 +141,11 @@ export class A8Connect {
       windowContext.fetch,
       windowContext.localStorage
     );
+
+    /**
+     * Then initialize root selector
+     */
+    this.initializeRootSelector();
 
     // initialize registry first
     this.initializeSession();
@@ -244,24 +246,21 @@ export class A8Connect {
 
   /**
    * Initialize root selector
-   * @param rootSelectorId
    * @private
    */
-  private initializeRootSelector(rootSelectorId: string): void {
+  private initializeRootSelector(): void {
     const document = RegistryProvider.getInstance().document;
 
-    const rootDOM = document.getElementById(rootSelectorId);
+    const rootDOM = document.getElementById(this.rootSelectorId);
 
     if (!rootDOM) {
       /**
        * Initialize dom node
        */
       const dom = document.createElement("div");
-      dom.setAttribute("id", rootSelectorId);
+      dom.setAttribute("id", this.rootSelectorId);
       document.body.appendChild(dom);
     }
-
-    this.rootSelectorId = rootSelectorId;
   }
 
   /**
