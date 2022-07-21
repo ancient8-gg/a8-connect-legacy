@@ -1,5 +1,5 @@
 import { A8Connect, A8ConnectInitOptions } from "./browser.container";
-import { UtilsProvider } from "../libs/providers";
+import { UtilsProvider } from "./libs/providers";
 
 let a8ConnectInstance: A8Connect;
 

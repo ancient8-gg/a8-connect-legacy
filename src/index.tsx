@@ -1,10 +1,4 @@
-import {
-  Adapters,
-  init,
-  openModal,
-  Providers,
-  Router,
-} from "./exports/browser";
+import { Adapters, init, openModal, Providers, Router } from "./browser";
 
 if (document) {
   document.onreadystatechange = function () {

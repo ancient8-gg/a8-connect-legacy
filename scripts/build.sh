@@ -11,8 +11,6 @@ mkdir dist/
 # build dts
 yarn run gen-dts
 cp -r dts/src/* dist/
-cp -r dist/exports/* dist/
-rm -rf dist/exports
 
 ### build browser exports ###
 yarn run build-css

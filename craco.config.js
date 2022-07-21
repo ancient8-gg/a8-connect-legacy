@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
       webpack: {
         configure: {
           devtool: false,
-          entry: "src/exports/browser.ts",
+          entry: "src/browser.ts",
           output: {
             filename: "browser/browser.js",
             library: "A8Connect", // Important
@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === "production") {
       webpack: {
         configure: {
           devtool: false,
-          entry: "src/exports/server.ts",
+          entry: "src/server.ts",
           output: {
             filename: "server/server.js",
             library: "A8Connect", // Important

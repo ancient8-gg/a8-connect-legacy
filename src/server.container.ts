@@ -1,5 +1,5 @@
-import { getMemoryStorageProvider, RegistryProvider } from "../libs/providers";
-import { getAuthAction, getOAuthAction, getUserAction } from "../libs/actions";
+import { getMemoryStorageProvider, RegistryProvider } from "./libs/providers";
+import { getAuthAction, getOAuthAction, getUserAction } from "./libs/actions";
 import { ConnectSessionDto, ConnectOAuthDto, Providers } from "./server.types";
 
 /**
