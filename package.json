@@ -69,7 +69,7 @@
     "lint": "tsc --noEmit && eslint \"**/*.ts\" \"**/*.tsx\" --fix",
     "prepare": "husky install",
     "gen-dts": "tsc -p tsconfig.library.json",
-    "gen-doc:server": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/server src/exports/server.ts",
+    "gen-doc:server": "typedoc --name \"A8 Connect\" --readme README.server.md --out ./public/a8-connect/server src/exports/server.ts",
     "gen-doc:browser": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/brower src/exports/browser.ts",
     "gen-doc": "yarn gen-doc:browser && yarn gen-doc:server",
     "gen-css": "tailwindcss build -i ./src/base.tailwind.scss -o ./src/generated.scss",

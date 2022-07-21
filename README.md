@@ -4,15 +4,20 @@
 
 [Ancient8 Connect](https://id.ancient8.gg) UMD library.
 
+This is the browser APIs version.
+
+## Documentation
+
+For detail of browser APIs please refer the [docs](https://docs.ancient8.dev/browser/modules.html#default).
+
+For detail of server APIs please refer the [docs](https://docs.ancient8.dev/server/modules.html#default).
+
+
 ## Installation
 
 ```bash
 $ yarn add @ancient8/connect
 ```
-
-## Documentation
-
-For details API please refer the [docs](https://docs.ancient8.dev/modules.html#default).
 
 ## Examples
 
@@ -20,9 +25,9 @@ Please see the demo [here](https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connec
 
 # Usages
 
-There is three main flow usage of SDK
+Three main usages of `A8Connect`.
 
-1. Login flow
+1. Initialize Login Flow
 
 ```ts
 import {
@@ -59,7 +64,7 @@ await init({
 });
 ```
 
-2. Add wallet flow
+2. Initialize Add Wallet Flow
 
 ```ts
 import {
@@ -97,7 +102,7 @@ await init({
 });
 ```
 
-3. Lost wallet flow
+3. Initialize Lost Wallet Flow
 
 ```ts
 import {
