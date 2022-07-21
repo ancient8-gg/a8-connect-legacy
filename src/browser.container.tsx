@@ -4,9 +4,17 @@ import A8ConnectContainer from "./container";
 import { ChainType, SupportedWallets } from "./libs/adapters";
 import { AppFlow } from "./components/router";
 import { OnAuthPayload } from "./hooks/useSession";
-import { getUtilsProvider, RegistryProvider } from "./libs/providers";
+import {
+  getUtilsProvider,
+  NetworkType,
+  RegistryProvider,
+} from "./libs/providers";
 import { getAuthAction, getUserAction, getWalletAction } from "./libs/actions";
-import { ConnectSessionDto, Entities, Providers } from "./browser.types";
+import {
+  A8ConnectSession,
+  ConnectedWalletPayload,
+} from "./libs/dto/a8-connect-session.dto";
+import { UserInfo } from "./libs/dto/entities";
 
 /**
  * A8Connect init explanations
@@ -20,7 +28,7 @@ export interface A8ConnectInitOptions {
   /**
    * `networkType` select supported cluster for dapps
    */
-  networkType: Providers.NetworkType;
+  networkType: NetworkType;
 
   /**
    * `withCredential` replace current jwt credential. Usually useful for `LOST_WALLET_FLOW` flow.
@@ -63,7 +71,7 @@ export interface A8ConnectInitOptions {
    * `onConnected` callback will be triggered when user connect to a wallet
    * @param payload
    */
-  onConnected?: (payload: ConnectSessionDto.ConnectedWalletPayload) => void;
+  onConnected?: (payload: ConnectedWalletPayload) => void;
 }
 
 /**
@@ -90,7 +98,7 @@ export class A8Connect {
   /**
    * Current user session is initially set as null. After connecting wallet/login action, the `currentSession` will be available.
    */
-  public currentSession: ConnectSessionDto.A8ConnectSession | null = null;
+  public currentSession: A8ConnectSession | null = null;
 
   /**
    * Init options for UID container.
@@ -230,7 +238,7 @@ export class A8Connect {
    * @private
    */
   private initializeRootSelector(rootSelectorId: string): void {
-    const document = Providers.RegistryProvider.getInstance().document;
+    const document = RegistryProvider.getInstance().document;
 
     const rootDOM = document.getElementById(rootSelectorId);
 
@@ -269,7 +277,7 @@ export class A8Connect {
    * @private
    */
   private initializeRootNode() {
-    const document = Providers.RegistryProvider.getInstance().document;
+    const document = RegistryProvider.getInstance().document;
     this.rootNode = createRoot(document.getElementById(this.rootSelectorId));
   }
 
@@ -279,7 +287,7 @@ export class A8Connect {
    */
   private initializeSession() {
     const options = this.options;
-    const registryInstance = Providers.RegistryProvider.getInstance();
+    const registryInstance = RegistryProvider.getInstance();
 
     /**
      * Initialize registry provider
@@ -317,7 +325,7 @@ export class A8Connect {
    * @param payload
    * @private
    */
-  private onAuth(payload: Entities.UserInfo | null): void {
+  private onAuth(payload: UserInfo | null): void {
     this.currentSession = {
       ...this.currentSession,
       sessionUser: payload,
@@ -329,9 +337,7 @@ export class A8Connect {
    * @param payload
    * @private
    */
-  private onConnected(
-    payload: ConnectSessionDto.ConnectedWalletPayload | null
-  ): void {
+  private onConnected(payload: ConnectedWalletPayload | null): void {
     this.currentSession = {
       ...this.currentSession,
       connectedWallet: payload,

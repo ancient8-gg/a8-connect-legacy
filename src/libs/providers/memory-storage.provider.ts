@@ -34,7 +34,6 @@ export class MemoryStorageProvider implements Storage {
   }
 
   private getObject(key: string): StorageData | null {
-    console.log({ storage: this.storage });
     return this.storage.find((elm) => elm.key === key) || null;
   }
 

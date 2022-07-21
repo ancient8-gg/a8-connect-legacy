@@ -1,6 +1,11 @@
-import { getMemoryStorageProvider, RegistryProvider } from "./libs/providers";
+import {
+  getMemoryStorageProvider,
+  NetworkType,
+  RegistryProvider,
+} from "./libs/providers";
 import { getAuthAction, getOAuthAction, getUserAction } from "./libs/actions";
-import { ConnectSessionDto, ConnectOAuthDto, Providers } from "./server.types";
+import { OAuthCredential } from "./libs/dto/connect-oauth.dto";
+import { A8ServerConnectSession } from "./libs/dto/a8-connect-session.dto";
 
 /**
  * A8ServerConnect init options.
@@ -9,7 +14,7 @@ export interface A8ServerConnectInitOptions {
   /**
    * `networkType` to determine whether the `testnet` cluster or `mainnet` cluster is in use.
    */
-  networkType: Providers.NetworkType;
+  networkType: NetworkType;
 
   /**
    * `withCredential` to import bearer jwt auth token to the storage.
@@ -25,7 +30,7 @@ export interface A8ServerConnectInitOptions {
   /**
    * `withOAuthCredential` to import oauth credential to the storage
    */
-  withOAuthCredential?: ConnectOAuthDto.OAuthCredential;
+  withOAuthCredential?: OAuthCredential;
 }
 
 /**
@@ -35,7 +40,7 @@ export class A8ServerConnect {
   /**
    * `currentSession` is initially set to null. After the `init` call, the property will become available.
    */
-  public currentSession: ConnectSessionDto.A8ServerConnectSession = null;
+  public currentSession: A8ServerConnectSession = null;
 
   /**
    * Public Constructor.
@@ -133,9 +138,7 @@ export class A8ServerConnect {
    * Set parameter to null to delete current credential.
    * @param oauthCredential
    */
-  private setOAuthCredential(
-    oauthCredential: ConnectOAuthDto.OAuthCredential | null
-  ) {
+  private setOAuthCredential(oauthCredential: OAuthCredential | null) {
     /**
      * Remove current credential
      */
