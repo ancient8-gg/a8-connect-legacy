@@ -87,7 +87,7 @@ export class A8Connect {
    * Root node selector id
    * @private
    */
-  private rootSelectorId: string;
+  private readonly rootSelectorId: string;
 
   /**
    * Root node
@@ -114,7 +114,7 @@ export class A8Connect {
    * Constructor to initialize the A8Connect Container
    * @param rootSelectorId: the id selector of the A8Connect Container DOM object.
    */
-  constructor(rootSelectorId: string) {
+  public constructor(rootSelectorId: string) {
     this.rootSelectorId = rootSelectorId;
   }
 
@@ -194,7 +194,7 @@ export class A8Connect {
   /**
    * The function to close modal.
    */
-  closeModal(): void {
+  public closeModal(): void {
     this.destroy();
   }
 
