@@ -17,7 +17,7 @@ export const BaseUrl = {
   [NetworkType.mainnet]: "https://ancient8.gg/profile",
 };
 
-type Window = typeof window & { [key: string]: any };
+export type Window = typeof window & { [key: string]: any };
 type ExternalContext = any;
 
 /**

@@ -47,6 +47,7 @@ export interface User {
 }
 
 export interface AuthClientEntity {
+  _id: string;
   clientKey: string;
   clientSecret: string;
   clientName: string;
@@ -56,8 +57,17 @@ export interface AuthClientEntity {
   createdBy: string;
   sessionExpiresDelta: string;
 }
+export interface PublicAuthClientEntity {
+  _id: string;
+  clientKey: string;
+  clientName: string;
+  redirectUri: string;
+  hostname: string;
+  avatar: string;
+}
 
 export interface AuthEntity {
+  _id: string;
   userId: string;
   type: AuthType;
   credential: WalletCredential;

@@ -1,4 +1,4 @@
-import { AuthProvider } from "../providers";
+import { AuthProvider, getOAuthProvider } from "../providers";
 import { CookieProvider } from "../providers";
 import { StorageProvider } from "../providers";
 import {
@@ -8,6 +8,7 @@ import {
   getUserProvider,
 } from "../providers";
 import { UserProvider } from "../providers";
+import { OAuthProvider } from "../providers/oauth.provider";
 
 /**
  * `OffChainAction` class is represented as an application service. Can be inherited.
@@ -25,6 +26,12 @@ export class OffChainAction {
    * @protected
    */
   protected readonly userProvider: UserProvider;
+
+  /**
+   * `OAuthProvider` provides all methods to handle fetching/patching oauth data.
+   * @protected
+   */
+  protected readonly oauthProvider: OAuthProvider;
 
   /**
    * `CookieProvider` provides all methods to handle cookie actions.
@@ -45,6 +52,7 @@ export class OffChainAction {
     // Initialize provider
     this.authProvider = getAuthProvider();
     this.userProvider = getUserProvider();
+    this.oauthProvider = getOAuthProvider();
     this.storageProvider = getStorageProvider();
     this.cookieProvider = getCookieProvider();
   }

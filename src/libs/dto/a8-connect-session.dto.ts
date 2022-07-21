@@ -1,5 +1,5 @@
 import { UserInfo } from "./entities";
-import { AuthAction, UserAction, WalletAction } from "../actions";
+import { AuthAction, UserAction, WalletAction, OAuthAction } from "../actions";
 import { BaseWalletAdapter, ChainType } from "../adapters";
 
 /**
@@ -55,4 +55,25 @@ export interface A8ConnectSession {
    * `sessionUser` determines the current session information of user
    */
   sessionUser: UserInfo | null;
+}
+
+/**
+ * `A8ServerConnectSession` determines the current session with actions that can be executed on server side.
+ * The server environment can only use `fetch` based actions, which are `Auth` and `User` actions.
+ */
+export interface A8ServerConnectSession {
+  /**
+   * `Auth` action for any actions related to authentication.
+   */
+  Auth: AuthAction;
+
+  /**
+   * `User` action for any actions related to user profile
+   */
+  User: UserAction;
+
+  /**
+   * `OAuth` actions for any actions related to oauth
+   */
+  OAuth: OAuthAction;
 }

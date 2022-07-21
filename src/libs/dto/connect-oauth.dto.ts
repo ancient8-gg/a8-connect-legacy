@@ -25,3 +25,18 @@ export class ConnectOauthDto {
   })
   redirectUri: string;
 }
+
+/**
+ * `OAuthCredential` for oauth apis usage.
+ */
+export class OAuthCredential {
+  /**
+   * `AuthClientKey` can be obtained by contacting A8 UID admins.
+   */
+  authClientKey: string;
+
+  /**
+   * `authClientSecret` can be obtained by contacting A8 UID admins.
+   */
+  authClientSecret: string;
+}

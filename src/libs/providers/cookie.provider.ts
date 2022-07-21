@@ -29,8 +29,9 @@ export class CookieProvider {
   /**
    * The function to extract cookie according to the `networkType`.
    * @param key
+   * @param defaultValue
    */
-  public getCookie(key: string): string | null {
+  public getCookie(key: string, defaultValue?: string): string | null {
     const cookieKey = `${BaseUrl[this.networkType]}_${key}`;
 
     try {
@@ -43,9 +44,11 @@ export class CookieProvider {
       if (foundCookie) {
         return foundCookie.split("=")[1];
       }
+
+      return defaultValue || null;
     } catch {}
 
-    return null;
+    return defaultValue || null;
   }
 }
 

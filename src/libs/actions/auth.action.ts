@@ -4,6 +4,7 @@ import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
 import { ConnectEmailAuthDto } from "../dto/connect-email-auth.dto";
 import { LoginResponse, AuthChallenge, AuthEntity } from "../dto/entities";
 import { CreateAuthDto } from "../dto/create-auth.dto";
+import { OAuthCredential } from "../dto/connect-oauth.dto";
 
 /**
  * `AuthActions` provides methods to handle all authenticating actions.
@@ -12,7 +13,25 @@ export class AuthAction extends OffChainAction {
   /**
    * The function to modify/delete credential
    */
-  async setCredential(jwt: string | null) {
+  setOAuthCredential(oauthCredential: OAuthCredential | null) {
+    if (oauthCredential === null) return this.removeCredential();
+    this.storageProvider.setItem(
+      "oauth_credential",
+      JSON.stringify(oauthCredential)
+    );
+  }
+
+  /**
+   * The function to remove credential
+   */
+  removeOAuthCredential() {
+    this.storageProvider.removeItem("oauth_credential");
+  }
+
+  /**
+   * The function to modify/delete credential
+   */
+  setCredential(jwt: string | null) {
     if (jwt === null) return this.removeCredential();
     this.storageProvider.setItem("jwt", jwt);
   }
@@ -22,6 +41,21 @@ export class AuthAction extends OffChainAction {
    */
   removeCredential() {
     this.storageProvider.removeItem("jwt");
+  }
+
+  /**
+   * The function to modify/delete cookie credential
+   */
+  setCookieStorageCredential(jwt: string | null) {
+    if (jwt === null) return this.removeCookieStorageCredential();
+    this.storageProvider.setItem("jwt_cookie", jwt);
+  }
+
+  /**
+   * The function to remove cookie credential
+   */
+  removeCookieStorageCredential() {
+    this.storageProvider.removeItem("jwt_cookie");
   }
 
   /**

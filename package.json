@@ -71,6 +71,7 @@
     "gen-dts": "tsc -p tsconfig.library.json",
     "gen-doc:server": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/server src/exports/server.ts",
     "gen-doc:browser": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/brower src/exports/browser.ts",
+    "gen-doc": "yarn gen-doc:browser && yarn gen-doc:server",
     "gen-css": "tailwindcss build -i ./src/base.tailwind.scss -o ./src/generated.scss",
     "transform-mixin": "NODE_PATH=. node scripts/transform-mixin.js",
     "cleanup-css": "rm -rf ./src/generated.scss",

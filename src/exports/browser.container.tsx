@@ -128,7 +128,7 @@ export class A8Connect {
     this.options = options;
 
     // initialize registry first
-    await this.initializeSession();
+    this.initializeSession();
 
     // restore the session if applicable
     await this.fetchSession();
@@ -252,16 +252,16 @@ export class A8Connect {
    * Set parameter to null to delete current credential.
    * @param jwt
    */
-  private async setCredential(jwt: string | null) {
+  private setCredential(jwt: string | null) {
     /**
      * Remove current credential
      */
-    await this.currentSession.Auth.removeCredential();
+    this.currentSession.Auth.removeCredential();
 
     /**
      * Persist new credential
      */
-    await this.currentSession.Auth.setCredential(jwt);
+    this.currentSession.Auth.setCredential(jwt);
   }
 
   /**
@@ -277,7 +277,7 @@ export class A8Connect {
    * Initialize registry and session.
    * @private
    */
-  private async initializeSession() {
+  private initializeSession() {
     const options = this.options;
     const registryInstance = Providers.RegistryProvider.getInstance();
 
@@ -308,7 +308,7 @@ export class A8Connect {
      * Replace credential if needed
      */
     if (!!options.withCredential) {
-      await this.setCredential(options.withCredential);
+      this.setCredential(options.withCredential);
     }
   }
 
