@@ -31,6 +31,11 @@ export interface A8ConnectInitOptions {
   networkType: NetworkType;
 
   /**
+   * `globalContext` provide window context. Sometimes you need to directly pass `window` when init `A8Connect`.
+   */
+  globalContext?: typeof window;
+
+  /**
    * `withCredential` replace current jwt credential. Usually useful for `LOST_WALLET_FLOW` flow.
    */
   withCredential?: string;
@@ -111,16 +116,6 @@ export class A8Connect {
    */
   constructor(rootSelectorId: string) {
     /**
-     * Initialize base registry first
-     */
-    RegistryProvider.initializeBrowserRegistry(
-      window,
-      window.document,
-      window.fetch,
-      window.localStorage
-    );
-
-    /**
      * Then initialize root selector
      */
     this.initializeRootSelector(rootSelectorId);
@@ -134,6 +129,21 @@ export class A8Connect {
   public async init(options: A8ConnectInitOptions): Promise<void> {
     // binding options
     this.options = options;
+
+    /**
+     * Get window context or fallback to default window.
+     */
+    const windowContext = options.globalContext || window;
+
+    /**
+     * Initialize base registry first
+     */
+    RegistryProvider.initializeBrowserRegistry(
+      windowContext,
+      windowContext.document,
+      windowContext.fetch,
+      windowContext.localStorage
+    );
 
     // initialize registry first
     this.initializeSession();

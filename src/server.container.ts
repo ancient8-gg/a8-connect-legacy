@@ -6,7 +6,6 @@ import {
 import { getAuthAction, getOAuthAction, getUserAction } from "./libs/actions";
 import { OAuthCredential } from "./libs/dto/connect-oauth.dto";
 import { A8ServerConnectSession } from "./libs/dto/a8-connect-session.dto";
-import { ExternalContext } from "./libs/providers/registry.provider";
 
 /**
  * A8ServerConnect init options.
@@ -16,6 +15,11 @@ export interface A8ServerConnectInitOptions {
    * `networkType` to determine whether the `testnet` cluster or `mainnet` cluster is in use.
    */
   networkType: NetworkType;
+
+  /**
+   * `globalContext` provide nodejs global context. Sometimes you need to directly pass `global` when init `A8ServerConnect`.
+   */
+  globalContext?: typeof global;
 
   /**
    * `withCredential` to import bearer jwt auth token to the storage.
@@ -29,14 +33,9 @@ export interface A8ServerConnectInitOptions {
   withCookieCredential?: string;
 
   /**
-   * `withOAuthCredential` to import oauth credential to the storage
+   * `withOAuthCredential` to import oauth credential to the storage.
    */
   withOAuthCredential?: OAuthCredential;
-
-  /**
-   * `globalContext` provide nodejs global context
-   */
-  globalContext?: typeof global;
 }
 
 /**
@@ -49,42 +48,28 @@ export class A8ServerConnect {
   public currentSession: A8ServerConnectSession = null;
 
   /**
-   * Public Constructor.
-   */
-  constructor() {
-    /**
-     * Initialize server registry
-     */
-    RegistryProvider.initializeServerRegistry(
-      global,
-      global.fetch,
-      getMemoryStorageProvider()
-    );
-  }
-
-  /**
    * Initialize session. After initialization, the `currentSession` will be available.
    */
   public init(options: A8ServerConnectInitOptions) {
+    /**
+     * Get global context or fallback to built-in global.
+     */
+    const globalContext = options.globalContext || global;
+
     /**
      * Assign network type
      */
     RegistryProvider.getInstance().networkType = options.networkType;
 
-    if (!!options.globalContext) {
-      /**
-       * Re-assign global context
-       */
-      RegistryProvider.getInstance().window =
-        options.globalContext as ExternalContext;
+    /**
+     * Initialize server registry
+     */
+    RegistryProvider.initializeServerRegistry(
+      globalContext,
+      globalContext.fetch,
+      getMemoryStorageProvider()
+    );
 
-      /**
-       * Re-assign fetch
-       */
-      RegistryProvider.getInstance().fetch = options.globalContext.fetch.bind(
-        options.globalContext
-      );
-    }
     /**
      * Initialize current session
      */

@@ -170,7 +170,6 @@ export class RegistryProvider {
     fetch: ExternalContext,
     storage: ExternalContext
   ): void {
-    console.log({ global, fetch });
     const registryInstance = RegistryProvider.getInstance();
 
     registryInstance.fetch = fetch.bind(global);
