@@ -4,7 +4,7 @@
 
 [Ancient8 Connect](https://id.ancient8.gg) UMD library.
 
-This is the server APIs version.
+This is the server APIs version. The implementation below will be only valid when in **nodejs environment**. 
 
 ## Documentation
 

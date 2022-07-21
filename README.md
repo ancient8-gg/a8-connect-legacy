@@ -4,7 +4,7 @@
 
 [Ancient8 Connect](https://id.ancient8.gg) UMD library.
 
-This is the browser APIs version.
+This is the browser APIs version. The implementation below will be only valid when in **browser environment**.
 
 ## Documentation
 
