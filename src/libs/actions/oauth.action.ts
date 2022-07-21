@@ -1,10 +1,29 @@
 import { OffChainAction } from "./offchain.action";
 import { PublicAuthClientEntity, User } from "../dto/entities";
+import { OAuthCredential } from "../dto/connect-oauth.dto";
 
 /**
  * The `UserAction` represents the underlying logic for user actions: get profile, update profile, ...
  */
 export class OAuthAction extends OffChainAction {
+  /**
+   * The function to modify/delete credential
+   */
+  setOAuthCredential(oauthCredential: OAuthCredential | null) {
+    if (oauthCredential === null) return this.removeOAuthCredential();
+    this.storageProvider.setItem(
+      "oauth_credential",
+      JSON.stringify(oauthCredential)
+    );
+  }
+
+  /**
+   * The function to remove credential
+   */
+  removeOAuthCredential() {
+    this.storageProvider.removeItem("oauth_credential");
+  }
+
   /**
    * `getPublicClientInfo` returns the public client info.
    * @param authClientKey

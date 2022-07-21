@@ -129,11 +129,11 @@ export class A8ServerConnect {
     /**
      * Remove current credential
      */
-    this.currentSession.Auth.removeOAuthCredential();
+    this.currentSession.OAuth.removeOAuthCredential();
 
     /**
      * Persist new credential
      */
-    this.currentSession.Auth.setOAuthCredential(oauthCredential);
+    this.currentSession.OAuth.setOAuthCredential(oauthCredential);
   }
 }

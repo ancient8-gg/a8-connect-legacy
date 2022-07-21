@@ -4,30 +4,11 @@ import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
 import { ConnectEmailAuthDto } from "../dto/connect-email-auth.dto";
 import { LoginResponse, AuthChallenge, AuthEntity } from "../dto/entities";
 import { CreateAuthDto } from "../dto/create-auth.dto";
-import { OAuthCredential } from "../dto/connect-oauth.dto";
 
 /**
  * `AuthActions` provides methods to handle all authenticating actions.
  */
 export class AuthAction extends OffChainAction {
-  /**
-   * The function to modify/delete credential
-   */
-  setOAuthCredential(oauthCredential: OAuthCredential | null) {
-    if (oauthCredential === null) return this.removeOAuthCredential();
-    this.storageProvider.setItem(
-      "oauth_credential",
-      JSON.stringify(oauthCredential)
-    );
-  }
-
-  /**
-   * The function to remove credential
-   */
-  removeOAuthCredential() {
-    this.storageProvider.removeItem("oauth_credential");
-  }
-
   /**
    * The function to modify/delete credential
    */
