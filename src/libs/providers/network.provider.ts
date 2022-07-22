@@ -44,5 +44,3 @@ export class NetworkProvider {
     return jsonData as T;
   }
 }
-
-export type NetworkProviderGetter = () => NetworkProvider;

@@ -45,5 +45,3 @@ export class StorageProvider {
     return storageInstance.removeItem(`${prefix}_${key}`);
   }
 }
-
-export type StorageProviderGetter = () => StorageProvider;

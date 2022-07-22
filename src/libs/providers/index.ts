@@ -1,10 +1,6 @@
-import { CookieProvider, CookieProviderGetter } from "./cookie.provider";
-import {
-  NetworkOptions,
-  NetworkProvider,
-  NetworkProviderGetter,
-} from "./network.provider";
-import { StorageProvider, StorageProviderGetter } from "./storage.provider";
+import { CookieProvider } from "./cookie.provider";
+import { NetworkOptions, NetworkProvider } from "./network.provider";
+import { StorageProvider } from "./storage.provider";
 import { NetworkType, RegistryProvider, Window } from "./registry.provider";
 import { AuthProvider } from "./auth.provider";
 import { UserProvider } from "./user.provider";
@@ -28,14 +24,7 @@ export {
   MemoryStorageProvider,
 };
 
-export type {
-  CookieProviderGetter,
-  NetworkProviderGetter,
-  StorageProviderGetter,
-  NetworkOptions,
-  StorageData,
-  Window,
-};
+export type { NetworkOptions, StorageData, Window };
 
 /**
  * Storage Provider

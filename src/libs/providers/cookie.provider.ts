@@ -32,5 +32,3 @@ export class CookieProvider {
     return defaultValue || null;
   }
 }
-
-export type CookieProviderGetter = () => CookieProvider;
