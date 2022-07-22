@@ -12,7 +12,7 @@ export const ProviderSelect: FC<{
     <div>
       <button
         className={
-          "select-chain-btn-sol w-full cursor-pointer mt-[20px] h-[50px] rounded-[3px] text-white"
+          "select-chain-btn-sol w-full cursor-pointer mt-[20px] h-[50px] rounded-[3px] text-white text-[16px]"
         }
         onClick={() => handleClickChain(ChainType.SOL)}
       >
@@ -23,7 +23,7 @@ export const ProviderSelect: FC<{
         </span>
       </button>
       <button
-        className="w-full cursor-pointer mt-[20px] h-[50px] rounded-[3px] bg-[#637eea] text-white"
+        className="w-full cursor-pointer mt-[20px] h-[50px] rounded-[3px] bg-[#637eea] text-white text-[16px]"
         onClick={() => handleClickChain(ChainType.EVM)}
       >
         <span className={"flex flex-row justify-center items-center"}>

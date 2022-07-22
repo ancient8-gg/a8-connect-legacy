@@ -16,5 +16,5 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/no-unused-vars": "error",
   },
-  ignorePatterns: [".storybook", "**/*.stories.*"],
+  ignorePatterns: [".storybook", "**/*.stories.*", "dist/*"],
 };

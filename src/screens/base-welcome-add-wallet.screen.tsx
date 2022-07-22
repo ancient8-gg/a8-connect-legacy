@@ -38,7 +38,7 @@ export const BaseWelcomeAddWallet: FC = () => {
         goBack={null}
         title={"ADD WALLET"}
       />
-      <div className="content sm:py-[0px] py-[5%]">
+      <div className="sm:py-[0px] py-[5%]">
         <div className="base-welcome-screen w-full">
           <div className="mx-auto">
             <p className="mx-auto text-[16px] text-center text-white mt-[50px]">

@@ -206,7 +206,7 @@ export const SignWalletConnectUID: FC = () => {
         onCloseModal={handleClose}
         goBack={goBack}
       />
-      <div className="content sm:py-[0px] py-[5%]">
+      <div className="sm:py-[0px] py-[5%]">
         <div className="sign-wallet-screen w-full pt-[30px]">
           <div className="mx-auto">
             <div>

@@ -69,7 +69,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
         goBack={() => location.goBack(2)}
         onCloseModal={handleClose}
       />
-      <div className="content sm:py-[0px] py-[5%]">
+      <div className="sm:py-[0px] py-[5%]">
         <div className="sign-wallet-screen w-full pt-[30px]">
           <div className="mx-auto ">
             <div>

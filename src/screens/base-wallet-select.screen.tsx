@@ -105,7 +105,7 @@ export const BaseWalletSelect: FC = () => {
         goBack={handleGoback}
         onCloseModal={handleClose}
       />
-      <div className="content sm:py-[0px] py-[5%]">
+      <div className="sm:py-[0px] py-[5%]">
         <div className="base-welcome-screen w-full pt-[30px]">
           <div className="mx-auto">
             {currentAppFlow !== AppFlow.CONNECT_FLOW && (
@@ -158,7 +158,7 @@ export const BaseWalletSelect: FC = () => {
 
             <div>
               {currentAppFlow === AppFlow.CONNECT_FLOW ? (
-                <p className="mt-[10px] mb-[20px] bmx-auto text-white text-center">
+                <p className="mt-[10px] mb-[20px] bmx-auto text-white text-[16px] text-center">
                   Please connect to a{" "}
                   {chainType === ChainType.EVM ? "EVM" : "Solana"} wallet below
                 </p>

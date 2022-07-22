@@ -98,7 +98,7 @@ export const SignWalletLostWalletScreen: FC = () => {
 
   return (
     <div>
-      <div className="content sm:py-[0px] py-[5%]">
+      <div className="sm:py-[0px] py-[5%]">
         {onLoad ? (
           <BaseLoadingScreen />
         ) : (

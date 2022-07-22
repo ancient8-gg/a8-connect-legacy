@@ -43,7 +43,7 @@ export const BaseWelcomeScreen: FC = () => {
   return (
     <div>
       <ModalHeader isBack={false} onCloseModal={handleClose} goBack={null} />
-      <div className="content sm:py-[0px] py-[5%]">
+      <div className="sm:py-[0px] py-[5%]">
         <div className="base-welcome-screen w-full">
           <div className="mx-auto">
             <img src={A8Logo} className="mx-[auto] mt-[-20px] mb-[10px]" />

@@ -54,7 +54,7 @@ export const BaseNotificationScreen: FC = () => {
         onCloseModal={handleClose}
         disableCloseButton={params?.disableCloseButton}
       />
-      <div className="content sm:py-[0px] py-[5%]">
+      <div className="sm:py-[0px] py-[5%]">
         <div className="base-welcome-screen w-full min-h-[120px] pt-[20px] pb-[40px] px-[10px]">
           <div className="mx-auto mt-[20px]">
             <p
