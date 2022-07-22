@@ -1,14 +1,15 @@
-import { AuthProvider, getOAuthProvider } from "../providers";
-import { CookieProvider } from "../providers";
-import { StorageProvider } from "../providers";
 import {
   getAuthProvider,
   getCookieProvider,
   getStorageProvider,
   getUserProvider,
+  UserProvider,
+  OAuthProvider,
+  StorageProvider,
+  CookieProvider,
+  AuthProvider,
+  getOAuthProvider,
 } from "../providers";
-import { UserProvider } from "../providers";
-import { OAuthProvider } from "../providers/oauth.provider";
 
 /**
  * `OffChainAction` class is represented as an application service. Can be inherited.
