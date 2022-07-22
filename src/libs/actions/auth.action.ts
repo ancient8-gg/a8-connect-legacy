@@ -105,16 +105,6 @@ export class AuthAction extends OffChainAction {
   }
 
   /**
-   * Determine whether the access token is available or not.
-   */
-  isAuthTokenAvailable() {
-    return (
-      !!this.cookieProvider.getCookie("jwt") ||
-      !!this.storageProvider.getItem("jwt")
-    );
-  }
-
-  /**
    * Sign user in. Persist access token to storage.
    * @param authDto
    */
