@@ -1,31 +1,9 @@
 /**
  * Storage Provider to store the desired values
  */
-import { BaseUrl, NetworkType } from "./registry.provider";
+import { BaseUrl, RegistryProvider } from "./registry.provider";
 
 export class StorageProvider {
-  /**
-   * storageInstance is set as private
-   * @private
-   */
-  private storageInstance: Storage;
-
-  /**
-   * Network type which is prefixed when extracting cookie value.
-   * @private
-   */
-  private readonly networkType: NetworkType;
-
-  /**
-   * Constructor needs `Storage` object as a parameter
-   * @param storage
-   * @param networkType
-   */
-  constructor(storage: Storage, networkType: NetworkType) {
-    this.storageInstance = storage;
-    this.networkType = networkType;
-  }
-
   /**
    * The function to get the value with an associated key, is prefixed with `networkType`. Will support returning default value.
    * @param key
@@ -35,8 +13,11 @@ export class StorageProvider {
     key: string,
     defaultValue: string | null = null
   ): string | null {
-    const prefix = BaseUrl[this.networkType];
-    return this.storageInstance.getItem(`${prefix}_${key}`) || defaultValue;
+    const networkType = RegistryProvider.getInstance().networkType;
+    const storageInstance = RegistryProvider.getInstance().storage;
+
+    const prefix = BaseUrl[networkType];
+    return storageInstance.getItem(`${prefix}_${key}`) || defaultValue;
   }
 
   /**
@@ -45,8 +26,11 @@ export class StorageProvider {
    * @param value
    */
   public setItem(key: string, value: string): void {
-    const prefix = BaseUrl[this.networkType];
-    return this.storageInstance.setItem(`${prefix}_${key}`, value);
+    const networkType = RegistryProvider.getInstance().networkType;
+    const storageInstance = RegistryProvider.getInstance().storage;
+
+    const prefix = BaseUrl[networkType];
+    return storageInstance.setItem(`${prefix}_${key}`, value);
   }
 
   /**
@@ -54,8 +38,11 @@ export class StorageProvider {
    * @param key
    */
   public removeItem(key: string): void {
-    const prefix = BaseUrl[this.networkType];
-    return this.storageInstance.removeItem(`${prefix}_${key}`);
+    const networkType = RegistryProvider.getInstance().networkType;
+    const storageInstance = RegistryProvider.getInstance().storage;
+
+    const prefix = BaseUrl[networkType];
+    return storageInstance.removeItem(`${prefix}_${key}`);
   }
 }
 

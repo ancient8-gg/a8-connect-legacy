@@ -40,46 +40,32 @@ export type {
 /**
  * Storage Provider
  */
-export const getStorageProvider = () =>
-  new StorageProvider(
-    RegistryProvider.getInstance().storage,
-    RegistryProvider.getInstance().networkType
-  );
+export const getStorageProvider = () => new StorageProvider();
 
 /**
  * Network Provider
  */
-export const getNetworkProvider = () =>
-  new NetworkProvider(RegistryProvider.getInstance().fetch, {
-    networkType: RegistryProvider.getInstance().networkType,
-  });
+export const getNetworkProvider = () => new NetworkProvider({});
 
 /**
  * Cookie Provider
  */
-export const getCookieProvider = () =>
-  new CookieProvider(
-    RegistryProvider.getInstance().document,
-    RegistryProvider.getInstance().networkType
-  );
+export const getCookieProvider = () => new CookieProvider();
 
 /**
  * Auth Provider
  */
-export const getAuthProvider = () =>
-  new AuthProvider(getNetworkProvider, getStorageProvider, getCookieProvider);
+export const getAuthProvider = () => new AuthProvider();
 
 /**
  * User Provider
  */
-export const getUserProvider = () =>
-  new UserProvider(getNetworkProvider, getStorageProvider, getCookieProvider);
+export const getUserProvider = () => new UserProvider();
 
 /**
  * OAuth Provider
  */
-export const getOAuthProvider = () =>
-  new OAuthProvider(getNetworkProvider, getStorageProvider, getCookieProvider);
+export const getOAuthProvider = () => new OAuthProvider();
 
 /**
  * Utils provider

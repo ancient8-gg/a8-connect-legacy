@@ -1,8 +1,6 @@
-import { BaseUrl, NetworkType } from "./registry.provider";
+import { BaseUrl, RegistryProvider } from "./registry.provider";
 
-export type NetworkOptions = {
-  networkType?: NetworkType;
-} & RequestInit;
+export type NetworkOptions = RequestInit;
 
 export interface ErrorResponse {
   statusCode: string;
@@ -12,17 +10,15 @@ export interface ErrorResponse {
 }
 
 export class NetworkProvider {
-  private readonly instance: typeof fetch;
   private readonly networkOptions: NetworkOptions;
 
-  constructor(fetchInstance: typeof fetch, networkOptions: NetworkOptions) {
-    this.instance = fetchInstance;
+  constructor(networkOptions: NetworkOptions) {
     this.networkOptions = networkOptions;
   }
 
   async request<T>(url: string, init?: NetworkOptions): Promise<T> {
-    const networkType =
-      init?.networkType || this.networkOptions.networkType || null;
+    const instance = RegistryProvider.getInstance().fetch;
+    const networkType = RegistryProvider.getInstance().networkType || null;
 
     const baseUrl = !!networkType ? BaseUrl[networkType] : "";
     const endpoint = `${baseUrl}/api${url}`;
@@ -32,9 +28,7 @@ export class NetworkProvider {
       ...init,
     };
 
-    delete initialSettings.networkType;
-
-    const resp = await this.instance(endpoint, initialSettings);
+    const resp = await instance(endpoint, initialSettings);
     let jsonData = null;
 
     try {

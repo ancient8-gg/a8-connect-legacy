@@ -1,31 +1,16 @@
-import { NetworkOptions, NetworkProviderGetter } from "./network.provider";
-import { StorageProviderGetter } from "./storage.provider";
-import { CookieProviderGetter } from "./cookie.provider";
+import { NetworkOptions } from "./network.provider";
 import { BaseUrl, RegistryProvider } from "./registry.provider";
 import { OAuthCredential } from "../dto/connect-oauth.dto";
+import {
+  getCookieProvider,
+  getNetworkProvider,
+  getStorageProvider,
+} from "./index";
 
 /**
  * Auth Provider that handles authentication-related APIs, is associated with `networkType`.
  */
 export class BusinessProvider {
-  /**
-   * Network provider getter
-   * @private
-   */
-  protected getNetworkProvider: NetworkProviderGetter;
-
-  /**
-   * Storage provider getter
-   * @private
-   */
-  protected getStorageProvider: StorageProviderGetter;
-
-  /**
-   * Cookie provider getter
-   * @private
-   */
-  protected getCookieProvider: CookieProviderGetter;
-
   /**
    * Default network options
    * @private
@@ -37,28 +22,12 @@ export class BusinessProvider {
   };
 
   /**
-   * Constructor needs `getNetworkProvider`, `getStorageProvider` and `getCookieProvider` passed as parameters.
-   * @param getNetworkProvider
-   * @param getStorageProvider
-   * @param getCookieProvider
-   */
-  constructor(
-    getNetworkProvider: NetworkProviderGetter,
-    getStorageProvider: StorageProviderGetter,
-    getCookieProvider: CookieProviderGetter
-  ) {
-    this.getCookieProvider = getCookieProvider;
-    this.getStorageProvider = getStorageProvider;
-    this.getNetworkProvider = getNetworkProvider;
-  }
-
-  /**
    * Construct OAuth headers
    * @param options
    * @private
    */
   private constructOAuthHeaders(options: NetworkOptions) {
-    const storage = this.getStorageProvider();
+    const storage = getStorageProvider();
     const authClientCredentialText = storage.getItem("oauth_credential", null);
 
     /**
@@ -97,8 +66,8 @@ export class BusinessProvider {
    */
   private constructAuthHeaders(options: NetworkOptions): NetworkOptions {
     const networkType = RegistryProvider.getInstance().networkType;
-    const storage = this.getStorageProvider();
-    const cookie = this.getCookieProvider();
+    const storage = getStorageProvider();
+    const cookie = getCookieProvider();
 
     const authTokenFromCookie = cookie.getCookie("jwt", null);
     const authTokenCookieFromStorage = storage.getItem("jwt_cookie", null);
@@ -168,7 +137,7 @@ export class BusinessProvider {
     url: string,
     options: NetworkOptions
   ): Promise<T> {
-    const networkProvider = this.getNetworkProvider();
+    const networkProvider = getNetworkProvider();
     const expectedOptions = this.constructAuthHeaders(options);
 
     let networkOptions = Object.assign({}, this.defaultNetWorkOptions);
@@ -187,7 +156,7 @@ export class BusinessProvider {
     url: string,
     options: NetworkOptions
   ): Promise<T> {
-    const networkProvider = this.getNetworkProvider();
+    const networkProvider = getNetworkProvider();
     const expectedOptions = this.constructOAuthHeaders(options);
 
     let networkOptions = Object.assign({}, this.defaultNetWorkOptions);
@@ -203,7 +172,7 @@ export class BusinessProvider {
    * @param options
    */
   protected request<T>(url: string, options: NetworkOptions): Promise<T> {
-    const networkProvider = this.getNetworkProvider();
+    const networkProvider = getNetworkProvider();
 
     let networkOptions = Object.assign({}, this.defaultNetWorkOptions);
     networkOptions = Object.assign(networkOptions, options);
