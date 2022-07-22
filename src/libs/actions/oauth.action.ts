@@ -3,7 +3,7 @@ import { PublicAuthClientEntity, User } from "../dto/entities";
 import { OAuthCredential } from "../dto/connect-oauth.dto";
 
 /**
- * The `UserAction` represents the underlying logic for user actions: get profile, update profile, ...
+ * The `UserAction` represents the underlying logic for oauth actions: get public client info, get user info via oauth credential...
  */
 export class OAuthAction extends OffChainAction {
   /**
