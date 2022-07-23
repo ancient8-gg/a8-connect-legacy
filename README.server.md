@@ -34,13 +34,13 @@ Please see the demo [here](https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connec
 
 import {
     init,
-    ConnectOAuthDto, 
+    Types, 
     getA8ServerConnectInstance
 } from "@ancient8/connect/server"
 
 init({
     // Must initialize with oauth credential
-    withOAuthCredential: oauthCredential as ConnectOAuthDto.OAuthCredential
+    withOAuthCredential: oauthCredential as Types.ConnectOAuthDto.OAuthCredential
 });
 
 const instance = getA8ServerConnectInstance();

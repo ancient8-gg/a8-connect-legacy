@@ -24,4 +24,4 @@ export * as Entities from "./libs/dto/entities";
 export * as Adapters from "./libs/adapters";
 export * as Providers from "./libs/providers";
 export * as Actions from "./libs/actions";
-export * as Routers from "./components/router";
+export * as Router from "./components/router";

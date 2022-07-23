@@ -34,19 +34,17 @@ import {
     init,
     closeModal,
     openModal,
-    Adapters,
-    Providers,
-    Router
+    Types
 } from "@ancient8/connect"
 
 // Remember to import css stylesheet
 import "@ancient8/connect/lib.css";
 
 await init({
-    chainType: Adapters.ChainType.ALL,
+    chainType: Types.Adapters.ChainType.ALL,
     networkType:
-        Providers.NetworkType.testnet ||
-        Providers.NetworkType.mainnet,
+        Types.Providers.NetworkType.testnet ||
+        Types.Providers.NetworkType.mainnet,
     disableCloseButton: true,
     onClose: () => {
         // do somthing
@@ -71,20 +69,18 @@ import {
     init,
     closeModal,
     openModal,
-    Adapters,
-    Providers,
-    Router
+    Types
 } from "@ancient8/connect"
 
 // Remember to import css stylesheet
 import "@ancient8/connect/lib.css";
 
 await init({
-    chainType: Adapters.ChainType.ALL,
+    chainType: Types.Adapters.ChainType.ALL,
     networkType:
-        Providers.NetworkType.testnet ||
-        Providers.NetworkType.mainnet,
-    initAppFlow: Router.AppFlow.ADD_WALLET_FLOW,
+        Types.Providers.NetworkType.testnet ||
+        Types.Providers.NetworkType.mainnet,
+    initAppFlow: Types.Router.AppFlow.ADD_WALLET_FLOW,
     cleanWalletCache: true,
     onClose: () => {
         // do somthing
@@ -109,20 +105,18 @@ import {
     init,
     closeModal,
     openModal,
-    Adapters,
-    Providers,
-    Router
+    Types
 } from "@ancient8/connect"
 
 // Remember to import css stylesheet
 import "@ancient8/connect/lib.css";
 
 await init({
-    chainType: Adapters.ChainType.ALL,
+    chainType: Types.Adapters.ChainType.ALL,
     networkType:
-        Providers.NetworkType.testnet ||
-        Providers.NetworkType.mainnet,
-    initAppFlow: Router.AppFlow.LOST_WALLET_FLOW,
+        Types.Providers.NetworkType.testnet ||
+        Types.Providers.NetworkType.mainnet,
+    initAppFlow: Types.Router.AppFlow.LOST_WALLET_FLOW,
     withCredential: authToken as string,
     cleanWalletCache: true,
     onClose: () => {
