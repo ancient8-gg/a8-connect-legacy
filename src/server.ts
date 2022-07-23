@@ -9,8 +9,10 @@ let a8ServerConnectInstance: A8ServerConnect;
  * The function to get A8ServerConnect instance
  */
 export const getA8ServerConnectInstance = () => {
-  if (!a8ServerConnectInstance)
+  if (!a8ServerConnectInstance) {
     throw new Error("A8ServerConnect isn't initialized");
+  }
+
   return a8ServerConnectInstance;
 };
 
