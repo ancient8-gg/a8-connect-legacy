@@ -1,3 +1,8 @@
+/** *******************************************************************************
+ *  WARNING: THIS FILE IS FOR TYPES DECLARATION ONLY, DO NOT USE TO IMPORT AS VALUE
+ * ********************************************************************************
+ */
+
 /**
  * Export DTOs
  */
@@ -16,6 +21,9 @@ export * as Entities from "./libs/dto/entities";
 /**
  * Export Adapters
  */
-export * as Adapters from "./libs/adapters";
 export * as Providers from "./libs/providers";
-export * as Actions from "./libs/actions";
+
+/**
+ * Export Actions
+ */
+export type { AuthAction, OAuthAction, UserAction } from "./libs/actions";

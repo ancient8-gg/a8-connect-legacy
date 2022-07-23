@@ -1,3 +1,8 @@
+/** *******************************************************************************
+ *  WARNING: THIS FILE IS FOR TYPES DECLARATION ONLY, DO NOT USE TO IMPORT AS VALUE
+ * ********************************************************************************
+ */
+
 /**
  * Export DTOs
  */
@@ -14,13 +19,9 @@ export * as WalletCredentialAuthDto from "./libs/dto/wallet-credential-auth.dto"
 export * as Entities from "./libs/dto/entities";
 
 /**
- * Export Adapters
+ * Export Application Layers
  */
 export * as Adapters from "./libs/adapters";
 export * as Providers from "./libs/providers";
 export * as Actions from "./libs/actions";
-
-/**
- * Export Router
- */
-export * as Router from "./components/router";
+export * as Routers from "./components/router";

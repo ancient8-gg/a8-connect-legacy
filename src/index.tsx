@@ -1,4 +1,7 @@
-import { Adapters, init, openModal, Providers, Router } from "./browser";
+import { init, openModal } from "./browser";
+import { NetworkType } from "./libs/providers";
+import { ChainType } from "./libs/adapters";
+import { AppFlow } from "./components/router";
 
 if (document) {
   document.onreadystatechange = function () {
@@ -6,9 +9,9 @@ if (document) {
       init({
         disableCloseButton: false,
         cleanWalletCache: true,
-        networkType: Providers.NetworkType.testnet,
-        chainType: Adapters.ChainType.EVM,
-        initAppFlow: Router.AppFlow.LOGIN_FLOW,
+        networkType: NetworkType.testnet,
+        chainType: ChainType.EVM,
+        initAppFlow: AppFlow.LOGIN_FLOW,
       }).then(() => {
         openModal();
       });
