@@ -7,7 +7,10 @@ let a8ConnectInstance: A8Connect;
  * The function to get A8Connect instance
  */
 export const getA8ConnectInstance = () => {
-  if (!a8ConnectInstance) throw new Error("A8Connect isn't initialized");
+  if (!a8ConnectInstance) {
+    throw new Error("A8Connect isn't initialized");
+  }
+
   return a8ConnectInstance;
 };
 
@@ -38,7 +41,10 @@ export const init = (options: A8ConnectInitOptions) => {
  * The function to open modal
  */
 export const openModal = () => {
-  if (!a8ConnectInstance) throw new Error("A8Connect isn't initialized");
+  if (!a8ConnectInstance) {
+    throw new Error("A8Connect isn't initialized");
+  }
+
   return a8ConnectInstance.openModal.call(a8ConnectInstance);
 };
 
@@ -46,7 +52,10 @@ export const openModal = () => {
  * The function to close the modal
  */
 export const closeModal = () => {
-  if (!a8ConnectInstance) throw new Error("A8Connect isn't initialized");
+  if (!a8ConnectInstance) {
+    throw new Error("A8Connect isn't initialized");
+  }
+
   return a8ConnectInstance.closeModal.call(a8ConnectInstance);
 };
 
