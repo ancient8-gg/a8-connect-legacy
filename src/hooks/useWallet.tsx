@@ -23,7 +23,7 @@ interface WalletContextProps {
   setWalletName(walletName: string): void;
   disconnect(): void;
   initState: () => Promise<ConnectedWalletPayload>;
-  isWalletConnected: boolean;
+  handleWalletConnected: () => Promise<void>;
 }
 
 const WalletContext = createContext<WalletContextProps>(null);
@@ -35,7 +35,6 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const [chainType, setChainType] = useState<ChainType>(desiredChainType);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [walletName, setWalletName] = useState<string>("");
-  const [isWalletConnected, setWalletConnected] = useState(false);
 
   const walletAction = getWalletAction();
 
@@ -64,24 +63,17 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         setChainType(session.chainType);
         setWalletAddress(session.walletAddress);
         setWalletName(session.walletName);
-        setWalletConnected(!!session.walletAddress);
       }
-
-      handleWalletConnected(session);
-    } catch (e) {
-      handleWalletConnected(null);
-    }
+    } catch (e) {}
 
     setWalletReady(true);
     return session;
   }, [onConnected, setWalletReady]);
 
-  const handleWalletConnected = useCallback(
-    (walletSession: ConnectedWalletPayload | null) => {
-      onConnected(walletSession);
-    },
-    []
-  );
+  const handleWalletConnected = useCallback(async () => {
+    const session = await walletAction.getConnectedSession();
+    onConnected(session);
+  }, []);
 
   const getAdapters = useCallback(() => {
     return walletAction.getWalletAdapters(chainType);
@@ -127,7 +119,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         setChainType,
         setWalletName,
         initState,
-        isWalletConnected,
+        handleWalletConnected,
       }}
     >
       {children}
