@@ -375,9 +375,7 @@ export class A8Connect {
    * @param payload
    * @private
    */
-  private async onConnected(
-    payload: ConnectedWalletPayload | null
-  ): Promise<void> {
+  private onConnected(payload: ConnectedWalletPayload | null): void {
     /**
      * If wallet state is valid, emit listener.
      */
