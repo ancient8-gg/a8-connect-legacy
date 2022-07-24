@@ -47,9 +47,10 @@ export const Modal: FC<ModalProps> = ({
         const containers = document.getElementsByClassName("a8-modal-overlay");
 
         for (const elm in containers) {
-          containers[elm].addEventListener("click", () => {
-            handleClose();
-          });
+          containers[elm].addEventListener &&
+            containers[elm].addEventListener("click", () => {
+              handleClose();
+            });
         }
       }, 100);
     }

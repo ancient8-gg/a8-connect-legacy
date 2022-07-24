@@ -22,6 +22,7 @@ import {
 import { RegistryProvider, StorageProvider, UtilsProvider } from "../providers";
 import { getStorageProvider } from "../providers";
 import { ConnectedWalletPayload } from "../dto/a8-connect-session.dto";
+import { AuthEntity } from "../dto/entities";
 
 export const CONNECTED_WALLET_KEY = "CONNECTED_WALLET";
 
@@ -130,33 +131,49 @@ export class WalletAction {
   }
 
   /**
-   * Ensure a wallet is available, otherwise raise error.
-   * @private
+   * `isWalletStateValid` tells whether the current wallet state is valid or not.
+   * @param authEntities
+   * @param desiredChainType
    */
-  private ensureWalletIsAvailable() {
-    if (!this.selectedAdapter) throw new Error("No selected wallet.");
+  public async isWalletStateValid(
+    authEntities: AuthEntity[],
+    desiredChainType: ChainType
+  ) {
+    const walletAddress = await this.getWalletAddress();
+    const isWalletConnected = await this.selectedAdapter.isConnected();
+    const currentChainType = this.selectedAdapter.chainType;
 
-    if (!this.selectedAdapter.isInstalled()) {
-      throw new Error(
-        `The wallet ${this.selectedAdapter.name} is not installed.`
-      );
-    }
-  }
+    /**
+     * Prepare conditions
+     */
+    const connectedAuthEntity = authEntities.find(
+      (wallet) => wallet.credential.walletAddress === walletAddress
+    );
 
-  /**
-   * The function to ensure wallet is connected, otherwise raise error
-   * @private
-   */
-  private async ensureWalletIsConnected() {
-    this.ensureWalletIsAvailable();
-    if (!(await this.selectedAdapter.isConnected()))
-      throw new Error("Wallet not connected");
+    const connectedWalletBelongsToCurrentUid = !!connectedAuthEntity;
+
+    const connectedWalletMatchedDesiredChainType =
+      (isWalletConnected && currentChainType === desiredChainType) ||
+      desiredChainType === ChainType.ALL;
+
+    const uidConnectedChainTypeMatchedDesiredChainType =
+      connectedAuthEntity?.type.toString() === desiredChainType.toString() ||
+      desiredChainType === ChainType.ALL;
+
+    /**
+     * Go to connect flow
+     */
+    return (
+      connectedWalletMatchedDesiredChainType &&
+      connectedWalletBelongsToCurrentUid &&
+      uidConnectedChainTypeMatchedDesiredChainType
+    );
   }
 
   /**
    * To check whether the wallet is installed.
    */
-  isInstalled(walletName: string) {
+  public isInstalled(walletName: string) {
     return this.supportedWallets[walletName].isInstalled();
   }
 
@@ -164,7 +181,7 @@ export class WalletAction {
    * Disconnect selected wallet and select a new wallet.
    * @param walletName
    */
-  async connectWallet(walletName: string) {
+  public async connectWallet(walletName: string) {
     /**
      * Disconnect selected wallet if applicable.
      */
@@ -210,14 +227,14 @@ export class WalletAction {
   /**
    * The function to clean wallet cache
    */
-  cleanWalletCache() {
+  public cleanWalletCache() {
     return this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
   }
 
   /**
    * Restore connection
    */
-  async restoreConnection() {
+  public async restoreConnection() {
     const connectedWalletData = JSON.parse(
       this.storageProvider.getItem(CONNECTED_WALLET_KEY, null)
     );
@@ -247,7 +264,7 @@ export class WalletAction {
   /**
    * The function to get connected session
    */
-  async getConnectedSession(): Promise<ConnectedWalletPayload> {
+  public async getConnectedSession(): Promise<ConnectedWalletPayload> {
     await this.ensureWalletIsConnected();
 
     return {
@@ -261,7 +278,7 @@ export class WalletAction {
   /**
    * Disconnect selected wallet.
    */
-  async disconnectWallet() {
+  public async disconnectWallet() {
     try {
       this.ensureWalletIsAvailable();
       await this.selectedAdapter.disconnectWallet();
@@ -272,7 +289,7 @@ export class WalletAction {
   /**
    * Get wallet address.
    */
-  getWalletAddress(): Promise<string> {
+  public getWalletAddress(): Promise<string> {
     this.ensureWalletIsAvailable();
     return this.selectedAdapter.getWalletAddress();
   }
@@ -281,7 +298,7 @@ export class WalletAction {
    * Connect and Sign a message.
    * @param message
    */
-  async signMessage(
+  public async signMessage(
     message: string
   ): Promise<{ signature: string; walletAddress: string; walletName: string }> {
     /**
@@ -316,7 +333,9 @@ export class WalletAction {
   /**
    * Get all wallet adapters, or with specific chain type condition.
    */
-  getWalletAdapters(type: ChainType = ChainType.ALL): BaseWalletAdapter[] {
+  public getWalletAdapters(
+    type: ChainType = ChainType.ALL
+  ): BaseWalletAdapter[] {
     return Object.keys(this.supportedWallets)
       .map((walletName: string) => this.supportedWallets[walletName])
       .filter((walletProvider) => {
@@ -328,7 +347,31 @@ export class WalletAction {
   /**
    * Get wallet adapter with specific wallet name
    */
-  getWalletAdapter(walletName: string): BaseWalletAdapter {
+  public getWalletAdapter(walletName: string): BaseWalletAdapter {
     return this.supportedWallets[walletName];
+  }
+
+  /**
+   * Ensure a wallet is available, otherwise raise error.
+   * @private
+   */
+  private ensureWalletIsAvailable() {
+    if (!this.selectedAdapter) throw new Error("No selected wallet.");
+
+    if (!this.selectedAdapter.isInstalled()) {
+      throw new Error(
+        `The wallet ${this.selectedAdapter.name} is not installed.`
+      );
+    }
+  }
+
+  /**
+   * The function to ensure wallet is connected, otherwise raise error
+   * @private
+   */
+  private async ensureWalletIsConnected() {
+    this.ensureWalletIsAvailable();
+    if (!(await this.selectedAdapter.isConnected()))
+      throw new Error("Wallet not connected");
   }
 }

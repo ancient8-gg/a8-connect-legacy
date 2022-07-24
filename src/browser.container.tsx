@@ -175,18 +175,9 @@ export class A8Connect {
         chainType={options.chainType}
         initAppFlow={options.initAppFlow}
         onError={options.onError}
-        onClose={() => {
-          options.onClose && options.onClose();
-          this.closeModal();
-        }}
-        onAuth={(payload) => {
-          this.onAuth(payload);
-          options.onAuth && options.onAuth(payload);
-        }}
-        onConnected={(payload) => {
-          this.onConnected(payload);
-          options.onConnected && options.onConnected(payload);
-        }}
+        onClose={this.closeModal.bind(this)}
+        onAuth={this.onAuth.bind(this)}
+        onConnected={this.onConnected.bind(this)}
       />
     );
   }
@@ -195,6 +186,9 @@ export class A8Connect {
    * The function to close modal.
    */
   public closeModal(): void {
+    const options = this.options;
+    options.onClose && options.onClose();
+
     this.destroy();
   }
 
@@ -221,6 +215,14 @@ export class A8Connect {
    */
   public async fetchSession(): Promise<void> {
     /**
+     * Now to restore UID session.
+     */
+    try {
+      const userSession = await this.currentSession.User.getUserProfile();
+      this.onAuth(userSession);
+    } catch {}
+
+    /**
      * Restore wallet connection first
      */
     try {
@@ -232,15 +234,7 @@ export class A8Connect {
       );
       const walletSession =
         await this.currentSession.Wallet.getConnectedSession();
-      this.onConnected(walletSession);
-    } catch {}
-
-    /**
-     * Now to restore UID session.
-     */
-    try {
-      const userSession = await this.currentSession.User.getUserProfile();
-      this.onAuth(userSession);
+      await this.onConnected(walletSession);
     } catch {}
   }
 
@@ -339,6 +333,9 @@ export class A8Connect {
       ...this.currentSession,
       sessionUser: payload,
     };
+
+    const options = this.options;
+    options.onAuth && options.onAuth(payload);
   }
 
   /**
@@ -346,10 +343,35 @@ export class A8Connect {
    * @param payload
    * @private
    */
-  private onConnected(payload: ConnectedWalletPayload | null): void {
-    this.currentSession = {
-      ...this.currentSession,
-      connectedWallet: payload,
-    };
+  private async onConnected(
+    payload: ConnectedWalletPayload | null
+  ): Promise<void> {
+    try {
+      const options = this.options;
+
+      /**
+       * Check whether the current wallet state is valid
+       */
+      const authEntities =
+        (await this.currentSession?.User.getAuthEntities()) || [];
+
+      const isWalletStateValid =
+        (await this.currentSession?.Wallet.isWalletStateValid(
+          authEntities,
+          options.chainType
+        )) || false;
+
+      /**
+       * If wallet state is valid, emit listener.
+       */
+      if (isWalletStateValid) {
+        this.currentSession = {
+          ...this.currentSession,
+          connectedWallet: payload,
+        };
+
+        options.onConnected && options.onConnected(payload);
+      }
+    } catch {}
   }
 }

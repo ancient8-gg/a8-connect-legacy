@@ -8,8 +8,8 @@ import { useWallet } from "../hooks/useWallet";
 import { BASE_WELCOME_SCREEN_KEY } from "./base-welcome.screen";
 import { BASE_WELCOME_ADD_WALLET_SCREEN_KEY } from "./base-welcome-add-wallet.screen";
 import { BASE_WELCOME_LOST_WALLET_SCREEN_KEY } from "./base-welcome-lost-wallet.screen";
-import { ChainType } from "../libs/adapters";
 import { BASE_NOTIFICATION_SCREEN_KEY } from "./base-notification.screen";
+import { getWalletAction } from "../libs/actions";
 
 export const BUFFER_LOADING_APP_SCREEN_KEY = "BUFFER_LOADING_APP_SCREEN";
 
@@ -22,16 +22,8 @@ export const BufferLoadingAppScreen: FC = () => {
     detectAppFlow,
     initAppFlow,
   } = useAppState();
-
-  const {
-    initState: initWalletState,
-    isWalletConnected,
-    chainType,
-    walletAddress,
-  } = useWallet();
-
+  const { initState: initWalletState } = useWallet();
   const { initState: initRouterState } = useRouter();
-
   const { initState: initSessionState, authEntities, userInfo } = useSession();
   const { push } = useLocation();
 
@@ -42,41 +34,20 @@ export const BufferLoadingAppScreen: FC = () => {
     return isStateReset && isAppReady && isAppFlowReady;
   }, [isStateReset, isAppReady, isAppFlowReady]);
 
-  const shouldAutoCloseModal = useMemo(() => {
-    /**
-     * Prepare conditions
-     */
-    const connectedAuthEntity = authEntities.find(
-      (wallet) => wallet.credential.walletAddress === walletAddress
-    );
+  const shouldAutoCloseModal = useCallback(async () => {
+    let result = false;
 
-    const connectedWalletBelongsToCurrentUid = !!connectedAuthEntity;
+    try {
+      result = await getWalletAction().isWalletStateValid(
+        authEntities,
+        desiredChainType
+      );
+    } catch {}
 
-    const connectedWalletMatchedDesiredChainType =
-      (isWalletConnected && chainType === desiredChainType) ||
-      desiredChainType === ChainType.ALL;
+    return result;
+  }, [desiredChainType, authEntities]);
 
-    const uidConnectedChainTypeMatchedDesiredChainType =
-      connectedAuthEntity?.type.toString() === desiredChainType.toString() ||
-      desiredChainType === ChainType.ALL;
-
-    /**
-     * Go to connect flow
-     */
-    return (
-      connectedWalletMatchedDesiredChainType &&
-      connectedWalletBelongsToCurrentUid &&
-      uidConnectedChainTypeMatchedDesiredChainType
-    );
-  }, [
-    isWalletConnected,
-    desiredChainType,
-    walletAddress,
-    authEntities,
-    chainType,
-  ]);
-
-  const handleNextFlow = useCallback(() => {
+  const handleNextFlow = useCallback(async () => {
     /**
      * Do nothing if screen state isn't ready
      */
@@ -117,7 +88,7 @@ export const BufferLoadingAppScreen: FC = () => {
     /**
      * Auto close modal
      */
-    if (shouldAutoCloseModal) {
+    if (await shouldAutoCloseModal()) {
       /**
        * Otherwise, close the modal
        */
