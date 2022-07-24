@@ -22,7 +22,7 @@ export const BufferLoadingAppScreen: FC = () => {
     detectAppFlow,
     initAppFlow,
   } = useAppState();
-  const { initState: initWalletState } = useWallet();
+  const { initState: initWalletState, handleWalletConnected } = useWallet();
   const { initState: initRouterState } = useRouter();
   const { initState: initSessionState, authEntities, userInfo } = useSession();
   const { push } = useLocation();
@@ -90,7 +90,12 @@ export const BufferLoadingAppScreen: FC = () => {
      */
     if (await shouldAutoCloseModal()) {
       /**
-       * Otherwise, close the modal
+       * Emit connected wallet.
+       */
+      await handleWalletConnected();
+
+      /**
+       * Otherwise, close the modal.
        */
       setTimeout(() => {
         handleClose();
@@ -109,6 +114,7 @@ export const BufferLoadingAppScreen: FC = () => {
     screenStateReady,
     shouldAutoCloseModal,
     push,
+    handleWalletConnected,
   ]);
 
   const resetAppState = useCallback(async () => {

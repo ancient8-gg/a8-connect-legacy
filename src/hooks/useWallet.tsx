@@ -23,6 +23,7 @@ interface WalletContextProps {
   setWalletName(walletName: string): void;
   disconnect(): void;
   initState: () => Promise<ConnectedWalletPayload>;
+  handleWalletConnected: () => Promise<void>;
 }
 
 const WalletContext = createContext<WalletContextProps>(null);
@@ -63,22 +64,16 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         setWalletAddress(session.walletAddress);
         setWalletName(session.walletName);
       }
-
-      handleWalletConnected(session);
-    } catch (e) {
-      handleWalletConnected(null);
-    }
+    } catch (e) {}
 
     setWalletReady(true);
     return session;
   }, [onConnected, setWalletReady]);
 
-  const handleWalletConnected = useCallback(
-    (walletSession: ConnectedWalletPayload | null) => {
-      onConnected(walletSession);
-    },
-    []
-  );
+  const handleWalletConnected = useCallback(async () => {
+    const session = await walletAction.getConnectedSession();
+    onConnected(session);
+  }, []);
 
   const getAdapters = useCallback(() => {
     return walletAction.getWalletAdapters(chainType);
@@ -124,6 +119,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         setChainType,
         setWalletName,
         initState,
+        handleWalletConnected,
       }}
     >
       {children}
