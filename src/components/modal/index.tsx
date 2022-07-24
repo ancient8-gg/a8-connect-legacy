@@ -1,4 +1,4 @@
-import { CSSProperties, FC, ReactNode } from "react";
+import { CSSProperties, FC, ReactNode, useEffect } from "react";
 import ReactModal from "react-modal";
 import classnames from "classnames";
 
@@ -38,8 +38,22 @@ export const Modal: FC<ModalProps> = ({
   children,
   contentStyle,
 }: ModalProps) => {
-  const { containerSelector } = useAppState();
+  const { containerSelector, handleClose, disableCloseButton } = useAppState();
   const document = RegistryProvider.getInstance().document;
+
+  useEffect(() => {
+    if (!disableCloseButton) {
+      setTimeout(() => {
+        const containers = document.getElementsByClassName("a8-modal-overlay");
+
+        for (const elm in containers) {
+          containers[elm].addEventListener("click", () => {
+            handleClose();
+          });
+        }
+      }, 100);
+    }
+  }, []);
 
   return (
     <ReactModal
@@ -51,7 +65,8 @@ export const Modal: FC<ModalProps> = ({
       portalClassName={"a8-connect-container"}
       parentSelector={() => document.getElementById(containerSelector)}
     >
-      <div className={"absolute md:h-auto md:w-[378px] w-full h-full"}>
+      <div className={"a8-modal-overlay absolute w-full h-full z-[1]"} />
+      <div className={"absolute md:h-auto md:w-[378px] w-full h-full z-[99]"}>
         <div className="w-full">
           <TopGradientBorder className="float-right md:w-[30%] w-[40%]" />
         </div>
