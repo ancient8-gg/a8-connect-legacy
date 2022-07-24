@@ -226,15 +226,28 @@ export class A8Connect {
      * Restore wallet connection first
      */
     try {
+      /**
+       * Execute restoring connection with timeout handler.
+       */
       await getUtilsProvider().withTimeout<string>(
         this.currentSession.Wallet.restoreConnection.bind(
           this.currentSession.Wallet
         ),
         10000
       );
+
+      /**
+       * get wallet session.
+       */
       const walletSession =
         await this.currentSession.Wallet.getConnectedSession();
-      await this.onConnected(walletSession);
+
+      /**
+       * Emit connected session.
+       */
+      if (await this.isWalletStateValid()) {
+        await this.onConnected(walletSession);
+      }
     } catch {}
   }
 
@@ -324,6 +337,25 @@ export class A8Connect {
   }
 
   /**
+   * The function to check whether the wallet state is valid
+   * @private
+   */
+  private async isWalletStateValid(): Promise<boolean> {
+    const options = this.options;
+
+    /**
+     * Check whether the current wallet state is valid
+     */
+    const authEntities =
+      (await this.currentSession?.User.getAuthEntities()) || [];
+
+    return this.currentSession?.Wallet.isWalletStateValid(
+      authEntities,
+      options.chainType
+    );
+  }
+
+  /**
    * The function to be triggered after the authentication to grab the current session user.
    * @param payload
    * @private
@@ -346,32 +378,15 @@ export class A8Connect {
   private async onConnected(
     payload: ConnectedWalletPayload | null
   ): Promise<void> {
-    try {
-      const options = this.options;
+    /**
+     * If wallet state is valid, emit listener.
+     */
+    this.currentSession = {
+      ...this.currentSession,
+      connectedWallet: payload,
+    };
 
-      /**
-       * Check whether the current wallet state is valid
-       */
-      const authEntities =
-        (await this.currentSession?.User.getAuthEntities()) || [];
-
-      const isWalletStateValid =
-        (await this.currentSession?.Wallet.isWalletStateValid(
-          authEntities,
-          options.chainType
-        )) || false;
-
-      /**
-       * If wallet state is valid, emit listener.
-       */
-      if (isWalletStateValid) {
-        this.currentSession = {
-          ...this.currentSession,
-          connectedWallet: payload,
-        };
-
-        options.onConnected && options.onConnected(payload);
-      }
-    } catch {}
+    const options = this.options;
+    options.onConnected && options.onConnected(payload);
   }
 }

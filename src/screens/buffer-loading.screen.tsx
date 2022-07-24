@@ -34,7 +34,7 @@ export const BufferLoadingAppScreen: FC = () => {
     return isStateReset && isAppReady && isAppFlowReady;
   }, [isStateReset, isAppReady, isAppFlowReady]);
 
-  const shouldAutoCloseModal = useCallback(async () => {
+  const isWalletStateValid = useCallback(async () => {
     let result = false;
 
     try {
@@ -86,9 +86,9 @@ export const BufferLoadingAppScreen: FC = () => {
     }
 
     /**
-     * Auto close modal
+     * Auto close modal if wallet state is valid.
      */
-    if (await shouldAutoCloseModal()) {
+    if (await isWalletStateValid()) {
       /**
        * Emit connected wallet.
        */
@@ -109,10 +109,10 @@ export const BufferLoadingAppScreen: FC = () => {
      */
     return push(BASE_WELCOME_SCREEN_KEY);
   }, [
-    handleClose,
     currentAppFlow,
     screenStateReady,
-    shouldAutoCloseModal,
+    isWalletStateValid,
+    handleClose,
     push,
     handleWalletConnected,
   ]);
