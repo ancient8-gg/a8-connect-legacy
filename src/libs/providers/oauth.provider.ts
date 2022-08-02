@@ -32,4 +32,24 @@ export class OAuthProvider extends BusinessProvider {
       method: "GET",
     });
   }
+
+  /**
+   * `getAuthorizerUsers` will retrieve users that authorized current auth client.
+   * @param filters
+   */
+  public getAuthorizerUsers(filters: {
+    searchQuery: string;
+    skip?: number;
+    limit?: number;
+    sort?: string;
+  }) {
+    return this.requestWithOAuthCredential(
+      `/oauth/user?${new URLSearchParams(
+        filters as unknown as Record<string, string>
+      ).toString()}`,
+      {
+        method: "GET",
+      }
+    );
+  }
 }

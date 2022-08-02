@@ -148,7 +148,7 @@ export class A8Connect {
     this.initializeRootSelector();
 
     // initialize registry first
-    this.initializeSession();
+    this.initializeRegistry();
 
     // restore the session if applicable
     await this.fetchSession();
@@ -214,6 +214,17 @@ export class A8Connect {
    * @public
    */
   public async fetchSession(): Promise<void> {
+    /**
+     * Initialize session.
+     */
+    this.currentSession = {
+      Auth: getAuthAction(),
+      User: getUserAction(),
+      Wallet: getWalletAction(),
+      connectedWallet: null,
+      sessionUser: null,
+    };
+
     /**
      * Now to restore UID session.
      */
@@ -301,7 +312,7 @@ export class A8Connect {
    * Initialize registry and session.
    * @private
    */
-  private initializeSession() {
+  private initializeRegistry() {
     const options = this.options;
     const registryInstance = RegistryProvider.getInstance();
 
@@ -316,17 +327,6 @@ export class A8Connect {
     if (!!options.cleanWalletCache) {
       getWalletAction().cleanWalletCache();
     }
-
-    /**
-     * Initialize session.
-     */
-    this.currentSession = {
-      Auth: getAuthAction(),
-      User: getUserAction(),
-      Wallet: getWalletAction(),
-      connectedWallet: null,
-      sessionUser: null,
-    };
 
     /**
      * Replace credential if needed

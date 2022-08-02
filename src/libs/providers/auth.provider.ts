@@ -6,15 +6,54 @@ import {
   User,
 } from "../dto/entities";
 import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
-import { RegistrationAuthDto } from "../dto/registration-auth.dto";
+import {
+  DiscordRegistrationAuthDto,
+  RegistrationAuthDto,
+} from "../dto/registration-auth.dto";
 import { ConnectOauthDto } from "../dto/connect-oauth.dto";
 import { ConnectEmailAuthDto } from "../dto/connect-email-auth.dto";
 import { CreateAuthDto } from "../dto/create-auth.dto";
+import { DiscordCredentialDto } from "../dto/discord-oauth.dto";
 
 /**
  * `AuthProvider` provides all the business request calls to A8Connect backend, which related to User Authentication.
  */
 export class AuthProvider extends BusinessProvider {
+  /**
+   * The function to sign up user using Discord exchange code.
+   * @param signUpPayload
+   */
+  signUpDiscord(
+    signUpPayload: DiscordRegistrationAuthDto
+  ): Promise<LoginResponse> {
+    return this.request<LoginResponse>("/auth/sign-up", {
+      body: JSON.stringify(signUpPayload),
+      method: "POST",
+    });
+  }
+
+  /**
+   * The function to login using Discord exchange code.
+   * @param loginPayload
+   */
+  signInDiscord(loginPayload: DiscordCredentialDto): Promise<LoginResponse> {
+    return this.request<LoginResponse>("/auth/login-discord", {
+      body: JSON.stringify(loginPayload),
+      method: "POST",
+    });
+  }
+
+  /**
+   * The function to connect Discord account using Discord exchange code.
+   * @param payload
+   */
+  connectDiscord(payload: DiscordCredentialDto): Promise<AuthEntity> {
+    return this.requestWithCredential<AuthEntity>("/auth/connect-discord", {
+      body: JSON.stringify(payload),
+      method: "POST",
+    });
+  }
+
   /**
    * The function to login using credential from wallet signature.
    * @param loginPayload
@@ -30,7 +69,7 @@ export class AuthProvider extends BusinessProvider {
    * The function to sign up user using credential from wallet signature.
    * @param signUpPayload
    */
-  signUpWallet(signUpPayload: RegistrationAuthDto): Promise<LoginResponse> {
+  signUp(signUpPayload: RegistrationAuthDto): Promise<LoginResponse> {
     return this.request<LoginResponse>("/auth/sign-up", {
       body: JSON.stringify(signUpPayload),
       method: "POST",

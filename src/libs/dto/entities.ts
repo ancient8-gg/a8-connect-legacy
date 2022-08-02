@@ -1,6 +1,11 @@
 // ======== Main interface ========
 import { SessionInfoRecord } from "./persist-kyc.dto";
 
+export type PaginatedResponse<Data> = {
+  data: Data[];
+  total: number;
+};
+
 export type UserInfo = User & { session: AuthSession } & {
   accessedSites: AuthClientEntity[];
 };
@@ -70,7 +75,7 @@ export interface AuthEntity {
   _id: string;
   userId: string;
   type: AuthType;
-  credential: WalletCredential;
+  credential: WalletCredential | DiscordAuthCredential;
   isPrimary: boolean;
 }
 
@@ -79,10 +84,15 @@ export type WalletCredential = {
   walletAddress: string;
 };
 
+export type DiscordAuthCredential = {
+  discordUserId: string;
+};
+
 export enum AuthType {
   EVMChain = "AUTH_TYPE::EVM_CHAIN",
   Solana = "AUTH_TYPE::SOLANA",
   Password = "AUTH_TYPE::PASSWORD",
+  Discord = "AUTH_TYPE::DISCORD",
 }
 
 export enum GrantType {

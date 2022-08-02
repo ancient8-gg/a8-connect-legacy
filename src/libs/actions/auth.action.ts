@@ -1,9 +1,13 @@
 import { OffChainAction } from "./offchain.action";
-import { RegistrationAuthDto } from "../dto/registration-auth.dto";
+import {
+  DiscordRegistrationAuthDto,
+  RegistrationAuthDto,
+} from "../dto/registration-auth.dto";
 import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
 import { ConnectEmailAuthDto } from "../dto/connect-email-auth.dto";
 import { LoginResponse, AuthChallenge, AuthEntity } from "../dto/entities";
 import { CreateAuthDto } from "../dto/create-auth.dto";
+import { DiscordCredentialDto } from "../dto/discord-oauth.dto";
 
 /**
  * `AuthActions` provides methods to handle all authenticating actions.
@@ -84,6 +88,37 @@ export class AuthAction extends OffChainAction {
   }
 
   /**
+   * Sign user up using Discord exchange code. Persist access token to storage.
+   * @param authDto
+   */
+  async signUpDiscord(
+    authDto: DiscordRegistrationAuthDto
+  ): Promise<LoginResponse> {
+    const { accessToken } = await this.authProvider.signUpDiscord(authDto);
+    this.storageProvider.setItem("jwt", accessToken);
+    return { accessToken };
+  }
+
+  /**
+   * Sign user in using Discord exchange code. Persist access token to storage.
+   * @param authDto
+   */
+  async signInDiscord(authDto: DiscordCredentialDto): Promise<LoginResponse> {
+    const { accessToken } = await this.authProvider.signInDiscord(authDto);
+    this.storageProvider.setItem("jwt", accessToken);
+    return { accessToken };
+  }
+
+  /**
+   * Connect Discord account to current UID using Discord exchange code.
+   */
+  async connectDiscord(
+    createAuthDto: DiscordCredentialDto
+  ): Promise<AuthEntity> {
+    return this.authProvider.connectDiscord(createAuthDto);
+  }
+
+  /**
    * Connect new wallet to UID
    */
   async connectWallet(createAuthDto: CreateAuthDto): Promise<AuthEntity> {
@@ -119,7 +154,7 @@ export class AuthAction extends OffChainAction {
    * @param authDto
    */
   async signUp(authDto: RegistrationAuthDto): Promise<LoginResponse> {
-    const { accessToken } = await this.authProvider.signUpWallet(authDto);
+    const { accessToken } = await this.authProvider.signUp(authDto);
     this.storageProvider.setItem("jwt", accessToken);
     return { accessToken };
   }

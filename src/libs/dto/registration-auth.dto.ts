@@ -1,7 +1,7 @@
 import {
   IsAlphanumeric,
   IsEmail,
-  IsEnum,
+  IsIn,
   IsOptional,
   IsString,
   IsUrl,
@@ -10,8 +10,9 @@ import {
 } from "class-validator";
 import { WalletCredentialAuthDto } from "./wallet-credential-auth.dto";
 import { AuthType } from "./entities";
+import { DiscordCredentialDto } from "./discord-oauth.dto";
 
-class RegistrationDto {
+export class RegistrationAuthDto {
   @IsOptional()
   @IsUrl({
     require_protocol: true,
@@ -33,11 +34,38 @@ class RegistrationDto {
   @MaxLength(32)
   username?: string;
 
-  @IsEnum(AuthType)
+  @IsIn([AuthType.EVMChain, AuthType.Solana])
   type: AuthType;
 
   @ValidateNested()
   credential: WalletCredentialAuthDto;
 }
 
-export class RegistrationAuthDto extends RegistrationDto {}
+export class DiscordRegistrationAuthDto {
+  @IsOptional()
+  @IsUrl({
+    require_protocol: true,
+    require_valid_protocol: true,
+  })
+  avatar?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(32)
+  displayName?: string;
+
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @IsAlphanumeric()
+  @MaxLength(32)
+  username?: string;
+
+  @IsIn([AuthType.Discord])
+  type: AuthType;
+
+  @ValidateNested()
+  credential: DiscordCredentialDto;
+}

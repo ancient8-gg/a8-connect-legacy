@@ -13,6 +13,7 @@ import {
   AuthChallenge,
   AuthType,
   ConnectAgendaType,
+  WalletCredential,
 } from "../libs/dto/entities";
 import { ChainType } from "../libs/adapters/";
 import { useLocation } from "../components/router";
@@ -143,7 +144,9 @@ export const SignWalletConnectUID: FC = () => {
     (async () => {
       const inIncluded =
         authEntities.filter(
-          (item) => item.credential.walletAddress === walletAddress
+          (item) =>
+            (item.credential as WalletCredential).walletAddress ===
+            walletAddress
         ).length > 0;
 
       if (inIncluded) {

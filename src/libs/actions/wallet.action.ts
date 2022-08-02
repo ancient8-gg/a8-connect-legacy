@@ -22,7 +22,7 @@ import {
 import { RegistryProvider, StorageProvider, UtilsProvider } from "../providers";
 import { getStorageProvider } from "../providers";
 import { ConnectedWalletPayload } from "../dto/a8-connect-session.dto";
-import { AuthEntity } from "../dto/entities";
+import { AuthEntity, WalletCredential } from "../dto/entities";
 
 export const CONNECTED_WALLET_KEY = "CONNECTED_WALLET";
 
@@ -147,7 +147,8 @@ export class WalletAction {
      * Prepare conditions
      */
     const connectedAuthEntity = authEntities.find(
-      (wallet) => wallet.credential.walletAddress === walletAddress
+      (wallet) =>
+        (wallet.credential as WalletCredential).walletAddress === walletAddress
     );
 
     const connectedWalletBelongsToCurrentUid = !!connectedAuthEntity;
