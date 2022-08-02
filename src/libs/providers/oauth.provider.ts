@@ -1,5 +1,10 @@
 import { BusinessProvider } from "./business.provider";
-import { PublicAuthClientEntity, User, UserInfo } from "../dto/entities";
+import {
+  PaginatedResponse,
+  PublicAuthClientEntity,
+  User,
+  UserInfo,
+} from "../dto/entities";
 
 /**
  * `OAuthProvider` provides all business request calls to A8Connect backend, which related to OAuth actions.
@@ -42,7 +47,7 @@ export class OAuthProvider extends BusinessProvider {
     skip?: number;
     limit?: number;
     sort?: string;
-  }) {
+  }): Promise<PaginatedResponse<User>> {
     return this.requestWithOAuthCredential(
       `/oauth/user?${new URLSearchParams(
         filters as unknown as Record<string, string>
