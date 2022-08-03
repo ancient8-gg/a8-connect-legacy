@@ -233,9 +233,11 @@ export class WalletAction {
   }
 
   /**
-   * Restore connection
+   * Restore connection. Normally the function won't connect if user has disconnected the wallet from DApp.
+   * Enable `forceConnect` to bypass and try to connect regardless the wallet is connected or not.
+   * @param forceConnect
    */
-  public async restoreConnection() {
+  public async restoreConnection(forceConnect = false) {
     const connectedWalletData = JSON.parse(
       this.storageProvider.getItem(CONNECTED_WALLET_KEY, null)
     );
@@ -253,7 +255,7 @@ export class WalletAction {
      * Now to check for timeout
      */
     // Check if the previous wallet is still connected
-    if (await adapter.isConnected()) {
+    if ((await adapter.isConnected()) || forceConnect) {
       /**
        *  If connected then we return the current wallet address
        */
