@@ -36,6 +36,11 @@ export interface A8ConnectInitOptions {
   globalContext?: typeof window;
 
   /**
+   * Enable `forceConnectWallet` to force connecting wallet regardless the wallet is connected or not.
+   */
+  forceConnectWallet?: boolean;
+
+  /**
    * `withCredential` replace current jwt credential. Usually useful for `LOST_WALLET_FLOW` flow.
    */
   withCredential?: string;
@@ -151,7 +156,7 @@ export class A8Connect {
     this.initializeRegistry();
 
     // restore the session if applicable
-    await this.fetchSession();
+    await this.fetchSession(!!options.forceConnectWallet);
   }
 
   /**
