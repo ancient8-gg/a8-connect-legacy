@@ -211,7 +211,7 @@ export class A8Connect {
 
   /**
    * The function to restore session if possible, can be fail-safe.
-   * Restore connection. Normally the function won't connect if user has disconnected the wallet from DApp.
+   * Normally the function won't connect if user has disconnected the wallet from DApp.
    * Enable `forceConnect` to bypass and try to connect regardless the wallet is connected or not.
    *
    * @param forceConnectWallet
