@@ -180,8 +180,8 @@ export class AuthProvider extends BusinessProvider {
    * The function to verify user wallet using credential from wallet signature.
    * @param createAuthPayload
    */
-  verifyWallet(createAuthPayload: CreateAuthDto): Promise<AuthEntity> {
-    return this.requestWithCredential<AuthEntity>("/auth/verify-wallet", {
+  verifyWallet(createAuthPayload: CreateAuthDto): Promise<void> {
+    return this.requestWithCredential<void>("/auth/verify-wallet", {
       body: JSON.stringify(createAuthPayload),
       method: "POST",
     });

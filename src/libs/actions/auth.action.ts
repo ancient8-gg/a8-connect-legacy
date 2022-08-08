@@ -150,6 +150,19 @@ export class AuthAction extends OffChainAction {
   }
 
   /**
+   * Verify a wallet whether it belongs to current user or not.
+   * @param createAuthDto
+   */
+  async verifyWallet(createAuthDto: CreateAuthDto): Promise<boolean> {
+    try {
+      await this.authProvider.verifyWallet(createAuthDto);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
    * Sign user up. Persist access token to storage.
    * @param authDto
    */
