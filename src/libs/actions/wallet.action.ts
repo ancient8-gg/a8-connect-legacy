@@ -286,6 +286,7 @@ export class WalletAction {
       this.ensureWalletIsAvailable();
       await this.selectedAdapter.disconnectWallet();
       this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
+      this.selectedAdapter = null;
     } catch {}
   }
 
