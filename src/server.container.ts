@@ -74,9 +74,9 @@ export class A8ServerConnect {
      * Initialize current session
      */
     this.currentSession = {
-      Auth: getAuthAction(),
-      User: getUserAction(),
-      OAuth: getOAuthAction(),
+      Auth: getAuthAction({ reInit: true }),
+      User: getUserAction({ reInit: true }),
+      OAuth: getOAuthAction({ reInit: true }),
     };
 
     /**

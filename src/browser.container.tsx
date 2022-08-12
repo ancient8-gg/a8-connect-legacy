@@ -294,9 +294,9 @@ export class A8Connect {
      * Initialize session.
      */
     this.currentSession = {
-      Auth: getAuthAction(),
-      User: getUserAction(),
-      Wallet: getWalletAction(),
+      Auth: getAuthAction({ reInit: true }),
+      User: getUserAction({ reInit: true }),
+      Wallet: getWalletAction({ reInit: true }),
       connectedWallet: null,
       sessionUser: null,
     };
