@@ -57,7 +57,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
     }
 
     setSigning(false);
-  }, [onSigned, stopHandler]);
+  }, [onSigned, stopHandler, walletAddress]);
 
   useEffect(() => {
     handler = utilsProvider.withInterval(async () => {
