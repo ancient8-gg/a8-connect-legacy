@@ -233,9 +233,9 @@ export class A8Connect {
    */
   public async fetchSession(forceConnectWallet = false): Promise<void> {
     /**
-     * Make sure the session is initialized
+     * Raise error if session isn't initialized
      */
-    this.initializeSession();
+    if (!this.currentSession) throw new Error("Session isn't initialized");
 
     /**
      * Now to restore UID session.
@@ -243,7 +243,12 @@ export class A8Connect {
     try {
       const userSession = await this.currentSession.User.getUserProfile();
       this.onAuth(userSession);
-    } catch {}
+    } catch {
+      /**
+       * Unset session if fetch session cannot be restored.
+       */
+      this.currentSession.sessionUser = null;
+    }
 
     /**
      * Restore wallet connection first
@@ -272,7 +277,12 @@ export class A8Connect {
       if (await this.isWalletStateValid()) {
         await this.onConnected(walletSession);
       }
-    } catch {}
+    } catch {
+      /**
+       * Unset session if fetch session cannot be restored.
+       */
+      this.currentSession.connectedWallet = null;
+    }
   }
 
   /**
@@ -343,6 +353,11 @@ export class A8Connect {
    * @private
    */
   private initializeRegistry() {
+    /**
+     * Raise error if session isn't initialized
+     */
+    if (!this.currentSession) throw new Error("Session isn't initialized");
+
     const options = this.options;
     const registryInstance = RegistryProvider.getInstance();
 
@@ -355,7 +370,7 @@ export class A8Connect {
      * Clean wallet cache.
      */
     if (!!options.cleanWalletCache) {
-      getWalletAction().cleanWalletCache();
+      this.currentSession.Wallet.cleanWalletCache();
     }
 
     /**
@@ -374,12 +389,17 @@ export class A8Connect {
     const options = this.options;
 
     /**
+     * Return false if current session isn't available
+     */
+    if (!this.currentSession) return false;
+
+    /**
      * Check whether the current wallet state is valid
      */
     const authEntities =
-      (await this.currentSession?.User.getAuthEntities()) || [];
+      (await this.currentSession.User.getAuthEntities()) || [];
 
-    return this.currentSession?.Wallet.isWalletStateValid(
+    return this.currentSession.Wallet.isWalletStateValid(
       authEntities,
       options.chainType
     );
