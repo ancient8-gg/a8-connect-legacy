@@ -152,11 +152,11 @@ export class A8Connect {
      */
     this.initializeRootSelector();
 
-    // initialize registry first
-    this.initializeRegistry();
-
     // restore the session if applicable
     await this.fetchSession(!!options.forceConnectWallet);
+
+    // initialize registry first
+    this.initializeRegistry();
   }
 
   /**
