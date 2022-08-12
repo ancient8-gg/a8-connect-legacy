@@ -152,11 +152,20 @@ export class A8Connect {
      */
     this.initializeRootSelector();
 
-    // restore the session if applicable
-    await this.fetchSession(!!options.forceConnectWallet);
+    /**
+     * Initialize session
+     */
+    this.initializeSession();
 
-    // initialize registry first
+    /**
+     * Update registry and credentials
+     */
     this.initializeRegistry();
+
+    /**
+     * Try to restore the session if possible
+     */
+    await this.fetchSession(!!options.forceConnectWallet);
   }
 
   /**
@@ -224,15 +233,9 @@ export class A8Connect {
    */
   public async fetchSession(forceConnectWallet = false): Promise<void> {
     /**
-     * Initialize session.
+     * Make sure the session is initialized
      */
-    this.currentSession = {
-      Auth: getAuthAction(),
-      User: getUserAction(),
-      Wallet: getWalletAction(),
-      connectedWallet: null,
-      sessionUser: null,
-    };
+    this.initializeSession();
 
     /**
      * Now to restore UID session.
@@ -270,6 +273,23 @@ export class A8Connect {
         await this.onConnected(walletSession);
       }
     } catch {}
+  }
+
+  /**
+   * Construct session
+   * @private
+   */
+  private initializeSession(): void {
+    /**
+     * Initialize session.
+     */
+    this.currentSession = {
+      Auth: getAuthAction(),
+      User: getUserAction(),
+      Wallet: getWalletAction(),
+      connectedWallet: null,
+      sessionUser: null,
+    };
   }
 
   /**
