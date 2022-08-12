@@ -6,19 +6,19 @@ import { useLocation } from "../components/router";
 import { PolygonButton } from "../components/button";
 import { ModalHeader } from "../components/modal/modal.header";
 import { getUtilsProvider } from "../libs/providers";
+import { getAuthAction } from "../libs/actions";
+import { AuthChallenge } from "../libs/dto/entities";
 import LoadingSpinner from "../components/loading-spinner";
 import DefendIcon from "../assets/images/defend-yellow.png";
 
 export interface BaseSignWalletScreenProps {
   description: string;
-  signedMessage: string;
   title: string;
-  onSigned(signature: string): void;
+  onSigned(authChallenge: AuthChallenge, signature: string): void;
 }
 
 export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   description,
-  signedMessage,
   title,
   onSigned,
 }) => {
@@ -27,6 +27,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   const { handleClose } = useAppState();
   const location = useLocation();
   const utilsProvider = getUtilsProvider();
+  const authAction = getAuthAction();
 
   let handler: () => void;
 
@@ -43,8 +44,12 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
     await connect();
 
     try {
-      const signature = await sign(signedMessage);
-      onSigned(signature);
+      const authChallenge = await authAction.requestAuthChallenge(
+        walletAddress
+      );
+
+      const signature = await sign(authChallenge.message);
+      onSigned(authChallenge, signature);
     } catch {
       handler = utilsProvider.withInterval(async () => {
         await connect();
@@ -52,7 +57,7 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
     }
 
     setSigning(false);
-  }, [signedMessage, onSigned, stopHandler]);
+  }, [onSigned, stopHandler]);
 
   useEffect(() => {
     handler = utilsProvider.withInterval(async () => {

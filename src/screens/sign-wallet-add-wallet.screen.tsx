@@ -18,12 +18,11 @@ export const SignWalletAddWalletScreen: FC = () => {
   const { authEntities } = useSession();
   const { push } = useLocation();
   const [onLoad, setOnLoad] = useState<boolean>(true);
-  const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const authAction = getAuthAction();
   const utilsProvider = getUtilsProvider();
 
   const handleOnSigned = useCallback(
-    async (signature: string) => {
+    async (authChallenge: AuthChallenge, signature: string) => {
       if (chainType === ChainType.ALL) return;
       if (authEntities.length >= 10) {
         return push(BASE_NOTIFICATION_SCREEN_KEY, {
@@ -79,15 +78,11 @@ export const SignWalletAddWalletScreen: FC = () => {
         }
       }
     },
-    [chainType, authChallenge]
+    [chainType]
   );
 
   useEffect(() => {
     (async () => {
-      const authChallengeData = await authAction.requestAuthChallenge(
-        walletAddress
-      );
-      setAuthChallenge(authChallengeData);
       setOnLoad(false);
     })();
   }, [chainType, walletAddress]);
@@ -101,7 +96,6 @@ export const SignWalletAddWalletScreen: FC = () => {
           <BaseSignWalletScreen
             title="add wallet"
             description="Sign message to confirm you own the wallet address"
-            signedMessage={authChallenge.message}
             onSigned={handleOnSigned}
           />
         )}
