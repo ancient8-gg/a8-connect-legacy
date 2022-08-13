@@ -1,5 +1,9 @@
 import { OffChainAction } from "./offchain.action";
-import { PublicAuthClientEntity, User } from "../dto/entities";
+import {
+  PaginatedResponse,
+  PublicAuthClientEntity,
+  User,
+} from "../dto/entities";
 import { OAuthCredential } from "../dto/connect-oauth.dto";
 
 /**
@@ -38,5 +42,18 @@ export class OAuthAction extends OffChainAction {
    */
   getUserInfo(userId: string): Promise<User> {
     return this.oauthProvider.getUserInfo(userId);
+  }
+
+  /**
+   * `getAuthorizerUsers` will retrieve users that authorized current auth client.
+   * @param filters
+   */
+  public getAuthorizerUsers(filters: {
+    searchQuery: string;
+    skip?: number;
+    limit?: number;
+    sort?: string;
+  }): Promise<PaginatedResponse<User>> {
+    return this.oauthProvider.getAuthorizerUsers(filters);
   }
 }

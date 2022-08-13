@@ -36,6 +36,11 @@ export interface A8ConnectInitOptions {
   globalContext?: typeof window;
 
   /**
+   * Enable `forceConnectWallet` to force connecting wallet regardless the wallet is connected or not.
+   */
+  forceConnectWallet?: boolean;
+
+  /**
    * `withCredential` replace current jwt credential. Usually useful for `LOST_WALLET_FLOW` flow.
    */
   withCredential?: string;
@@ -147,11 +152,20 @@ export class A8Connect {
      */
     this.initializeRootSelector();
 
-    // initialize registry first
+    /**
+     * Initialize session
+     */
     this.initializeSession();
 
-    // restore the session if applicable
-    await this.fetchSession();
+    /**
+     * Update registry and credentials
+     */
+    this.initializeRegistry();
+
+    /**
+     * Try to restore the session if possible
+     */
+    await this.fetchSession(!!options.forceConnectWallet);
   }
 
   /**
@@ -211,16 +225,30 @@ export class A8Connect {
 
   /**
    * The function to restore session if possible, can be fail-safe.
+   * Normally the function won't connect if user has disconnected the wallet from DApp.
+   * Enable `forceConnectWallet` to bypass and try to connect regardless the wallet is connected or not.
+   *
+   * @param forceConnectWallet
    * @public
    */
-  public async fetchSession(): Promise<void> {
+  public async fetchSession(forceConnectWallet = false): Promise<void> {
+    /**
+     * Raise error if session isn't initialized
+     */
+    if (!this.currentSession) throw new Error("Session isn't initialized");
+
     /**
      * Now to restore UID session.
      */
     try {
       const userSession = await this.currentSession.User.getUserProfile();
       this.onAuth(userSession);
-    } catch {}
+    } catch {
+      /**
+       * Unset session if fetch session cannot be restored.
+       */
+      this.currentSession.sessionUser = null;
+    }
 
     /**
      * Restore wallet connection first
@@ -230,9 +258,10 @@ export class A8Connect {
        * Execute restoring connection with timeout handler.
        */
       await getUtilsProvider().withTimeout<string>(
-        this.currentSession.Wallet.restoreConnection.bind(
-          this.currentSession.Wallet
-        ),
+        () =>
+          this.currentSession.Wallet.restoreConnection.bind(
+            this.currentSession.Wallet
+          )(forceConnectWallet),
         10000
       );
 
@@ -248,7 +277,29 @@ export class A8Connect {
       if (await this.isWalletStateValid()) {
         await this.onConnected(walletSession);
       }
-    } catch {}
+    } catch {
+      /**
+       * Unset session if fetch session cannot be restored.
+       */
+      this.currentSession.connectedWallet = null;
+    }
+  }
+
+  /**
+   * Construct session
+   * @private
+   */
+  private initializeSession(): void {
+    /**
+     * Initialize session.
+     */
+    this.currentSession = {
+      Auth: getAuthAction({ reInit: true }),
+      User: getUserAction({ reInit: true }),
+      Wallet: getWalletAction({ reInit: true }),
+      connectedWallet: null,
+      sessionUser: null,
+    };
   }
 
   /**
@@ -301,7 +352,12 @@ export class A8Connect {
    * Initialize registry and session.
    * @private
    */
-  private initializeSession() {
+  private initializeRegistry() {
+    /**
+     * Raise error if session isn't initialized
+     */
+    if (!this.currentSession) throw new Error("Session isn't initialized");
+
     const options = this.options;
     const registryInstance = RegistryProvider.getInstance();
 
@@ -314,19 +370,8 @@ export class A8Connect {
      * Clean wallet cache.
      */
     if (!!options.cleanWalletCache) {
-      getWalletAction().cleanWalletCache();
+      this.currentSession.Wallet.cleanWalletCache();
     }
-
-    /**
-     * Initialize session.
-     */
-    this.currentSession = {
-      Auth: getAuthAction(),
-      User: getUserAction(),
-      Wallet: getWalletAction(),
-      connectedWallet: null,
-      sessionUser: null,
-    };
 
     /**
      * Replace credential if needed
@@ -344,12 +389,17 @@ export class A8Connect {
     const options = this.options;
 
     /**
+     * Return false if current session isn't available
+     */
+    if (!this.currentSession) return false;
+
+    /**
      * Check whether the current wallet state is valid
      */
     const authEntities =
-      (await this.currentSession?.User.getAuthEntities()) || [];
+      (await this.currentSession.User.getAuthEntities()) || [];
 
-    return this.currentSession?.Wallet.isWalletStateValid(
+    return this.currentSession.Wallet.isWalletStateValid(
       authEntities,
       options.chainType
     );

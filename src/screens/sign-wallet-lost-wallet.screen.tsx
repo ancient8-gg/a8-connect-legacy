@@ -15,13 +15,12 @@ export const SIGN_WALLET_LOST_WALLET_KEY = "SIGN_WALLET_LOST_WALLET_KEY";
 export const SignWalletLostWalletScreen: FC = () => {
   const { walletAddress, chainType } = useWallet();
   const [onLoad, setOnLoad] = useState<boolean>(true);
-  const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const authAction = getAuthAction();
   const utilsProvider = getUtilsProvider();
   const { push } = useLocation();
 
   const handleOnSigned = useCallback(
-    async (signature: string) => {
+    async (authChallenge: AuthChallenge, signature: string) => {
       if (chainType === ChainType.ALL) return;
 
       const credential: WalletCredentialAuthDto = {
@@ -83,15 +82,11 @@ export const SignWalletLostWalletScreen: FC = () => {
         }
       }
     },
-    [chainType, authChallenge]
+    [chainType]
   );
 
   useEffect(() => {
     (async () => {
-      const authChallengeData = await authAction.requestAuthChallenge(
-        walletAddress
-      );
-      setAuthChallenge(authChallengeData);
       setOnLoad(false);
     })();
   }, [chainType, walletAddress]);
@@ -105,7 +100,6 @@ export const SignWalletLostWalletScreen: FC = () => {
           <BaseSignWalletScreen
             title="Sign in"
             description="Sign message to confirm you own the wallet address"
-            signedMessage={authChallenge.message}
             onSigned={handleOnSigned}
           />
         )}

@@ -22,7 +22,7 @@ import {
 import { RegistryProvider, StorageProvider, UtilsProvider } from "../providers";
 import { getStorageProvider } from "../providers";
 import { ConnectedWalletPayload } from "../dto/a8-connect-session.dto";
-import { AuthEntity } from "../dto/entities";
+import { AuthEntity, WalletCredential } from "../dto/entities";
 
 export const CONNECTED_WALLET_KEY = "CONNECTED_WALLET";
 
@@ -147,7 +147,8 @@ export class WalletAction {
      * Prepare conditions
      */
     const connectedAuthEntity = authEntities.find(
-      (wallet) => wallet.credential.walletAddress === walletAddress
+      (wallet) =>
+        (wallet.credential as WalletCredential).walletAddress === walletAddress
     );
 
     const connectedWalletBelongsToCurrentUid = !!connectedAuthEntity;
@@ -232,9 +233,11 @@ export class WalletAction {
   }
 
   /**
-   * Restore connection
+   * Restore connection. Normally the function won't connect if user has disconnected the wallet from DApp.
+   * Enable `forceConnect` to bypass and try to connect regardless the wallet is connected or not.
+   * @param forceConnect
    */
-  public async restoreConnection() {
+  public async restoreConnection(forceConnect = false) {
     const connectedWalletData = JSON.parse(
       this.storageProvider.getItem(CONNECTED_WALLET_KEY, null)
     );
@@ -252,7 +255,7 @@ export class WalletAction {
      * Now to check for timeout
      */
     // Check if the previous wallet is still connected
-    if (await adapter.isConnected()) {
+    if ((await adapter.isConnected()) || forceConnect) {
       /**
        *  If connected then we return the current wallet address
        */
@@ -283,6 +286,7 @@ export class WalletAction {
       this.ensureWalletIsAvailable();
       await this.selectedAdapter.disconnectWallet();
       this.storageProvider.removeItem(CONNECTED_WALLET_KEY);
+      this.selectedAdapter = null;
     } catch {}
   }
 

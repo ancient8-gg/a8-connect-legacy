@@ -17,12 +17,11 @@ export const SignWalletScreen: FC = () => {
   const { walletAddress, chainType } = useWallet();
   const [onLoad, setOnLoad] = useState<boolean>(true);
   const [existedWallet, setExistedWallet] = useState<boolean>(false);
-  const [authChallenge, setAuthChallenge] = useState<AuthChallenge>(null);
   const { signIn, signUp } = useSession();
   const authAction = getAuthAction();
 
   const handleOnSigned = useCallback(
-    async (signature: string) => {
+    async (authChallenge: AuthChallenge, signature: string) => {
       if (chainType === ChainType.ALL) return;
 
       const credential: WalletCredentialAuthDto = {
@@ -46,18 +45,12 @@ export const SignWalletScreen: FC = () => {
 
       location.push(BUFFER_LOADING_APP_SCREEN_KEY);
     },
-    [chainType, authChallenge, existedWallet, signIn, signUp]
+    [chainType, existedWallet, signIn, signUp]
   );
 
   useEffect(() => {
     (async () => {
       const existedWallet = await authAction.isWalletExisted(walletAddress);
-
-      const authChallengeData = await authAction.requestAuthChallenge(
-        walletAddress
-      );
-
-      setAuthChallenge(authChallengeData);
 
       setExistedWallet(existedWallet);
 
@@ -72,13 +65,13 @@ export const SignWalletScreen: FC = () => {
           <BaseLoadingScreen />
         ) : (
           <BaseSignWalletScreen
+            existedWallet={existedWallet}
             title="Sign In"
             description={
               existedWallet
                 ? "Sign a message to confirm you own the wallet address"
                 : `Hey, <span class='text-primary'> this is a new wallet </span> <br /> Want to create a new Ancient8 UID?`
             }
-            signedMessage={authChallenge.message}
             onSigned={handleOnSigned}
           />
         )}

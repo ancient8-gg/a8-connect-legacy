@@ -6,6 +6,7 @@
 /**
  * Export DTOs
  */
+export * as DiscordOAuthDto from "./libs/dto/discord-oauth.dto";
 export * as ConnectSessionDto from "./libs/dto/a8-connect-session.dto";
 export * as ConnectEmailAuthDto from "./libs/dto/connect-email-auth.dto";
 export * as ConnectOAuthDto from "./libs/dto/connect-oauth.dto";
