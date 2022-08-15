@@ -31,7 +31,8 @@ export const SignWalletConnectUID: FC = () => {
   const [connectAgenda, setConnectAgenda] = useState<ConnectAgendaType>();
   const [authChallenge, setAuthChallenge] = useState<AuthChallenge>();
   const { userInfo, authEntities, logout, signIn } = useSession();
-  const { chainType, walletAddress, sign, connect } = useWallet();
+  const { chainType, walletAddress, sign, connect, handleWalletConnected } =
+    useWallet();
   const { handleClose } = useAppState();
   const { goBack, isBack, push } = useLocation();
   const toast = useToast();
@@ -162,6 +163,7 @@ export const SignWalletConnectUID: FC = () => {
           )}</span>.`
         );
         setBelongedError(false);
+        await handleWalletConnected();
         return;
       }
 
