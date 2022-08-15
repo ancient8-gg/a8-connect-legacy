@@ -40,7 +40,7 @@ export const SessionProvider: FC<{
   const logout = useCallback(async () => {
     await authAction.logout();
     onLoggedOut();
-  }, [onLoggedOut, onAuth]);
+  }, [onLoggedOut]);
 
   const fetchSession = useCallback(async () => {
     let sessionUser = null;
@@ -69,7 +69,12 @@ export const SessionProvider: FC<{
 
       const { sessionUser } = await fetchSession();
 
-      onAuth(sessionUser);
+      /**
+       * Only emit session user if session is available
+       */
+      if (sessionUser) {
+        onAuth(sessionUser);
+      }
 
       return authResponse;
     },
@@ -82,7 +87,12 @@ export const SessionProvider: FC<{
 
       const { sessionUser } = await fetchSession();
 
-      onAuth(sessionUser);
+      /**
+       * Only emit session user if session is available
+       */
+      if (sessionUser) {
+        onAuth(sessionUser);
+      }
 
       return authResponse;
     },
@@ -95,7 +105,13 @@ export const SessionProvider: FC<{
     const { sessionUser } = await fetchSession();
 
     setSessionReady(true);
-    onAuth(sessionUser);
+
+    /**
+     * Only emit session user if session is available
+     */
+    if (sessionUser) {
+      onAuth(sessionUser);
+    }
   }, [onAuth, isSessionReady]);
 
   return (
