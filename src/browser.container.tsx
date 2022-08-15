@@ -89,7 +89,7 @@ export interface A8ConnectInitOptions {
   onLoggedOut?: () => void;
 
   /**
-   * `onDisconnected` callback will be triggered when user disconnected the wallet during the onboarding flow.
+   * `onDisconnected` callback will be triggered when user disconnected the wallet during the onboarding flow. Currently, only Lost Wallet flow emits this event.
    */
   onDisconnected?: () => void;
 }
