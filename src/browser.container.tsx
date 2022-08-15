@@ -46,7 +46,7 @@ export interface A8ConnectInitOptions {
   withCredential?: string;
 
   /**
-   * `cleanWalletCache` to clean wallet cache.
+   * `cleanWalletCache` to clean wallet cache. Enable this option to force open Connect Wallet popup since the wallet cache is disabled.
    */
   cleanWalletCache?: boolean;
 
@@ -57,31 +57,41 @@ export interface A8ConnectInitOptions {
   disableCloseButton?: boolean;
 
   /**
-   * `initAppFlow` select the initial flow, default will be Login/Connect Flow.
+   * `initAppFlow` select the initial onboarding flow, default will be Login/Connect Flow.
    */
   initAppFlow?: AppFlow;
 
   /**
-   * `onClose` callback will be triggered when user complete onboarding flow or close the A8Connect popup
+   * `onClose` callback will be triggered when user complete onboarding flow or close the A8Connect popup.
    */
   onClose?: () => void;
 
   /**
-   * `onError` callback will be triggered when errors occur.
+   * `onError` callback will be triggered when errors occur during the onboarding flow.
    */
   onError?: (error: Error) => void;
 
   /**
-   * `onAuth` callback will be triggered when user is authenticated.
+   * `onAuth` callback will be triggered when user is authenticated during the onboarding flow.
    * @param payload
    */
   onAuth?: (payload: OnAuthPayload) => void;
 
   /**
-   * `onConnected` callback will be triggered when user connect to a wallet
+   * `onConnected` callback will be triggered when user connect to a wallet during the onboarding flow.
    * @param payload
    */
   onConnected?: (payload: ConnectedWalletPayload) => void;
+
+  /**
+   * `onLoggedOut` callback will be triggered when user logged out from the current session during the onboarding flow.
+   */
+  onLoggedOut?: () => void;
+
+  /**
+   * `onDisconnected` callback will be triggered when user disconnected the wallet during the onboarding flow.
+   */
+  onDisconnected?: () => void;
 }
 
 /**
@@ -190,6 +200,8 @@ export class A8Connect {
         initAppFlow={options.initAppFlow}
         onError={options.onError}
         onClose={this.closeModal.bind(this)}
+        onDisconnected={this.onDisconnected.bind(this)}
+        onLoggedOut={this.onLoggedOut.bind(this)}
         onAuth={this.onAuth.bind(this)}
         onConnected={this.onConnected.bind(this)}
       />
@@ -421,6 +433,20 @@ export class A8Connect {
   }
 
   /**
+   * The function to be triggered whenever use logged out from the current UID session.
+   * @private
+   */
+  private onLoggedOut(): void {
+    this.currentSession = {
+      ...this.currentSession,
+      sessionUser: null,
+    };
+
+    const options = this.options;
+    options.onLoggedOut && options.onLoggedOut();
+  }
+
+  /**
    * The function to be triggered to grab the current connected wallet.
    * @param payload
    * @private
@@ -436,5 +462,19 @@ export class A8Connect {
 
     const options = this.options;
     options.onConnected && options.onConnected(payload);
+  }
+
+  /**
+   * The function to be triggered whenever use disconnected wallet.
+   * @private
+   */
+  private onDisconnected(): void {
+    this.currentSession = {
+      ...this.currentSession,
+      connectedWallet: null,
+    };
+
+    const options = this.options;
+    options.onDisconnected && options.onDisconnected();
   }
 }

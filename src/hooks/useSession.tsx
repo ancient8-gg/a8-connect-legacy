@@ -31,15 +31,16 @@ export const SessionProvider: FC<{
   const userAction = getUserAction();
   const authAction = getAuthAction();
 
-  const { isSessionReady, onAuth, setSessionReady } = useAppState();
+  const { isSessionReady, onAuth, setSessionReady, onLoggedOut } =
+    useAppState();
 
   const [userInfo, setUserInfo] = useState<UserInfo>(null);
   const [authEntities, setAuthEntities] = useState<AuthEntity[]>([]);
 
   const logout = useCallback(async () => {
     await authAction.logout();
-    onAuth(null);
-  }, [onAuth]);
+    onLoggedOut();
+  }, [onLoggedOut, onAuth]);
 
   const fetchSession = useCallback(async () => {
     let sessionUser = null;

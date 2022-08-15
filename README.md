@@ -27,7 +27,7 @@ Please see the demo [here](https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connec
 
 Three main usages of `A8Connect`.
 
-1. Initialize Login Flow
+1. Initialize Login/Connect Wallet Flow
 
 ```ts
 import {
@@ -46,17 +46,24 @@ await init({
         Types.Providers.NetworkType.testnet ||
         Types.Providers.NetworkType.mainnet,
     disableCloseButton: true,
+    cleanWalletCache: false, // Enable this option to `true` to always show connect wallet popup.
     onClose: () => {
-        // do somthing
+        // do something
     },
     onAuth: (payload) => {
         // do something
         console.log({payload});
     },
+    onLoggedOut: () => {
+        // do something
+    },
     onConnected: (payload) => {
         // do something
         console.log({payload});
     },
+    onDisconnected: () => {
+        // do something
+    }
 }).then(() => {
     openModal();
 });
@@ -83,16 +90,22 @@ await init({
     initAppFlow: Types.Router.AppFlow.ADD_WALLET_FLOW,
     cleanWalletCache: true,
     onClose: () => {
-        // do somthing
+        // do something
     },
     onAuth: (payload) => {
         // do something
         console.log({payload});
     },
+    onLoggedOut: () => {
+        // do something
+    },
     onConnected: (payload) => {
         // do something
         console.log({payload});
     },
+    onDisconnected: () => {
+        // do something
+    }
 }).then(() => {
     openModal();
 });
@@ -120,16 +133,22 @@ await init({
     withCredential: authToken as string,
     cleanWalletCache: true,
     onClose: () => {
-        // do somthing
+        // do something
     },
     onAuth: (payload) => {
         // do something
         console.log({payload});
     },
+    onLoggedOut: () => {
+        // do something
+    },
     onConnected: (payload) => {
         // do something
         console.log({payload});
     },
+    onDisconnected: () => {
+        // do something
+    }
 }).then(() => {
     openModal();
 });
