@@ -93,6 +93,10 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     return walletSession?.walletAddress;
   }, [walletName, initState]);
 
+  /**
+   * NOTES: This function can only be used once, for eg: binding to a button click/or call at the end of an onboarding flow.
+   * DO NOT CALL within a service as the `onDisconnected` hook will be very annoying to user.
+   */
   const disconnect = useCallback(async () => {
     await walletAction.disconnectWallet();
     onDisconnected();
