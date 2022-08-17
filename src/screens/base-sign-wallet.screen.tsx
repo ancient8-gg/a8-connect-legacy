@@ -15,12 +15,14 @@ export interface BaseSignWalletScreenProps {
   description: string;
   title: string;
   onSigned(authChallenge: AuthChallenge, signature: string): void;
+  existedWallet?: boolean;
 }
 
 export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   description,
   title,
   onSigned,
+  existedWallet,
 }) => {
   const { walletAddress, sign, connect } = useWallet();
   const [signing, setSigning] = useState<boolean>(false);
@@ -128,18 +130,20 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
               </PolygonButton>
             </div>
 
-            <div className={"my-[20px] text-center text-[14px]"}>
-              <div className={"text-white "}>
-                Want to connect this wallet to an existed UID?
+            {existedWallet === false && (
+              <div className={"my-[20px] text-center text-[14px]"}>
+                <div className={"text-white "}>
+                  Want to connect this wallet to an existed UID?
+                </div>
+                <a
+                  className={"text-primary underline"}
+                  href={"https://ancient8.gg"}
+                  target={"_blank"}
+                >
+                  Learn how here
+                </a>
               </div>
-              <a
-                className={"text-primary underline"}
-                href={"https://ancient8.gg"}
-                target={"_blank"}
-              >
-                Learn how here
-              </a>
-            </div>
+            )}
           </div>
         </div>
       </div>

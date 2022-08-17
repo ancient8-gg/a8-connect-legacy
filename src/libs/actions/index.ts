@@ -14,10 +14,20 @@ let userAction: UserAction;
 let oauthAction: OAuthAction;
 
 /**
+ * Options for Action Getter
+ */
+export type ActionGetterOptions = {
+  /**
+   * Enable `reInit` to force re-create the action object.
+   */
+  reInit: boolean;
+};
+
+/**
  * The function to get auth action
  */
-export const getAuthAction = () => {
-  if (!authAction) {
+export const getAuthAction = (options?: ActionGetterOptions) => {
+  if (!authAction || !!options?.reInit) {
     authAction = new AuthAction();
   }
   return authAction;
@@ -26,8 +36,8 @@ export const getAuthAction = () => {
 /**
  * The function to get wallet action
  */
-export const getWalletAction = () => {
-  if (!walletAction) {
+export const getWalletAction = (options?: ActionGetterOptions) => {
+  if (!walletAction || !!options?.reInit) {
     walletAction = new WalletAction();
   }
   return walletAction;
@@ -36,8 +46,8 @@ export const getWalletAction = () => {
 /**
  * The wallet to get user action
  */
-export const getUserAction = () => {
-  if (!userAction) {
+export const getUserAction = (options?: ActionGetterOptions) => {
+  if (!userAction || !!options?.reInit) {
     userAction = new UserAction();
   }
   return userAction;
@@ -46,8 +56,8 @@ export const getUserAction = () => {
 /**
  * The wallet to get user action
  */
-export const getOAuthAction = () => {
-  if (!oauthAction) {
+export const getOAuthAction = (options?: ActionGetterOptions) => {
+  if (!oauthAction || !!options?.reInit) {
     oauthAction = new OAuthAction();
   }
   return oauthAction;

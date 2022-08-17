@@ -46,7 +46,7 @@ export interface A8ConnectInitOptions {
   withCredential?: string;
 
   /**
-   * `cleanWalletCache` to clean wallet cache.
+   * `cleanWalletCache` to clean wallet cache. Enable this option to force open Connect Wallet popup since the wallet cache is disabled.
    */
   cleanWalletCache?: boolean;
 
@@ -57,31 +57,41 @@ export interface A8ConnectInitOptions {
   disableCloseButton?: boolean;
 
   /**
-   * `initAppFlow` select the initial flow, default will be Login/Connect Flow.
+   * `initAppFlow` select the initial onboarding flow, default will be Login/Connect Flow.
    */
   initAppFlow?: AppFlow;
 
   /**
-   * `onClose` callback will be triggered when user complete onboarding flow or close the A8Connect popup
+   * `onClose` callback will be triggered when user complete onboarding flow or close the A8Connect popup.
    */
   onClose?: () => void;
 
   /**
-   * `onError` callback will be triggered when errors occur.
+   * `onError` callback will be triggered when errors occur during the onboarding flow.
    */
   onError?: (error: Error) => void;
 
   /**
-   * `onAuth` callback will be triggered when user is authenticated.
+   * `onAuth` callback will be triggered when user is authenticated during the onboarding flow.
    * @param payload
    */
   onAuth?: (payload: OnAuthPayload) => void;
 
   /**
-   * `onConnected` callback will be triggered when user connect to a wallet
+   * `onConnected` callback will be triggered when user connect to a wallet during the onboarding flow.
    * @param payload
    */
   onConnected?: (payload: ConnectedWalletPayload) => void;
+
+  /**
+   * `onLoggedOut` callback will be triggered when user logged out from the current session during the onboarding flow.
+   */
+  onLoggedOut?: () => void;
+
+  /**
+   * `onDisconnected` callback will be triggered when user disconnected the wallet during the onboarding flow. Currently, only Lost Wallet flow emits this event.
+   */
+  onDisconnected?: () => void;
 }
 
 /**
@@ -152,11 +162,20 @@ export class A8Connect {
      */
     this.initializeRootSelector();
 
-    // restore the session if applicable
-    await this.fetchSession(!!options.forceConnectWallet);
+    /**
+     * Initialize session
+     */
+    this.initializeSession();
 
-    // initialize registry first
+    /**
+     * Update registry and credentials
+     */
     this.initializeRegistry();
+
+    /**
+     * Try to restore the session if possible
+     */
+    await this.fetchSession(!!options.forceConnectWallet);
   }
 
   /**
@@ -181,6 +200,8 @@ export class A8Connect {
         initAppFlow={options.initAppFlow}
         onError={options.onError}
         onClose={this.closeModal.bind(this)}
+        onDisconnected={this.onDisconnected.bind(this)}
+        onLoggedOut={this.onLoggedOut.bind(this)}
         onAuth={this.onAuth.bind(this)}
         onConnected={this.onConnected.bind(this)}
       />
@@ -224,15 +245,9 @@ export class A8Connect {
    */
   public async fetchSession(forceConnectWallet = false): Promise<void> {
     /**
-     * Initialize session.
+     * Raise error if session isn't initialized
      */
-    this.currentSession = {
-      Auth: getAuthAction(),
-      User: getUserAction(),
-      Wallet: getWalletAction(),
-      connectedWallet: null,
-      sessionUser: null,
-    };
+    if (!this.currentSession) throw new Error("Session isn't initialized");
 
     /**
      * Now to restore UID session.
@@ -240,7 +255,12 @@ export class A8Connect {
     try {
       const userSession = await this.currentSession.User.getUserProfile();
       this.onAuth(userSession);
-    } catch {}
+    } catch {
+      /**
+       * Unset session if fetch session cannot be restored.
+       */
+      this.currentSession.sessionUser = null;
+    }
 
     /**
      * Restore wallet connection first
@@ -269,7 +289,29 @@ export class A8Connect {
       if (await this.isWalletStateValid()) {
         await this.onConnected(walletSession);
       }
-    } catch {}
+    } catch {
+      /**
+       * Unset session if fetch session cannot be restored.
+       */
+      this.currentSession.connectedWallet = null;
+    }
+  }
+
+  /**
+   * Construct session
+   * @private
+   */
+  private initializeSession(): void {
+    /**
+     * Initialize session.
+     */
+    this.currentSession = {
+      Auth: getAuthAction({ reInit: true }),
+      User: getUserAction({ reInit: true }),
+      Wallet: getWalletAction({ reInit: true }),
+      connectedWallet: null,
+      sessionUser: null,
+    };
   }
 
   /**
@@ -323,6 +365,11 @@ export class A8Connect {
    * @private
    */
   private initializeRegistry() {
+    /**
+     * Raise error if session isn't initialized
+     */
+    if (!this.currentSession) throw new Error("Session isn't initialized");
+
     const options = this.options;
     const registryInstance = RegistryProvider.getInstance();
 
@@ -335,7 +382,7 @@ export class A8Connect {
      * Clean wallet cache.
      */
     if (!!options.cleanWalletCache) {
-      getWalletAction().cleanWalletCache();
+      this.currentSession.Wallet.cleanWalletCache();
     }
 
     /**
@@ -354,12 +401,17 @@ export class A8Connect {
     const options = this.options;
 
     /**
+     * Return false if current session isn't available
+     */
+    if (!this.currentSession) return false;
+
+    /**
      * Check whether the current wallet state is valid
      */
     const authEntities =
-      (await this.currentSession?.User.getAuthEntities()) || [];
+      (await this.currentSession.User.getAuthEntities()) || [];
 
-    return this.currentSession?.Wallet.isWalletStateValid(
+    return this.currentSession.Wallet.isWalletStateValid(
       authEntities,
       options.chainType
     );
@@ -381,6 +433,20 @@ export class A8Connect {
   }
 
   /**
+   * The function to be triggered whenever use logged out from the current UID session.
+   * @private
+   */
+  private onLoggedOut(): void {
+    this.currentSession = {
+      ...this.currentSession,
+      sessionUser: null,
+    };
+
+    const options = this.options;
+    options.onLoggedOut && options.onLoggedOut();
+  }
+
+  /**
    * The function to be triggered to grab the current connected wallet.
    * @param payload
    * @private
@@ -396,5 +462,19 @@ export class A8Connect {
 
     const options = this.options;
     options.onConnected && options.onConnected(payload);
+  }
+
+  /**
+   * The function to be triggered whenever use disconnected wallet.
+   * @private
+   */
+  private onDisconnected(): void {
+    this.currentSession = {
+      ...this.currentSession,
+      connectedWallet: null,
+    };
+
+    const options = this.options;
+    options.onDisconnected && options.onDisconnected();
   }
 }

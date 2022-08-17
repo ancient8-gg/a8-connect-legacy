@@ -65,6 +65,7 @@ export const SignWalletScreen: FC = () => {
           <BaseLoadingScreen />
         ) : (
           <BaseSignWalletScreen
+            existedWallet={existedWallet}
             title="Sign In"
             description={
               existedWallet

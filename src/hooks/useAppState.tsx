@@ -24,6 +24,8 @@ interface AppStateContextProviderProps {
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
+  onDisconnected?: () => void;
+  onLoggedOut?: () => void;
   initAppFlow?: AppFlow;
   desiredChainType?: ChainType;
   networkType?: NetworkType;
@@ -32,6 +34,8 @@ interface AppStateContextProviderProps {
 
 interface AppStateContextProvider {
   onClose: () => void;
+  onDisconnected: () => void;
+  onLoggedOut: () => void;
   onError: (error: Error) => void;
   onAuth: (payload: OnAuthPayload) => void;
   onConnected: (payload: ConnectedWalletPayload) => void;
@@ -107,6 +111,20 @@ export const AppStateProvider: FC<
     props.onClose && props.onClose();
   }, [props.onClose]);
 
+  const onDisconnected = useCallback(() => {
+    // do something before emit events
+
+    // now emit events
+    props.onDisconnected && props.onDisconnected();
+  }, [props.onDisconnected]);
+
+  const onLoggedOut = useCallback(() => {
+    // do something before emit events
+
+    // now emit events
+    props.onLoggedOut && props.onLoggedOut();
+  }, [props.onLoggedOut]);
+
   const onConnected = useCallback(
     (payload: ConnectedWalletPayload) => {
       // do something before emit events
@@ -175,6 +193,8 @@ export const AppStateProvider: FC<
         networkType,
         disableCloseButton,
         onAuth,
+        onLoggedOut,
+        onDisconnected,
         onError,
         onConnected,
         onClose,

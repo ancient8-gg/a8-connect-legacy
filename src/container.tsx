@@ -17,6 +17,8 @@ const A8Connect: FC<{
   disableCloseButton?: boolean;
   initAppFlow?: AppFlow;
   onClose?: () => void;
+  onDisconnected?: () => void;
+  onLoggedOut?: () => void;
   onError?: (error: Error) => void;
   onAuth?: (payload: OnAuthPayload) => void;
   onConnected?: (payload: ConnectedWalletPayload) => void;
@@ -30,6 +32,8 @@ const A8Connect: FC<{
   onAuth,
   onConnected,
   containerSelector,
+  onDisconnected,
+  onLoggedOut,
 }) => {
   return (
     <AppStateProvider
@@ -42,6 +46,8 @@ const A8Connect: FC<{
       onError={onError}
       onAuth={onAuth}
       onConnected={onConnected}
+      onDisconnected={onDisconnected}
+      onLoggedOut={onLoggedOut}
     >
       <SessionProvider>
         <WalletProvider>

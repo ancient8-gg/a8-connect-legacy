@@ -1,6 +1,6 @@
 {
   "name": "@ancient8/connect",
-  "version": "2.0.16",
+  "version": "2.1.3",
   "author": "Ancient8 Developer <dev@ancient8.gg>",
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
@@ -69,8 +69,8 @@
     "lint": "tsc --noEmit && eslint \"**/*.ts\" \"**/*.tsx\" --fix",
     "prepare": "husky install",
     "gen-dts": "tsc -p tsconfig.library.json",
-    "gen-doc:server": "typedoc --name \"A8 Connect\" --readme README.server.md --out ./public/a8-connect/server src/server.ts",
-    "gen-doc:browser": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/browser src/browser.ts",
+    "gen-doc:server": "typedoc --includeVersion --name \"A8 Connect Server\" --readme README.server.md --out ./public/a8-connect/server src/server.ts",
+    "gen-doc:browser": "typedoc --includeVersion --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/browser src/browser.ts",
     "gen-doc": "yarn gen-doc:browser && yarn gen-doc:server",
     "gen-css": "tailwindcss build -i ./src/base.tailwind.scss -o ./src/generated.scss",
     "transform-mixin": "NODE_PATH=. node scripts/transform-mixin.js",
