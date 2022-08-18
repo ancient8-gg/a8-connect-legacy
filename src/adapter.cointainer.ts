@@ -36,6 +36,8 @@ export class RPCWalletAdapter {
       throw new Error(WALLET_NOT_SUPPORTED_ERROR);
     }
 
+    let provider: BaseMessageSignerWalletAdapter;
+
     /**
      * Map wallet name using switch - case function.
      */
@@ -44,26 +46,22 @@ export class RPCWalletAdapter {
        * Return Coin98 wallet adapter.
        */
       case Coin98SolanaWalletName:
-        return new Coin98WalletAdapter();
+        provider = new Coin98WalletAdapter();
+        break;
 
       /**
        * Return Phantom wallet adapter.
        */
       case PhantomSolanaWalletName:
-        return new PhantomWalletAdapter();
+        provider = new PhantomWalletAdapter();
+        break;
 
       /**
        * Return Slope wallet adapter.
        */
       case SlopeSolanaWalletName:
-        const adapter = new SlopeWalletAdapter();
-
-        /**
-         * @dev HOTFIX for Slope wallet: trigger connect wallet manually since Slope doesn't maintain connected state.
-         */
-        await adapter.connect();
-
-        return adapter;
+        provider = new SlopeWalletAdapter();
+        break;
 
       /**
        * Return null in case the SDK doesn't support.
@@ -71,6 +69,12 @@ export class RPCWalletAdapter {
       default:
         return null;
     }
+
+    /**
+     * Return provider
+     */
+    await provider.connect();
+    return provider;
   }
 
   /**
@@ -90,7 +94,6 @@ export class RPCWalletAdapter {
     }
 
     if (provider) return new Web3(provider);
-
     return null;
   }
 }
