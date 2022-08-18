@@ -1,6 +1,6 @@
 {
   "name": "@ancient8/connect",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "author": "Ancient8 Developer <dev@ancient8.gg>",
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
@@ -9,6 +9,12 @@
   "types": "browser.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@solana/wallet-adapter-base": "^0.9.13",
+    "@solana/wallet-adapter-wallets": "^0.18.1",
+    "@solana/web3.js": "^1.53.0",
+    "web3": "^1.7.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
@@ -60,6 +66,7 @@
     "start:craco": "craco start",
     "build:craco:browser": "NODE_ENV=production MODE=browser craco build",
     "build:craco:server": "NODE_ENV=production MODE=server craco build",
+    "build:craco:adapter": "NODE_ENV=production MODE=adapter craco build",
     "test:craco": "NODE_ENV=test craco test",
     "build": "bash scripts/build.sh",
     "start": "bash scripts/start.sh",
@@ -71,7 +78,8 @@
     "gen-dts": "tsc -p tsconfig.library.json",
     "gen-doc:server": "typedoc --includeVersion --name \"A8 Connect Server\" --readme README.server.md --out ./public/a8-connect/server src/server.ts",
     "gen-doc:browser": "typedoc --includeVersion --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/browser src/browser.ts",
-    "gen-doc": "yarn gen-doc:browser && yarn gen-doc:server",
+    "gen-doc:adapter": "typedoc --includeVersion --name \"A8 Connect Adapter\" --readme README.md --out ./public/a8-connect/adapter src/adapter.ts",
+    "gen-doc": "yarn gen-doc:browser && yarn gen-doc:server && yarn gen-doc:adapter",
     "gen-css": "tailwindcss build -i ./src/base.tailwind.scss -o ./src/generated.scss",
     "transform-mixin": "NODE_PATH=. node scripts/transform-mixin.js",
     "cleanup-css": "rm -rf ./src/generated.scss",

@@ -60,6 +60,34 @@ if (process.env.NODE_ENV === "production") {
       },
     });
   }
+
+  /**
+   * Bundle for adapter environment
+   */
+  if (process.env.MODE === "adapter") {
+    return (module.exports = {
+      ...baseExports,
+      webpack: {
+        configure: {
+          devtool: false,
+          entry: "src/adapter.ts",
+          output: {
+            filename: "adapter/adapter.js",
+            library: "A8Connect", // Important
+            libraryTarget: "umd", // Important
+            umdNamedDefine: true, // Important
+            globalObject: "global",
+          },
+          externals: {
+            web3: "web3",
+            "@solana/wallet-adapter-base": "@solana/wallet-adapter-base",
+            "@solana/wallet-adapter-wallets": "@solana/wallet-adapter-wallets",
+            "@solana/web3.js": "@solana/web3.js",
+          },
+        },
+      },
+    });
+  }
 }
 
 return (module.exports = baseExports);

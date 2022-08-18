@@ -24,6 +24,10 @@ cp build/static/css/*.css dist/lib.css
 yarn run build:craco:server
 cp build/server/server.js dist/
 
+### build adapter exports ###
+yarn run build:craco:adapter
+cp build/adapter/adapter.js dist/
+
 # copy resource
 cp README.md dist/
 cp package.json dist/
