@@ -8,11 +8,11 @@ This is the browser APIs version. The implementation below will be only valid wh
 
 ## Documentation
 
-For detail of browser APIs please refer the [docs](https://docs.ancient8.dev/browser/modules.html#default).
+For detail of browser APIs please refer the [docs](https://docs.ancient8.dev/browser/).
 
-For detail of server APIs please refer the [docs](https://docs.ancient8.dev/server/modules.html#default).
+For detail of server APIs please refer the [docs](https://docs.ancient8.dev/server/).
 
-For detail of Adapter APIs please refer the [docs](https://docs.ancient8.dev/adapter/modules.html#default).
+For detail of adapter APIs please refer the [docs](https://docs.ancient8.dev/adapter/).
 
 ## Installation
 
