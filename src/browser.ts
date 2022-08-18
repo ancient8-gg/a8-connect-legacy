@@ -65,7 +65,13 @@ export const closeModal = () => {
 if (window) {
   const windowInstance = window as any;
 
-  windowInstance.A8 = {};
+  /**
+   * Initialize A8 object if needed.
+   */
+  if (Object.keys(windowInstance.A8).length === 0) {
+    windowInstance.A8 = {};
+  }
+
   windowInstance.A8.A8Connect = A8Connect;
   windowInstance.A8.getA8ConnectInstance = getA8ConnectInstance;
   windowInstance.A8.init = init;
