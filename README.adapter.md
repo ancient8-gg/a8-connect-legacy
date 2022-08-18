@@ -4,7 +4,7 @@
 
 [Ancient8 Connect](https://id.ancient8.gg) UMD library.
 
-This is the adapter APIs version. The implementation below will be only valid when in **nodejs environment**.
+This is the adapter APIs version. The implementation below will be only valid when in **browser environment**.
 
 ## Documentation
 
