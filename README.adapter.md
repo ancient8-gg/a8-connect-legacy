@@ -68,7 +68,7 @@ export const transferSol = async (
     /**
      * Get wallet adapter
      */
-    const provider = RPCWalletAdapter.getSolanaWalletAdapter(
+    const provider = await RPCWalletAdapter.getSolanaWalletAdapter(
         session.connectedWallet.walletName
     );
 
@@ -125,7 +125,7 @@ export const transferEther = async (
     /**
      * Get the wallet adapter
      */
-    const rpcAdapter = RPCWalletAdapter.getEVMWalletAdapter(
+    const rpcAdapter = await RPCWalletAdapter.getEVMWalletAdapter(
         session.connectedWallet.walletName, 
         // have to inject 
         session.connectedWallet.provider.injectedProvider
