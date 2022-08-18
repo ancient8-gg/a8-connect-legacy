@@ -15,7 +15,7 @@ if (window) {
   /**
    * Initialize A8 object if needed.
    */
-  if (Object.keys(windowInstance.A8).length === 0) {
+  if (!windowInstance.A8 || Object.keys(windowInstance.A8).length === 0) {
     windowInstance.A8 = {};
   }
 

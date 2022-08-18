@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const webpack = require("webpack");
+
 const baseExports = {
   plugins: [
     {
@@ -80,6 +83,7 @@ if (process.env.NODE_ENV === "production") {
           },
           externals: {
             web3: "web3",
+            "web3-core": "web3-core",
             "@solana/wallet-adapter-base": "@solana/wallet-adapter-base",
             "@solana/wallet-adapter-wallets": "@solana/wallet-adapter-wallets",
             "@solana/web3.js": "@solana/web3.js",
@@ -90,4 +94,28 @@ if (process.env.NODE_ENV === "production") {
   }
 }
 
-return (module.exports = baseExports);
+/**
+ * @dev Default for development environment
+ */
+return (module.exports = {
+  ...baseExports,
+  webpack: {
+    configure: {
+      plugins: [
+        new webpack.ProvidePlugin({
+          Buffer: ["buffer", "Buffer"],
+        }),
+        new webpack.ProvidePlugin({ process: "process/browser.js" }),
+      ],
+      resolve: {
+        fallback: {
+          crypto: require.resolve("crypto-browserify"),
+          http: require.resolve("http-browserify"),
+          https: require.resolve("https-browserify"),
+          stream: require.resolve("stream-browserify"),
+          buffer: require.resolve("buffer"),
+        },
+      },
+    },
+  },
+});

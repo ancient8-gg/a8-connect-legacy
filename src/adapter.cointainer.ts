@@ -1,4 +1,6 @@
 import Web3 from "web3";
+import { provider } from "web3-core";
+
 import { BaseMessageSignerWalletAdapter } from "@solana/wallet-adapter-base";
 
 import {
@@ -8,14 +10,11 @@ import {
 } from "@solana/wallet-adapter-wallets";
 
 import {
-  ChainType,
   Coin98SolanaWalletName,
   PhantomSolanaWalletName,
   SlopeSolanaWalletName,
   SupportedWallets,
 } from "./libs/adapters";
-
-import { getWalletAction } from "./libs/actions";
 
 const WALLET_NOT_SUPPORTED_ERROR = "WALLET_NOT_SUPPORTED_ERROR";
 
@@ -70,8 +69,12 @@ export class RPCWalletAdapter {
   /**
    * `getEVMWalletAdapter` maps wallet name with an EVM wallet.
    * @param walletName
+   * @param provider
    */
-  public static getEVMWalletAdapter(walletName: string): Web3 {
+  public static getEVMWalletAdapter(
+    walletName: string,
+    provider: provider
+  ): Web3 {
     /**
      * Raise error if the wallet is not supported.
      */
@@ -79,20 +82,13 @@ export class RPCWalletAdapter {
       throw new Error(WALLET_NOT_SUPPORTED_ERROR);
     }
 
-    const walletAction = getWalletAction();
-
-    const adapter = walletAction.getWalletAdapter(walletName);
-
-    /**
-     * Return null in case the SDK doesn't support.
-     */
-    if (adapter.chainType !== ChainType.EVM) {
-      return null;
-    }
-
-    const provider = adapter.injectedProvider;
     if (provider) return new Web3(provider);
 
     return null;
   }
 }
+
+/**
+ * Export type
+ */
+export type { Web3, provider };
