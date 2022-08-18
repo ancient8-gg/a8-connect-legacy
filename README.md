@@ -12,6 +12,7 @@ For detail of browser APIs please refer the [docs](https://docs.ancient8.dev/bro
 
 For detail of server APIs please refer the [docs](https://docs.ancient8.dev/server/modules.html#default).
 
+For detail of Adapter APIs please refer the [docs](https://docs.ancient8.dev/adapter/modules.html#default).
 
 ## Installation
 

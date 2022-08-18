@@ -26,9 +26,9 @@ export class RPCWalletAdapter {
    * `getSolanaWalletAdapter` maps wallet name with a solana wallet.
    * @param walletName
    */
-  public static getSolanaWalletAdapter(
+  public static async getSolanaWalletAdapter(
     walletName: string
-  ): BaseMessageSignerWalletAdapter {
+  ): Promise<BaseMessageSignerWalletAdapter> {
     /**
      * Raise error if the wallet is not supported.
      */
@@ -56,7 +56,14 @@ export class RPCWalletAdapter {
        * Return Slope wallet adapter.
        */
       case SlopeSolanaWalletName:
-        return new SlopeWalletAdapter();
+        const adapter = new SlopeWalletAdapter();
+
+        /**
+         * @dev HOTFIX for Slope wallet: trigger connect wallet manually since Slope doesn't maintain connected state.
+         */
+        await adapter.connect();
+
+        return adapter;
 
       /**
        * Return null in case the SDK doesn't support.
@@ -71,10 +78,10 @@ export class RPCWalletAdapter {
    * @param walletName
    * @param provider
    */
-  public static getEVMWalletAdapter(
+  public static async getEVMWalletAdapter(
     walletName: string,
     provider: provider
-  ): Web3 {
+  ): Promise<Web3> {
     /**
      * Raise error if the wallet is not supported.
      */
