@@ -170,14 +170,17 @@ build: {
 
 Since `webpack 5` no longer bundled `nodejs` polyfills, we have to install `nodejs` polyfills manually.
 
-#### Install `webpack5` plugin
+###
+
+### Install `webpack5` plugin
 
 ```bash
 yarn add node-polyfill-webpack-plugin
 ```
 
-#### For `webpack5` projects, file `webpack.config.js`
+###
 
+### For `webpack5` projects, file `webpack.config.js`
 ```ts
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
@@ -188,9 +191,9 @@ module.exports = {
 	]
 };
 ```
+###
 
-#### For `vue-cli-3` projects, file `vue.config.js`
-
+### For `vue-cli-3` projects, file `vue.config.js`
 ```ts
 const { defineConfig } = require('@vue/cli-service')
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
