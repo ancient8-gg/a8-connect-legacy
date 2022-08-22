@@ -144,6 +144,66 @@ export const transferEther = async (
 }
 ```
 
+# Common issues
+
+### 1. Handle `.mjs` dependencies transpile issues when using `nuxtjs`
+
+File `nuxt.config.js`
+
+```ts
+// other configs ...
+build: {
+    extend(config, ctx) {
+      if(ctx.isClient){
+        // transpile .mjs too
+        config.module.rules.push({
+          include: /node_modules/,
+          test: /\.mjs$/,
+          type: 'javascript/auto'
+        })
+      }
+    }
+  }
+```
+
+### 2. Handle `nodejs` polyfill issues when using `webpack 5`
+
+Since `webpack 5` no longer bundled `nodejs` polyfills, we have to install `nodejs` polyfills manually.
+
+#### Install `webpack5` plugin
+
+```bash
+yarn add node-polyfill-webpack-plugin
+```
+
+#### For `webpack5` projects, file `webpack.config.js`
+
+```ts
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+
+module.exports = {
+	// Other rules...
+	plugins: [
+		new NodePolyfillPlugin()
+	]
+};
+```
+
+#### For `vue-cli-3` projects, file `vue.config.js`
+
+```ts
+const { defineConfig } = require('@vue/cli-service')
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+
+module.exports = defineConfig({
+  transpileDependencies: true,
+  configureWebpack: {
+    plugins: [new NodePolyfillPlugin()],
+    // Other configs...
+  },
+})
+```
+
 # Notes
 
 This library is still in beta development. Significant changes may happen anytime.
