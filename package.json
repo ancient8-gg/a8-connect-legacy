@@ -10,6 +10,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": "^16.0.0",
+    "npm": "^8.5.0"
+  },
   "dependencies": {
     "@solana/wallet-adapter-base": "^0.9.13",
     "@solana/wallet-adapter-wallets": "^0.18.1",
