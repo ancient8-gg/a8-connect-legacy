@@ -250,17 +250,18 @@ export class A8Connect {
     if (!this.currentSession) throw new Error("Session isn't initialized");
 
     /**
+     * Unset session if fetch session cannot be restored.
+     */
+    this.currentSession.sessionUser = null;
+    this.currentSession.connectedWallet = null;
+
+    /**
      * Now to restore UID session.
      */
     try {
       const userSession = await this.currentSession.User.getUserProfile();
       this.onAuth(userSession);
-    } catch {
-      /**
-       * Unset session if fetch session cannot be restored.
-       */
-      this.currentSession.sessionUser = null;
-    }
+    } catch {}
 
     /**
      * Restore wallet connection first
@@ -289,12 +290,7 @@ export class A8Connect {
       if (await this.isWalletStateValid()) {
         await this.onConnected(walletSession);
       }
-    } catch {
-      /**
-       * Unset session if fetch session cannot be restored.
-       */
-      this.currentSession.connectedWallet = null;
-    }
+    } catch {}
   }
 
   /**
