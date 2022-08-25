@@ -35,8 +35,8 @@ export const SignWalletScreen: FC = () => {
         chainType === ChainType.EVM ? AuthType.EVMChain : AuthType.Solana;
 
       const response: LoginResponse = existedWallet
-        ? await signIn({ type: type, credential: credential })
-        : await signUp({ type: type, credential: credential });
+        ? await signIn({ type, credential })
+        : await signUp({ type, credential });
 
       if (!response.accessToken) {
         // Login failed
