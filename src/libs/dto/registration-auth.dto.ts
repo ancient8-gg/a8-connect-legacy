@@ -2,9 +2,11 @@ import {
   IsAlphanumeric,
   IsEmail,
   IsIn,
+  IsNumberString,
   IsOptional,
   IsString,
   IsUrl,
+  Length,
   MaxLength,
   ValidateNested,
 } from "class-validator";
@@ -68,4 +70,33 @@ export class DiscordRegistrationAuthDto {
 
   @ValidateNested()
   credential: DiscordCredentialDto;
+}
+
+export class EmailOTPRegistrationAuthDto {
+  @IsNumberString()
+  @Length(6)
+  token: string;
+
+  @IsIn([AuthType.EmailOTP])
+  type: AuthType;
+
+  @IsEmail()
+  email: string;
+
+  @IsOptional()
+  @IsUrl({
+    require_protocol: true,
+    require_valid_protocol: true,
+  })
+  avatar?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(32)
+  displayName?: string;
+
+  @IsOptional()
+  @IsAlphanumeric()
+  @MaxLength(32)
+  username?: string;
 }
