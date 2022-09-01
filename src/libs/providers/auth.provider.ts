@@ -8,12 +8,14 @@ import {
 import { LoginWalletAuthDto } from "../dto/login-wallet-auth.dto";
 import {
   DiscordRegistrationAuthDto,
+  EmailOTPRegistrationAuthDto,
   RegistrationAuthDto,
 } from "../dto/registration-auth.dto";
 import { ConnectOauthDto } from "../dto/connect-oauth.dto";
 import { ConnectEmailAuthDto } from "../dto/connect-email-auth.dto";
 import { CreateAuthDto } from "../dto/create-auth.dto";
 import { DiscordCredentialDto } from "../dto/discord-oauth.dto";
+import { EmailOTPLoginAuthDto } from "../dto/email-otp-auth.dto";
 
 /**
  * `AuthProvider` provides all the business request calls to A8Connect backend, which related to User Authentication.
@@ -28,6 +30,43 @@ export class AuthProvider extends BusinessProvider {
   ): Promise<LoginResponse> {
     return this.request<LoginResponse>("/auth/sign-up", {
       body: JSON.stringify(signUpPayload),
+      method: "POST",
+    });
+  }
+
+  /**
+   * The function to sign up user using credential from wallet signature.
+   * @param signUpPayload
+   */
+  signUp(signUpPayload: RegistrationAuthDto): Promise<LoginResponse> {
+    return this.request<LoginResponse>("/auth/sign-up", {
+      body: JSON.stringify(signUpPayload),
+      method: "POST",
+    });
+  }
+
+  /**
+   * The function to sign up user using email otp credential.
+   * Need to obtain `token` from `requestEmailOtp` function.
+   * @param signUpPayload
+   */
+  signUpEmailOtp(
+    signUpPayload: EmailOTPRegistrationAuthDto
+  ): Promise<LoginResponse> {
+    return this.request<LoginResponse>("/auth/sign-up", {
+      body: JSON.stringify(signUpPayload),
+      method: "POST",
+    });
+  }
+
+  /**
+   * The function to login using email otp credential.
+   * Need to obtain `token` from `requestEmailOtp` function.
+   * @param loginPayload
+   */
+  signInEmailOtp(loginPayload: EmailOTPLoginAuthDto): Promise<LoginResponse> {
+    return this.request<LoginResponse>("/auth/login-discord", {
+      body: JSON.stringify(loginPayload),
       method: "POST",
     });
   }
@@ -66,17 +105,6 @@ export class AuthProvider extends BusinessProvider {
   }
 
   /**
-   * The function to sign up user using credential from wallet signature.
-   * @param signUpPayload
-   */
-  signUp(signUpPayload: RegistrationAuthDto): Promise<LoginResponse> {
-    return this.request<LoginResponse>("/auth/sign-up", {
-      body: JSON.stringify(signUpPayload),
-      method: "POST",
-    });
-  }
-
-  /**
    * The function to connect oauth using credential from wallet signature.
    * @param payload
    */
@@ -104,6 +132,21 @@ export class AuthProvider extends BusinessProvider {
   /**
    * The function to send email otp verification when user want to update email.
    * @param email
+   */
+  requestEmailOtp(email: string): Promise<void> {
+    return this.request<void>(
+      `/auth/send-email-otp/${encodeURIComponent(email)}`,
+      {
+        method: "POST",
+        body: "{}",
+      }
+    );
+  }
+
+  /**
+   * The function to send email otp verification when user want to update email.
+   * @param email
+   * @deprecated This function will be soon deprecated. Please use `requestEmailOtp` instead.
    */
   sendUpdateEmailOtp(email: string): Promise<void> {
     return this.request<void>(
