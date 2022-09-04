@@ -55,7 +55,6 @@
     "http-browserify": "^1.7.0",
     "https-browserify": "^1.0.0",
     "husky": "^8.0.1",
-    "node-polyfill-webpack-plugin": "^2.0.1",
     "postcss": "^8.4.8",
     "prettier": "^2.6.2",
     "prop-types": "^15.8.1",
