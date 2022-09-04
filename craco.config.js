@@ -79,7 +79,6 @@ if (process.env.NODE_ENV === "production") {
             library: "A8Connect", // Important
             libraryTarget: "umd", // Important
             umdNamedDefine: true, // Important
-            globalObject: "global",
           },
           externals: {
             web3: "web3",
