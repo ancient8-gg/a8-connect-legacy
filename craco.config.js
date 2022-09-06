@@ -101,12 +101,32 @@ return (module.exports = {
   ...baseExports,
   webpack: {
     configure: {
+      target: "web",
+      devtool: false,
       plugins: [
         new webpack.ProvidePlugin({
           Buffer: ["buffer", "Buffer"],
         }),
         new webpack.ProvidePlugin({ process: "process/browser.js" }),
       ],
+      module: {
+        rules: [
+          {
+            test: /\.json$/,
+            loader: "json-loader",
+          },
+          {
+            test: /\.m?js/,
+            type: "javascript/auto",
+          },
+          {
+            test: /\.m?js/,
+            resolve: {
+              fullySpecified: false,
+            },
+          },
+        ],
+      },
       resolve: {
         fallback: {
           crypto: require.resolve("crypto-browserify"),
@@ -114,6 +134,7 @@ return (module.exports = {
           https: require.resolve("https-browserify"),
           stream: require.resolve("stream-browserify"),
           buffer: require.resolve("buffer"),
+          url: require.resolve("url"),
         },
       },
     },

@@ -11,7 +11,7 @@ if (document) {
         disableCloseButton: false,
         cleanWalletCache: true,
         networkType: NetworkType.testnet,
-        chainType: ChainType.EVM,
+        chainType: ChainType.SOL,
         initAppFlow: AppFlow.LOGIN_FLOW,
       }).then(() => {
         openModal();
