@@ -146,8 +146,10 @@ export const SignWalletConnectUID: FC = () => {
       const inIncluded =
         authEntities.filter(
           (item) =>
+            (item.type === AuthType.EVMChain ||
+              item.type === AuthType.Solana) &&
             (item.credential as WalletCredential).walletAddress ===
-            walletAddress
+              walletAddress
         ).length > 0;
 
       if (inIncluded) {

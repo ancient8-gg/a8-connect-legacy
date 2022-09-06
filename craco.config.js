@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === "production") {
       ...baseExports,
       webpack: {
         configure: {
+          target: "web",
           devtool: false,
           entry: "src/browser.ts",
           output: {
@@ -47,9 +48,9 @@ if (process.env.NODE_ENV === "production") {
    */
   if (process.env.MODE === "server") {
     return (module.exports = {
-      ...baseExports,
       webpack: {
         configure: {
+          target: "node",
           devtool: false,
           entry: "src/server.ts",
           output: {
@@ -69,9 +70,9 @@ if (process.env.NODE_ENV === "production") {
    */
   if (process.env.MODE === "adapter") {
     return (module.exports = {
-      ...baseExports,
       webpack: {
         configure: {
+          target: "web",
           devtool: false,
           entry: "src/adapter.ts",
           output: {
