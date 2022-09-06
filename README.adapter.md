@@ -126,7 +126,7 @@ export const transferEther = async (
      * Get the wallet adapter
      */
     const rpcAdapter = await RPCWalletAdapter.getEVMWalletAdapter(
-        session.connectedWallet.walletName, 
+        session.connectedWallet.walletName,
         // have to inject 
         session.connectedWallet.provider.injectedProvider
     );
@@ -139,8 +139,8 @@ export const transferEther = async (
         value: '0x9184e72a',
         to: to,
     })
-    .then((tx: any) => console.log({tx}))
-    .catch((err: any) => console.log({err}));
+        .then((tx: any) => console.log({tx}))
+        .catch((err: any) => console.log({err}));
 }
 ```
 
@@ -153,57 +153,149 @@ File `nuxt.config.js`
 ```ts
 // other configs ...
 build: {
-    extend(config, ctx) {
-      if(ctx.isClient){
-        // transpile .mjs too
-        config.module.rules.push({
-          include: /node_modules/,
-          test: /\.mjs$/,
-          type: 'javascript/auto'
-        })
-      }
+    extend(config, ctx)
+    {
+        if (ctx.isClient) {
+            // transpile .mjs too
+            config.module.rules.push({
+                include: /node_modules/,
+                test: /\.mjs$/,
+                type: 'javascript/auto'
+            })
+        }
     }
-  }
+}
 ```
 
 ### 2. Handle `nodejs` polyfill issues when using `webpack 5`
 
 Since `webpack 5` no longer bundled `nodejs` polyfills, we have to install `nodejs` polyfills manually.
 
-###
-
-### Install `webpack5` plugin
+### Install `webpack 5` plugin
 
 ```bash
 yarn add node-polyfill-webpack-plugin
 ```
 
-###
+### For `webpack 5` projects, file `webpack.config.js`
 
-### For `webpack5` projects, file `webpack.config.js`
 ```ts
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 module.exports = {
-	// Other rules...
-	plugins: [
-		new NodePolyfillPlugin()
-	]
+    // Other rules...
+    plugins: [
+        new NodePolyfillPlugin()
+    ]
 };
 ```
-###
 
-### For `vue-cli-3` projects, file `vue.config.js`
+### For `vue-cli 5` projects, file `vue.config.js`
+
 ```ts
-const { defineConfig } = require('@vue/cli-service')
+const {defineConfig} = require('@vue/cli-service')
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 module.exports = defineConfig({
-  transpileDependencies: true,
-  configureWebpack: {
-    plugins: [new NodePolyfillPlugin()],
-    // Other configs...
-  },
+    transpileDependencies: true,
+    configureWebpack: {
+        plugins: [new NodePolyfillPlugin()],
+        // Other configs...
+    },
+})
+```
+
+### 3. Handle `exports is not defined` error.
+
+Note: since this is the unexpected behavior with `webpack 5` and `node-polyfill-webpack-plugin`, we have to manually
+adjust the webpack resolves.
+
+### Install dev dependencies first
+
+```bash
+yarn add --dev json-loader crypto-browserify http-browserify https-browserify stream-browserify @erquhart/browserify-fs path-browserify buffer url 
+```
+
+### For `webpack 5` projects, file `webpack.config.js`
+
+```ts
+module.exports = {
+    // Other rules...
+    target: 'web',
+    module: {
+        rules: [
+            {
+                test: /\.json$/,
+                loader: "json-loader",
+            },
+            {
+                test: /\.m?js/,
+                type: "javascript/auto",
+            },
+            {
+                test: /\.m?js/,
+                resolve: {
+                    fullySpecified: false,
+                },
+            },
+        ],
+    },
+    resolve: {
+        fallback: {
+            crypto: require.resolve("crypto-browserify"),
+            http: require.resolve("http-browserify"),
+            https: require.resolve("https-browserify"),
+            stream: require.resolve("stream-browserify"),
+            fs: require.resolve('@erquhart/browserify-fs'),
+            path: require.resolve('path-browserify'),
+            buffer: require.resolve("buffer"),
+            url: require.resolve("url"),
+        },
+    },
+};
+```
+
+### For `vue-cli 5` projects, file `vue.config.js`
+
+```ts
+const {defineConfig} = require('@vue/cli-service')
+
+module.exports = defineConfig({
+    transpileDependencies: true,
+    configureWebpack: {
+        // Other configs...
+        target: 'web',
+        module: {
+            rules: [
+                {
+                    test: /\.json$/,
+                    loader: "json-loader",
+                },
+                {
+                    test: /\.m?js/,
+                    type: "javascript/auto",
+                },
+                {
+                    test: /\.m?js/,
+                    resolve: {
+                        fullySpecified: false,
+                    },
+                },
+            ],
+        },
+        resolve: {
+            fallback: {
+                crypto: require.resolve("crypto-browserify"),
+                http: require.resolve("http-browserify"),
+                https: require.resolve("https-browserify"),
+                stream: require.resolve("stream-browserify"),
+                fs: require.resolve('@erquhart/browserify-fs'),
+                path: require.resolve('path-browserify'),
+                buffer: require.resolve("buffer"),
+                url: require.resolve("url"),
+            },
+        },
+    },
 })
 ```
 
