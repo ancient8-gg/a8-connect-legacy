@@ -20,9 +20,23 @@ import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import { useAppState } from "../hooks/useAppState";
 import { useToast } from "../hooks/useToast";
-import { getUtilsProvider, UtilsProvider } from "../libs/providers";
+import { getUtilsProvider } from "../libs/providers";
 
 export const SIGN_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
+
+/**
+ * Move handler to outside component context.
+ */
+let handler: () => void;
+
+/**
+ * Move stop handler to outside component context.
+ */
+const stopHandler = () => {
+  if (typeof handler === "function") {
+    handler();
+  }
+};
 
 export const SignWalletConnectUID: FC = () => {
   const [description, setDescription] = useState<string>("");
@@ -38,14 +52,6 @@ export const SignWalletConnectUID: FC = () => {
   const toast = useToast();
   const authAction = getAuthAction();
   const utilsProvider = getUtilsProvider();
-
-  let handler: () => void;
-
-  const stopHandler = useCallback(() => {
-    if (typeof handler === "function") {
-      handler();
-    }
-  }, []);
 
   const handleRequestAuthChallenge = async () => {
     const authChallenge = await authAction.requestAuthChallenge(walletAddress);
@@ -89,11 +95,6 @@ export const SignWalletConnectUID: FC = () => {
      * Call stop handler
      */
     stopHandler();
-
-    /**
-     * Pause for 1 sec.
-     */
-    await new UtilsProvider().pause(1);
 
     /**
      * Re-connect again to make sure the wallet is always connected
@@ -207,7 +208,7 @@ export const SignWalletConnectUID: FC = () => {
     handler = utilsProvider.withInterval(async () => {
       await connect();
     }, 500);
-    return () => handler();
+    return () => stopHandler();
   }, []);
 
   return (
