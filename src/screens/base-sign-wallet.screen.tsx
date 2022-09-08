@@ -23,6 +23,15 @@ export interface BaseSignWalletScreenProps {
  */
 let handler: () => void;
 
+/**
+ * Move stop handler to outside component context.
+ */
+const stopHandler = () => {
+  if (typeof handler === "function") {
+    handler();
+  }
+};
+
 export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   description,
   title,
@@ -35,12 +44,6 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   const location = useLocation();
   const utilsProvider = getUtilsProvider();
   const authAction = getAuthAction();
-
-  const stopHandler = useCallback(() => {
-    if (typeof handler === "function") {
-      handler();
-    }
-  }, []);
 
   const handleClickSign = useCallback(async () => {
     setSigning(true);
@@ -62,13 +65,13 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
     }
 
     setSigning(false);
-  }, [onSigned, stopHandler, walletAddress]);
+  }, [onSigned, walletAddress]);
 
   useEffect(() => {
     handler = utilsProvider.withInterval(async () => {
       await connect();
     }, 500);
-    return () => handler();
+    return () => stopHandler();
   }, []);
 
   return (
