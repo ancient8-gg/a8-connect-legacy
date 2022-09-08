@@ -18,6 +18,11 @@ export interface BaseSignWalletScreenProps {
   existedWallet?: boolean;
 }
 
+/**
+ * Move handler to outside component context.
+ */
+let handler: () => void;
+
 export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   description,
   title,
@@ -30,8 +35,6 @@ export const BaseSignWalletScreen: FC<BaseSignWalletScreenProps> = ({
   const location = useLocation();
   const utilsProvider = getUtilsProvider();
   const authAction = getAuthAction();
-
-  let handler: () => void;
 
   const stopHandler = useCallback(() => {
     if (typeof handler === "function") {
