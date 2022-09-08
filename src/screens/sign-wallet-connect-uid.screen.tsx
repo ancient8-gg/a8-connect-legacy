@@ -20,7 +20,7 @@ import { useLocation } from "../components/router";
 import { ModalHeader } from "../components/modal/modal.header";
 import { useAppState } from "../hooks/useAppState";
 import { useToast } from "../hooks/useToast";
-import { getUtilsProvider } from "../libs/providers";
+import { getUtilsProvider, UtilsProvider } from "../libs/providers";
 
 export const SIGN_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
 
@@ -89,6 +89,11 @@ export const SignWalletConnectUID: FC = () => {
      * Call stop handler
      */
     stopHandler();
+
+    /**
+     * Pause for 1 sec.
+     */
+    await new UtilsProvider().pause(1);
 
     /**
      * Re-connect again to make sure the wallet is always connected
