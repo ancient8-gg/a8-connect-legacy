@@ -10,7 +10,6 @@ import { PolygonButton } from "../components/button";
 import LoadingSpinner from "../components/loading-spinner";
 import { BUFFER_LOADING_APP_SCREEN_KEY } from "./buffer-loading.screen";
 import {
-  AuthChallenge,
   AuthType,
   ConnectAgendaType,
   WalletCredential,
@@ -24,12 +23,25 @@ import { getUtilsProvider } from "../libs/providers";
 
 export const SIGN_WALLET_CONNECT_UID_KEY = "SIGN_WALLET_CONNECT_UID";
 
+/**
+ * Move handler to outside component context.
+ */
+let handler: () => void;
+
+/**
+ * Move stop handler to outside component context.
+ */
+const stopHandler = () => {
+  if (typeof handler === "function") {
+    handler();
+  }
+};
+
 export const SignWalletConnectUID: FC = () => {
   const [description, setDescription] = useState<string>("");
   const [signing, setSigning] = useState<boolean>(false);
   const [isBelongedError, setBelongedError] = useState<boolean>(false);
   const [connectAgenda, setConnectAgenda] = useState<ConnectAgendaType>();
-  const [authChallenge, setAuthChallenge] = useState<AuthChallenge>();
   const { userInfo, authEntities, logout, signIn } = useSession();
   const { chainType, walletAddress, sign, connect, handleWalletConnected } =
     useWallet();
@@ -38,19 +50,6 @@ export const SignWalletConnectUID: FC = () => {
   const toast = useToast();
   const authAction = getAuthAction();
   const utilsProvider = getUtilsProvider();
-
-  let handler: () => void;
-
-  const stopHandler = useCallback(() => {
-    if (typeof handler === "function") {
-      handler();
-    }
-  }, []);
-
-  const handleRequestAuthChallenge = async () => {
-    const authChallenge = await authAction.requestAuthChallenge(walletAddress);
-    setAuthChallenge(authChallenge);
-  };
 
   const handleLogin = useCallback(
     async (createAuthDto: CreateAuthDto) => {
@@ -84,6 +83,11 @@ export const SignWalletConnectUID: FC = () => {
      * Indicate the signing process is running
      */
     setSigning(true);
+
+    /**
+     * Request new challenge data
+     */
+    const authChallenge = await authAction.requestAuthChallenge(walletAddress);
 
     /**
      * Call stop handler
@@ -131,7 +135,7 @@ export const SignWalletConnectUID: FC = () => {
      * Close signing process
      */
     setSigning(false);
-  }, [authChallenge, connectAgenda, sign, handleLogin]);
+  }, [connectAgenda, sign, handleLogin]);
 
   const handleCancelConnectUid = useCallback(() => {
     goBack();
@@ -146,8 +150,10 @@ export const SignWalletConnectUID: FC = () => {
       const inIncluded =
         authEntities.filter(
           (item) =>
+            (item.type === AuthType.EVMChain ||
+              item.type === AuthType.Solana) &&
             (item.credential as WalletCredential).walletAddress ===
-            walletAddress
+              walletAddress
         ).length > 0;
 
       if (inIncluded) {
@@ -166,11 +172,6 @@ export const SignWalletConnectUID: FC = () => {
         await handleWalletConnected();
         return;
       }
-
-      /**
-       * Request auth challenge here
-       */
-      await handleRequestAuthChallenge();
 
       /**
        Inform error exists in another UID
@@ -200,7 +201,7 @@ export const SignWalletConnectUID: FC = () => {
     handler = utilsProvider.withInterval(async () => {
       await connect();
     }, 500);
-    return () => handler();
+    return () => stopHandler();
   }, []);
 
   return (

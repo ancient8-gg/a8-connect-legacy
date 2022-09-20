@@ -8,9 +8,11 @@ This is the server APIs version. The implementation below will be only valid whe
 
 ## Documentation
 
-For detail of browser APIs please refer the [docs](https://docs.ancient8.dev/browser/modules.html#default).
+For detail of browser APIs please refer the [docs](https://docs.ancient8.dev/browser/).
 
-For detail of server APIs please refer the [docs](https://docs.ancient8.dev/server/modules.html#default).
+For detail of server APIs please refer the [docs](https://docs.ancient8.dev/server/).
+
+For detail of adapter APIs please refer the [docs](https://docs.ancient8.dev/adapter/).
 
 ## Installation
 
@@ -20,7 +22,7 @@ $ yarn add @ancient8/connect
 
 ## Examples
 
-Please see the demo [here](https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect-demo)
+Please see the demo [here](https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect-demo/-/blob/main/vue-nuxt/components/A8Connect.vue#L34)
 
 # Usages
 

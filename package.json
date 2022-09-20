@@ -1,6 +1,6 @@
 {
   "name": "@ancient8/connect",
-  "version": "2.1.0",
+  "version": "2.1.19",
   "author": "Ancient8 Developer <dev@ancient8.gg>",
   "repository": "https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connect",
   "license": "GPL-3.0",
@@ -9,6 +9,16 @@
   "types": "browser.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": "^16.0.0",
+    "npm": "^8.5.0"
+  },
+  "dependencies": {
+    "@solana/wallet-adapter-base": "^0.9.16",
+    "@solana/wallet-adapter-wallets": "^0.18.7",
+    "@solana/web3.js": "^1.56.2",
+    "web3": "^1.7.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
@@ -31,6 +41,7 @@
     "@typescript-eslint/parser": "^5.27.1",
     "autoprefixer": "^10.4.2",
     "bs58": "^5.0.0",
+    "buffer": "^6.0.3",
     "class-validator": "^0.13.2",
     "classnames": "^2.3.1",
     "craco-plugin-scoped-css": "^1.1.1",
@@ -41,7 +52,10 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
     "ethers": "^5.6.8",
+    "http-browserify": "^1.7.0",
+    "https-browserify": "^1.0.0",
     "husky": "^8.0.1",
+    "json-loader": "^0.5.7",
     "postcss": "^8.4.8",
     "prettier": "^2.6.2",
     "prop-types": "^15.8.1",
@@ -50,16 +64,19 @@
     "react-dom": "^18.1.0",
     "react-modal": "^3.15.1",
     "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
     "tailwindcss": "^3.0.23",
     "tslib": "^2.4.0",
     "typedoc": "^0.22.17",
     "typescript": "4.6.2",
+    "url": "^0.11.0",
     "webpack": "^5.73.0"
   },
   "scripts": {
-    "start:craco": "craco start",
+    "start:craco": "GENERATE_SOURCEMAP=false craco start",
     "build:craco:browser": "NODE_ENV=production MODE=browser craco build",
     "build:craco:server": "NODE_ENV=production MODE=server craco build",
+    "build:craco:adapter": "NODE_ENV=production MODE=adapter craco build",
     "test:craco": "NODE_ENV=test craco test",
     "build": "bash scripts/build.sh",
     "start": "bash scripts/start.sh",
@@ -69,9 +86,10 @@
     "lint": "tsc --noEmit && eslint \"**/*.ts\" \"**/*.tsx\" --fix",
     "prepare": "husky install",
     "gen-dts": "tsc -p tsconfig.library.json",
-    "gen-doc:server": "typedoc --name \"A8 Connect\" --readme README.server.md --out ./public/a8-connect/server src/server.ts",
-    "gen-doc:browser": "typedoc --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/browser src/browser.ts",
-    "gen-doc": "yarn gen-doc:browser && yarn gen-doc:server",
+    "gen-doc:server": "typedoc --includeVersion --name \"A8 Connect Server\" --readme README.server.md --out ./public/a8-connect/server src/server.ts",
+    "gen-doc:browser": "typedoc --includeVersion --name \"A8 Connect\" --readme README.md --out ./public/a8-connect/browser src/browser.ts",
+    "gen-doc:adapter": "typedoc --includeVersion --name \"A8 Connect Adapter\" --readme README.adapter.md --out ./public/a8-connect/adapter src/adapter.ts",
+    "gen-doc": "yarn gen-doc:browser && yarn gen-doc:server && yarn gen-doc:adapter",
     "gen-css": "tailwindcss build -i ./src/base.tailwind.scss -o ./src/generated.scss",
     "transform-mixin": "NODE_PATH=. node scripts/transform-mixin.js",
     "cleanup-css": "rm -rf ./src/generated.scss",

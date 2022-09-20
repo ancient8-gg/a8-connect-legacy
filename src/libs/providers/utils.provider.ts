@@ -108,4 +108,14 @@ export class UtilsProvider {
     const seed = new Date().getUTCMilliseconds().toString();
     return encode(new TextEncoder().encode(seed));
   }
+
+  /**
+   * The function to pause current process.
+   * @param sec
+   */
+  public pause(sec: number) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, sec * 1000);
+    });
+  }
 }

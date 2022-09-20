@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const webpack = require("webpack");
+
 const baseExports = {
   plugins: [
     {
@@ -18,6 +21,7 @@ if (process.env.NODE_ENV === "production") {
       ...baseExports,
       webpack: {
         configure: {
+          target: "web",
           devtool: false,
           entry: "src/browser.ts",
           output: {
@@ -44,9 +48,9 @@ if (process.env.NODE_ENV === "production") {
    */
   if (process.env.MODE === "server") {
     return (module.exports = {
-      ...baseExports,
       webpack: {
         configure: {
+          target: "node",
           devtool: false,
           entry: "src/server.ts",
           output: {
@@ -60,6 +64,79 @@ if (process.env.NODE_ENV === "production") {
       },
     });
   }
+
+  /**
+   * Bundle for adapter environment
+   */
+  if (process.env.MODE === "adapter") {
+    return (module.exports = {
+      webpack: {
+        configure: {
+          target: "web",
+          devtool: false,
+          entry: "src/adapter.ts",
+          output: {
+            filename: "adapter/adapter.js",
+            library: "A8Connect", // Important
+            libraryTarget: "umd", // Important
+            umdNamedDefine: true, // Important
+          },
+          externals: {
+            web3: "web3",
+            "web3-core": "web3-core",
+            "@solana/wallet-adapter-base": "@solana/wallet-adapter-base",
+            "@solana/wallet-adapter-wallets": "@solana/wallet-adapter-wallets",
+            "@solana/web3.js": "@solana/web3.js",
+          },
+        },
+      },
+    });
+  }
 }
 
-return (module.exports = baseExports);
+/**
+ * @dev Default for development environment
+ */
+return (module.exports = {
+  ...baseExports,
+  webpack: {
+    configure: {
+      target: "web",
+      devtool: false,
+      plugins: [
+        new webpack.ProvidePlugin({
+          Buffer: ["buffer", "Buffer"],
+        }),
+        new webpack.ProvidePlugin({ process: "process/browser.js" }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /\.json$/,
+            loader: "json-loader",
+          },
+          {
+            test: /\.m?js/,
+            type: "javascript/auto",
+          },
+          {
+            test: /\.m?js/,
+            resolve: {
+              fullySpecified: false,
+            },
+          },
+        ],
+      },
+      resolve: {
+        fallback: {
+          crypto: require.resolve("crypto-browserify"),
+          http: require.resolve("http-browserify"),
+          https: require.resolve("https-browserify"),
+          stream: require.resolve("stream-browserify"),
+          buffer: require.resolve("buffer"),
+          url: require.resolve("url"),
+        },
+      },
+    },
+  },
+});

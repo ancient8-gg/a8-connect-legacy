@@ -93,6 +93,7 @@ export enum AuthType {
   Solana = "AUTH_TYPE::SOLANA",
   Password = "AUTH_TYPE::PASSWORD",
   Discord = "AUTH_TYPE::DISCORD",
+  EmailOTP = "AUTH_TYPE::EMAIL_OTP",
 }
 
 export enum GrantType {

@@ -8,10 +8,11 @@ This is the browser APIs version. The implementation below will be only valid wh
 
 ## Documentation
 
-For detail of browser APIs please refer the [docs](https://docs.ancient8.dev/browser/modules.html#default).
+For detail of browser APIs please refer the [docs](https://docs.ancient8.dev/browser/).
 
-For detail of server APIs please refer the [docs](https://docs.ancient8.dev/server/modules.html#default).
+For detail of server APIs please refer the [docs](https://docs.ancient8.dev/server/).
 
+For detail of adapter APIs please refer the [docs](https://docs.ancient8.dev/adapter/).
 
 ## Installation
 
@@ -27,7 +28,7 @@ Please see the demo [here](https://git.ancient8.gg/ancient8-dev/a8-uid/a8-connec
 
 Three main usages of `A8Connect`.
 
-1. Initialize Login Flow
+1. Initialize Login/Connect Wallet Flow
 
 ```ts
 import {
@@ -46,17 +47,24 @@ await init({
         Types.Providers.NetworkType.testnet ||
         Types.Providers.NetworkType.mainnet,
     disableCloseButton: true,
+    cleanWalletCache: false, // Enable this option to `true` to always show connect wallet popup.
     onClose: () => {
-        // do somthing
+        // do something
     },
     onAuth: (payload) => {
         // do something
         console.log({payload});
     },
+    onLoggedOut: () => {
+        // do something
+    },
     onConnected: (payload) => {
         // do something
         console.log({payload});
     },
+    onDisconnected: () => {
+        // do something
+    }
 }).then(() => {
     openModal();
 });
@@ -83,16 +91,22 @@ await init({
     initAppFlow: Types.Router.AppFlow.ADD_WALLET_FLOW,
     cleanWalletCache: true,
     onClose: () => {
-        // do somthing
+        // do something
     },
     onAuth: (payload) => {
         // do something
         console.log({payload});
     },
+    onLoggedOut: () => {
+        // do something
+    },
     onConnected: (payload) => {
         // do something
         console.log({payload});
     },
+    onDisconnected: () => {
+        // do something
+    }
 }).then(() => {
     openModal();
 });
@@ -120,16 +134,22 @@ await init({
     withCredential: authToken as string,
     cleanWalletCache: true,
     onClose: () => {
-        // do somthing
+        // do something
     },
     onAuth: (payload) => {
         // do something
         console.log({payload});
     },
+    onLoggedOut: () => {
+        // do something
+    },
     onConnected: (payload) => {
         // do something
         console.log({payload});
     },
+    onDisconnected: () => {
+        // do something
+    }
 }).then(() => {
     openModal();
 });

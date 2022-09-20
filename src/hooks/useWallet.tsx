@@ -30,7 +30,7 @@ const WalletContext = createContext<WalletContextProps>(null);
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const { desiredChainType, setWalletReady } = useAppState();
-  const { onConnected } = useAppState();
+  const { onConnected, onDisconnected } = useAppState();
 
   const [chainType, setChainType] = useState<ChainType>(desiredChainType);
   const [walletAddress, setWalletAddress] = useState<string>("");
@@ -93,9 +93,14 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     return walletSession?.walletAddress;
   }, [walletName, initState]);
 
-  const disconnect = () => {
-    return walletAction.disconnectWallet();
-  };
+  /**
+   * NOTES: This function can only be used once, for eg: binding to a button click/or call at the end of an onboarding flow.
+   * DO NOT CALL within a service as the `onDisconnected` hook will be very annoying to user.
+   */
+  const disconnect = useCallback(async () => {
+    await walletAction.disconnectWallet();
+    onDisconnected();
+  }, [onDisconnected]);
 
   const sign = useCallback(
     async (message: string) => {

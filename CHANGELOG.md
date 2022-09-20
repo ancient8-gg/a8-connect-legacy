@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.1.19] - 20/09/2022
+
+### Added
+
+- UI - Added new welcome message
+- SDK - Signup with Email + OTP
+- SDK - Login with Email + OTP
+- SDK - Develop Wallet Adapters to standardize the way of making RPC requests
+- Backend - Login with Email + OTP
+- Backend - Sign Up with Email + OTP
+
+### Fixed
+
+- UI - Should not auto login after user click to close the connect wallet popup
+- SDK - Fix conflicted packages (exports is not defined)
+- SDK - Should not display the blue border after minimizing the browser
+- SDK - Emit `onConnected` when user navigates to Connected Wallet screen
+- SDK - Emit `onLoggedOut` when user logged out during onboarding flow
+- SDK - Emit `onDisconnected` when user disconnected during onboarding flow
+- SDK - Cannot Re-Connect a new wallet in case user cancel Sign new wallet step
+
+
 ## [2.1.0] - 13/08/2022
 
 ### Added
