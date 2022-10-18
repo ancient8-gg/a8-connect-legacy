@@ -15,10 +15,10 @@ import {
   PhantomSolanaWalletName,
   WalletProvider,
 } from "../adapters";
-import {
-  SlopeSolanaWallet,
-  SlopeSolanaWalletName,
-} from "../adapters/sol/slope.adapter";
+// import {
+//   SlopeSolanaWallet,
+//   SlopeSolanaWalletName,
+// } from "../adapters/sol/slope.adapter";
 import { RegistryProvider, StorageProvider, UtilsProvider } from "../providers";
 import { getStorageProvider } from "../providers";
 import { ConnectedWalletPayload } from "../dto/a8-connect-session.dto";
@@ -109,12 +109,12 @@ export class WalletAction {
       windowInstance.solana
     );
 
-    /**
-     * Initialize Slope Solana Wallet.
-     */
-    this.supportedWallets[SlopeSolanaWalletName] = new SlopeSolanaWallet(
-      !!windowInstance.Slope && new windowInstance.Slope()
-    );
+    // /**
+    //  * Initialize Slope Solana Wallet.
+    //  */
+    // this.supportedWallets[SlopeSolanaWalletName] = new SlopeSolanaWallet(
+    //   !!windowInstance.Slope && new windowInstance.Slope()
+    // );
 
     /**
      * Initialize Coin98 Solana Wallet.
