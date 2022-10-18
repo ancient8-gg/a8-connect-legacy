@@ -11,7 +11,7 @@
     "access": "public"
   },
   "engines": {
-    "node": "^16.0.0",
+    "node": ">=16 <=18",
     "npm": "^8.5.0"
   },
   "dependencies": {
