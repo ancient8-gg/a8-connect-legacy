@@ -13,7 +13,6 @@ import {
   MetamaskEVMWalletName,
   PhantomSolanaWallet,
   PhantomSolanaWalletName,
-  WalletProvider,
 } from "../adapters";
 // import {
 //   SlopeSolanaWallet,
@@ -70,9 +69,7 @@ export class WalletAction {
      * Initialize Metamask EVM Wallet.
      */
     this.supportedWallets[MetamaskEVMWalletName] = new MetamaskEVMWallet(
-      windowInstance.ethereum?.providers?.find(
-        (provider: WalletProvider) => provider.isMetaMask === true
-      ) || windowInstance.ethereum
+      windowInstance.ethereum?.isMetaMask ? windowInstance.ethereum : undefined
     );
 
     /**
@@ -93,13 +90,10 @@ export class WalletAction {
      * Initialize Coinbase EVM Wallet.
      */
     this.supportedWallets[CoinbaseEVMWalletName] = new CoinbaseEVMWallet(
-      windowInstance.ethereum?.providers?.find(
-        (provider: WalletProvider) =>
-          provider.isCoinbaseWallet === true ||
-          provider.isCoinbaseBrowser === true
-      ) ||
-        windowInstance.coinbaseWalletExtension ||
-        windowInstance.ethereum
+      windowInstance.coinbaseWalletExtension?.isCoinbaseWallet ||
+      windowInstance.coinbaseWalletExtension?.isCoinbaseBrowser
+        ? windowInstance.coinbaseWalletExtension
+        : undefined
     );
 
     /**
