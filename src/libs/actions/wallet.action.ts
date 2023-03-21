@@ -253,7 +253,12 @@ export class WalletAction {
       /**
        *  If connected then we return the current wallet address
        */
-      return this.connectWallet(walletName);
+      // return this.connectWallet(walletName);
+
+      /**
+       *  Fix solana wallet, only once connection
+       */
+      return "";
     }
     return null;
   }
