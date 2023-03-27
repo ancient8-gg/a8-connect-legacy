@@ -41,7 +41,11 @@ export class PhantomSolanaWallet implements BaseWalletAdapter {
   }
 
   disconnectWallet(): Promise<void> {
-    return this.injectedProvider.disconnect();
+    // There is no function to trigger disconnect .
+    // Need to wait for further changes as of now.
+    // Check like Metamask wallet.
+    // https://github.com/MetaMask/metamask-extension/issues/8990
+    return;
   }
 
   async getWalletAddress(): Promise<string | null> {
