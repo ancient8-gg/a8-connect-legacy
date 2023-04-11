@@ -75,9 +75,9 @@ export class WalletAction {
     /**
      * Initialize BinanceChain EVM Wallet.
      */
-    this.supportedWallets[BinanceEVMWalletName] = new BinanceEVMWallet(
-      windowInstance.BinanceChain
-    );
+    // this.supportedWallets[BinanceEVMWalletName] = new BinanceEVMWallet(
+    //   windowInstance.BinanceChain
+    // );
 
     /**
      * Initialize Coin98 EVM Wallet.
