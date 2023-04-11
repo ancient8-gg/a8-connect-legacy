@@ -1,7 +1,7 @@
 import {
   BaseWalletAdapter,
-  BinanceEVMWallet,
-  BinanceEVMWalletName,
+  // BinanceEVMWallet,
+  // BinanceEVMWalletName,
   ChainType,
   Coin98EVMWallet,
   Coin98EVMWalletName,
